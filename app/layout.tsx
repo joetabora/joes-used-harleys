@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Bebas_Neue } from 'next/font/google';
-import { generateMetadata as generateSEOMetadata, SITE_CONFIG } from '@/lib/seo';
+import { generateMetadata as generateSEOMetadata, SITE_CONFIG, SEO_CONFIG } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
 import './globals.css';
 
@@ -20,20 +20,32 @@ const bebasNeue = Bebas_Neue({
   preload: true,
 });
 
-// Generate default metadata
+// Generate default metadata using centralized SEO config
 const defaultMetadata = generateSEOMetadata({
-  title: 'Used Harley Milwaukee | Used Harley for Sale Milwaukee',
-  description: 'Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy, Heritage Classic & more.',
-  keywords: ['used harley milwaukee', 'harley for sale milwaukee'],
+  title: SEO_CONFIG.title,
+  description: SEO_CONFIG.description,
+  keywords: SEO_CONFIG.keywords,
   path: '/'
 });
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  metadataBase: new URL(SITE_CONFIG.url),
+  metadataBase: new URL(SEO_CONFIG.canonicalBaseUrl),
   authors: [{ name: 'Joe Tabora' }],
   creator: 'Joe Tabora',
-  publisher: SITE_CONFIG.name,
+  publisher: SEO_CONFIG.siteName,
+  // Use centralized robots config
+  robots: SEO_CONFIG.robots,
+  // Use centralized OpenGraph config
+  openGraph: {
+    ...SEO_CONFIG.openGraph,
+    ...defaultMetadata.openGraph,
+  },
+  // Use centralized Twitter config
+  twitter: {
+    ...SEO_CONFIG.twitter,
+    ...defaultMetadata.twitter,
+  },
   formatDetection: {
     email: false,
     address: false,
@@ -48,7 +60,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: SITE_CONFIG.name,
+    title: SEO_CONFIG.siteName,
   },
   other: {
     ...defaultMetadata.other,
@@ -99,6 +111,10 @@ export default function RootLayout({
         <meta name="geo.placename" content="Milwaukee" />
         <meta name="geo.position" content="43.0389;-87.9065" />
         <meta name="ICBM" content="43.0389, -87.9065" />
+        {/* Keywords meta tag from centralized config */}
+        <meta name="keywords" content={SEO_CONFIG.keywords.join(", ")} />
+        {/* Global JSON-LD schemas: Organization, WebSite (with SearchAction), LocalBusiness */}
+        <SEO type="website" includeOrganization includeWebSite includeLocalBusiness />
       </head>
       <body className={`${inter.variable} ${bebasNeue.variable}`}>
         {children}

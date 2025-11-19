@@ -3,6 +3,48 @@
  * Centralized SEO management for Milwaukee-focused keywords
  */
 
+/**
+ * Comprehensive SEO Configuration Interface
+ */
+export interface SEOConfig {
+  title: string;
+  description: string;
+  keywords: string[];
+  openGraph: {
+    title: string;
+    description: string;
+    url: string;
+    siteName: string;
+    images: Array<{
+      url: string;
+      width?: number;
+      height?: number;
+      alt?: string;
+    }>;
+    locale: string;
+    type: string;
+  };
+  twitter: {
+    card: string;
+    title: string;
+    description: string;
+    images: string[];
+  };
+  canonicalBaseUrl: string;
+  robots: {
+    index: boolean;
+    follow: boolean;
+    googleBot?: {
+      index: boolean;
+      follow: boolean;
+      'max-video-preview'?: number;
+      'max-image-preview'?: 'none' | 'standard' | 'large';
+      'max-snippet'?: number;
+    };
+  };
+  siteName: string;
+}
+
 export const SITE_CONFIG = {
   name: "Joe's Used Harleys",
   url: "https://joes-used-harleys.vercel.app",
@@ -28,6 +70,92 @@ export const SITE_CONFIG = {
   social: {
     instagram: "https://instagram.com/joetabora"
   }
+};
+
+/**
+ * Comprehensive SEO Configuration - Centralized and strongly typed
+ */
+export const SEO_CONFIG: SEOConfig = {
+  title: "Used Harley Milwaukee | Used Harley for Sale Milwaukee | Joe's Used Harleys",
+  description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy, Heritage Classic & more.",
+  keywords: [
+    // Primary Milwaukee keywords
+    "used harley milwaukee",
+    "used harleys milwaukee",
+    "harley for sale milwaukee",
+    "harley davidson for sale milwaukee",
+    "used motorcycles milwaukee",
+    "milwaukee harleys for sale",
+    "used harley for sale milwaukee",
+    "harley milwaukee",
+    "milwaukee harley davidson",
+    // Wisconsin keywords
+    "harley for sale wisconsin",
+    "used harley wisconsin",
+    "used harleys wisconsin",
+    "harley davidson wisconsin",
+    // Model-specific keywords
+    "street glide milwaukee",
+    "road glide milwaukee",
+    "fat boy milwaukee",
+    "heritage classic milwaukee",
+    "low rider milwaukee",
+    "softail milwaukee",
+    "sportster milwaukee",
+    "used street glide milwaukee",
+    "used road glide milwaukee",
+    "used fat boy milwaukee",
+    "harley street glide for sale milwaukee",
+    "harley road glide for sale milwaukee",
+    "harley fat boy for sale milwaukee",
+    // Dealer keywords
+    "harley dealership milwaukee",
+    "harley dealer milwaukee",
+    "milwaukee harley dealership",
+    "used harley dealer milwaukee",
+    "pre-owned harley milwaukee",
+    "harley motorcycle dealer milwaukee",
+    // Service area keywords
+    "used harley waukesha",
+    "used harley racine",
+    "harley for sale waukesha",
+    "harley for sale racine"
+  ],
+  openGraph: {
+    title: "Used Harley Milwaukee | Used Harley for Sale Milwaukee | Joe's Used Harleys",
+    description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy, Heritage Classic & more.",
+    url: SITE_CONFIG.url,
+    siteName: SITE_CONFIG.name,
+    images: [
+      {
+        url: SITE_CONFIG.image,
+        width: 1200,
+        height: 630,
+        alt: "Joe's Used Harleys - Used Harley-Davidson Motorcycles for Sale in Milwaukee"
+      }
+    ],
+    locale: "en_US",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Used Harley Milwaukee | Used Harley for Sale Milwaukee",
+    description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available.",
+    images: [SITE_CONFIG.image]
+  },
+  canonicalBaseUrl: SITE_CONFIG.url,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large" as const,
+      "max-snippet": -1
+    }
+  },
+  siteName: SITE_CONFIG.name
 };
 
 /**
@@ -340,6 +468,43 @@ export function generateProductSchema(bike: {
         }
       }
     }
+  };
+}
+
+/**
+ * Generate Organization schema
+ */
+export function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_CONFIG.url}/#organization`,
+    name: SITE_CONFIG.name,
+    url: SITE_CONFIG.url,
+    logo: {
+      "@type": "ImageObject",
+      url: SITE_CONFIG.image,
+      width: 600,
+      height: 200
+    },
+    image: SITE_CONFIG.image,
+    description: SITE_CONFIG.description,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: SITE_CONFIG.address.street,
+      addressLocality: SITE_CONFIG.address.city,
+      addressRegion: SITE_CONFIG.address.state,
+      postalCode: SITE_CONFIG.address.zip,
+      addressCountry: SITE_CONFIG.address.country
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: SITE_CONFIG.phone,
+      contactType: "Sales",
+      areaServed: ["US", "US-WI"],
+      availableLanguage: "English"
+    },
+    sameAs: [SITE_CONFIG.social.instagram]
   };
 }
 
