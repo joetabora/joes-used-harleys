@@ -37,6 +37,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...bikePages,
     {
+      url: `${baseUrl}/used-harleys-milwaukee`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/harley-for-sale-milwaukee`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/milwaukee-harley-dealership`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/used-street-glide-milwaukee`,
       lastModified: currentDate,
       changeFrequency: 'weekly',

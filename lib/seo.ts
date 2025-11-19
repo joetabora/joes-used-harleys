@@ -273,10 +273,27 @@ export function generateLocalBusinessSchema() {
       closes: SITE_CONFIG.hours.closes
     })),
     sameAs: [SITE_CONFIG.social.instagram],
-    areaServed: {
-      "@type": "City",
-      name: SITE_CONFIG.address.city,
-      sameAs: "https://en.wikipedia.org/wiki/Milwaukee"
+    areaServed: [
+      {
+        "@type": "City",
+        name: "Milwaukee",
+        sameAs: "https://en.wikipedia.org/wiki/Milwaukee"
+      },
+      {
+        "@type": "AdministrativeArea",
+        name: "Milwaukee County",
+        sameAs: "https://en.wikipedia.org/wiki/Milwaukee_County,_Wisconsin"
+      },
+      {
+        "@type": "State",
+        name: "Wisconsin",
+        sameAs: "https://en.wikipedia.org/wiki/Wisconsin"
+      }
+    ],
+    containedIn: {
+      "@type": "AdministrativeArea",
+      name: "Milwaukee County",
+      addressRegion: "WI"
     }
   };
 }

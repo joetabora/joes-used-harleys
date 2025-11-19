@@ -348,15 +348,88 @@ export default function HomePage() {
         </div>
         
         <div className="local-links">
-          <Link href="#inventory" className="local-link">Used Harleys Milwaukee</Link>
-          <Link href="#inventory" className="local-link">Harley for Sale Milwaukee</Link>
-          <Link href="#inventory" className="local-link">Used Motorcycles Milwaukee WI</Link>
+          <Link href="/used-harleys-milwaukee" className="local-link">Used Harleys Milwaukee</Link>
+          <Link href="/harley-for-sale-milwaukee" className="local-link">Harley for Sale Milwaukee</Link>
+          <Link href="/milwaukee-harley-dealership" className="local-link">Milwaukee Harley Dealership</Link>
           <Link href="/used-street-glide-milwaukee" className="local-link">Street Glide Milwaukee</Link>
           <Link href="/used-road-glide-milwaukee" className="local-link">Road Glide Milwaukee</Link>
           <Link href="/used-fat-boy-milwaukee" className="local-link">Fat Boy Milwaukee</Link>
           <Link href="/used-heritage-classic-milwaukee" className="local-link">Heritage Classic Milwaukee</Link>
           <Link href="/used-low-rider-s-milwaukee" className="local-link">Low Rider S Milwaukee</Link>
           <Link href="/buyers-guide-used-harley-milwaukee" className="local-link">Buyer&apos;s Guide</Link>
+        </div>
+      </section>
+
+      {/* Milwaukee Contact Section with Google Maps */}
+      <section style={{ 
+        padding: '6rem 1.5rem', 
+        background: 'var(--black)', 
+        maxWidth: '1400px', 
+        margin: '0 auto' 
+      }}>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+          gap: '3rem',
+          alignItems: 'start'
+        }}>
+          <div>
+            <h2 style={{ 
+              color: 'var(--orange)', 
+              fontSize: 'clamp(2rem, 5vw, 3rem)', 
+              marginBottom: '2rem',
+              textAlign: 'center'
+            }}>
+              Visit Us in Milwaukee, Wisconsin
+            </h2>
+            <div style={{ 
+              color: 'var(--text)', 
+              lineHeight: '1.8',
+              fontSize: '1.1rem'
+            }}>
+              <p style={{ marginBottom: '1.5rem' }}>
+                <strong style={{ color: 'var(--orange)' }}>Joe&apos;s Used Harleys</strong>
+              </p>
+              <p style={{ marginBottom: '1rem' }}>
+                6221 W Layton Ave<br />
+                Milwaukee, WI 53220<br />
+                United States
+              </p>
+              <p style={{ marginBottom: '1.5rem' }}>
+                <a 
+                  href="tel:4144396211" 
+                  style={{ 
+                    color: 'var(--orange)', 
+                    textDecoration: 'none',
+                    fontSize: '1.2rem',
+                    fontWeight: 600
+                  }}
+                >
+                  📞 (414) 439-6211
+                </a>
+              </p>
+              <p style={{ marginBottom: '1rem', color: 'var(--text-light)' }}>
+                <strong>Hours:</strong><br />
+                Monday - Saturday: 9:00 AM - 6:00 PM<br />
+                Sunday: Closed
+              </p>
+              <p style={{ color: 'var(--text-light)', fontSize: '0.95rem' }}>
+                Located at <strong>House Of Harley</strong> on W Layton Ave. Serving Milwaukee, Waukesha, Racine, and all of southeastern Wisconsin.
+              </p>
+            </div>
+          </div>
+          <div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.5!2d-87.9065!3d43.0389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDAyJzIwLjAiTiA4N8KwNTQnMjMuNCJX!5e0!3m2!1sen!2sus!4v1234567890"
+              width="100%"
+              height="400"
+              style={{ border: '2px solid var(--orange)', borderRadius: '8px' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Joe's Used Harleys Location - 6221 W Layton Ave, Milwaukee, WI 53220"
+            />
+          </div>
         </div>
       </section>
 

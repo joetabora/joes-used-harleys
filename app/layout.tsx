@@ -94,6 +94,11 @@ export default function RootLayout({
           rel="dns-prefetch"
           href="https://i.imgur.com"
         />
+        {/* Geo metadata for local SEO */}
+        <meta name="geo.region" content="US-WI" />
+        <meta name="geo.placename" content="Milwaukee" />
+        <meta name="geo.position" content="43.0389;-87.9065" />
+        <meta name="ICBM" content="43.0389, -87.9065" />
       </head>
       <body className={`${inter.variable} ${bebasNeue.variable}`}>
         {children}
