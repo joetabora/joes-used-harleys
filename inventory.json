@@ -1,0 +1,71 @@
+{
+  "bikes": [
+    {
+      "id": "bike1",
+      "name": "2023 Street Glide Special",
+      "image": "https://i.imgur.com/3Vzbyie.jpeg",
+      "specs": "8,200 miles • Milwaukee-Eight 114 • Stage 2",
+      "price": 23900,
+      "priceFormatted": "$23,900",
+      "financing": "Financing as low as $399/mo",
+      "featured": true,
+      "justArrived": true
+    },
+    {
+      "id": "bike2",
+      "name": "2022 Road Glide",
+      "image": "https://i.imgur.com/hv9oxzf.jpeg",
+      "specs": "5,400 miles • Milwaukee-Eight 107 • Stage 1",
+      "price": 21500,
+      "priceFormatted": "$21,500",
+      "financing": "Financing as low as $359/mo",
+      "featured": false,
+      "justArrived": false
+    },
+    {
+      "id": "bike3",
+      "name": "2021 Fat Boy",
+      "image": "https://i.imgur.com/m3I88bY.jpeg",
+      "specs": "3,800 miles • Milwaukee-Eight 114 • Custom exhaust",
+      "price": 19900,
+      "priceFormatted": "$19,900",
+      "financing": "Financing as low as $329/mo",
+      "featured": false,
+      "justArrived": false
+    },
+    {
+      "id": "bike4",
+      "name": "2020 Softail Deluxe",
+      "image": "https://i.imgur.com/4dr22rX.jpeg",
+      "specs": "6,200 miles • Milwaukee-Eight 107 • Stage 1",
+      "price": 18500,
+      "priceFormatted": "$18,500",
+      "financing": "Financing as low as $309/mo",
+      "featured": false,
+      "justArrived": false
+    },
+    {
+      "id": "bike5",
+      "name": "2023 Low Rider S",
+      "image": "https://i.imgur.com/27BHl9o.jpeg",
+      "specs": "2,100 miles • Milwaukee-Eight 117 • Stage 2",
+      "price": 24900,
+      "priceFormatted": "$24,900",
+      "financing": "Financing as low as $419/mo",
+      "featured": false,
+      "justArrived": false
+    },
+    {
+      "id": "bike6",
+      "name": "2022 Heritage Classic",
+      "image": "https://i.imgur.com/pY7Q6lR.jpeg",
+      "specs": "4,500 miles • Milwaukee-Eight 107 • Stage 1",
+      "price": 20900,
+      "priceFormatted": "$20,900",
+      "financing": "Financing as low as $349/mo",
+      "featured": false,
+      "justArrived": false
+    }
+  ]
+}
+

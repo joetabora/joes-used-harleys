@@ -1,0 +1,7 @@
+# Ignore old static HTML files that conflict with Next.js
+index.html
+used-*.html
+buyers-guide-*.html
+road-glide-vs-*.html
+best-used-*.html
+
