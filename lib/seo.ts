@@ -552,7 +552,153 @@ export function generateFAQSchema(questions: Array<{ question: string; answer: s
 }
 
 /**
+ * Page-specific SEO options interface
+ */
+export interface PageSEOOptions {
+  pageTitle?: string;
+  pageDescription?: string;
+  pageKeywords?: string[];
+  modelName?: string;
+  location?: string;
+  path?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+/**
+ * Set page-specific SEO - merges page options with base config
+ * This is the main utility for per-page SEO overrides
+ */
+export function setPageSEO(options: PageSEOOptions = {}): {
+  title: string;
+  description: string;
+  keywords: string;
+  openGraph: ReturnType<typeof generateOpenGraph>;
+  twitter: ReturnType<typeof generateTwitterCard>;
+  alternates: {
+    canonical: string;
+  };
+  robots?: {
+    index: boolean;
+    follow: boolean;
+  };
+  other: {
+    "geo.region": string;
+    "geo.placename": string;
+    "geo.position": string;
+    "ICBM": string;
+  };
+} {
+  // Build keywords array from page options
+  let allKeywords: string[] = [...SEO_CONFIG.keywords];
+  
+  // Add location-based keywords if location is provided
+  if (options.location) {
+    const locationLower = options.location.toLowerCase();
+    allKeywords.push(
+      `used harley ${locationLower}`,
+      `harley for sale ${locationLower}`,
+      `used harleys ${locationLower}`
+    );
+  }
+  
+  // Add model-based keywords if modelName is provided
+  if (options.modelName) {
+    const modelLower = options.modelName.toLowerCase();
+    const location = options.location?.toLowerCase() || 'milwaukee';
+    allKeywords.push(
+      `used ${modelLower} ${location}`,
+      `${modelLower} for sale ${location}`,
+      `harley ${modelLower} ${location}`
+    );
+  }
+  
+  // Add page-specific keywords
+  if (options.pageKeywords) {
+    allKeywords.push(...options.pageKeywords);
+  }
+  
+  // Remove duplicates
+  allKeywords = [...new Set(allKeywords)];
+  
+  // Generate title
+  let title: string;
+  if (options.pageTitle) {
+    title = `${options.pageTitle} | ${SEO_CONFIG.siteName}`;
+  } else if (options.modelName && options.location) {
+    title = `Used ${options.modelName} ${options.location} | ${SEO_CONFIG.siteName}`;
+  } else if (options.modelName) {
+    title = `Used ${options.modelName} Milwaukee | ${SEO_CONFIG.siteName}`;
+  } else {
+    title = SEO_CONFIG.title;
+  }
+  
+  // Generate description
+  let description: string;
+  if (options.pageDescription) {
+    description = options.pageDescription;
+  } else if (options.modelName && options.location) {
+    description = `Buy a used ${options.modelName} in ${options.location}, Wisconsin. Highway-ready and inspected. View photos, mileage, and pricing. Financing available.`;
+  } else if (options.modelName) {
+    description = `Buy a used ${options.modelName} in Milwaukee, Wisconsin. Highway-ready and inspected. View photos, mileage, and pricing. Financing available.`;
+  } else {
+    description = SEO_CONFIG.description;
+  }
+  
+  // Generate canonical URL
+  const path = options.path || '/';
+  const canonical = generateCanonical(path);
+  
+  // Build metadata object
+  const metadata: any = {
+    title,
+    description,
+    keywords: allKeywords.join(", "),
+    openGraph: {
+      ...SEO_CONFIG.openGraph,
+      title,
+      description,
+      url: canonical,
+      images: options.image ? [{
+        url: options.image,
+        width: 1200,
+        height: 630,
+        alt: title
+      }] : SEO_CONFIG.openGraph.images
+    },
+    twitter: {
+      ...SEO_CONFIG.twitter,
+      title,
+      description,
+      images: options.image ? [options.image] : SEO_CONFIG.twitter.images
+    },
+    alternates: {
+      canonical
+    },
+    other: {
+      "geo.region": "US-WI",
+      "geo.placename": options.location || "Milwaukee",
+      "geo.position": `${SITE_CONFIG.geo.latitude};${SITE_CONFIG.geo.longitude}`,
+      "ICBM": `${SITE_CONFIG.geo.latitude}, ${SITE_CONFIG.geo.longitude}`
+    }
+  };
+  
+  // Add robots if noindex
+  if (options.noindex) {
+    metadata.robots = {
+      index: false,
+      follow: false
+    };
+  } else {
+    metadata.robots = SEO_CONFIG.robots;
+  }
+  
+  return metadata;
+}
+
+/**
  * Generate default metadata for Next.js Metadata API
+ * @deprecated Use setPageSEO() instead for better per-page control
  */
 export function generateMetadata(
   options: {
@@ -584,35 +730,15 @@ export function generateMetadata(
     "ICBM": string;
   };
 } {
-  const title = generateTitle(options.title, options.keywords, options.model);
-  const description = generateDescription(options.description, options.keywords, options.model);
-  const keywords = generateKeywords(options.keywords, options.model);
-  const canonical = generateCanonical(options.path);
-
-  const metadata: any = {
-    title,
-    description,
-    keywords,
-    openGraph: generateOpenGraph(title, description, options.image, "website", options.path),
-    twitter: generateTwitterCard(title, description, options.image),
-    alternates: {
-      canonical
-    },
-    other: {
-      "geo.region": "US-WI",
-      "geo.placename": "Milwaukee",
-      "geo.position": `${SITE_CONFIG.geo.latitude};${SITE_CONFIG.geo.longitude}`,
-      "ICBM": `${SITE_CONFIG.geo.latitude}, ${SITE_CONFIG.geo.longitude}`
-    }
-  };
-
-  if (options.noindex) {
-    metadata.robots = {
-      index: false,
-      follow: false
-    };
-  }
-
-  return metadata;
+  // Convert old format to new format
+  return setPageSEO({
+    pageTitle: options.title,
+    pageDescription: options.description,
+    pageKeywords: options.keywords,
+    modelName: options.model,
+    path: options.path,
+    image: options.image,
+    noindex: options.noindex
+  });
 }
 

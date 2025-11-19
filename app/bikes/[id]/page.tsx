@@ -1,4 +1,4 @@
-import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { setPageSEO } from '@/lib/seo';
 import { 
   extractModelName, 
   extractYear, 
@@ -61,29 +61,31 @@ export async function generateStaticParams() {
   }));
 }
 
-// Generate metadata for the product page
+// Generate metadata for the product page using setPageSEO
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const bike = await getBike(id);
   
   if (!bike) {
-    return {
-      title: 'Bike Not Found | Joe\'s Used Harleys'
-    };
+    return setPageSEO({
+      pageTitle: 'Bike Not Found',
+      noindex: true,
+      path: `/bikes/${id}`
+    });
   }
   
   const model = bike.model || extractModelName(bike.name);
   const mileage = bike.mileage || extractMileage(bike.specs);
   const keywords = generateModelKeywords(model);
-  
   const title = generateProductTitle(model);
   const description = generateProductDescription(model, mileage, bike.priceFormatted);
   
-  return generateSEOMetadata({
-    title,
-    description,
-    keywords,
-    model,
+  return setPageSEO({
+    pageTitle: title,
+    pageDescription: description,
+    pageKeywords: keywords,
+    modelName: model,
+    location: 'Milwaukee',
     path: `/bikes/${id}`,
     image: bike.image
   });

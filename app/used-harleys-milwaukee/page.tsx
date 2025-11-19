@@ -1,13 +1,14 @@
-import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { setPageSEO } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
 import { CTAButton } from '@/components/CTAButton';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = generateSEOMetadata({
-  title: 'Used Harleys Milwaukee | Used Harley-Davidson Motorcycles Milwaukee WI',
-  description: 'Find the best used Harleys in Milwaukee, Wisconsin. Browse our inventory of pre-owned Harley-Davidson motorcycles including Street Glide, Road Glide, Fat Boy, Heritage Classic & more. Low miles, full warranty, financing available.',
-  keywords: ['used harleys milwaukee', 'used harley milwaukee', 'used harley davidson milwaukee', 'milwaukee used motorcycles', 'used motorcycles milwaukee wi'],
+export const metadata: Metadata = setPageSEO({
+  pageTitle: 'Used Harleys Milwaukee | Used Harley-Davidson Motorcycles Milwaukee WI',
+  pageDescription: 'Find the best used Harleys in Milwaukee, Wisconsin. Browse our inventory of pre-owned Harley-Davidson motorcycles including Street Glide, Road Glide, Fat Boy, Heritage Classic & more. Low miles, full warranty, financing available.',
+  pageKeywords: ['used harleys milwaukee', 'used harley milwaukee', 'used harley davidson milwaukee', 'milwaukee used motorcycles', 'used motorcycles milwaukee wi'],
+  location: 'Milwaukee',
   path: '/used-harleys-milwaukee'
 });
 

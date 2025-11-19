@@ -1,4 +1,4 @@
-import { generateMetadata as generateSEOMetadata, generateFAQSchema } from '@/lib/seo';
+import { setPageSEO, generateFAQSchema } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
 import { InventoryGrid } from '@/components/InventoryGrid';
 import { CTAButton } from '@/components/CTAButton';
@@ -6,10 +6,12 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const metadata: Metadata = generateSEOMetadata({
-  title: 'Used Harley Milwaukee | Used Harley for Sale Milwaukee | Joe\'s Used Harleys',
-  description: 'Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy, Heritage Classic & more.',
-  keywords: ['used harley milwaukee', 'harley for sale milwaukee', 'used harleys for sale milwaukee'],
+// Homepage SEO - targeting primary Milwaukee keywords
+export const metadata: Metadata = setPageSEO({
+  pageTitle: 'Used Harley Milwaukee | Used Harley for Sale Milwaukee',
+  pageDescription: 'Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy, Heritage Classic & more.',
+  pageKeywords: ['used harley milwaukee', 'harley for sale milwaukee', 'used harleys for sale milwaukee'],
+  location: 'Milwaukee',
   path: '/'
 });
 

@@ -1,13 +1,14 @@
-import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { setPageSEO } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
 import { CTAButton } from '@/components/CTAButton';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = generateSEOMetadata({
-  title: 'Milwaukee Harley Dealership | Used Harley-Davidson Dealer Milwaukee WI',
-  description: 'Milwaukee\'s trusted used Harley-Davidson dealership. Located at House Of Harley on W Layton Ave. Low miles, full warranty, financing available. Serving Milwaukee, Waukesha, Racine & all of Wisconsin.',
-  keywords: ['milwaukee harley dealership', 'harley dealership milwaukee', 'used harley dealer milwaukee', 'milwaukee harley davidson dealer', 'harley dealer milwaukee wi'],
+export const metadata: Metadata = setPageSEO({
+  pageTitle: 'Milwaukee Harley Dealership | Used Harley-Davidson Dealer Milwaukee WI',
+  pageDescription: 'Milwaukee\'s trusted used Harley-Davidson dealership. Located at House Of Harley on W Layton Ave. Low miles, full warranty, financing available. Serving Milwaukee, Waukesha, Racine & all of Wisconsin.',
+  pageKeywords: ['milwaukee harley dealership', 'harley dealership milwaukee', 'used harley dealer milwaukee', 'milwaukee harley davidson dealer', 'harley dealer milwaukee wi'],
+  location: 'Milwaukee',
   path: '/milwaukee-harley-dealership'
 });
 
