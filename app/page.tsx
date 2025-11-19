@@ -84,7 +84,7 @@ export default function HomePage() {
       </section>
 
       {/* Why Buy a Used Harley in Milwaukee Section */}
-      <section className="trust" style={{ padding: '6rem 1.5rem', background: 'var(--dark)' }}>
+      <section className="trust" style={{ padding: '8rem 1.5rem 6rem', background: 'var(--dark)' }}>
         <div className="trust-content">
           <h2 style={{ color: 'var(--orange)', marginBottom: '2rem', fontSize: 'clamp(2rem, 5vw, 3rem)', textAlign: 'center' }}>
             Why Buy a Used Harley in Milwaukee?
