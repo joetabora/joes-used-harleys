@@ -16,8 +16,6 @@ export const metadata: Metadata = generateSEOMetadata({
 export default function HomePage() {
   return (
     <>
-      <SEO type="website" includeLocalBusiness includeWebSite />
-      
       {/* Urgency Banner */}
       <div className="urgency-banner">
         WE SHIP NATIONWIDE FOR ONLY $499
