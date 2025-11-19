@@ -16,43 +16,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-// Get all bikes data - use file system during build, fetch during runtime
+// Get all bikes data - read from file system during build
 async function getAllBikes(): Promise<BikeData[]> {
-  // Always try file system first (works during build on Vercel)
   try {
     const fs = await import('fs/promises');
     const path = await import('path');
     const filePath = path.join(process.cwd(), 'public', 'inventory.json');
     const fileContents = await fs.readFile(filePath, 'utf8');
     const data = JSON.parse(fileContents);
-    if (data.bikes && data.bikes.length > 0) {
-      return data.bikes;
-    }
-  } catch (fsError) {
-    // File system read failed - this is OK at runtime, will use fetch
-    console.warn('File system read not available (runtime), will use fetch');
-  }
-  
-  // Runtime fallback: use fetch (only if file system read failed)
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://joes-used-harleys.vercel.app');
-    const url = `${baseUrl}/inventory.json`;
-    
-    const response = await fetch(url, {
-      next: { revalidate: 3600 },
-      cache: 'force-cache'
-    });
-    
-    if (response.ok) {
-      const data = await response.json();
-      return data.bikes || [];
-    }
+    return data.bikes || [];
   } catch (error) {
-    console.error('Error fetching bikes:', error);
+    console.error('Error reading inventory.json:', error);
+    // Return empty array if file read fails - this should not happen during build
+    return [];
   }
-  
-  return [];
 }
 
 // Fetch bike data

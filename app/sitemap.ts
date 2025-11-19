@@ -3,27 +3,15 @@ import { SITE_CONFIG } from '@/lib/seo';
 
 async function getBikes() {
   try {
-    // Try fetch first (works in both build and runtime)
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_CONFIG.url;
-    const response = await fetch(`${baseUrl}/inventory.json`, {
-      next: { revalidate: 3600 },
-      headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
-      }
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return data.bikes || [];
-    }
-    
-    // Fallback: read from file system during build
+    // Read from file system during build (most reliable)
     const fs = await import('fs/promises');
     const path = await import('path');
     const filePath = path.join(process.cwd(), 'public', 'inventory.json');
     const fileContents = await fs.readFile(filePath, 'utf8');
     const data = JSON.parse(fileContents);
     return data.bikes || [];
-  } catch {
+  } catch (error) {
+    console.error('Error reading inventory.json for sitemap:', error);
     return [];
   }
 }
