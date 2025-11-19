@@ -58,7 +58,7 @@ export default function HomePage() {
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.9)',
             lineHeight: '1.1'
           }}>
-            Used Harley-Davidsons for Sale in Milwaukee – Joe&apos;s Used Harleys
+            Used Harley-Davidsons for Sale in Milwaukee
           </h1>
           <div style={{ 
             maxWidth: '800px', 
