@@ -1,5 +1,8 @@
 import { setPageSEO } from '@/lib/seo';
 import { InventoryGrid } from '@/components/InventoryGrid';
+import { CMSInventoryGrid } from '@/components/CMSInventoryGrid';
+import { fetchAllMotorcycles } from '@/sanity/lib/queries';
+import { isSanityConfigured } from '@/sanity/lib/client';
 import { CTAButton } from '@/components/CTAButton';
 import { InternalLinks } from '@/components/InternalLinks';
 import type { Metadata } from 'next';
@@ -23,7 +26,10 @@ export const metadata: Metadata = setPageSEO({
   path: '/inventory'
 });
 
-export default function InventoryPage() {
+export default async function InventoryPage() {
+  // Fetch bikes from CMS if configured, otherwise fallback to InventoryGrid
+  const bikes = isSanityConfigured() ? await fetchAllMotorcycles() : [];
+
   return (
     <>
       {/* Hero Section */}
@@ -61,14 +67,18 @@ export default function InventoryPage() {
         </div>
       </section>
 
-      {/* Inventory Grid */}
+      {/* Inventory Grid - CMS or Fallback */}
       <section id="inventory" style={{ 
         padding: '4rem 1.5rem', 
         background: 'var(--dark)',
         maxWidth: '1400px',
         margin: '0 auto'
       }}>
-        <InventoryGrid />
+        {isSanityConfigured() ? (
+          <CMSInventoryGrid initialBikes={bikes} />
+        ) : (
+          <InventoryGrid />
+        )}
       </section>
 
       {/* SEO Content */}

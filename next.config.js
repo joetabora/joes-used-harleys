@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'videos.pexels.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
     ],
   },
   trailingSlash: false,
