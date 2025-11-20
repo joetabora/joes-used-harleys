@@ -83,6 +83,34 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* SEO-Optimized Intro Block (300-500 words) */}
+      <section style={{ padding: '6rem 1.5rem', background: 'var(--black)' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div style={{ 
+            fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', 
+            lineHeight: '1.9', 
+            color: 'var(--text)', 
+            textAlign: 'left'
+          }}>
+            <p style={{ marginBottom: '1.5rem' }}>
+              When searching for a <strong>used Harley Milwaukee</strong>, you want more than just a motorcycle – you want a trusted partner who understands the Milwaukee riding community and delivers exceptional value. At Joe&apos;s Used Harleys, we specialize in connecting Milwaukee riders with premium pre-owned Harley-Davidson motorcycles that have been meticulously inspected, professionally maintained, and priced fairly. Our Milwaukee location at House Of Harley on W Layton Ave makes us the go-to destination for riders throughout southeastern Wisconsin who demand quality, transparency, and honest pricing.
+            </p>
+            <p style={{ marginBottom: '1.5rem' }}>
+              Finding a <strong>Harley for sale Milwaukee</strong> that meets your standards shouldn&apos;t require endless research or settling for questionable private sellers. Our inventory features low-mileage Street Glides, Road Glides, Softails, Sportsters, Dynas, and other popular models – each with complete service histories, Carfax reports, and our comprehensive 48-hour guarantee. Whether you&apos;re a first-time Harley owner or a seasoned rider looking to upgrade, we make the process simple: transparent pricing with no hidden fees, flexible financing options for all credit situations, and nationwide shipping for just $499.
+            </p>
+            <p style={{ marginBottom: '1.5rem' }}>
+              As Milwaukee&apos;s premier <strong>Harley dealership Milwaukee</strong>, we understand that buying a used motorcycle is a significant investment. That&apos;s why every bike in our inventory undergoes a rigorous inspection process, checking everything from engine performance and transmission integrity to frame condition and electrical systems. We provide detailed photos of any imperfections, full disclosure of modifications and upgrades, and complete documentation of service records. Our Milwaukee-based team knows Wisconsin riding conditions – from Lake Michigan shoreline cruises to country road adventures – and we help you choose the perfect Harley for your lifestyle.
+            </p>
+            <p style={{ marginBottom: '1.5rem' }}>
+              Unlike traditional dealerships that add thousands in &quot;prep fees&quot; and &quot;market adjustments,&quot; Joe&apos;s Used Harleys operates with complete transparency. The price you see is the price you pay, minus tax and title. We work with multiple lenders to secure financing for buyers with excellent credit, bad credit, first-time buyers, and self-employed individuals. Our Milwaukee location serves riders from Waukesha, Racine, Kenosha, and throughout Wisconsin, and we ship nationwide to make premium used Harleys accessible to riders everywhere.
+            </p>
+            <p>
+              Experience the difference of buying from a <strong>used Harley Milwaukee</strong> dealer who puts customers first. Visit us at House Of Harley, text Joe directly at 414-439-6211, or browse our complete inventory online. We&apos;re not just selling motorcycles – we&apos;re helping Milwaukee riders find their perfect Harley-Davidson and join Wisconsin&apos;s vibrant motorcycle community.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Why Buy a Used Harley in Milwaukee Section */}
       <section className="trust" style={{ padding: '8rem 1.5rem 6rem', background: 'var(--dark)' }}>
         <div className="trust-content">
@@ -103,7 +131,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Popular Harley-Davidson Models We Sell Section */}
+      {/* Popular Models Grid Section */}
       <section style={{ padding: '6rem 1.5rem', background: 'var(--black)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <h2 style={{ color: 'var(--orange)', marginBottom: '3rem', fontSize: 'clamp(2rem, 5vw, 3rem)', textAlign: 'center' }}>
@@ -114,76 +142,197 @@ export default function HomePage() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
             gap: '2rem' 
           }}>
-            <div style={{ padding: '2rem', background: 'var(--gray)', border: '1px solid var(--gray-light)' }}>
-              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Street Glide</h3>
-              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
-                The <strong>Street Glide</strong> is Milwaukee&apos;s favorite touring bike. Perfect for long rides along Lake Michigan or weekend trips through Wisconsin. Our <strong>used Street Glides in Milwaukee</strong> feature the powerful Milwaukee-Eight engine and premium touring amenities.
-              </p>
-            </div>
-            <div style={{ padding: '2rem', background: 'var(--gray)', border: '1px solid var(--gray-light)' }}>
-              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Road Glide</h3>
-              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
-                The <strong>Road Glide</strong> offers a distinctive frame-mounted fairing for superior wind protection. Ideal for Milwaukee riders who want maximum comfort on extended tours. Our <strong>used Road Glides in Milwaukee</strong> are in excellent condition.
-              </p>
-            </div>
-            <div style={{ padding: '2rem', background: 'var(--gray)', border: '1px solid var(--gray-light)' }}>
-              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Fat Boy</h3>
-              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
-                The iconic <strong>Fat Boy</strong> combines classic Harley styling with modern performance. A popular choice for <strong>used Harleys in Milwaukee</strong> among riders who want that timeless look with contemporary reliability.
-              </p>
-            </div>
-            <div style={{ padding: '2rem', background: 'var(--gray)', border: '1px solid var(--gray-light)' }}>
-              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Heritage Classic</h3>
-              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
-                The <strong>Heritage Classic</strong> delivers retro styling with modern engineering. Perfect for Milwaukee riders who appreciate classic design. Our <strong>used Heritage Classics in Milwaukee</strong> feature authentic styling and reliable performance.
-              </p>
-            </div>
-            <div style={{ padding: '2rem', background: 'var(--gray)', border: '1px solid var(--gray-light)' }}>
-              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Low Rider S</h3>
-              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
-                The <strong>Low Rider S</strong> offers sporty performance with aggressive styling. A top choice for Milwaukee riders seeking power and style. Our <strong>used Low Rider S models in Milwaukee</strong> come with performance upgrades.
-              </p>
-            </div>
-            <div style={{ padding: '2rem', background: 'var(--gray)', border: '1px solid var(--gray-light)' }}>
-              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Softail Deluxe</h3>
-              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
-                The <strong>Softail Deluxe</strong> combines classic looks with modern comfort. Ideal for Milwaukee riders who want vintage style with contemporary features. Our <strong>used Softail Deluxes in Milwaukee</strong> are well-maintained and ready to ride.
-              </p>
-            </div>
+            <Link href="/models/street-glide" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={{ 
+                padding: '2rem', 
+                background: 'var(--dark)', 
+                border: '2px solid var(--gray-light)',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                height: '100%'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--orange)';
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--gray-light)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Street Glide</h3>
+                <p style={{ color: 'var(--text-light)', lineHeight: '1.7', fontSize: '1rem' }}>
+                  The iconic <strong>Street Glide</strong> is Milwaukee&apos;s top choice for touring. Our <strong>used Street Glides in Milwaukee</strong> feature powerful Milwaukee-Eight engines, premium audio systems, and highway-ready comfort perfect for Lake Michigan cruises.
+                </p>
+              </div>
+            </Link>
+            <Link href="/models/road-glide" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={{ 
+                padding: '2rem', 
+                background: 'var(--dark)', 
+                border: '2px solid var(--gray-light)',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                height: '100%'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--orange)';
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--gray-light)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Road Glide</h3>
+                <p style={{ color: 'var(--text-light)', lineHeight: '1.7', fontSize: '1rem' }}>
+                  The <strong>Road Glide</strong> features a distinctive frame-mounted sharknose fairing for superior wind protection. Our <strong>used Road Glides in Milwaukee</strong> offer maximum comfort and stability for extended Wisconsin touring adventures.
+                </p>
+              </div>
+            </Link>
+            <Link href="/models/softail" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={{ 
+                padding: '2rem', 
+                background: 'var(--dark)', 
+                border: '2px solid var(--gray-light)',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                height: '100%'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--orange)';
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--gray-light)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Softail</h3>
+                <p style={{ color: 'var(--text-light)', lineHeight: '1.7', fontSize: '1rem' }}>
+                  The <strong>Softail</strong> family combines classic styling with modern performance. Our <strong>used Softails in Milwaukee</strong> include Heritage Classic, Fat Boy, and Deluxe models – perfect for riders who want timeless design with contemporary reliability.
+                </p>
+              </div>
+            </Link>
+            <Link href="/models/sportster" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={{ 
+                padding: '2rem', 
+                background: 'var(--dark)', 
+                border: '2px solid var(--gray-light)',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                height: '100%'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--orange)';
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--gray-light)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Sportster</h3>
+                <p style={{ color: 'var(--text-light)', lineHeight: '1.7', fontSize: '1rem' }}>
+                  The legendary <strong>Sportster</strong> is Harley&apos;s most versatile platform. Our <strong>used Sportsters in Milwaukee</strong> include 883 and 1200 models, offering nimble handling and classic V-twin power perfect for city riding and weekend adventures.
+                </p>
+              </div>
+            </Link>
+            <Link href="/models/dyna" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={{ 
+                padding: '2rem', 
+                background: 'var(--dark)', 
+                border: '2px solid var(--gray-light)',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                height: '100%'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--orange)';
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--gray-light)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+              >
+                <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Dyna</h3>
+                <p style={{ color: 'var(--text-light)', lineHeight: '1.7', fontSize: '1rem' }}>
+                  The <strong>Dyna</strong> platform delivers raw power and classic cruiser styling. Our <strong>used Dynas in Milwaukee</strong> feature the iconic Twin Cam engine and are perfect for riders who want authentic Harley performance with customizable potential.
+                </p>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Why Riders Trust Joe's Used Harleys Section */}
+      {/* Why Buy From Joe's Used Harleys Section */}
       <section style={{ padding: '6rem 1.5rem', background: 'var(--dark)' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <h2 style={{ color: 'var(--orange)', marginBottom: '2rem', fontSize: 'clamp(2rem, 5vw, 3rem)', textAlign: 'center' }}>
-            Why Riders Trust Joe&apos;s Used Harleys
+        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <h2 style={{ color: 'var(--orange)', marginBottom: '3rem', fontSize: 'clamp(2rem, 5vw, 3rem)', textAlign: 'center' }}>
+            Why Buy From Joe&apos;s Used Harleys
           </h2>
-          <div className="trust-features">
-            <div className="trust-feature">
-              <h4>Transparent Pricing</h4>
-              <p>When you buy a <strong>used Harley in Milwaukee</strong> from Joe&apos;s, you get honest, upfront pricing. No hidden fees, no surprise charges – just the price you see, plus tax and title. We believe in fair deals for Milwaukee riders.</p>
+          <div style={{ 
+            display: 'grid', 
+            gap: '2rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
+          }}>
+            <div style={{ padding: '2rem', background: 'var(--black)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.3rem' }}>✓ Transparent Pricing, Zero Hidden Fees</h3>
+              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                When you buy a <strong>used Harley in Milwaukee</strong> from Joe&apos;s, the price you see is the price you pay – no surprise &quot;prep fees&quot; or &quot;market adjustments.&quot; We believe in honest, upfront pricing that makes buying a <strong>Harley for sale Milwaukee</strong> simple and stress-free.
+              </p>
             </div>
-            <div className="trust-feature">
-              <h4>Comprehensive Inspections</h4>
-              <p>Every <strong>used Harley we sell in Milwaukee</strong> undergoes a thorough inspection. We check everything from engine performance to frame integrity. You get full service records and Carfax reports with every bike.</p>
+            <div style={{ padding: '2rem', background: 'var(--black)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.3rem' }}>✓ Comprehensive Inspections & Full Documentation</h3>
+              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                Every <strong>used Harley we sell in Milwaukee</strong> undergoes rigorous inspection. You get complete service records, Carfax reports, and detailed condition documentation. Our <strong>Harley dealership Milwaukee</strong> standards ensure you know exactly what you&apos;re buying.
+              </p>
             </div>
-            <div className="trust-feature">
-              <h4>Flexible Financing</h4>
-              <p>We make buying a <strong>used Harley in Milwaukee</strong> accessible with financing options for all credit types. Bad credit? First-time buyer? Self-employed? We work with lenders who understand your situation.</p>
+            <div style={{ padding: '2rem', background: 'var(--black)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.3rem' }}>✓ Financing for All Credit Types</h3>
+              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                Bad credit? First-time buyer? Self-employed? We work with multiple lenders to secure financing for buying a <strong>used Harley Milwaukee</strong>. Our flexible options make owning a premium Harley-Davidson accessible to everyone.
+              </p>
             </div>
-            <div className="trust-feature">
-              <h4>48-Hour Guarantee</h4>
-              <p>We stand behind every <strong>used Harley we sell in Milwaukee</strong>. If something&apos;s not right in the first 48 hours or 100 miles, bring it back. We&apos;ll fix it or refund it – no questions asked.</p>
+            <div style={{ padding: '2rem', background: 'var(--black)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.3rem' }}>✓ 48-Hour Money-Back Guarantee</h3>
+              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                We stand behind every <strong>used Harley for sale Milwaukee</strong> with our 48-hour guarantee. If something&apos;s not right in the first 48 hours or 100 miles, bring it back – we&apos;ll fix it or refund it, no questions asked.
+              </p>
             </div>
-            <div className="trust-feature">
-              <h4>Local Milwaukee Expertise</h4>
-              <p>As Milwaukee&apos;s trusted <strong>used Harley dealer</strong>, we know what works best for Wisconsin riding. From Lake Michigan cruises to country road adventures, we help you find the perfect bike for your Milwaukee lifestyle.</p>
+            <div style={{ padding: '2rem', background: 'var(--black)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.3rem' }}>✓ Local Milwaukee Expertise & Support</h3>
+              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                As Milwaukee&apos;s trusted <strong>used Harley dealer</strong>, we understand Wisconsin riding conditions. From Lake Michigan cruises to country road adventures, we help you choose the perfect <strong>used Harley Milwaukee</strong> for your lifestyle.
+              </p>
             </div>
-            <div className="trust-feature">
-              <h4>Nationwide Shipping</h4>
-              <p>Don&apos;t live in Milwaukee? No problem. We ship <strong>used Harleys</strong> nationwide for just $499. Whether you&apos;re in Milwaukee, across Wisconsin, or anywhere in the US, we&apos;ll get your bike to you safely.</p>
+            <div style={{ padding: '2rem', background: 'var(--black)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.3rem' }}>✓ Nationwide Shipping for Only $499</h3>
+              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                Don&apos;t live in Milwaukee? We ship <strong>used Harleys</strong> nationwide for just $499. Whether you&apos;re across Wisconsin or anywhere in the US, we&apos;ll deliver your <strong>Harley for sale Milwaukee</strong> safely to your door.
+              </p>
+            </div>
+            <div style={{ padding: '2rem', background: 'var(--black)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.3rem' }}>✓ Direct Access to Joe – Real Person, Real Answers</h3>
+              <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
+                Text or call Joe directly at 414-439-6211. No automated systems, no runaround – just honest conversation about finding the right <strong>used Harley Milwaukee</strong> for you. Our <strong>Harley dealership Milwaukee</strong> approach puts you first.
+              </p>
             </div>
           </div>
         </div>
