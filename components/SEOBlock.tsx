@@ -80,11 +80,44 @@ export function SEOBlock({
               marginBottom: cta ? '2rem' : '0',
             }}
           >
-            {content.split('\n\n').map((paragraph, index) => (
-              <p key={index} style={{ marginBottom: '1.5rem' }}>
-                {paragraph}
-              </p>
-            ))}
+            {content.split('\n\n').map((paragraph, index) => {
+              // Check if paragraph is an H3 heading (starts with ###)
+              if (paragraph.trim().startsWith('###')) {
+                const headingText = paragraph.replace(/^###\s*/, '').trim();
+                return (
+                  <h3
+                    key={index}
+                    style={{
+                      color: 'var(--orange)',
+                      fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                      marginTop: '2.5rem',
+                      marginBottom: '1.5rem',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {headingText}
+                  </h3>
+                );
+              }
+              
+              // Process bold text (**text**) and render paragraph
+              const processedParagraph = paragraph.split(/(\*\*.*?\*\*)/g).map((part, partIndex) => {
+                if (part.startsWith('**') && part.endsWith('**')) {
+                  return (
+                    <strong key={partIndex} style={{ color: 'var(--orange)', fontWeight: 600 }}>
+                      {part.slice(2, -2)}
+                    </strong>
+                  );
+                }
+                return part;
+              });
+              
+              return (
+                <p key={index} style={{ marginBottom: '1.5rem' }}>
+                  {processedParagraph}
+                </p>
+              );
+            })}
           </div>
           {cta && (
             <div style={{ marginTop: '2rem' }}>
