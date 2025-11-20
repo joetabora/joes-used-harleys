@@ -485,7 +485,7 @@ export default function HomePage() {
         {/* Google Maps Embed */}
         <div style={{ margin: '3rem 0', maxWidth: '100%', height: '400px', border: '2px solid var(--orange)' }}>
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.5!2d-87.9065!3d43.0389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8805195b6c8e8c8f%3A0x0!2zNDPCsDAyJzIwLjAiTiA4N8KwNTQnMjMuNCJX!5e0!3m2!1sen!2sus!4v1234567890!5m2!1sen!2sus" 
+            src="https://www.google.com/maps?q=6221+W+Layton+Ave,+Milwaukee,+WI+53220&output=embed" 
             width="100%" 
             height="400" 
             style={{ border: 0 }} 
@@ -569,7 +569,7 @@ export default function HomePage() {
           </div>
           <div>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.5!2d-87.9065!3d43.0389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDAyJzIwLjAiTiA4N8KwNTQnMjMuNCJX!5e0!3m2!1sen!2sus!4v1234567890"
+              src="https://www.google.com/maps?q=6221+W+Layton+Ave,+Milwaukee,+WI+53220&output=embed"
               width="100%"
               height="400"
               style={{ border: '2px solid var(--orange)', borderRadius: '8px' }}
