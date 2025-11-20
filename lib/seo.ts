@@ -3,6 +3,8 @@
  * Centralized SEO management for Milwaukee-focused keywords
  */
 
+import { generateHarleyKeywords } from './harleyKeywords';
+
 /**
  * Comprehensive SEO Configuration Interface
  */
@@ -604,13 +606,9 @@ export function setPageSEO(options: PageSEOOptions = {}): {
   
   // Add model-based keywords if modelName is provided
   if (options.modelName) {
-    const modelLower = options.modelName.toLowerCase();
-    const location = options.location?.toLowerCase() || 'milwaukee';
-    allKeywords.push(
-      `used ${modelLower} ${location}`,
-      `${modelLower} for sale ${location}`,
-      `harley ${modelLower} ${location}`
-    );
+    // Use the comprehensive keyword generator for 50-150 keyword variations
+    const modelKeywords = generateHarleyKeywords(options.modelName);
+    allKeywords.push(...modelKeywords);
   }
   
   // Add page-specific keywords
