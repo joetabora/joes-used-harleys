@@ -3,6 +3,7 @@ import { generateProductSchema, SITE_CONFIG } from '@/lib/seo';
 import { getModelData, getAllModelSlugs } from '@/lib/model-data';
 import { CTAButton } from '@/components/CTAButton';
 import { InternalLinks } from '@/components/InternalLinks';
+import { SEOBlock } from '@/components/SEOBlock';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -331,38 +332,18 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
       </section>
 
       {/* Call to Action Section */}
-      <section style={{ 
-        padding: '6rem 1.5rem', 
-        background: 'var(--black)', 
-        textAlign: 'center',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{ 
-          color: 'var(--orange)', 
-          fontSize: 'clamp(2rem, 5vw, 3rem)', 
-          marginBottom: '2rem' 
-        }}>
-          Ready to Find Your Used {modelData.name} in Milwaukee?
-        </h2>
-        <p style={{ 
-          fontSize: '1.2rem', 
-          color: 'var(--text-light)', 
-          marginBottom: '3rem',
-          maxWidth: '800px',
-          margin: '0 auto 3rem'
-        }}>
-          Browse our complete inventory of used {modelData.name} motorcycles or contact Joe directly to discuss your needs.
-        </p>
-        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <CTAButton href="/inventory" variant="primary">
-            View All {modelData.name}s
-          </CTAButton>
-          <CTAButton href="sms:4144396211" variant="secondary">
-            Text Joe Now
-          </CTAButton>
-        </div>
-      </section>
+      <SEOBlock
+        headline={`Ready to Find Your Used ${modelData.name} in Milwaukee?`}
+        content={`Browse our complete inventory of used ${modelData.name} motorcycles or contact Joe directly to discuss your needs. Every used ${modelData.name} we sell in Milwaukee comes with complete service history, comprehensive inspections, and our 48-hour guarantee. Located at House Of Harley on W Layton Ave, we serve riders throughout Milwaukee County and southeastern Wisconsin.`}
+        cta={{
+          href: '/inventory',
+          text: `View All ${modelData.name}s`,
+          variant: 'primary',
+          ariaLabel: `View our complete inventory of used ${modelData.name} motorcycles for sale in Milwaukee`
+        }}
+        background="black"
+        textAlign="center"
+      />
 
       {/* Internal Links for SEO */}
       <InternalLinks currentPage="model" excludeModels={[model]} />

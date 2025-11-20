@@ -3,6 +3,7 @@ import { SEO } from '@/components/SEO';
 import { InventoryGrid } from '@/components/InventoryGrid';
 import { CTAButton } from '@/components/CTAButton';
 import { InternalLinks } from '@/components/InternalLinks';
+import { SEOBlock } from '@/components/SEOBlock';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -85,33 +86,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SEO-Optimized Intro Block (300-500 words) */}
-      <section style={{ padding: '6rem 1.5rem', background: 'var(--black)' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <div style={{ 
-            fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', 
-            lineHeight: '1.9', 
-            color: 'var(--text)', 
-            textAlign: 'left'
-          }}>
-            <p style={{ marginBottom: '1.5rem' }}>
-              When searching for a <strong>used Harley Milwaukee</strong>, you want more than just a motorcycle – you want a trusted partner who understands the Milwaukee riding community and delivers exceptional value. At Joe&apos;s Used Harleys, we specialize in connecting Milwaukee riders with premium pre-owned Harley-Davidson motorcycles that have been meticulously inspected, professionally maintained, and priced fairly. Our Milwaukee location at House Of Harley on W Layton Ave makes us the go-to destination for riders throughout southeastern Wisconsin who demand quality, transparency, and honest pricing.
-            </p>
-            <p style={{ marginBottom: '1.5rem' }}>
-              Finding a <strong>Harley for sale Milwaukee</strong> that meets your standards shouldn&apos;t require endless research or settling for questionable private sellers. Our inventory features low-mileage Street Glides, Road Glides, Softails, Sportsters, Dynas, and other popular models – each with complete service histories, Carfax reports, and our comprehensive 48-hour guarantee. Whether you&apos;re a first-time Harley owner or a seasoned rider looking to upgrade, we make the process simple: transparent pricing with no hidden fees, flexible financing options for all credit situations, and nationwide shipping for just $499.
-            </p>
-            <p style={{ marginBottom: '1.5rem' }}>
-              As Milwaukee&apos;s premier <strong>Harley dealership Milwaukee</strong>, we understand that buying a used motorcycle is a significant investment. That&apos;s why every bike in our inventory undergoes a rigorous inspection process, checking everything from engine performance and transmission integrity to frame condition and electrical systems. We provide detailed photos of any imperfections, full disclosure of modifications and upgrades, and complete documentation of service records. Our Milwaukee-based team knows Wisconsin riding conditions – from Lake Michigan shoreline cruises to country road adventures – and we help you choose the perfect Harley for your lifestyle.
-            </p>
-            <p style={{ marginBottom: '1.5rem' }}>
-              Unlike traditional dealerships that add thousands in &quot;prep fees&quot; and &quot;market adjustments,&quot; Joe&apos;s Used Harleys operates with complete transparency. The price you see is the price you pay, minus tax and title. We work with multiple lenders to secure financing for buyers with excellent credit, bad credit, first-time buyers, and self-employed individuals. Our Milwaukee location serves riders from Waukesha, Racine, Kenosha, and throughout Wisconsin, and we ship nationwide to make premium used Harleys accessible to riders everywhere.
-            </p>
-            <p>
-              Experience the difference of buying from a <strong>used Harley Milwaukee</strong> dealer who puts customers first. Visit us at House Of Harley, text Joe directly at 414-439-6211, or browse our complete inventory online. We&apos;re not just selling motorcycles – we&apos;re helping Milwaukee riders find their perfect Harley-Davidson and join Wisconsin&apos;s vibrant motorcycle community.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* SEO-Optimized Intro Block */}
+      <SEOBlock
+        headline="Find Your Perfect Used Harley in Milwaukee"
+        content={`When searching for a used Harley Milwaukee, you want more than just a motorcycle – you want a trusted partner who understands the Milwaukee riding community and delivers exceptional value. At Joe's Used Harleys, we specialize in connecting Milwaukee riders with premium pre-owned Harley-Davidson motorcycles that have been meticulously inspected, professionally maintained, and priced fairly. Our Milwaukee location at House Of Harley on W Layton Ave makes us the go-to destination for riders throughout southeastern Wisconsin who demand quality, transparency, and honest pricing.
+
+Finding a Harley for sale Milwaukee that meets your standards shouldn't require endless research or settling for questionable private sellers. Our inventory features low-mileage Street Glides, Road Glides, Softails, Sportsters, Dynas, and other popular models – each with complete service histories, Carfax reports, and our comprehensive 48-hour guarantee. Whether you're a first-time Harley owner or a seasoned rider looking to upgrade, we make the process simple: transparent pricing with no hidden fees, flexible financing options for all credit situations, and nationwide shipping for just $499.
+
+As Milwaukee's premier Harley dealership Milwaukee, we understand that buying a used motorcycle is a significant investment. That's why every bike in our inventory undergoes a rigorous inspection process, checking everything from engine performance and transmission integrity to frame condition and electrical systems. We provide detailed photos of any imperfections, full disclosure of modifications and upgrades, and complete documentation of service records. Our Milwaukee-based team knows Wisconsin riding conditions – from Lake Michigan shoreline cruises to country road adventures – and we help you choose the perfect Harley for your lifestyle.
+
+Unlike traditional dealerships that add thousands in "prep fees" and "market adjustments," Joe's Used Harleys operates with complete transparency. The price you see is the price you pay, minus tax and title. We work with multiple lenders to secure financing for buyers with excellent credit, bad credit, first-time buyers, and self-employed individuals. Our Milwaukee location serves riders from Waukesha, Racine, Kenosha, and throughout Wisconsin, and we ship nationwide to make premium used Harleys accessible to riders everywhere.
+
+Experience the difference of buying from a used Harley Milwaukee dealer who puts customers first. Visit us at House Of Harley, text Joe directly at 414-439-6211, or browse our complete inventory online. We're not just selling motorcycles – we're helping Milwaukee riders find their perfect Harley-Davidson and join Wisconsin's vibrant motorcycle community.`}
+        cta={{
+          href: '/inventory',
+          text: 'View Complete Inventory',
+          variant: 'primary',
+          ariaLabel: 'View our complete inventory of used Harley-Davidson motorcycles in Milwaukee'
+        }}
+        background="black"
+        textAlign="left"
+      />
 
       {/* Why Buy a Used Harley in Milwaukee Section */}
       <section className="trust" style={{ padding: '8rem 1.5rem 6rem', background: 'var(--dark)' }}>
