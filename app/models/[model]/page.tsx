@@ -2,6 +2,7 @@ import { setPageSEO } from '@/lib/seo';
 import { generateProductSchema, SITE_CONFIG } from '@/lib/seo';
 import { getModelData, getAllModelSlugs } from '@/lib/model-data';
 import { CTAButton } from '@/components/CTAButton';
+import { InternalLinks } from '@/components/InternalLinks';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -361,81 +362,8 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
         </div>
       </section>
 
-      {/* Internal Links */}
-      <section style={{ 
-        padding: '4rem 1.5rem', 
-        background: 'var(--dark)', 
-        textAlign: 'center',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{ 
-          color: 'var(--orange)', 
-          fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', 
-          marginBottom: '2rem' 
-        }}>
-          More Milwaukee Harley Resources
-        </h2>
-        <div style={{ 
-          display: 'flex', 
-          gap: '1rem', 
-          justifyContent: 'center', 
-          flexWrap: 'wrap' 
-        }}>
-          <Link 
-            href="/used-harleys-milwaukee" 
-            style={{ 
-              color: 'var(--orange)', 
-              textDecoration: 'none',
-              padding: '0.75rem 1.5rem',
-              border: '2px solid var(--orange)',
-              borderRadius: '4px',
-              transition: 'all 0.3s'
-            }}
-          >
-            Used Harleys Milwaukee
-          </Link>
-          <Link 
-            href="/harley-for-sale-milwaukee" 
-            style={{ 
-              color: 'var(--orange)', 
-              textDecoration: 'none',
-              padding: '0.75rem 1.5rem',
-              border: '2px solid var(--orange)',
-              borderRadius: '4px',
-              transition: 'all 0.3s'
-            }}
-          >
-            Harley for Sale Milwaukee
-          </Link>
-          <Link 
-            href="/inventory" 
-            style={{ 
-              color: 'var(--orange)', 
-              textDecoration: 'none',
-              padding: '0.75rem 1.5rem',
-              border: '2px solid var(--orange)',
-              borderRadius: '4px',
-              transition: 'all 0.3s'
-            }}
-          >
-            View All Inventory
-          </Link>
-          <Link 
-            href="/" 
-            style={{ 
-              color: 'var(--orange)', 
-              textDecoration: 'none',
-              padding: '0.75rem 1.5rem',
-              border: '2px solid var(--orange)',
-              borderRadius: '4px',
-              transition: 'all 0.3s'
-            }}
-          >
-            Home
-          </Link>
-        </div>
-      </section>
+      {/* Internal Links for SEO */}
+      <InternalLinks currentPage="model" excludeModels={[model]} />
     </>
   );
 }

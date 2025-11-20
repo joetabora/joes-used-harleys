@@ -1,6 +1,7 @@
 import { setPageSEO } from '@/lib/seo';
 import { InventoryGrid } from '@/components/InventoryGrid';
 import { CTAButton } from '@/components/CTAButton';
+import { InternalLinks } from '@/components/InternalLinks';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -129,6 +130,9 @@ export default function InventoryPage() {
           </div>
         </div>
       </section>
+
+      {/* Internal Links for SEO */}
+      <InternalLinks currentPage="inventory" />
     </>
   );
 }

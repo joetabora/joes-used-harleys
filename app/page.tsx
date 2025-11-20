@@ -2,6 +2,7 @@ import { setPageSEO, generateFAQSchema } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
 import { InventoryGrid } from '@/components/InventoryGrid';
 import { CTAButton } from '@/components/CTAButton';
+import { InternalLinks } from '@/components/InternalLinks';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -581,6 +582,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Internal Links for SEO */}
+      <InternalLinks currentPage="home" />
 
       {/* Footer */}
       <footer>

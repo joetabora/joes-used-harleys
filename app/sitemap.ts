@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { SITE_CONFIG } from '@/lib/seo';
+import { getAllModelSlugs } from '@/lib/model-data';
 
 async function getBikes() {
   try {
@@ -43,6 +44,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/contact`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/used-harleys-milwaukee`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
@@ -60,25 +67,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    // Model pages (example URLs)
-    {
-      url: `${baseUrl}/models/street-glide`,
+    // Model pages - dynamically generated from model database
+    ...getAllModelSlugs().map((slug) => ({
+      url: `${baseUrl}/models/${slug}`,
       lastModified: currentDate,
-      changeFrequency: 'weekly',
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/models/road-glide`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/models/fat-boy`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
+    })),
     {
       url: `${baseUrl}/used-street-glide-milwaukee`,
       lastModified: currentDate,
