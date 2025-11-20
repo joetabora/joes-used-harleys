@@ -5,7 +5,6 @@
 
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
-import { visionTool } from '@sanity/vision';
 import { schemaTypes } from './sanity/schemas';
 
 // Check if we're in a browser environment for Sanity Studio
@@ -65,7 +64,6 @@ export default defineConfig({
               ),
           ]),
     }),
-    visionTool(),
   ],
   schema: {
     types: schemaTypes,
