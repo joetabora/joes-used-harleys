@@ -661,10 +661,22 @@ footer p {
   }
 }
 
-::selection {
-  background: var(--orange);
-  color: var(--black);
-}
+    ::selection {
+      background: var(--orange);
+      color: var(--black);
+    }
+
+    /* Model card hover effects - CSS only for SSR compatibility */
+    .model-card {
+      border: 2px solid var(--gray-light);
+      transition: all 0.3s ease;
+    }
+
+    .model-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(255, 102, 0, 0.3);
+    }
 
 /* FAQ Section */
 .faq-section {

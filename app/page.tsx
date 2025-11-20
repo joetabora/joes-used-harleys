@@ -7,9 +7,6 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Force dynamic rendering for homepage since it includes client-side inventory
-export const dynamic = 'force-dynamic';
-
 // Homepage SEO - targeting primary Milwaukee keywords
 export const metadata: Metadata = setPageSEO({
   pageTitle: 'Used Harley Milwaukee | Used Harley for Sale Milwaukee',
@@ -148,7 +145,7 @@ export default function HomePage() {
             gap: '2rem' 
           }}>
             <Link href="/models/street-glide" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Street Glide motorcycles for sale in Milwaukee">
-              <div style={{ 
+              <div className="model-card" style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
                 border: '2px solid var(--gray-light)',
@@ -156,16 +153,6 @@ export default function HomePage() {
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
                 height: '100%'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--orange)';
-                e.currentTarget.style.transform = 'translateY(-5px)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--gray-light)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Street Glide</h3>
@@ -175,7 +162,7 @@ export default function HomePage() {
               </div>
             </Link>
             <Link href="/models/road-glide" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Road Glide motorcycles for sale in Milwaukee">
-              <div style={{ 
+              <div className="model-card" style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
                 border: '2px solid var(--gray-light)',
@@ -183,16 +170,6 @@ export default function HomePage() {
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
                 height: '100%'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--orange)';
-                e.currentTarget.style.transform = 'translateY(-5px)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--gray-light)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Road Glide</h3>
@@ -202,7 +179,7 @@ export default function HomePage() {
               </div>
             </Link>
             <Link href="/models/softail" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Softail motorcycles for sale in Milwaukee">
-              <div style={{ 
+              <div className="model-card" style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
                 border: '2px solid var(--gray-light)',
@@ -210,16 +187,6 @@ export default function HomePage() {
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
                 height: '100%'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--orange)';
-                e.currentTarget.style.transform = 'translateY(-5px)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--gray-light)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Softail</h3>
@@ -229,7 +196,7 @@ export default function HomePage() {
               </div>
             </Link>
             <Link href="/models/sportster" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Sportster motorcycles for sale in Milwaukee">
-              <div style={{ 
+              <div className="model-card" style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
                 border: '2px solid var(--gray-light)',
@@ -237,16 +204,6 @@ export default function HomePage() {
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
                 height: '100%'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--orange)';
-                e.currentTarget.style.transform = 'translateY(-5px)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--gray-light)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Sportster</h3>
@@ -256,7 +213,7 @@ export default function HomePage() {
               </div>
             </Link>
             <Link href="/models/dyna" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Dyna motorcycles for sale in Milwaukee">
-              <div style={{ 
+              <div className="model-card" style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
                 border: '2px solid var(--gray-light)',
@@ -264,16 +221,6 @@ export default function HomePage() {
                 transition: 'all 0.3s ease',
                 cursor: 'pointer',
                 height: '100%'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--orange)';
-                e.currentTarget.style.transform = 'translateY(-5px)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 102, 0, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--gray-light)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
               }}
               >
                 <h3 style={{ color: 'var(--orange)', marginBottom: '1rem', fontSize: '1.5rem' }}>Dyna</h3>

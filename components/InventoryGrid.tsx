@@ -21,22 +21,31 @@ export function InventoryGrid() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     async function loadInventory() {
       try {
         const response = await fetch('/inventory.json');
+        if (!response.ok) {
+          throw new Error('Failed to load inventory');
+        }
         const data = await response.json();
-        setBikes(data.bikes);
+        setBikes(data.bikes || []);
         
-        // Generate and inject product schema for all bikes
-        const productSchemas = data.bikes.map((bike: Bike) => generateProductSchema(bike));
-        productSchemas.forEach((schema: any) => {
-          const script = document.createElement('script');
-          script.type = 'application/ld+json';
-          script.textContent = JSON.stringify(schema);
-          document.head.appendChild(script);
-        });
+        // Generate and inject product schema for all bikes (client-side only)
+        if (data.bikes && typeof document !== 'undefined') {
+          const productSchemas = data.bikes.map((bike: Bike) => generateProductSchema(bike));
+          productSchemas.forEach((schema: any) => {
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(schema);
+            document.head.appendChild(script);
+          });
+        }
       } catch (error) {
         console.error('Error loading inventory:', error);
+        setBikes([]);
       } finally {
         setLoading(false);
       }
@@ -46,6 +55,9 @@ export function InventoryGrid() {
   }, []);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
     // Scroll animations
     const observerOptions = {
       threshold: 0.1,

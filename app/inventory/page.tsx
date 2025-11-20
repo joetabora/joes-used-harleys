@@ -5,9 +5,6 @@ import { InternalLinks } from '@/components/InternalLinks';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-// Force dynamic rendering since inventory is loaded client-side
-export const dynamic = 'force-dynamic';
-
 // Inventory page SEO - targeting "near me" and "cheap" keywords
 export const metadata: Metadata = setPageSEO({
   pageTitle: 'Used Harleys for Sale Near Me | Cheap Harleys Milwaukee',
