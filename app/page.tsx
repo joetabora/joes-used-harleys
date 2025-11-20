@@ -456,90 +456,250 @@ At Joe's Used Harleys, every used Harley we sell in Milwaukee undergoes a compre
       </section>
 
       {/* FAQ Section with JSON-LD Schema */}
-      <section className="faq-section" itemScope itemType="https://schema.org/FAQPage">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(generateFAQSchema([
-              {
-                question: "Where can I buy a used Harley in Milwaukee?",
-                answer: "Joe's Used Harleys is located at House Of Harley, 6221 W Layton Ave, Milwaukee, WI 53220. We offer the largest selection of used Harleys for sale in Milwaukee, including Street Glide, Road Glide, Fat Boy, Heritage Classic, Low Rider S, and Softail models. Our Milwaukee location makes it easy for riders throughout southeastern Wisconsin to find their perfect used Harley-Davidson motorcycle."
-              },
-              {
-                question: "How much does a used Harley cost?",
-                answer: "The price of a used Harley in Milwaukee varies based on model, year, mileage, and condition. At Joe's Used Harleys, our used Harleys for sale in Milwaukee typically range from $18,500 to $24,900. Popular models like the Street Glide and Road Glide usually fall between $21,000-$24,000, while Heritage Classic and Fat Boy models often range from $19,000-$22,000. All prices are transparent with no hidden fees – what you see is what you pay (plus tax and title). We also offer flexible financing to make buying a used Harley in Milwaukee affordable."
-              },
-              {
-                question: "Do you offer financing for used Harleys in Milwaukee?",
-                answer: "Yes! We offer comprehensive financing options for all used Harleys in Milwaukee, regardless of your credit situation. Whether you have excellent credit, bad credit, are a first-time buyer, or are self-employed, we work with multiple lenders to find a financing solution that works for you. Get pre-approved today by filling out our quick pre-approval form, or text Joe directly at 414-439-6211 to discuss your financing options. We make buying a used Harley in Milwaukee accessible to everyone."
-              },
-              {
-                question: "What condition are your used Harleys in Milwaukee?",
-                answer: "Every used Harley we sell in Milwaukee undergoes a comprehensive inspection before being listed. We only sell bikes that meet our strict quality standards. All used Harleys for sale in Milwaukee come with full service records, Carfax reports, and detailed condition reports. We provide complete transparency – if a bike has any scratches larger than a quarter, we'll show you detailed photos before you visit. Our Milwaukee location allows you to inspect any used Harley in person before purchase."
-              },
-              {
-                question: "Do you ship used Harleys outside of Milwaukee?",
-                answer: "Absolutely! While we're based in Milwaukee, we ship used Harleys nationwide for only $499. Whether you're in Milwaukee, across Wisconsin, or anywhere in the United States, we can arrange safe, insured delivery of your used Harley right to your door. Our shipping partners are experienced in motorcycle transport and will ensure your bike arrives in the same condition it left our Milwaukee facility. Contact us for a shipping quote to your location."
-              },
-              {
-                question: "What's the best used Harley model for Milwaukee riders?",
-                answer: "The best used Harley in Milwaukee depends on your riding style. For touring and long-distance rides along Lake Michigan, the Street Glide and Road Glide are popular choices among Milwaukee riders. If you prefer classic styling, the Fat Boy and Heritage Classic offer timeless appeal perfect for Milwaukee's diverse riding scene. For sporty performance, the Low Rider S delivers power and agility. Our Milwaukee location means we understand local riding conditions and can help you choose the perfect used Harley for your needs. Visit us or text Joe at 414-439-6211 to discuss which model fits your Milwaukee riding lifestyle."
-              }
-            ]))
-          }}
-        />
-        <h2>Frequently Asked Questions About Used Harleys in Milwaukee</h2>
-        
-        <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-          <div className="faq-question" itemProp="name">Where can I buy a used Harley in Milwaukee?</div>
-          <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-            <div itemProp="text">
-              Joe&apos;s Used Harleys is located at House Of Harley, 6221 W Layton Ave, Milwaukee, WI 53220. We offer the largest selection of <strong>used Harleys for sale in Milwaukee</strong>, including Street Glide, Road Glide, Fat Boy, Heritage Classic, Low Rider S, and Softail models. Our Milwaukee location makes it easy for riders throughout southeastern Wisconsin to find their perfect used Harley-Davidson motorcycle.
+      <section className="faq-section" itemScope itemType="https://schema.org/FAQPage" style={{ padding: '6rem 1.5rem', background: 'var(--black)' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Where can I buy a used Harley in Milwaukee?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Joe's Used Harleys is located at House Of Harley, 6221 W Layton Ave, Milwaukee, WI 53220. We offer the largest selection of used Harley Milwaukee has to offer, including Street Glide, Road Glide, Fat Boy, Heritage Classic, Low Rider S, and Softail models. Our Milwaukee location makes it easy for riders throughout southeastern Wisconsin to find their perfect used Harley-Davidson motorcycle. You can browse our complete inventory online or visit us in person to see the bikes firsthand."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "How much does a used Harley cost in Milwaukee?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "The price of a used Harley Milwaukee varies based on model, year, mileage, and condition. At Joe's Used Harleys, our used Harleys for sale in Milwaukee typically range from $18,500 to $24,900. Popular models like the Street Glide and Road Glide usually fall between $21,000-$24,000, while Heritage Classic and Fat Boy models often range from $19,000-$22,000. All prices are transparent with no hidden fees – what you see is what you pay (plus tax and title). We also offer flexible financing to make buying a used Harley in Milwaukee affordable."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Do you offer financing for used Harleys in Milwaukee?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, we offer Harley financing Milwaukee riders trust. We work with multiple lenders to secure financing for buyers with excellent credit, bad credit, first-time buyers, and self-employed individuals. Our flexible financing options make owning a premium Harley-Davidson accessible to everyone. Financing is available starting as low as $299/month with approved credit. We understand that not everyone has perfect credit, and we're committed to finding solutions that work for your situation. Contact Joe directly at 414-439-6211 to discuss your financing options."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What is your return policy for used Harleys?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "We stand behind every used Harley Milwaukee we sell with our comprehensive 48-hour money-back guarantee. If something's not right in the first 48 hours or 100 miles, bring it back – we'll fix it or refund it, no questions asked. This guarantee applies to all used Harleys for sale in Milwaukee at Joe's Used Harleys. We want you to be completely satisfied with your purchase, and we're confident in the quality of every bike in our inventory. Your peace of mind is our priority."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Do you ship used Harleys outside of Milwaukee?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, we ship used Harleys nationwide for just $499. Whether you're across Wisconsin or anywhere in the United States, we'll safely deliver your Harley for sale Milwaukee to your door. Our shipping process is fully insured and handled by professional motorcycle transport companies. We've successfully shipped bikes to riders from coast to coast, and we make the process simple and transparent. Contact us to get a shipping quote for any bike in our inventory."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What condition are your used Harleys in?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Every used Harley Milwaukee in our inventory undergoes a rigorous inspection process before being listed. We check everything from engine performance and transmission integrity to frame condition and electrical systems. All bikes come with complete service records, Carfax reports, and detailed condition documentation. We provide photos of any imperfections and full disclosure of modifications. As a trusted motorcycle dealer Wisconsin riders count on, we maintain high standards and only sell bikes we'd be proud to own ourselves."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Can I trade in my current motorcycle?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Absolutely. We accept trade-ins and pay competitive prices for clean bikes. If you have a Harley-Davidson or other motorcycle you'd like to trade, bring it by our Milwaukee location or send us photos and details. We'll give you a fair appraisal and can apply the value toward your purchase of a used Harley Milwaukee. Trade-ins make it easier to upgrade to your dream bike while getting value from your current ride. Contact Joe at 414-439-6211 to discuss your trade-in."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What models do you have in stock?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Our inventory includes a wide selection of popular Harley-Davidson models. We regularly stock Street Glides, Road Glides, Fat Boys, Heritage Classics, Low Rider S, Softails, Sportsters, Dynas, and more. Our used Harley Milwaukee inventory changes frequently as bikes are sold and new ones arrive. The best way to see our current selection is to browse our online inventory, which is updated in real-time. You can also call or text Joe at 414-439-6211 to ask about specific models you're interested in."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Do you provide warranty coverage on used Harleys?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, every used Harley Milwaukee we sell comes with warranty coverage. We believe in standing behind our bikes, and our warranty gives you peace of mind with your purchase. The specific warranty terms vary by bike, but we're committed to ensuring you're satisfied. If something goes wrong that's covered under warranty, we'll take care of it – no hassle, no runaround. As a reputable motorcycle dealer Wisconsin has trusted for years, we take our warranty commitments seriously."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "How do I schedule a test ride?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Scheduling a test ride is easy. Simply contact Joe directly at 414-439-6211 via call or text to arrange a time that works for you. We're located at House Of Harley, 6221 W Layton Ave, Milwaukee, WI 53220. Test rides are available for qualified buyers, and we'll work with you to find a time that fits your schedule. We want you to feel confident in your decision, and there's no better way than experiencing the bike yourself before you buy."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What payment methods do you accept?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "We accept multiple payment methods for your used Harley Milwaukee purchase. Cash, certified checks, and bank wire transfers are all accepted. We also work with multiple financing partners to offer competitive loan options. For financing, we can help you get pre-approved quickly, often within the same day. Our goal is to make the buying process as smooth as possible, and we'll work with you to find the payment method that works best for your situation."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Are your used Harleys inspected before sale?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Absolutely. Every used Harley Milwaukee undergoes a comprehensive inspection before being listed for sale. Our inspection process covers engine performance, transmission function, frame integrity, electrical systems, brakes, tires, and overall condition. We also verify service history and run Carfax reports. As a trusted motorcycle dealer Wisconsin riders rely on, we maintain strict quality standards. We provide detailed documentation of each bike's condition and are transparent about any issues or needed repairs. You'll know exactly what you're buying."
+                    }
+                  }
+                ]
+              })
+            }}
+          />
+          <h2 style={{ color: 'var(--orange)', marginBottom: '3rem', fontSize: 'clamp(2rem, 5vw, 3rem)', textAlign: 'center' }}>
+            Frequently Asked Questions About Used Harleys in Milwaukee
+          </h2>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                Where can I buy a used Harley in Milwaukee?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Joe&apos;s Used Harleys is located at House Of Harley, 6221 W Layton Ave, Milwaukee, WI 53220. We offer the largest selection of <strong>used Harley Milwaukee</strong> has to offer, including Street Glide, Road Glide, Fat Boy, Heritage Classic, Low Rider S, and Softail models. Our Milwaukee location makes it easy for riders throughout southeastern Wisconsin to find their perfect used Harley-Davidson motorcycle. You can browse our complete inventory online or visit us in person to see the bikes firsthand.
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-          <div className="faq-question" itemProp="name">How much does a used Harley cost?</div>
-          <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-            <div itemProp="text">
-              The price of a <strong>used Harley in Milwaukee</strong> varies based on model, year, mileage, and condition. At Joe&apos;s Used Harleys, our <strong>used Harleys for sale in Milwaukee</strong> typically range from $18,500 to $24,900. Popular models like the Street Glide and Road Glide usually fall between $21,000-$24,000, while Heritage Classic and Fat Boy models often range from $19,000-$22,000. All prices are transparent with no hidden fees – what you see is what you pay (plus tax and title). We also offer flexible financing to make buying a <strong>used Harley in Milwaukee</strong> affordable.
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                How much does a used Harley cost in Milwaukee?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  The price of a <strong>used Harley Milwaukee</strong> varies based on model, year, mileage, and condition. At Joe&apos;s Used Harleys, our used Harleys for sale in Milwaukee typically range from $18,500 to $24,900. Popular models like the Street Glide and Road Glide usually fall between $21,000-$24,000, while Heritage Classic and Fat Boy models often range from $19,000-$22,000. All prices are transparent with no hidden fees – what you see is what you pay (plus tax and title). We also offer flexible financing to make buying a used Harley in Milwaukee affordable.
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-          <div className="faq-question" itemProp="name">Do you offer financing for used Harleys in Milwaukee?</div>
-          <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-            <div itemProp="text">
-              Yes! We offer comprehensive financing options for all <strong>used Harleys in Milwaukee</strong>, regardless of your credit situation. Whether you have excellent credit, bad credit, are a first-time buyer, or are self-employed, we work with multiple lenders to find a financing solution that works for you. Get pre-approved today by filling out our quick pre-approval form, or text Joe directly at 414-439-6211 to discuss your financing options. We make buying a <strong>used Harley in Milwaukee</strong> accessible to everyone.
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                Do you offer financing for used Harleys in Milwaukee?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Yes, we offer <strong>Harley financing Milwaukee</strong> riders trust. We work with multiple lenders to secure financing for buyers with excellent credit, bad credit, first-time buyers, and self-employed individuals. Our flexible financing options make owning a premium Harley-Davidson accessible to everyone. Financing is available starting as low as $299/month with approved credit. We understand that not everyone has perfect credit, and we&apos;re committed to finding solutions that work for your situation. Contact Joe directly at 414-439-6211 to discuss your financing options.
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-          <div className="faq-question" itemProp="name">What condition are your used Harleys in Milwaukee?</div>
-          <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-            <div itemProp="text">
-              Every <strong>used Harley we sell in Milwaukee</strong> undergoes a comprehensive inspection before being listed. We only sell bikes that meet our strict quality standards. All <strong>used Harleys for sale in Milwaukee</strong> come with full service records, Carfax reports, and detailed condition reports. We provide complete transparency – if a bike has any scratches larger than a quarter, we&apos;ll show you detailed photos before you visit. Our Milwaukee location allows you to inspect any <strong>used Harley</strong> in person before purchase.
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                What is your return policy for used Harleys?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  We stand behind every <strong>used Harley Milwaukee</strong> we sell with our comprehensive 48-hour money-back guarantee. If something&apos;s not right in the first 48 hours or 100 miles, bring it back – we&apos;ll fix it or refund it, no questions asked. This guarantee applies to all used Harleys for sale in Milwaukee at Joe&apos;s Used Harleys. We want you to be completely satisfied with your purchase, and we&apos;re confident in the quality of every bike in our inventory. Your peace of mind is our priority.
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-          <div className="faq-question" itemProp="name">Do you ship used Harleys outside of Milwaukee?</div>
-          <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-            <div itemProp="text">
-              Absolutely! While we&apos;re based in Milwaukee, we ship <strong>used Harleys</strong> nationwide for only $499. Whether you&apos;re in Milwaukee, across Wisconsin, or anywhere in the United States, we can arrange safe, insured delivery of your <strong>used Harley</strong> right to your door. Our shipping partners are experienced in motorcycle transport and will ensure your bike arrives in the same condition it left our Milwaukee facility. Contact us for a shipping quote to your location.
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                Do you ship used Harleys outside of Milwaukee?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Yes, we ship <strong>used Harleys</strong> nationwide for just $499. Whether you&apos;re across Wisconsin or anywhere in the United States, we&apos;ll safely deliver your <strong>Harley for sale Milwaukee</strong> to your door. Our shipping process is fully insured and handled by professional motorcycle transport companies. We&apos;ve successfully shipped bikes to riders from coast to coast, and we make the process simple and transparent. Contact us to get a shipping quote for any bike in our inventory.
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
-          <div className="faq-question" itemProp="name">What&apos;s the best used Harley model for Milwaukee riders?</div>
-          <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-            <div itemProp="text">
-              The best <strong>used Harley in Milwaukee</strong> depends on your riding style. For touring and long-distance rides along Lake Michigan, the Street Glide and Road Glide are popular choices among Milwaukee riders. If you prefer classic styling, the Fat Boy and Heritage Classic offer timeless appeal perfect for Milwaukee&apos;s diverse riding scene. For sporty performance, the Low Rider S delivers power and agility. Our Milwaukee location means we understand local riding conditions and can help you choose the perfect <strong>used Harley</strong> for your needs. Visit us or text Joe at 414-439-6211 to discuss which model fits your Milwaukee riding lifestyle.
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                What condition are your used Harleys in?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Every <strong>used Harley Milwaukee</strong> in our inventory undergoes a rigorous inspection process before being listed. We check everything from engine performance and transmission integrity to frame condition and electrical systems. All bikes come with complete service records, Carfax reports, and detailed condition documentation. We provide photos of any imperfections and full disclosure of modifications. As a trusted <strong>motorcycle dealer Wisconsin</strong> riders count on, we maintain high standards and only sell bikes we&apos;d be proud to own ourselves.
+                </div>
+              </div>
+            </div>
+
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                Can I trade in my current motorcycle?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Absolutely. We accept trade-ins and pay competitive prices for clean bikes. If you have a Harley-Davidson or other motorcycle you&apos;d like to trade, bring it by our Milwaukee location or send us photos and details. We&apos;ll give you a fair appraisal and can apply the value toward your purchase of a <strong>used Harley Milwaukee</strong>. Trade-ins make it easier to upgrade to your dream bike while getting value from your current ride. Contact Joe at 414-439-6211 to discuss your trade-in.
+                </div>
+              </div>
+            </div>
+
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                What models do you have in stock?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Our inventory includes a wide selection of popular Harley-Davidson models. We regularly stock Street Glides, Road Glides, Fat Boys, Heritage Classics, Low Rider S, Softails, Sportsters, Dynas, and more. Our <strong>used Harley Milwaukee</strong> inventory changes frequently as bikes are sold and new ones arrive. The best way to see our current selection is to browse our online inventory, which is updated in real-time. You can also call or text Joe at 414-439-6211 to ask about specific models you&apos;re interested in.
+                </div>
+              </div>
+            </div>
+
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                Do you provide warranty coverage on used Harleys?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Yes, every <strong>used Harley Milwaukee</strong> we sell comes with warranty coverage. We believe in standing behind our bikes, and our warranty gives you peace of mind with your purchase. The specific warranty terms vary by bike, but we&apos;re committed to ensuring you&apos;re satisfied. If something goes wrong that&apos;s covered under warranty, we&apos;ll take care of it – no hassle, no runaround. As a reputable <strong>motorcycle dealer Wisconsin</strong> has trusted for years, we take our warranty commitments seriously.
+                </div>
+              </div>
+            </div>
+
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                How do I schedule a test ride?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Scheduling a test ride is easy. Simply contact Joe directly at 414-439-6211 via call or text to arrange a time that works for you. We&apos;re located at House Of Harley, 6221 W Layton Ave, Milwaukee, WI 53220. Test rides are available for qualified buyers, and we&apos;ll work with you to find a time that fits your schedule. We want you to feel confident in your decision, and there&apos;s no better way than experiencing the bike yourself before you buy.
+                </div>
+              </div>
+            </div>
+
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                What payment methods do you accept?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  We accept multiple payment methods for your <strong>used Harley Milwaukee</strong> purchase. Cash, certified checks, and bank wire transfers are all accepted. We also work with multiple financing partners to offer competitive loan options. For financing, we can help you get pre-approved quickly, often within the same day. Our goal is to make the buying process as smooth as possible, and we&apos;ll work with you to find the payment method that works best for your situation.
+                </div>
+              </div>
+            </div>
+
+            <div className="faq-item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question" style={{ padding: '2rem', background: 'var(--dark)', borderRadius: '8px', border: '1px solid var(--gray-light)' }}>
+              <div className="faq-question" itemProp="name" style={{ color: 'var(--orange)', fontSize: '1.3rem', fontWeight: 600, marginBottom: '1rem' }}>
+                Are your used Harleys inspected before sale?
+              </div>
+              <div className="faq-answer" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <div itemProp="text" style={{ color: 'var(--text-light)', lineHeight: '1.8' }}>
+                  Absolutely. Every <strong>used Harley Milwaukee</strong> undergoes a comprehensive inspection before being listed for sale. Our inspection process covers engine performance, transmission function, frame integrity, electrical systems, brakes, tires, and overall condition. We also verify service history and run Carfax reports. As a trusted <strong>motorcycle dealer Wisconsin</strong> riders rely on, we maintain strict quality standards. We provide detailed documentation of each bike&apos;s condition and are transparent about any issues or needed repairs. You&apos;ll know exactly what you&apos;re buying.
+                </div>
+              </div>
             </div>
           </div>
         </div>
