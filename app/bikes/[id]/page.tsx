@@ -153,7 +153,7 @@ export default async function BikePage({ params }: { params: Promise<{ id: strin
           <div>
             <Image
               src={bike.image}
-              alt={`${bike.name} for sale in Milwaukee, Wisconsin`}
+              alt={`${bike.name} for sale in Milwaukee, Wisconsin. ${bike.specs}. Price: ${bike.priceFormatted}. Financing available. Buy used Harley-Davidson at Joe's Used Harleys.`}
               width={800}
               height={600}
               priority

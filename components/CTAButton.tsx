@@ -7,9 +7,10 @@ interface CTAButtonProps {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary';
   className?: string;
+  'aria-label'?: string;
 }
 
-export function CTAButton({ href, children, variant = 'primary', className = '' }: CTAButtonProps) {
+export function CTAButton({ href, children, variant = 'primary', className = '', 'aria-label': ariaLabel }: CTAButtonProps) {
   const baseStyles = {
     padding: '1.2rem 2.5rem',
     textDecoration: 'none',
@@ -42,6 +43,7 @@ export function CTAButton({ href, children, variant = 'primary', className = '' 
       href={href}
       style={styles}
       className={`cta-button cta-button-${variant} ${className}`}
+      aria-label={ariaLabel}
     >
       {children}
     </Link>

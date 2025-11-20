@@ -109,11 +109,12 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
           <div style={{ marginBottom: '3rem', maxWidth: '800px', margin: '0 auto 3rem' }}>
             <Image 
               src={modelData.image} 
-              alt={`Used ${modelData.name} for sale in Milwaukee`} 
+              alt={`Used ${modelData.name} motorcycle for sale in Milwaukee, Wisconsin. Buy pre-owned ${modelData.name} with low miles, full warranty, and financing available at Joe's Used Harleys.`} 
               width={800} 
               height={600} 
               priority 
               sizes="(max-width: 768px) 100vw, 70vw"
+              quality={90}
               style={{ 
                 width: '100%', 
                 height: 'auto', 

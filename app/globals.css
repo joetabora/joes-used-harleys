@@ -7,7 +7,7 @@
   --gray: #1A1A1A;
   --gray-light: #2A2A2A;
   --text: #FFFFFF;
-  --text-light: #AAAAAA;
+  --text-light: #CCCCCC; /* Improved contrast for accessibility (WCAG AA compliant) */
   --font-inter: 'Inter', sans-serif;
   --font-clash: 'Bebas Neue', sans-serif;
 }
@@ -32,6 +32,11 @@
       max-width: 100%;
       height: auto;
       display: block;
+    }
+    
+    /* Reduce CLS - reserve space for images */
+    img[width][height] {
+      aspect-ratio: attr(width) / attr(height);
     }
 
 body {
@@ -90,8 +95,10 @@ h1, h2, h3 {
       height: auto;
       z-index: 0;
       object-fit: cover;
-      /* Performance: Use GPU acceleration */
+      /* Performance: Use GPU acceleration and reduce CLS */
       will-change: transform;
+      /* Reserve space to prevent CLS */
+      aspect-ratio: 16 / 9;
     }
 
 .hero-overlay {

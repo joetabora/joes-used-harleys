@@ -42,7 +42,7 @@ export default function HomePage() {
         <div className="hero-content">
           <Image 
             src="/juh2.png" 
-            alt="Joe's Used Harleys - Used Harley-Davidson Motorcycles for Sale in Milwaukee Wisconsin" 
+            alt="Joe's Used Harleys Logo - Buy Used Harley-Davidson Motorcycles in Milwaukee Wisconsin. Street Glide, Road Glide, Fat Boy, Heritage Classic for Sale." 
             className="hero-logo" 
             width={600} 
             height={200}
@@ -51,6 +51,7 @@ export default function HomePage() {
             quality={90}
             placeholder="blur"
             blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+            fetchPriority="high"
           />
           <h1 style={{ 
             fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', 
@@ -74,10 +75,10 @@ export default function HomePage() {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <CTAButton href="#inventory" variant="primary">
+            <CTAButton href="#inventory" variant="primary" aria-label="View our inventory of used Harley-Davidson motorcycles for sale in Milwaukee">
               View Inventory
             </CTAButton>
-            <CTAButton href="sms:4144396211" variant="secondary">
+            <CTAButton href="sms:4144396211" variant="secondary" aria-label="Contact Joe by text message about used Harleys in Milwaukee">
               Contact Joe
             </CTAButton>
           </div>
@@ -143,7 +144,7 @@ export default function HomePage() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
             gap: '2rem' 
           }}>
-            <Link href="/models/street-glide" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/models/street-glide" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Street Glide motorcycles for sale in Milwaukee">
               <div style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
@@ -170,7 +171,7 @@ export default function HomePage() {
                 </p>
               </div>
             </Link>
-            <Link href="/models/road-glide" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/models/road-glide" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Road Glide motorcycles for sale in Milwaukee">
               <div style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
@@ -197,7 +198,7 @@ export default function HomePage() {
                 </p>
               </div>
             </Link>
-            <Link href="/models/softail" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/models/softail" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Softail motorcycles for sale in Milwaukee">
               <div style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
@@ -224,7 +225,7 @@ export default function HomePage() {
                 </p>
               </div>
             </Link>
-            <Link href="/models/sportster" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/models/sportster" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Sportster motorcycles for sale in Milwaukee">
               <div style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
@@ -251,7 +252,7 @@ export default function HomePage() {
                 </p>
               </div>
             </Link>
-            <Link href="/models/dyna" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link href="/models/dyna" style={{ textDecoration: 'none', color: 'inherit' }} aria-label="View used Dyna motorcycles for sale in Milwaukee">
               <div style={{ 
                 padding: '2rem', 
                 background: 'var(--dark)', 
@@ -340,7 +341,7 @@ export default function HomePage() {
       </section>
 
       {/* Inventory Section */}
-      <section className="inventory" id="inventory" itemScope itemType="https://schema.org/ItemList">
+      <section className="inventory" id="inventory" itemScope itemType="https://schema.org/ItemList" aria-label="Current inventory of used Harley-Davidson motorcycles">
         <h2>Current Inventory - Used Harley-Davidson Motorcycles for Sale in Milwaukee</h2>
         <InventoryGrid />
       </section>
@@ -596,15 +597,15 @@ export default function HomePage() {
       </footer>
 
       {/* Pulsing Floating CTA */}
-      <a href="sms:4144396211" className="floating-cta" aria-label="Text Joe Now">
+      <a href="sms:4144396211" className="floating-cta" aria-label="Text Joe now about used Harley-Davidson motorcycles for sale in Milwaukee">
         TEXT<br />JOE<br />NOW →
       </a>
 
       {/* Mobile Sticky Bottom Bar */}
-      <div className="mobile-bar">
-        <a href="tel:4144396211" className="mobile-bar-btn">CALL</a>
-        <a href="sms:4144396211" className="mobile-bar-btn">TEXT</a>
-        <a href="#inventory" className="mobile-bar-btn">INVENTORY</a>
+      <div className="mobile-bar" role="navigation" aria-label="Mobile navigation menu">
+        <a href="tel:4144396211" className="mobile-bar-btn" aria-label="Call Joe at 414-439-6211 about used Harleys in Milwaukee">CALL</a>
+        <a href="sms:4144396211" className="mobile-bar-btn" aria-label="Text Joe at 414-439-6211 about used Harleys in Milwaukee">TEXT</a>
+        <a href="#inventory" className="mobile-bar-btn" aria-label="View inventory of used Harley-Davidson motorcycles">INVENTORY</a>
       </div>
     </>
   );

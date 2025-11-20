@@ -53,6 +53,7 @@ export function InternalLinks({ currentPage = 'home', excludeModels = [] }: Inte
               transition: 'all 0.3s',
               display: 'inline-block'
             }}
+            aria-label="Go to homepage - Used Harley-Davidson motorcycles for sale in Milwaukee"
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--orange)';
               e.currentTarget.style.color = 'var(--black)';
@@ -77,6 +78,7 @@ export function InternalLinks({ currentPage = 'home', excludeModels = [] }: Inte
               transition: 'all 0.3s',
               display: 'inline-block'
             }}
+            aria-label="View complete inventory of used Harley-Davidson motorcycles for sale in Milwaukee"
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'var(--orange)';
               e.currentTarget.style.color = 'var(--black)';
@@ -124,6 +126,7 @@ export function InternalLinks({ currentPage = 'home', excludeModels = [] }: Inte
                   transition: 'all 0.3s',
                   display: 'inline-block'
                 }}
+                aria-label={`View used ${modelName} motorcycles for sale in Milwaukee`}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = 'var(--orange)';
                   e.currentTarget.style.color = 'var(--black)';

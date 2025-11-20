@@ -100,7 +100,7 @@ export function InventoryGrid() {
     <div className="grid" role="list">
       {bikes.map((bike) => {
         const specsFormatted = bike.specs.replace(/ • /g, '<span class="divider">•</span>');
-        const altText = `Used ${bike.name} for sale in Milwaukee Wisconsin - ${bike.specs} - ${bike.priceFormatted}`;
+                const altText = `Used ${bike.name} for sale in Milwaukee, Wisconsin. ${bike.specs}. Price: ${bike.priceFormatted}. ${bike.financing}. Buy pre-owned Harley-Davidson motorcycle at Joe's Used Harleys with full warranty and financing options.`;
         
         return (
           <article 

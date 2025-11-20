@@ -89,6 +89,7 @@ export default function RootLayout({
           as="image"
           type="image/png"
         />
+        {/* Preconnect to Google Fonts for Core Web Vitals */}
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com"
@@ -97,6 +98,15 @@ export default function RootLayout({
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
+        />
+        {/* Preconnect to external image domains */}
+        <link
+          rel="preconnect"
+          href="https://i.imgur.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://videos.pexels.com"
         />
         <link
           rel="dns-prefetch"
