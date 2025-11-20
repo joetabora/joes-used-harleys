@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Internal Links Component for SEO Link Equity
  * Provides consistent internal linking across all pages

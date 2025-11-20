@@ -7,6 +7,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Force dynamic rendering for homepage since it includes client-side inventory
+export const dynamic = 'force-dynamic';
+
 // Homepage SEO - targeting primary Milwaukee keywords
 export const metadata: Metadata = setPageSEO({
   pageTitle: 'Used Harley Milwaukee | Used Harley for Sale Milwaukee',

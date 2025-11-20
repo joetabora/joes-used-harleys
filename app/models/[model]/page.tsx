@@ -115,6 +115,7 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
               priority 
               sizes="(max-width: 768px) 100vw, 70vw"
               quality={90}
+              unoptimized={modelData.image.startsWith('https://')}
               style={{ 
                 width: '100%', 
                 height: 'auto', 
