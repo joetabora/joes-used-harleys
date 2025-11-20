@@ -109,24 +109,22 @@ Experience the difference of buying from a used Harley Milwaukee dealer who puts
       />
 
       {/* Why Buy a Used Harley in Milwaukee Section */}
-      <section className="trust" style={{ padding: '8rem 1.5rem 6rem', background: 'var(--dark)' }}>
-        <div className="trust-content">
-          <h2 style={{ color: 'var(--orange)', marginBottom: '2rem', fontSize: 'clamp(2rem, 5vw, 3rem)', textAlign: 'center' }}>
-            Why Buy a Used Harley in Milwaukee?
-          </h2>
-          <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <p style={{ fontSize: 'clamp(1.1rem, 2vw, 1.3rem)', lineHeight: '1.8', color: 'var(--text)', marginBottom: '2rem' }}>
-              When you&apos;re looking for <strong>used Harleys for sale in Milwaukee</strong>, buying pre-owned offers significant advantages over purchasing new. First, you&apos;ll save thousands of dollars while still getting a premium Harley-Davidson motorcycle that&apos;s been professionally maintained. Many <strong>used Harleys in Milwaukee</strong> come with valuable aftermarket upgrades like Stage 1 or Stage 2 performance kits, custom exhaust systems, and premium accessories that would cost thousands more if added to a new bike.
-            </p>
-            <p style={{ fontSize: 'clamp(1.1rem, 2vw, 1.3rem)', lineHeight: '1.8', color: 'var(--text)', marginBottom: '2rem' }}>
-              Milwaukee&apos;s diverse riding conditions – from city streets to scenic country roads – make a <strong>used Harley in Milwaukee</strong> an excellent investment. Our pre-owned bikes have already proven their reliability on Wisconsin roads, and you won&apos;t take the initial depreciation hit that comes with buying new. Plus, with Milwaukee&apos;s strong motorcycle community, you&apos;ll find plenty of local support, events, and riding groups to enhance your ownership experience.
-            </p>
-            <p style={{ fontSize: 'clamp(1.1rem, 2vw, 1.3rem)', lineHeight: '1.8', color: 'var(--text)' }}>
-              At Joe&apos;s Used Harleys, every <strong>used Harley we sell in Milwaukee</strong> undergoes a comprehensive inspection, comes with full service history, and includes our 48-hour guarantee. We make buying a <strong>used Harley in Milwaukee</strong> simple, transparent, and stress-free – no dealership games, no hidden fees, just honest pricing and exceptional bikes.
-            </p>
-          </div>
-        </div>
-      </section>
+      <SEOBlock
+        headline="Why Buy a Used Harley in Milwaukee?"
+        content={`When you're looking for used Harleys for sale in Milwaukee, buying pre-owned offers significant advantages over purchasing new. First, you'll save thousands of dollars while still getting a premium Harley-Davidson motorcycle that's been professionally maintained. Many used Harleys in Milwaukee come with valuable aftermarket upgrades like Stage 1 or Stage 2 performance kits, custom exhaust systems, and premium accessories that would cost thousands more if added to a new bike.
+
+Milwaukee's diverse riding conditions – from city streets to scenic country roads – make a used Harley in Milwaukee an excellent investment. Our pre-owned bikes have already proven their reliability on Wisconsin roads, and you won't take the initial depreciation hit that comes with buying new. Plus, with Milwaukee's strong motorcycle community, you'll find plenty of local support, events, and riding groups to enhance your ownership experience.
+
+At Joe's Used Harleys, every used Harley we sell in Milwaukee undergoes a comprehensive inspection, comes with full service history, and includes our 48-hour guarantee. We make buying a used Harley in Milwaukee simple, transparent, and stress-free – no dealership games, no hidden fees, just honest pricing and exceptional bikes.`}
+        cta={{
+          href: '/inventory',
+          text: 'Browse Our Inventory',
+          variant: 'primary',
+          ariaLabel: 'Browse our inventory of used Harley-Davidson motorcycles for sale in Milwaukee'
+        }}
+        background="dark"
+        textAlign="center"
+      />
 
       {/* Popular Models Grid Section */}
       <section style={{ padding: '6rem 1.5rem', background: 'var(--black)' }}>

@@ -137,21 +137,24 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
       </section>
 
       {/* SEO Content Section (300-500 words) */}
-      <section style={{ 
-        padding: '6rem 1.5rem', 
-        background: 'var(--dark)', 
-        maxWidth: '1000px',
-        margin: '0 auto'
-      }}>
-        <div style={{ 
-          fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', 
-          lineHeight: '1.9', 
-          color: 'var(--text)', 
-          textAlign: 'left'
-        }}>
-          <div dangerouslySetInnerHTML={{ __html: modelData.seoContent.replace(/\n\n/g, '</p><p style={{ marginBottom: \'1.5rem\' }}>').replace(/^/, '<p style={{ marginBottom: \'1.5rem\' }}>').replace(/$/, '</p>') }} />
-        </div>
-      </section>
+      <SEOBlock
+        headline={`About the ${modelData.name} - Milwaukee's Premier Used Harley-Davidson`}
+        content={modelData.seoContent}
+        image={modelData.image ? {
+          src: modelData.image,
+          alt: `Used ${modelData.name} motorcycle for sale in Milwaukee, Wisconsin. Buy pre-owned ${modelData.name} with low miles, full warranty, and financing available at Joe's Used Harleys.`,
+          width: 600,
+          height: 400
+        } : undefined}
+        cta={{
+          href: '/inventory',
+          text: `View ${modelData.name} Inventory`,
+          variant: 'primary',
+          ariaLabel: `View our inventory of used ${modelData.name} motorcycles for sale in Milwaukee`
+        }}
+        background="dark"
+        textAlign="left"
+      />
 
       {/* Specs Table Section */}
       <section style={{ 
