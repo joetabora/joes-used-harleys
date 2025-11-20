@@ -160,7 +160,6 @@ export function generateModelProductSchema(
  * 
  * Usage in a Next.js page component:
  * 
- * ```tsx
  * import { generateModelProductSchema } from '@/lib/product-schema-template';
  * 
  * export default function ModelPage() {
@@ -176,10 +175,9 @@ export function generateModelProductSchema(
  *         type="application/ld+json"
  *         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
  *       />
- *       {/* Page content */}
+ *       Page content here
  *     </>
  *   );
  * }
- * ```
  */
 
