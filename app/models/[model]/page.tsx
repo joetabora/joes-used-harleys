@@ -1,52 +1,93 @@
 import { setPageSEO } from '@/lib/seo';
+import { generateProductSchema, SITE_CONFIG } from '@/lib/seo';
+import { getModelData, getAllModelSlugs } from '@/lib/model-data';
 import { CTAButton } from '@/components/CTAButton';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-// Example model page - auto-generates SEO for any Harley model
+// Generate static params for all model pages
+export async function generateStaticParams() {
+  const slugs = getAllModelSlugs();
+  return slugs.map((slug) => ({
+    model: slug,
+  }));
+}
+
+// Generate metadata using generateHarleyKeywords automatically
 export async function generateMetadata({ params }: { params: Promise<{ model: string }> }): Promise<Metadata> {
   const { model } = await params;
-  const modelName = decodeURIComponent(model).replace(/-/g, ' ');
-  const capitalizedModel = modelName.split(' ').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ');
+  const modelData = getModelData(model);
   
+  if (!modelData) {
+    return setPageSEO({
+      pageTitle: 'Model Not Found',
+      noindex: true,
+      path: `/models/${model}`
+    });
+  }
+  
+  // setPageSEO automatically uses generateHarleyKeywords when modelName is provided
   return setPageSEO({
-    modelName: capitalizedModel,
+    pageTitle: `Used ${modelData.name} Motorcycles for Sale in Milwaukee`,
+    pageDescription: `Buy a used ${modelData.name} in Milwaukee, Wisconsin. Starting at ${modelData.startingPrice}. Highway-ready and inspected. View specs, pricing, and financing options.`,
+    modelName: modelData.name,
     location: 'Milwaukee',
     path: `/models/${model}`,
-    pageDescription: `Buy a used ${capitalizedModel} in Milwaukee, Wisconsin. Highway-ready and inspected. View photos, mileage, and pricing. Financing available.`
+    image: modelData.image
   });
 }
 
 export default async function ModelPage({ params }: { params: Promise<{ model: string }> }) {
   const { model } = await params;
-  const modelName = decodeURIComponent(model).replace(/-/g, ' ');
-  const capitalizedModel = modelName.split(' ').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ');
+  const modelData = getModelData(model);
   
-  // Example models we support
-  const validModels = [
-    'street glide',
-    'road glide',
-    'fat boy',
-    'heritage classic',
-    'low rider',
-    'softail',
-    'sportster',
-    'road king',
-    'fat bob',
-    'breakout'
-  ];
-  
-  if (!validModels.includes(modelName.toLowerCase())) {
+  if (!modelData) {
     notFound();
   }
   
+  // Generate Product schema for this model
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${SITE_CONFIG.url}/models/${model}`,
+    name: `Used ${modelData.name} for Sale in Milwaukee`,
+    image: modelData.image || SITE_CONFIG.image,
+    description: `Buy a used ${modelData.name} in Milwaukee, Wisconsin. Starting at ${modelData.startingPrice}. ${modelData.seoContent.substring(0, 200)}...`,
+    brand: {
+      "@type": "Brand",
+      name: "Harley-Davidson"
+    },
+    category: "Motorcycle",
+    model: modelData.name,
+    offers: {
+      "@type": "Offer",
+      price: modelData.startingPrice.replace(/[^0-9]/g, ''),
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: `${SITE_CONFIG.url}/models/${model}`,
+      seller: {
+        "@type": "AutoDealer",
+        name: SITE_CONFIG.name,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: SITE_CONFIG.address.city,
+          addressRegion: SITE_CONFIG.address.state,
+          postalCode: SITE_CONFIG.address.zip
+        }
+      }
+    }
+  };
+  
   return (
     <>
+      {/* JSON-LD Product Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      
       {/* Hero Section */}
       <section style={{ 
         padding: '4rem 1.5rem', 
@@ -61,20 +102,29 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
           marginBottom: '2rem',
           lineHeight: '1.1'
         }}>
-          Used {capitalizedModel} for Sale in Milwaukee
+          Used {modelData.name} Motorcycles for Sale in Milwaukee
         </h1>
-        <p style={{ 
-          fontSize: 'clamp(1.1rem, 2vw, 1.3rem)', 
-          color: 'var(--text-light)', 
-          maxWidth: '800px',
-          margin: '0 auto 3rem',
-          lineHeight: '1.8'
-        }}>
-          Find the perfect <strong>used {capitalizedModel} in Milwaukee</strong>. Browse our inventory of pre-owned {capitalizedModel} motorcycles. Low miles, full warranty, financing available.
-        </p>
+        {modelData.image && (
+          <div style={{ marginBottom: '3rem', maxWidth: '800px', margin: '0 auto 3rem' }}>
+            <Image 
+              src={modelData.image} 
+              alt={`Used ${modelData.name} for sale in Milwaukee`} 
+              width={800} 
+              height={600} 
+              priority 
+              sizes="(max-width: 768px) 100vw, 70vw"
+              style={{ 
+                width: '100%', 
+                height: 'auto', 
+                borderRadius: '8px',
+                border: '2px solid var(--orange)'
+              }}
+            />
+          </div>
+        )}
         <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <CTAButton href="/#inventory" variant="primary">
-            View {capitalizedModel} Inventory
+          <CTAButton href="/inventory" variant="primary">
+            View {modelData.name} Inventory
           </CTAButton>
           <CTAButton href="sms:4144396211" variant="secondary">
             Contact Joe
@@ -82,77 +132,239 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
         </div>
       </section>
 
-      {/* Main Content */}
+      {/* SEO Content Section (300-500 words) */}
       <section style={{ 
-        padding: '4rem 1.5rem', 
+        padding: '6rem 1.5rem', 
         background: 'var(--dark)', 
-        maxWidth: '1400px',
+        maxWidth: '1000px',
         margin: '0 auto'
       }}>
         <div style={{ 
-          maxWidth: '900px', 
-          margin: '0 auto',
-          color: 'var(--text-light)',
-          lineHeight: '1.8'
+          fontSize: 'clamp(1.1rem, 2vw, 1.25rem)', 
+          lineHeight: '1.9', 
+          color: 'var(--text)', 
+          textAlign: 'left'
         }}>
-          <h2 style={{ 
-            color: 'var(--orange)', 
-            fontSize: 'clamp(2rem, 5vw, 3rem)', 
-            marginBottom: '2rem' 
+          <div dangerouslySetInnerHTML={{ __html: modelData.seoContent.replace(/\n\n/g, '</p><p style={{ marginBottom: \'1.5rem\' }}>').replace(/^/, '<p style={{ marginBottom: \'1.5rem\' }}>').replace(/$/, '</p>') }} />
+        </div>
+      </section>
+
+      {/* Specs Table Section */}
+      <section style={{ 
+        padding: '6rem 1.5rem', 
+        background: 'var(--black)', 
+        maxWidth: '1000px',
+        margin: '0 auto'
+      }}>
+        <h2 style={{ 
+          color: 'var(--orange)', 
+          fontSize: 'clamp(2rem, 5vw, 3rem)', 
+          marginBottom: '3rem',
+          textAlign: 'center'
+        }}>
+          {modelData.name} Specifications
+        </h2>
+        <div style={{ 
+          background: 'var(--dark)', 
+          borderRadius: '8px', 
+          overflow: 'hidden',
+          border: '1px solid var(--gray-light)'
+        }}>
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse',
+            color: 'var(--text)'
           }}>
-            About the {capitalizedModel}
-          </h2>
-          <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
-            The <strong>used {capitalizedModel} in Milwaukee</strong> is one of Harley-Davidson&apos;s most popular models. Whether you&apos;re looking for a <strong>used {capitalizedModel} for sale in Milwaukee</strong> for touring, cruising, or daily riding, we have options to fit your needs.
-          </p>
-          <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
-            Every <strong>used {capitalizedModel} we sell in Milwaukee</strong> comes with complete service history, Carfax reports, and our comprehensive 48-hour guarantee. Located at House Of Harley on W Layton Ave, we serve riders throughout Milwaukee County and southeastern Wisconsin.
-          </p>
-          <h3 style={{ 
-            color: 'var(--orange)', 
-            fontSize: '1.8rem', 
-            marginTop: '3rem',
-            marginBottom: '1.5rem' 
+            <tbody>
+              <tr style={{ borderBottom: '1px solid var(--gray-light)' }}>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)',
+                  width: '40%'
+                }}>
+                  Engine
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.engine}
+                </td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--gray-light)' }}>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)'
+                }}>
+                  Displacement
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.displacement}
+                </td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--gray-light)' }}>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)'
+                }}>
+                  Torque
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.torque}
+                </td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--gray-light)' }}>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)'
+                }}>
+                  Fuel Capacity
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.fuelCapacity}
+                </td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--gray-light)' }}>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)'
+                }}>
+                  Seat Height
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.seatHeight}
+                </td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--gray-light)' }}>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)'
+                }}>
+                  Weight (Dry)
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.weight}
+                </td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--gray-light)' }}>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)'
+                }}>
+                  Transmission
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.transmission}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ 
+                  padding: '1.5rem', 
+                  fontWeight: 600, 
+                  color: 'var(--orange)'
+                }}>
+                  Wheelbase
+                </td>
+                <td style={{ padding: '1.5rem', color: 'var(--text-light)' }}>
+                  {modelData.specs.wheelbase}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Financing Info Section */}
+      <section style={{ 
+        padding: '6rem 1.5rem', 
+        background: 'var(--dark)', 
+        maxWidth: '1000px',
+        margin: '0 auto'
+      }}>
+        <h2 style={{ 
+          color: 'var(--orange)', 
+          fontSize: 'clamp(2rem, 5vw, 3rem)', 
+          marginBottom: '2rem',
+          textAlign: 'center'
+        }}>
+          Financing Your Used {modelData.name} in Milwaukee
+        </h2>
+        <div style={{ 
+          background: 'var(--black)', 
+          padding: '3rem', 
+          borderRadius: '8px',
+          border: '2px solid var(--orange)',
+          textAlign: 'center'
+        }}>
+          <p style={{ 
+            fontSize: '1.3rem', 
+            color: 'var(--text)', 
+            marginBottom: '1.5rem',
+            lineHeight: '1.8'
           }}>
-            Why Milwaukee Riders Choose the {capitalizedModel}
-          </h3>
-          <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
-            The <strong>used {capitalizedModel} in Milwaukee</strong> is perfect for Wisconsin&apos;s diverse riding conditions. From Lake Michigan shoreline rides to country road cruising, the {capitalizedModel} delivers the performance and reliability Milwaukee riders demand.
+            <strong style={{ color: 'var(--orange)' }}>Starting at {modelData.startingPrice}</strong>
           </p>
-          <h3 style={{ 
-            color: 'var(--orange)', 
-            fontSize: '1.8rem', 
-            marginTop: '3rem',
-            marginBottom: '1.5rem' 
+          <p style={{ 
+            fontSize: '1.1rem', 
+            color: 'var(--text-light)', 
+            marginBottom: '2rem',
+            lineHeight: '1.8'
           }}>
-            Find Your Used {capitalizedModel} in Milwaukee
-          </h3>
-          <p style={{ fontSize: '1.1rem', marginBottom: '2rem' }}>
-            Browse our inventory to find the perfect <strong>used {capitalizedModel} for sale in Milwaukee</strong>. Contact Joe at <a href="tel:4144396211" style={{ color: 'var(--orange)' }}>(414) 439-6211</a> to schedule a viewing or test ride.
+            {modelData.financingInfo}
           </p>
-          <div style={{ marginTop: '3rem', padding: '2rem', background: 'var(--gray)', borderRadius: '8px' }}>
-            <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>
-              <strong style={{ color: 'var(--orange)' }}>Ready to find your used {capitalizedModel} in Milwaukee?</strong>
-            </p>
-            <p style={{ fontSize: '1rem', marginBottom: '1.5rem' }}>
-              View our complete inventory or contact Joe directly to discuss your {capitalizedModel} needs.
-            </p>
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <CTAButton href="/#inventory" variant="primary">
-                View All {capitalizedModel}s
-              </CTAButton>
-              <CTAButton href="sms:4144396211" variant="secondary">
-                Text Joe Now
-              </CTAButton>
-            </div>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <CTAButton href={`sms:4144396211?body=Interested in financing a used ${encodeURIComponent(modelData.name)}`} variant="primary">
+              Get Pre-Approved
+            </CTAButton>
+            <CTAButton href="tel:4144396211" variant="secondary">
+              Call for Financing Info
+            </CTAButton>
           </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section style={{ 
+        padding: '6rem 1.5rem', 
+        background: 'var(--black)', 
+        textAlign: 'center',
+        maxWidth: '1400px',
+        margin: '0 auto'
+      }}>
+        <h2 style={{ 
+          color: 'var(--orange)', 
+          fontSize: 'clamp(2rem, 5vw, 3rem)', 
+          marginBottom: '2rem' 
+        }}>
+          Ready to Find Your Used {modelData.name} in Milwaukee?
+        </h2>
+        <p style={{ 
+          fontSize: '1.2rem', 
+          color: 'var(--text-light)', 
+          marginBottom: '3rem',
+          maxWidth: '800px',
+          margin: '0 auto 3rem'
+        }}>
+          Browse our complete inventory of used {modelData.name} motorcycles or contact Joe directly to discuss your needs.
+        </p>
+        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <CTAButton href="/inventory" variant="primary">
+            View All {modelData.name}s
+          </CTAButton>
+          <CTAButton href="sms:4144396211" variant="secondary">
+            Text Joe Now
+          </CTAButton>
         </div>
       </section>
 
       {/* Internal Links */}
       <section style={{ 
         padding: '4rem 1.5rem', 
-        background: 'var(--black)', 
+        background: 'var(--dark)', 
         textAlign: 'center',
         maxWidth: '1400px',
         margin: '0 auto'
@@ -197,6 +409,19 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
             Harley for Sale Milwaukee
           </Link>
           <Link 
+            href="/inventory" 
+            style={{ 
+              color: 'var(--orange)', 
+              textDecoration: 'none',
+              padding: '0.75rem 1.5rem',
+              border: '2px solid var(--orange)',
+              borderRadius: '4px',
+              transition: 'all 0.3s'
+            }}
+          >
+            View All Inventory
+          </Link>
+          <Link 
             href="/" 
             style={{ 
               color: 'var(--orange)', 
@@ -214,4 +439,3 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
     </>
   );
 }
-
