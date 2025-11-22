@@ -1,7 +1,7 @@
 {
   "name": "joes-used-harleys",
   "version": "1.0.0",
-  "description": "Joe's Used Harleys - Low Miles • Full Warranty • Financing",
+  "description": "Joe's Used Harleys - Low Miles • Full Warranty • Financing"
   "scripts": {
     "dev": "next dev",
     "build": "next build",
