@@ -9,7 +9,6 @@ import { Users } from './collections/Users';
 export default buildConfig({
   admin: {
     user: Users.slug,
-    baseURL: '/admin',
   },
   collections: [Users, Bikes, Media],
   editor: slateEditor({}),
