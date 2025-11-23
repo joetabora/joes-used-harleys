@@ -221,12 +221,9 @@ export async function POST(request: Request) {
     // First, try to get existing fields from Airtable to see what field names are actually used
     // For now, we'll use a smart approach: try common variations and let Airtable accept what it can
     
-    // Name field - only set if provided (user might not have this column)
+    // Name field - set as "Name" (primary field, required)
     if (body.name) {
-      // Try common name field variations - Airtable will ignore ones that don't exist
-      const nameFields = ['Name', 'name', 'A Name'];
-      // Set the first one (most common)
-      fields[nameFields[0]] = body.name;
+      fields.Name = body.name;
     }
     
     // Year - set with common variations
@@ -304,7 +301,6 @@ export async function POST(request: Request) {
                 filename: body.image.filename,
               },
             ];
-            fields.image = fields.Image; // Also set lowercase version
           }
         } else {
           console.warn('Imgur upload failed, continuing without image');
