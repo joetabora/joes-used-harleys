@@ -1,4 +1,4 @@
-import payload from 'payload';
+import { getPayload } from 'payload';
 import config from '@payload-config';
 
 let cachedPayload: any = null;
@@ -9,14 +9,10 @@ export async function getPayloadClient() {
   }
 
   try {
-    // Initialize Payload if not already initialized
-    if (!payload.initialized) {
-      await payload.init({
-        config,
-        secret: process.env.PAYLOAD_SECRET || '',
-      });
-    }
-    cachedPayload = payload;
+    cachedPayload = await getPayload({ 
+      config,
+      secret: process.env.PAYLOAD_SECRET || '',
+    });
     return cachedPayload;
   } catch (error) {
     console.error('Error initializing Payload:', error);
