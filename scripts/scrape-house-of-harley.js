@@ -215,14 +215,17 @@ async function scrapeInventory() {
   
   try {
     // Launch browser with stealth plugin (handles bot detection automatically)
-    console.log('🌐 Launching browser with stealth mode...');
+    // Using non-headless mode (visible browser) to avoid detection
+    console.log('🌐 Launching browser with stealth mode (visible browser)...');
+    console.log('💡 A browser window will open - you can watch it work!');
     browser = await puppeteer.launch({
-      headless: 'new',
+      headless: false, // Visible browser - less likely to be detected
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-        '--window-size=1920,1080'
+        '--window-size=1920,1080',
+        '--start-maximized'
       ],
       ignoreHTTPSErrors: true,
       timeout: 120000
