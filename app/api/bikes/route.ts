@@ -315,6 +315,10 @@ export async function POST(request: Request) {
       }
     }
 
+    // Log what we're trying to send (for debugging)
+    console.log('Creating bike with fields:', Object.keys(fields));
+    console.log('Field values:', fields);
+    
     // Create record in Airtable
     const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}`;
     
@@ -336,28 +340,44 @@ export async function POST(request: Request) {
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error');
       let errorDetails = errorText;
+      let errorMessage = 'Unknown error';
       
       // Try to parse error for more details
       try {
         const errorJson = JSON.parse(errorText);
-        errorDetails = errorJson.error?.message || errorText;
+        errorMessage = errorJson.error?.message || errorJson.error || errorText;
+        errorDetails = JSON.stringify(errorJson, null, 2);
         console.error('Airtable create error details:', errorJson);
       } catch {
         // Not JSON, use as-is
+        errorMessage = errorText;
       }
       
       console.error('Airtable create error:', {
         status: response.status,
         statusText: response.statusText,
-        error: errorDetails,
+        error: errorMessage,
+        errorDetails: errorDetails,
         fieldsAttempted: Object.keys(fields),
+        baseId: baseId,
+        tableIdentifier: tableIdentifier,
       });
+      
+      // Provide helpful hints based on error
+      let hint = '';
+      if (response.status === 403) {
+        hint = 'Forbidden error usually means: 1) API token needs write permissions (data.records:write scope), or 2) Field names don\'t match exactly. Check your token scopes at https://airtable.com/create/tokens';
+      } else if (response.status === 422) {
+        hint = 'Validation error: Field names might not match. Your Airtable columns must be named exactly: Name, Year, Model, Price, etc. (case-sensitive)';
+      }
       
       return NextResponse.json(
         { 
           error: `Failed to create bike: ${response.statusText}`,
+          message: errorMessage,
           details: errorDetails,
-          hint: 'Make sure your Airtable table has columns matching: Year, Model, Price, etc. Check that field names match exactly (case-sensitive).'
+          hint: hint,
+          fieldsAttempted: Object.keys(fields),
         },
         { status: response.status }
       );

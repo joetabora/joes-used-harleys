@@ -73,7 +73,9 @@ export default function AddBikePage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to add bike');
+        const errorMsg = data.message || data.error || 'Failed to add bike';
+        const hint = data.hint ? `\n\n💡 ${data.hint}` : '';
+        throw new Error(errorMsg + hint);
       }
 
       setSuccess(true);
