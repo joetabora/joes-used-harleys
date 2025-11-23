@@ -295,15 +295,25 @@ export async function POST(request: Request) {
           
           if (imageUrl) {
             // Airtable attachment format: array of objects with url
+            // Try multiple field name variations
             fields.Image = [
               {
                 url: imageUrl,
-                filename: body.image.filename,
               },
             ];
+            // Also try lowercase and other variations
+            fields.image = fields.Image;
+            fields.Photo = fields.Image;
+            fields.photo = fields.Image;
+            
+            console.log('Image uploaded to Imgur:', imageUrl);
+            console.log('Setting Image field:', fields.Image);
+          } else {
+            console.warn('Imgur returned no image URL');
           }
         } else {
-          console.warn('Imgur upload failed, continuing without image');
+          const imgurError = await imgurResponse.text().catch(() => 'Unknown error');
+          console.warn('Imgur upload failed:', imgurError);
         }
       } catch (imgurError) {
         console.warn('Error uploading to Imgur:', imgurError);
@@ -313,7 +323,10 @@ export async function POST(request: Request) {
 
     // Log what we're trying to send (for debugging)
     console.log('Creating bike with fields:', Object.keys(fields));
-    console.log('Field values:', fields);
+    console.log('Field values (sanitized):', {
+      ...fields,
+      Image: fields.Image ? `[${fields.Image.length} attachment(s)]` : 'none',
+    });
     
     // Create record in Airtable
     const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}`;
