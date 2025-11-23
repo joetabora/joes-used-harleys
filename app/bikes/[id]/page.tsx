@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       'harley for sale milwaukee',
     ],
     location: 'Milwaukee',
-    path: `/bikes/${params.id}`,
+    path: `/bikes/${id}`,
   });
 }
 
