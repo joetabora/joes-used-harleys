@@ -26,7 +26,7 @@ export function InventoryGrid() {
     
     async function loadInventory() {
       try {
-        const response = await fetch('/inventory.json');
+        const response = await fetch('/api/bikes');
         if (!response.ok) {
           throw new Error('Failed to load inventory');
         }

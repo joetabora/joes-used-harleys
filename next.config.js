@@ -26,6 +26,11 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   swcMinify: true,
+  // Payload CMS compatibility
+  transpilePackages: ['payload'],
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig;

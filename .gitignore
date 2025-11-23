@@ -26,6 +26,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -36,6 +37,7 @@ next-env.d.ts
 
 # backup files
 *.backup
-index.html.backup
-.env.local
-.env
+
+# Payload
+/payload-types.ts
+/media
