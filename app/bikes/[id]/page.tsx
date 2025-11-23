@@ -23,18 +23,13 @@ interface Bike {
 
 async function getBike(id: string): Promise<Bike | null> {
   try {
-    // Use absolute URL for server-side fetch
+    // For server-side rendering, we need an absolute URL
+    // In production, use the actual domain, in dev use localhost
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     
-    // For server-side, construct URL properly
-    const apiUrl = typeof window === 'undefined' 
-      ? `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/bikes/${id}`
-      : `/api/bikes/${id}`;
-    
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${baseUrl}/api/bikes/${id}`, {
       next: { revalidate: 60 },
-      cache: 'no-store', // Always fetch fresh data
     });
 
     if (!response.ok) {
