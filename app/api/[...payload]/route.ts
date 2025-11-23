@@ -48,7 +48,16 @@ async function getPayloadInstance() {
 export async function GET(request: NextRequest) {
   try {
     const payload = await getPayloadInstance();
-    return payload.router(request);
+    
+    // Check if router is a function
+    if (typeof payload.router !== 'function') {
+      console.error('Payload router is not a function:', typeof payload.router, Object.keys(payload));
+      throw new Error('Payload router is not available');
+    }
+    
+    // Call the router with the request
+    const response = await payload.router(request);
+    return response;
   } catch (error) {
     console.error('Payload GET error:', error);
     return NextResponse.json({ 
@@ -61,7 +70,19 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const payload = await getPayloadInstance();
-    return payload.router(request);
+    
+    // Check if router exists and is callable
+    if (!payload.router) {
+      console.error('Payload router not available. Payload instance keys:', Object.keys(payload));
+      throw new Error('Payload router is not available');
+    }
+    
+    // Try calling router as a function
+    if (typeof payload.router === 'function') {
+      return await payload.router(request);
+    }
+    
+    throw new Error(`Payload router is not a function. Type: ${typeof payload.router}`);
   } catch (error) {
     console.error('Payload POST error:', error);
     return NextResponse.json({ 
