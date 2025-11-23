@@ -28,18 +28,29 @@ async function getBike(id: string): Promise<Bike | null> {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     
-    const response = await fetch(`${baseUrl}/api/bikes/${id}`, {
+    const apiUrl = `${baseUrl}/api/bikes/${id}`;
+    console.log('Fetching bike from:', apiUrl, 'Bike ID:', id);
+    
+    const response = await fetch(apiUrl, {
       next: { revalidate: 60 },
     });
 
     if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.error('Bike API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+        bikeId: id,
+      });
       return null;
     }
 
     const data = await response.json();
+    console.log('Bike fetched successfully:', data.bike ? 'Yes' : 'No', 'ID:', id);
     return data.bike || null;
   } catch (error) {
-    console.error('Error fetching bike:', error);
+    console.error('Error fetching bike:', error, 'Bike ID:', id);
     return null;
   }
 }

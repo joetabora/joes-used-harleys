@@ -42,6 +42,13 @@ export async function GET(
     // Fetch single record from Airtable by ID
     const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}/${bikeId}`;
     
+    console.log('Fetching bike from Airtable:', {
+      bikeId: bikeId,
+      baseId: baseId,
+      tableIdentifier: tableIdentifier,
+      url: url.replace(apiKey, 'HIDDEN'),
+    });
+    
     const response = await fetch(url, {
       headers: {
         'Authorization': `Bearer ${apiKey}`,
@@ -50,15 +57,22 @@ export async function GET(
     });
 
     if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.error('Airtable API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+        bikeId: bikeId,
+      });
+      
       if (response.status === 404) {
         return NextResponse.json(
-          { error: 'Bike not found' },
+          { error: 'Bike not found', bikeId: bikeId },
           { status: 404 }
         );
       }
-      const errorText = await response.text().catch(() => 'Unknown error');
       return NextResponse.json(
-        { error: `Airtable API error: ${response.statusText}`, details: errorText },
+        { error: `Airtable API error: ${response.statusText}`, details: errorText, bikeId: bikeId },
         { status: response.status }
       );
     }
