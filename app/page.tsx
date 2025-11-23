@@ -56,13 +56,26 @@ export default function HomePage() {
           />
           <h1 style={{ 
             fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', 
-            marginBottom: '2rem', 
+            marginBottom: '1.5rem', 
             color: 'var(--text)',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.9)',
             lineHeight: '1.1'
           }}>
             Used Harley-Davidsons for Sale in Milwaukee
           </h1>
+          <div style={{ 
+            marginBottom: '2rem',
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+            <CTAButton 
+              href="/inventory" 
+              variant="primary" 
+              aria-label="View our complete inventory of used Harley-Davidson motorcycles for sale in Milwaukee"
+            >
+              View Inventory
+            </CTAButton>
+          </div>
           <div style={{ 
             maxWidth: '800px', 
             margin: '0 auto 3rem', 
