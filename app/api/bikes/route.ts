@@ -400,10 +400,20 @@ export async function POST(request: Request) {
 
     const data = await response.json();
     
+    // Check if image was set
+    const createdRecord = data.records[0];
+    const hasImage = createdRecord?.fields?.Image && createdRecord.fields.Image.length > 0;
+    
     return NextResponse.json({
       success: true,
-      id: data.records[0]?.id,
+      id: createdRecord?.id,
       message: 'Bike added successfully!',
+      imageAttached: hasImage,
+      imageUrl: hasImage ? createdRecord.fields.Image[0]?.url : null,
+      debug: {
+        fieldsInResponse: createdRecord?.fields ? Object.keys(createdRecord.fields) : [],
+        imageField: createdRecord?.fields?.Image,
+      },
     });
   } catch (error) {
     console.error('Error creating bike in Airtable:', error);
