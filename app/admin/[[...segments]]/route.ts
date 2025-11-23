@@ -1,5 +1,5 @@
-// Proxy admin requests to Payload API route
-// Payload admin is served through /api/[...payload]
+// Payload CMS Admin Panel Route
+// This route serves the Payload admin UI
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -15,8 +15,8 @@ export async function GET(request: NextRequest) {
   }
 
   const url = new URL(request.url);
-  const apiPath = url.pathname.replace('/admin', '/api/payload');
-  const payloadUrl = new URL(apiPath, url.origin);
+  const path = url.pathname.replace('/admin', '/api/payload');
+  const payloadUrl = new URL(path, url.origin);
   payloadUrl.search = url.search;
   
   try {
@@ -26,7 +26,20 @@ export async function GET(request: NextRequest) {
       headers: Object.fromEntries(request.headers.entries()),
     });
     
-    return new Response(response.body, {
+    // If it's an HTML response (admin panel), return it
+    const contentType = response.headers.get('content-type');
+    if (contentType?.includes('text/html')) {
+      const html = await response.text();
+      return new NextResponse(html, {
+        status: response.status,
+        headers: {
+          'Content-Type': 'text/html',
+        },
+      });
+    }
+    
+    // For JSON responses, return as-is
+    return new NextResponse(response.body, {
       status: response.status,
       headers: Object.fromEntries(response.headers.entries()),
     });
@@ -34,7 +47,8 @@ export async function GET(request: NextRequest) {
     console.error('Error proxying to Payload:', error);
     return NextResponse.json({
       error: 'Failed to connect to Payload CMS',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      message: error instanceof Error ? error.message : 'Unknown error',
+      hint: 'Make sure Payload API route is working at /api/payload'
     }, { status: 500 });
   }
 }
@@ -49,8 +63,8 @@ export async function POST(request: NextRequest) {
   }
 
   const url = new URL(request.url);
-  const apiPath = url.pathname.replace('/admin', '/api/payload');
-  const payloadUrl = new URL(apiPath, url.origin);
+  const path = url.pathname.replace('/admin', '/api/payload');
+  const payloadUrl = new URL(path, url.origin);
   payloadUrl.search = url.search;
   
   const body = await request.text();
@@ -62,7 +76,7 @@ export async function POST(request: NextRequest) {
       body: body,
     });
     
-    return new Response(response.body, {
+    return new NextResponse(response.body, {
       status: response.status,
       headers: Object.fromEntries(response.headers.entries()),
     });
