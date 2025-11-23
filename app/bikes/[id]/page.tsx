@@ -23,48 +23,113 @@ interface Bike {
 
 async function getBike(id: string): Promise<Bike | null> {
   try {
-    // For server-side rendering, construct the API URL
-    // Try multiple fallbacks to ensure we get the right URL
-    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-    
-    if (!baseUrl) {
-      // In Vercel, use VERCEL_URL if available
-      if (process.env.VERCEL_URL) {
-        baseUrl = `https://${process.env.VERCEL_URL}`;
-      } else if (process.env.VERCEL) {
-        // Fallback for Vercel deployments
-        baseUrl = 'https://joes-used-harleys.vercel.app';
-      } else {
-        // Local development
-        baseUrl = 'http://localhost:3000';
-      }
+    // Fetch directly from Airtable to avoid URL construction issues
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const apiKey = process.env.AIRTABLE_API_KEY;
+    const tableId = process.env.AIRTABLE_TABLE_ID;
+    const tableName = process.env.AIRTABLE_TABLE_NAME || 'Table 1';
+    const tableIdentifier = tableId || tableName;
+
+    if (!baseId || !apiKey) {
+      console.error('Airtable not configured');
+      return null;
     }
+
+    // Fetch single record from Airtable by ID
+    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}/${encodeURIComponent(id)}`;
     
-    const apiUrl = `${baseUrl}/api/bikes/${encodeURIComponent(id)}`;
-    console.log('Fetching bike from:', apiUrl, 'Bike ID:', id);
+    console.log('Fetching bike from Airtable:', {
+      bikeId: id,
+      baseId: baseId,
+      tableIdentifier: tableIdentifier,
+    });
     
-    const response = await fetch(apiUrl, {
-      next: { revalidate: 60 },
+    const response = await fetch(url, {
       headers: {
-        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
       },
+      next: { revalidate: 60 },
     });
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error');
-      console.error('Bike API error:', {
+      console.error('Airtable API error:', {
         status: response.status,
         statusText: response.statusText,
         error: errorText,
         bikeId: id,
-        apiUrl: apiUrl,
       });
       return null;
     }
 
-    const data = await response.json();
-    console.log('Bike fetched successfully:', data.bike ? 'Yes' : 'No', 'ID:', id);
-    return data.bike || null;
+    const record = await response.json();
+
+    // Transform to match our Bike interface (same logic as API route)
+    const getField = (possibleNames: string[]) => {
+      for (const name of possibleNames) {
+        if (record.fields[name as keyof typeof record.fields] !== undefined) {
+          return record.fields[name as keyof typeof record.fields];
+        }
+      }
+      const fieldKey = Object.keys(record.fields).find(key => 
+        possibleNames.some(n => key.toLowerCase() === n.toLowerCase())
+      );
+      return fieldKey ? record.fields[fieldKey as keyof typeof record.fields] : undefined;
+    };
+
+    const year = getField(['Year', 'year']) as number;
+    const model = getField(['Model', 'model']) as string;
+    const mileage = getField(['Mileage', 'mileage']) as number;
+    const price = getField(['Price', 'price']) as number;
+    const priceFormatted = getField(['Price Formatted', 'priceFormatted']) as string;
+    const specs = getField(['Specs', 'specs']) as string;
+    const financing = getField(['Financing', 'financing']) as string;
+    const featured = getField(['Featured', 'featured']) as boolean;
+    const justArrived = getField(['Just Arrived', 'justArrived']) as boolean;
+
+    const name = record.fields.Name || 
+      `${year || ''} ${model ? `Harley-Davidson ${model}` : 'Harley-Davidson'}`.trim() ||
+      'Harley-Davidson Motorcycle';
+
+    // Get image URL
+    const imageField = getField(['Image', 'image']) as any;
+    let imageUrl = '';
+    if (imageField && Array.isArray(imageField) && imageField.length > 0) {
+      const image = imageField[0];
+      imageUrl = image.thumbnails?.large?.url || 
+                image.thumbnails?.small?.url || 
+                image.url || '';
+    }
+
+    const finalSpecs = specs || 
+      [
+        year && `${year}`,
+        model && `Harley-Davidson ${model}`,
+        mileage && `${mileage.toLocaleString()} miles`,
+      ]
+        .filter(Boolean)
+        .join(' • ') || '';
+
+    const finalPriceFormatted = priceFormatted || 
+      (price ? `$${price.toLocaleString()}` : 'Call for price');
+
+    const bike: Bike = {
+      id: record.id,
+      name: name,
+      image: imageUrl,
+      specs: finalSpecs,
+      price: price || 0,
+      priceFormatted: finalPriceFormatted,
+      financing: financing || '',
+      featured: featured || false,
+      justArrived: justArrived || false,
+      year: year,
+      model: model,
+      mileage: mileage,
+    };
+
+    console.log('Bike fetched successfully:', bike.name, 'ID:', id);
+    return bike;
   } catch (error) {
     console.error('Error fetching bike:', error, 'Bike ID:', id);
     return null;
