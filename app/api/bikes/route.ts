@@ -295,16 +295,12 @@ export async function POST(request: Request) {
           
           if (imageUrl) {
             // Airtable attachment format: array of objects with url
-            // Try multiple field name variations
+            // Use exact field name "Image" (case-sensitive)
             fields.Image = [
               {
                 url: imageUrl,
               },
             ];
-            // Also try lowercase and other variations
-            fields.image = fields.Image;
-            fields.Photo = fields.Image;
-            fields.photo = fields.Image;
             
             console.log('Image uploaded to Imgur:', imageUrl);
             console.log('Setting Image field:', fields.Image);
