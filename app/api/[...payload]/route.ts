@@ -1,3 +1,4 @@
+import { getPayload } from 'payload';
 import config from '@payload-config';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -9,26 +10,6 @@ async function getPayloadInstance() {
   }
 
   try {
-    // Import Payload and use getPayload from the main export
-    const payloadModule = await import('payload');
-    
-    // getPayload should be available as a named export
-    const getPayload = payloadModule.getPayload;
-    
-    if (!getPayload || typeof getPayload !== 'function') {
-      // Fallback: try using Payload class directly
-      const Payload = payloadModule.Payload || payloadModule.default;
-      if (Payload && typeof Payload.prototype?.init === 'function') {
-        const instance = new Payload();
-        cachedPayload = await instance.init({
-          config,
-          secret: process.env.PAYLOAD_SECRET || '',
-        });
-        return cachedPayload;
-      }
-      throw new Error('getPayload not found. Available: ' + Object.keys(payloadModule).join(', '));
-    }
-    
     cachedPayload = await getPayload({ 
       config,
       secret: process.env.PAYLOAD_SECRET || '',
@@ -36,7 +17,7 @@ async function getPayloadInstance() {
     return cachedPayload;
   } catch (error) {
     console.error('Error initializing Payload:', error);
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+    console.error('Error details:', error instanceof Error ? error.message : String(error));
     throw error;
   }
 }

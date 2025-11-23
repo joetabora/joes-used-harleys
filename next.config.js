@@ -27,7 +27,26 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   // Payload CMS compatibility
-  transpilePackages: ['payload'],
+  transpilePackages: ['payload', '@payloadcms'],
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Ensure Payload modules are properly resolved
+      config.externals = config.externals || [];
+      if (typeof config.externals === 'function') {
+        const originalExternals = config.externals;
+        config.externals = [
+          ...originalExternals,
+          ({ request }, callback) => {
+            if (request?.includes('payload')) {
+              return callback();
+            }
+            originalExternals({ request }, callback);
+          },
+        ];
+      }
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;
