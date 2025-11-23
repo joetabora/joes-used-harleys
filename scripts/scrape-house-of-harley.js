@@ -7,10 +7,14 @@
  * Usage: node scripts/scrape-house-of-harley.js
  */
 
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const fs = require('fs');
 const path = require('path');
+
+// Use stealth plugin to avoid detection
+puppeteer.use(StealthPlugin());
 
 // Configuration
 const INVENTORY_URL = 'https://houseofharleydavidson.com/pre-owned-inventory';
@@ -210,56 +214,75 @@ async function scrapeInventory() {
   let listings = [];
   
   try {
-    // Launch browser with more robust settings
+    // Launch browser with stealth plugin (handles bot detection automatically)
+    console.log('🌐 Launching browser with stealth mode...');
     browser = await puppeteer.launch({
-      headless: 'new', // Use new headless mode
+      headless: 'new',
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--disable-gpu',
         '--window-size=1920,1080'
-      ]
+      ],
+      ignoreHTTPSErrors: true,
+      timeout: 120000
     });
+    console.log('✅ Browser launched');
     
     const page = await browser.newPage();
     
     // Set viewport
     await page.setViewport({ width: 1920, height: 1080 });
     
-    // Set user agent to avoid bot detection
-    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-    
-    // Set extra headers
-    await page.setExtraHTTPHeaders({
-      'Accept-Language': 'en-US,en;q=0.9'
-    });
-    
     // Navigate to inventory page with retry logic
     console.log(`📍 Navigating to: ${INVENTORY_URL}`);
     
     let navigationSuccess = false;
     let retries = 3;
+    let lastError = null;
     
     while (!navigationSuccess && retries > 0) {
       try {
-        await page.goto(INVENTORY_URL, { 
-          waitUntil: 'domcontentloaded', // Less strict than networkidle2
-          timeout: 90000, // Increased timeout
-          waitForSelector: 'body' // Wait for body to exist
-        });
+        console.log(`Attempt ${4 - retries}/3...`);
+        
+        // Try navigation with multiple strategies
+        try {
+          await page.goto(INVENTORY_URL, { 
+            waitUntil: 'domcontentloaded',
+            timeout: 90000
+          });
+        } catch (gotoError) {
+          // If domcontentloaded fails, try load
+          console.log('domcontentloaded failed, trying load...');
+          await page.goto(INVENTORY_URL, { 
+            waitUntil: 'load',
+            timeout: 90000
+          });
+        }
+        
+        // Wait a bit for any dynamic content
+        await page.waitForTimeout(2000);
+        
+        // Verify we're on the right page
+        const currentUrl = page.url();
+        const pageTitle = await page.title();
+        console.log(`✅ Page loaded: ${pageTitle}`);
+        console.log(`📍 Current URL: ${currentUrl}`);
+        
         navigationSuccess = true;
-        console.log('✅ Page loaded successfully');
       } catch (error) {
+        lastError = error;
         retries--;
+        console.error(`❌ Navigation error: ${error.message}`);
         if (retries > 0) {
-          console.log(`⚠️  Navigation failed, retrying... (${retries} attempts left)`);
-          await page.waitForTimeout(2000);
-        } else {
-          throw new Error(`Failed to load page after 3 attempts: ${error.message}`);
+          console.log(`⚠️  Retrying... (${retries} attempts left)`);
+          await page.waitForTimeout(3000);
         }
       }
+    }
+    
+    if (!navigationSuccess) {
+      throw new Error(`Failed to load page after 3 attempts. Last error: ${lastError?.message || 'Unknown error'}`);
     }
     
     // Wait for listings to load - try multiple strategies
