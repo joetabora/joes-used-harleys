@@ -8,11 +8,12 @@ export async function getPayloadClient() {
   }
 
   try {
-    // Import getPayload from payload/payload subpath
-    const { getPayload } = await import('payload/payload');
+    // Import Payload module
+    const payloadModule = await import('payload');
+    const getPayload = payloadModule.getPayload;
     
     if (!getPayload || typeof getPayload !== 'function') {
-      throw new Error('getPayload is not a function');
+      throw new Error('getPayload is not a function. Available exports: ' + Object.keys(payloadModule).join(', '));
     }
     
     cachedPayload = await getPayload({ 

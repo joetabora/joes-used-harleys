@@ -9,11 +9,24 @@ async function getPayloadInstance() {
   }
 
   try {
-    // Import getPayload from payload/payload subpath (as per type definitions)
-    const { getPayload } = await import('payload/payload');
+    // Import Payload and use getPayload from the main export
+    const payloadModule = await import('payload');
+    
+    // getPayload should be available as a named export
+    const getPayload = payloadModule.getPayload;
     
     if (!getPayload || typeof getPayload !== 'function') {
-      throw new Error('getPayload is not a function');
+      // Fallback: try using Payload class directly
+      const Payload = payloadModule.Payload || payloadModule.default;
+      if (Payload && typeof Payload.prototype?.init === 'function') {
+        const instance = new Payload();
+        cachedPayload = await instance.init({
+          config,
+          secret: process.env.PAYLOAD_SECRET || '',
+        });
+        return cachedPayload;
+      }
+      throw new Error('getPayload not found. Available: ' + Object.keys(payloadModule).join(', '));
     }
     
     cachedPayload = await getPayload({ 
