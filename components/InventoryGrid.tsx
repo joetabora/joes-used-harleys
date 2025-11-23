@@ -141,11 +141,6 @@ export function InventoryGrid() {
               <div className="details">
                 <h3 itemProp="name">{bike.name}</h3>
                 <p 
-                  className="specs" 
-                  itemProp="description"
-                  dangerouslySetInnerHTML={{ __html: specsFormatted }}
-                />
-                <p 
                   className="price" 
                   itemScope 
                   itemProp="offers" 
