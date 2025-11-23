@@ -43,7 +43,14 @@ export async function GET() {
     });
 
     if (!response.ok) {
-      throw new Error(`Airtable API error: ${response.status} ${response.statusText}`);
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.error('Airtable API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+        url: url.replace(apiKey, 'HIDDEN'),
+      });
+      throw new Error(`Airtable API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
