@@ -80,12 +80,9 @@ export async function GET() {
     // Transform Airtable data to match InventoryGrid interface
     const transformedBikes = records
       .filter((record) => {
-        // Check for Name field (case-insensitive)
-        const hasName = record.fields.Name || 
-                       record.fields.name || 
-                       record.fields['A Name'] ||
-                       Object.keys(record.fields).find(key => key.toLowerCase() === 'name');
-        return hasName;
+        // Include record if it has any data - we'll build name from Year + Model if needed
+        const hasData = Object.keys(record.fields).length > 0;
+        return hasData;
       })
       .map((record) => {
         // Get field values (try multiple possible field names)
@@ -109,7 +106,10 @@ export async function GET() {
           );
           return fieldKey ? record.fields[fieldKey as keyof typeof record.fields] : undefined;
         };
-        const name = getName();
+        // Build name from available fields
+        const name = getName() || 
+          `${year || ''} ${model ? `Harley-Davidson ${model}` : 'Harley-Davidson'}`.trim() ||
+          'Harley-Davidson Motorcycle';
         
         // Get image URL - try multiple field names
         const imageField = getField(['Image', 'image', 'Images', 'images', 'Photo', 'photo']) as any;
