@@ -40,7 +40,8 @@ export async function GET(
     }
 
     // Fetch single record from Airtable by ID
-    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}/${bikeId}`;
+    // Airtable record IDs can contain special characters, so we need to URL-encode them
+    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}/${encodeURIComponent(bikeId)}`;
     
     console.log('Fetching bike from Airtable:', {
       bikeId: bikeId,
