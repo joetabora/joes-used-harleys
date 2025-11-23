@@ -1,61 +1,101 @@
 import { NextResponse } from 'next/server';
-import { getPayloadClient } from '@/lib/payload';
 
 // Make this route dynamic - don't try to generate it at build time
 export const dynamic = 'force-dynamic';
 
+interface AirtableRecord {
+  id: string;
+  fields: {
+    Name?: string;
+    Year?: number;
+    Model?: string;
+    Mileage?: number;
+    Price?: number;
+    'Price Formatted'?: string;
+    Specs?: string;
+    Image?: Array<{ url: string; thumbnails?: { large?: { url: string } } }>;
+    Financing?: string;
+    Featured?: boolean;
+    'Just Arrived'?: boolean;
+  };
+}
+
 export async function GET() {
   try {
-    // Check if Payload is configured
-    if (!process.env.PAYLOAD_SECRET || !process.env.DATABASE_URI) {
-      console.log('Payload not configured, returning empty bikes array');
+    // Check if Airtable is configured
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const apiKey = process.env.AIRTABLE_API_KEY;
+    const tableName = process.env.AIRTABLE_TABLE_NAME || 'Table 1';
+
+    if (!baseId || !apiKey) {
+      console.log('Airtable not configured, returning empty bikes array');
       return NextResponse.json({ bikes: [] });
     }
 
-    const payload = await getPayloadClient();
+    // Fetch from Airtable
+    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}?maxRecords=100&view=Grid%20view`;
     
-    const bikes = await payload.find({
-      collection: 'bikes',
-      limit: 100,
-      sort: '-createdAt',
-      depth: 2, // Populate image relation
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      next: { revalidate: 60 }, // Cache for 60 seconds
     });
 
-    // Transform Payload data to match InventoryGrid interface
-    const transformedBikes = bikes.docs.map((bike: any) => {
-      // Handle image URL - Payload stores images with different structures
-      let imageUrl = '';
-      if (typeof bike.image === 'string') {
-        // If image is just an ID, we need to fetch it
-        imageUrl = '';
-      } else if (bike.image?.url) {
-        imageUrl = bike.image.url;
-      } else if (bike.image?.sizes?.large?.url) {
-        imageUrl = bike.image.sizes.large.url;
-      } else if (bike.image?.filename) {
-        // Construct URL from filename
-        const serverUrl = process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000';
-        imageUrl = `${serverUrl}/media/${bike.image.filename}`;
-      }
-      
-      return {
-        id: bike.id,
-        name: bike.name,
-        image: imageUrl,
-        specs: bike.specs || '',
-        price: bike.price,
-        priceFormatted: bike.priceFormatted,
-        financing: bike.financing || '',
-        featured: bike.featured || false,
-        justArrived: bike.justArrived || false,
-      };
-    });
+    if (!response.ok) {
+      throw new Error(`Airtable API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const records: AirtableRecord[] = data.records || [];
+
+    // Transform Airtable data to match InventoryGrid interface
+    const transformedBikes = records
+      .filter((record) => record.fields.Name) // Only include records with a name
+      .map((record) => {
+        // Get image URL - use first image if available
+        let imageUrl = '';
+        if (record.fields.Image && record.fields.Image.length > 0) {
+          const image = record.fields.Image[0];
+          // Try large thumbnail first, then full URL
+          imageUrl = image.thumbnails?.large?.url || image.url || '';
+        }
+
+        // Build name if not provided
+        const name = record.fields.Name || 
+          `${record.fields.Year || ''} ${record.fields.Model || 'Harley-Davidson'}`.trim();
+
+        // Build specs if not provided
+        const specs = record.fields.Specs || 
+          [
+            record.fields.Year && `${record.fields.Year}`,
+            record.fields.Model && `Harley-Davidson ${record.fields.Model}`,
+            record.fields.Mileage && `${record.fields.Mileage.toLocaleString()} miles`,
+          ]
+            .filter(Boolean)
+            .join(' • ') || '';
+
+        // Get price formatted
+        const priceFormatted = record.fields['Price Formatted'] || 
+          (record.fields.Price ? `$${record.fields.Price.toLocaleString()}` : 'Call for price');
+
+        return {
+          id: record.id,
+          name: name,
+          image: imageUrl,
+          specs: specs,
+          price: record.fields.Price || 0,
+          priceFormatted: priceFormatted,
+          financing: record.fields.Financing || '',
+          featured: record.fields.Featured || false,
+          justArrived: record.fields['Just Arrived'] || false,
+        };
+      });
 
     return NextResponse.json({ bikes: transformedBikes });
   } catch (error) {
-    console.error('Error fetching bikes:', error);
+    console.error('Error fetching bikes from Airtable:', error);
     // Return empty array on error so frontend doesn't break
     return NextResponse.json({ bikes: [] }, { status: 200 });
   }
 }
-
