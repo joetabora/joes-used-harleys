@@ -44,8 +44,9 @@ async function getBike(id: string): Promise<Bike | null> {
   }
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const bike = await getBike(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const bike = await getBike(id);
   
   if (!bike) {
     return {
@@ -71,8 +72,9 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   });
 }
 
-export default async function BikeDetailPage({ params }: { params: { id: string } }) {
-  const bike = await getBike(params.id);
+export default async function BikeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const bike = await getBike(id);
 
   if (!bike) {
     notFound();

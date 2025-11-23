@@ -22,15 +22,15 @@ interface AirtableRecord {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id: bikeId } = await params;
     const baseId = process.env.AIRTABLE_BASE_ID;
     const apiKey = process.env.AIRTABLE_API_KEY;
     const tableId = process.env.AIRTABLE_TABLE_ID;
     const tableName = process.env.AIRTABLE_TABLE_NAME || 'Table 1';
     const tableIdentifier = tableId || tableName;
-    const bikeId = params.id;
 
     if (!baseId || !apiKey) {
       return NextResponse.json(
