@@ -56,26 +56,13 @@ export default function HomePage() {
           />
           <h1 style={{ 
             fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', 
-            marginBottom: '1.5rem', 
+            marginBottom: '2rem', 
             color: 'var(--text)',
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.9)',
             lineHeight: '1.1'
           }}>
             Used Harley-Davidsons for Sale in Milwaukee
           </h1>
-          <div style={{ 
-            marginBottom: '2rem',
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
-            <CTAButton 
-              href="/inventory" 
-              variant="primary" 
-              aria-label="View our complete inventory of used Harley-Davidson motorcycles for sale in Milwaukee"
-            >
-              View Inventory
-            </CTAButton>
-          </div>
           <div style={{ 
             maxWidth: '800px', 
             margin: '0 auto 3rem', 
@@ -102,6 +89,12 @@ export default function HomePage() {
       {/* SEO-Optimized Intro Block */}
       <SEOBlock
         headline="Find Your Perfect Used Harley in Milwaukee"
+        headlineCta={{
+          href: '/inventory',
+          text: 'View Inventory',
+          variant: 'primary',
+          ariaLabel: 'View our complete inventory of used Harley-Davidson motorcycles for sale in Milwaukee'
+        }}
         content={`When you're searching for a **used Harley Milwaukee** has to offer, you want more than just a motorcycle – you want a trusted partner who understands the Milwaukee riding community and delivers exceptional value. At Joe's Used Harleys, we specialize in connecting Milwaukee riders with premium pre-owned Harley-Davidson motorcycles that have been meticulously inspected, professionally maintained, and priced fairly. Our Milwaukee location at House Of Harley on W Layton Ave makes us the go-to destination for riders throughout southeastern Wisconsin who demand quality, transparency, and honest pricing.
 
 Finding a **Harley for sale Milwaukee** that meets your standards shouldn't require endless research or settling for questionable private sellers. Our inventory features low-mileage Street Glides, Road Glides, Softails, Sportsters, Dynas, and other popular models – each with complete service histories, Carfax reports, and our comprehensive 48-hour guarantee. Whether you're a first-time Harley owner or a seasoned rider looking to upgrade, we make the process simple: transparent pricing with no hidden fees, flexible financing options for all credit situations, and nationwide shipping for just $499.

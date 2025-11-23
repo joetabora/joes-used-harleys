@@ -22,6 +22,12 @@ interface SEOBlockProps {
     variant?: 'primary' | 'secondary';
     ariaLabel?: string;
   };
+  headlineCta?: {
+    href: string;
+    text: string;
+    variant?: 'primary' | 'secondary';
+    ariaLabel?: string;
+  };
   className?: string;
   background?: 'dark' | 'black' | 'gray';
   textAlign?: 'left' | 'center' | 'right';
@@ -32,6 +38,7 @@ export function SEOBlock({
   content,
   image,
   cta,
+  headlineCta,
   className = '',
   background = 'dark',
   textAlign = 'left',
@@ -66,12 +73,23 @@ export function SEOBlock({
             style={{
               color: 'var(--orange)',
               fontSize: 'clamp(2rem, 5vw, 3rem)',
-              marginBottom: '2rem',
+              marginBottom: headlineCta ? '1.5rem' : '2rem',
               lineHeight: '1.2',
             }}
           >
             {headline}
           </h2>
+          {headlineCta && (
+            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: textAlign === 'center' ? 'center' : textAlign === 'right' ? 'flex-end' : 'flex-start' }}>
+              <CTAButton
+                href={headlineCta.href}
+                variant={headlineCta.variant || 'primary'}
+                aria-label={headlineCta.ariaLabel || headlineCta.text}
+              >
+                {headlineCta.text}
+              </CTAButton>
+            </div>
+          )}
           <div
             style={{
               fontSize: 'clamp(1.1rem, 2vw, 1.25rem)',
