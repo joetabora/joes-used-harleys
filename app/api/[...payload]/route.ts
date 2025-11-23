@@ -12,7 +12,15 @@ async function getPayloadInstance() {
   }
 
   // Check if Payload is configured
-  if (!process.env.PAYLOAD_SECRET || !process.env.DATABASE_URI) {
+  const secret = process.env.PAYLOAD_SECRET;
+  const databaseUri = process.env.DATABASE_URI;
+  
+  if (!secret || !databaseUri) {
+    console.error('Payload configuration missing:', {
+      hasSecret: !!secret,
+      hasDatabaseUri: !!databaseUri,
+      envKeys: Object.keys(process.env).filter(k => k.includes('PAYLOAD') || k.includes('DATABASE')).join(', ')
+    });
     throw new Error('Payload not configured. Missing PAYLOAD_SECRET or DATABASE_URI');
   }
 
