@@ -118,7 +118,19 @@ export async function GET() {
           );
           return fieldKey ? record.fields[fieldKey as keyof typeof record.fields] : undefined;
         };
-        // Build name from available fields
+        
+        // Get all fields first (before using them)
+        const year = getField(['Year', 'year']) as number;
+        const model = getField(['Model', 'model']) as string;
+        const mileage = getField(['Mileage', 'mileage']) as number;
+        const price = getField(['Price', 'price']) as number;
+        const priceFormatted = getField(['Price Formatted', 'Price Formatted', 'priceFormatted']) as string;
+        const specs = getField(['Specs', 'specs', 'Specifications', 'specifications']) as string;
+        const financing = getField(['Financing', 'financing']) as string;
+        const featured = getField(['Featured', 'featured']) as boolean;
+        const justArrived = getField(['Just Arrived', 'justArrived', 'Just Arrived']) as boolean;
+        
+        // Build name from available fields (now that year and model are declared)
         const name = getName() || 
           `${year || ''} ${model ? `Harley-Davidson ${model}` : 'Harley-Davidson'}`.trim() ||
           'Harley-Davidson Motorcycle';
@@ -130,17 +142,6 @@ export async function GET() {
           const image = imageField[0];
           imageUrl = image.thumbnails?.large?.url || image.url || '';
         }
-
-        // Get other fields
-        const year = getField(['Year', 'year']) as number;
-        const model = getField(['Model', 'model']) as string;
-        const mileage = getField(['Mileage', 'mileage']) as number;
-        const price = getField(['Price', 'price']) as number;
-        const priceFormatted = getField(['Price Formatted', 'Price Formatted', 'priceFormatted']) as string;
-        const specs = getField(['Specs', 'specs', 'Specifications', 'specifications']) as string;
-        const financing = getField(['Financing', 'financing']) as string;
-        const featured = getField(['Featured', 'featured']) as boolean;
-        const justArrived = getField(['Just Arrived', 'justArrived', 'Just Arrived']) as boolean;
 
         // Build specs if not provided
         const finalSpecs = specs || 
