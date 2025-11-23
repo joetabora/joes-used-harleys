@@ -1,4 +1,3 @@
-import { getPayload } from 'payload/payload';
 import config from '@payload-config';
 
 let cachedPayload: any = null;
@@ -9,6 +8,8 @@ export async function getPayloadClient() {
   }
 
   try {
+    // Dynamic import to avoid module resolution issues
+    const { getPayload } = await import('payload');
     cachedPayload = await getPayload({ 
       config,
       secret: process.env.PAYLOAD_SECRET || '',
