@@ -9,11 +9,16 @@ async function getPayloadInstance() {
     return cachedPayload;
   }
 
-  cachedPayload = await getPayload({ 
-    config,
-    secret: process.env.PAYLOAD_SECRET || '',
-  });
-  return cachedPayload;
+  try {
+    cachedPayload = await getPayload({ 
+      config,
+      secret: process.env.PAYLOAD_SECRET || '',
+    });
+    return cachedPayload;
+  } catch (error) {
+    console.error('Error initializing Payload:', error);
+    throw error;
+  }
 }
 
 export async function GET(request: NextRequest) {
@@ -22,7 +27,10 @@ export async function GET(request: NextRequest) {
     return payload.router(request);
   } catch (error) {
     console.error('Payload GET error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Internal server error',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
 
@@ -32,6 +40,22 @@ export async function POST(request: NextRequest) {
     return payload.router(request);
   } catch (error) {
     console.error('Payload POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Internal server error',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
+}
+
+// Handle all HTTP methods for Payload
+export async function PUT(request: NextRequest) {
+  return GET(request);
+}
+
+export async function PATCH(request: NextRequest) {
+  return GET(request);
+}
+
+export async function DELETE(request: NextRequest) {
+  return GET(request);
 }

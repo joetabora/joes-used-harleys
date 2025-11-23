@@ -1,30 +1,11 @@
-'use client';
+// Payload admin is served through /api/[...payload] route
+// This route needs to be a server component that proxies to the API
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-
-// Payload admin is served through the API route
-// This page redirects to the Payload admin endpoint
-export default function AdminPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Redirect to Payload admin API endpoint
-    const adminUrl = `${window.location.origin}/api/payload/admin`;
-    window.location.href = adminUrl;
-  }, []);
-
-  return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh',
-      background: '#000',
-      color: '#fff'
-    }}>
-      <p>Loading admin panel...</p>
-    </div>
-  );
+export default async function AdminPage() {
+  // The admin panel is actually served from /api/payload/admin
+  // But we want /admin to work, so we'll redirect
+  redirect('/api/payload/admin');
 }
 
