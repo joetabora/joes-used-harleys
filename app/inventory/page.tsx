@@ -1,12 +1,8 @@
 import { setPageSEO } from '@/lib/seo';
 import { InventoryGrid } from '@/components/InventoryGrid';
-// Using InventoryGrid which fetches from Payload CMS via /api/bikes
-import { fetchAllMotorcycles } from '@/sanity/lib/queries';
-import { isSanityConfigured } from '@/sanity/lib/client';
 import { CTAButton } from '@/components/CTAButton';
 import { InternalLinks } from '@/components/InternalLinks';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 // Inventory page SEO - targeting "near me" and "cheap" keywords
 export const metadata: Metadata = setPageSEO({
