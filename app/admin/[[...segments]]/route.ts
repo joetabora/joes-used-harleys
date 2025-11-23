@@ -1,5 +1,5 @@
 // This route handles all admin requests and proxies them to Payload
-import { getPayload } from 'payload';
+import payload from 'payload';
 import config from '@payload-config';
 import { NextRequest } from 'next/server';
 
@@ -11,10 +11,14 @@ async function getPayloadInstance() {
   }
 
   try {
-    cachedPayload = await getPayload({ 
-      config,
-      secret: process.env.PAYLOAD_SECRET || '',
-    });
+    // Initialize Payload if not already initialized
+    if (!payload.initialized) {
+      await payload.init({
+        config,
+        secret: process.env.PAYLOAD_SECRET || '',
+      });
+    }
+    cachedPayload = payload;
     return cachedPayload;
   } catch (error) {
     console.error('Error initializing Payload:', error);
