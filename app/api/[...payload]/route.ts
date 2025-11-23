@@ -9,22 +9,11 @@ async function getPayloadInstance() {
   }
 
   try {
-    // Use dynamic import and check for getPayload in different export paths
-    const payloadModule = await import('payload');
+    // Import getPayload from payload/payload subpath (as per type definitions)
+    const { getPayload } = await import('payload/payload');
     
-    // Try different ways to get getPayload
-    let getPayload = payloadModule.getPayload;
-    if (!getPayload && payloadModule.default?.getPayload) {
-      getPayload = payloadModule.default.getPayload;
-    }
-    if (!getPayload) {
-      // Try importing from payload/payload subpath
-      const payloadSub = await import('payload/payload');
-      getPayload = payloadSub.getPayload;
-    }
-    
-    if (!getPayload) {
-      throw new Error('getPayload function not found in payload module');
+    if (!getPayload || typeof getPayload !== 'function') {
+      throw new Error('getPayload is not a function');
     }
     
     cachedPayload = await getPayload({ 
@@ -34,6 +23,7 @@ async function getPayloadInstance() {
     return cachedPayload;
   } catch (error) {
     console.error('Error initializing Payload:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
     throw error;
   }
 }

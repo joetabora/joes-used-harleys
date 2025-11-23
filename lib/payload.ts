@@ -8,8 +8,13 @@ export async function getPayloadClient() {
   }
 
   try {
-    // Dynamic import to avoid module resolution issues
-    const { getPayload } = await import('payload');
+    // Import getPayload from payload/payload subpath
+    const { getPayload } = await import('payload/payload');
+    
+    if (!getPayload || typeof getPayload !== 'function') {
+      throw new Error('getPayload is not a function');
+    }
+    
     cachedPayload = await getPayload({ 
       config,
       secret: process.env.PAYLOAD_SECRET || '',
