@@ -32,6 +32,7 @@ interface AirtableRecord {
   };
 }
 
+// GET - Fetch bikes from Airtable
 export async function GET() {
   try {
     // Check if Airtable is configured
@@ -192,5 +193,137 @@ export async function GET() {
     console.error('Error fetching bikes from Airtable:', error);
     // Return empty array on error so frontend doesn't break
     return NextResponse.json({ bikes: [] }, { status: 200 });
+  }
+}
+
+// POST - Create a new bike in Airtable
+export async function POST(request: Request) {
+  try {
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const apiKey = process.env.AIRTABLE_API_KEY;
+    const tableId = process.env.AIRTABLE_TABLE_ID;
+    const tableName = process.env.AIRTABLE_TABLE_NAME || 'Table 1';
+    const tableIdentifier = tableId || tableName;
+
+    if (!baseId || !apiKey) {
+      return NextResponse.json(
+        { error: 'Airtable not configured' },
+        { status: 500 }
+      );
+    }
+
+    const body = await request.json();
+    
+    // Map form data to Airtable field names
+    // Try to match common field name variations
+    const fields: any = {};
+    
+    // Name field - try multiple variations
+    if (body.name) {
+      fields.Name = body.name;
+      fields.name = body.name;
+      fields['A Name'] = body.name;
+    }
+    
+    // Year
+    if (body.year) {
+      fields.Year = parseInt(body.year);
+      fields.year = parseInt(body.year);
+    }
+    
+    // Model
+    if (body.model) {
+      fields.Model = body.model;
+      fields.model = body.model;
+    }
+    
+    // Mileage
+    if (body.mileage) {
+      fields.Mileage = parseInt(body.mileage);
+      fields.mileage = parseInt(body.mileage);
+    }
+    
+    // Price
+    if (body.price) {
+      fields.Price = parseInt(body.price);
+      fields.price = parseInt(body.price);
+    }
+    
+    // Price Formatted
+    if (body.priceFormatted) {
+      fields['Price Formatted'] = body.priceFormatted;
+      fields.priceFormatted = body.priceFormatted;
+    } else if (body.price) {
+      fields['Price Formatted'] = `$${parseInt(body.price).toLocaleString()}`;
+    }
+    
+    // Specs
+    if (body.specs) {
+      fields.Specs = body.specs;
+      fields.specs = body.specs;
+    }
+    
+    // Financing
+    if (body.financing) {
+      fields.Financing = body.financing;
+      fields.financing = body.financing;
+    }
+    
+    // Featured
+    if (body.featured !== undefined) {
+      fields.Featured = body.featured;
+      fields.featured = body.featured;
+    }
+    
+    // Just Arrived
+    if (body.justArrived !== undefined) {
+      fields['Just Arrived'] = body.justArrived;
+      fields.justArrived = body.justArrived;
+    }
+
+    // Create record in Airtable
+    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}`;
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        records: [
+          {
+            fields: fields,
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.error('Airtable create error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      return NextResponse.json(
+        { error: `Failed to create bike: ${response.statusText}`, details: errorText },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
+    
+    return NextResponse.json({
+      success: true,
+      id: data.records[0]?.id,
+      message: 'Bike added successfully!',
+    });
+  } catch (error) {
+    console.error('Error creating bike in Airtable:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
   }
 }
