@@ -1,62 +1,41 @@
-// This route handles all admin requests and proxies them to Payload
-import { getPayload } from 'payload';
-import config from '@payload-config';
+// Proxy admin requests to Payload API route
+// Payload admin is served through /api/[...payload]
 import { NextRequest } from 'next/server';
 
-let cachedPayload: any = null;
-
-async function getPayloadInstance() {
-  if (cachedPayload) {
-    return cachedPayload;
-  }
-
-  try {
-    cachedPayload = await getPayload({ 
-      config,
-      secret: process.env.PAYLOAD_SECRET || '',
-    });
-    return cachedPayload;
-  } catch (error) {
-    console.error('Error initializing Payload:', error);
-    throw error;
-  }
-}
-
 export async function GET(request: NextRequest) {
-  try {
-    const payload = await getPayloadInstance();
-    return payload.router(request);
-  } catch (error) {
-    console.error('Payload admin GET error:', error);
-    return new Response(
-      JSON.stringify({ 
-        error: 'Failed to load admin panel',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      }),
-      { 
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-  }
+  const url = new URL(request.url);
+  const apiPath = url.pathname.replace('/admin', '/api/payload');
+  const payloadUrl = new URL(apiPath, url.origin);
+  payloadUrl.search = url.search;
+  
+  // Forward request to Payload API
+  const response = await fetch(payloadUrl.toString(), {
+    method: 'GET',
+    headers: Object.fromEntries(request.headers.entries()),
+  });
+  
+  return new Response(response.body, {
+    status: response.status,
+    headers: Object.fromEntries(response.headers.entries()),
+  });
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    const payload = await getPayloadInstance();
-    return payload.router(request);
-  } catch (error) {
-    console.error('Payload admin POST error:', error);
-    return new Response(
-      JSON.stringify({ 
-        error: 'Failed to process request',
-        message: error instanceof Error ? error.message : 'Unknown error'
-      }),
-      { 
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-  }
+  const url = new URL(request.url);
+  const apiPath = url.pathname.replace('/admin', '/api/payload');
+  const payloadUrl = new URL(apiPath, url.origin);
+  payloadUrl.search = url.search;
+  
+  const body = await request.text();
+  
+  const response = await fetch(payloadUrl.toString(), {
+    method: 'POST',
+    headers: Object.fromEntries(request.headers.entries()),
+    body: body,
+  });
+  
+  return new Response(response.body, {
+    status: response.status,
+    headers: Object.fromEntries(response.headers.entries()),
+  });
 }
-
