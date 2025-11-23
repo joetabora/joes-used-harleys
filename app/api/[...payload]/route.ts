@@ -1,4 +1,4 @@
-import { getPayload } from 'payload';
+import { getPayload } from 'payload/payload';
 import config from '@payload-config';
 import { NextRequest, NextResponse } from 'next/server';
 
