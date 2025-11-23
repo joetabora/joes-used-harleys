@@ -212,7 +212,7 @@ async function scrapeInventory() {
   try {
     // Launch browser
     browser = await puppeteer.launch({
-      headless: true,
+      headless: 'new', // Use new headless mode
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     
@@ -232,50 +232,138 @@ async function scrapeInventory() {
     console.log('⏳ Waiting for listings to load...');
     await page.waitForTimeout(5000);
     
+    // Debug: Save page HTML to see what we're working with
+    const pageContent = await page.content();
+    console.log('📄 Page loaded, analyzing structure...');
+    
     // Try to find and click "Load More" or "Show All" buttons if they exist
     try {
-      const loadMoreButton = await page.$('button[class*="load"], button[class*="more"], a[class*="load"], a[class*="more"]');
-      if (loadMoreButton) {
-        console.log('📄 Clicking "Load More" to get all listings...');
-        await loadMoreButton.click();
-        await page.waitForTimeout(3000);
+      const loadMoreSelectors = [
+        'button[class*="load"]',
+        'button[class*="more"]',
+        'a[class*="load"]',
+        'a[class*="more"]',
+        'button:contains("Load More")',
+        'button:contains("Show More")',
+        '.load-more',
+        '#load-more'
+      ];
+      
+      for (const selector of loadMoreSelectors) {
+        try {
+          const button = await page.$(selector);
+          if (button) {
+            console.log(`📄 Clicking "Load More" button (${selector})...`);
+            await button.click();
+            await page.waitForTimeout(3000);
+            break;
+          }
+        } catch (e) {
+          // Continue to next selector
+        }
       }
     } catch (e) {
       // No load more button, that's fine
     }
     
-    // Find all listing elements
+    // Find all listing elements - try more comprehensive selectors
     console.log('🔍 Finding listing elements...');
     
-    // Try multiple selectors for listing cards
+    // Try multiple selectors for listing cards (expanded list)
     const listingSelectors = [
-      '.vehicle-card',
+      // Common Dealer.com/DealerSocket selectors
       '.inventory-item',
+      '.vehicle-card',
+      '.vehicle-listing',
+      '.inventory-card',
+      '.listing-card',
+      '[data-vehicle-id]',
+      '[data-inventory-id]',
+      // Generic selectors
       '.listing',
       '[class*="vehicle"]',
       '[class*="inventory"]',
       '[class*="listing"]',
+      '[class*="card"]',
+      'article[class*="vehicle"]',
+      'article[class*="inventory"]',
+      // Link-based selectors
+      'a[href*="/inventory/"]',
+      'a[href*="/vehicle/"]',
+      'a[href*="/motorcycle/"]',
+      'a[href*="/pre-owned/"]',
+      // Fallback
       'article',
-      '.card'
+      '.card',
+      '[role="article"]'
     ];
     
     let listingElements = [];
+    let usedSelector = '';
+    
     for (const selector of listingSelectors) {
-      listingElements = await page.$$(selector);
-      if (listingElements.length > 0) {
-        console.log(`✅ Found ${listingElements.length} listings using selector: ${selector}`);
-        break;
+      try {
+        listingElements = await page.$$(selector);
+        if (listingElements.length > 0) {
+          usedSelector = selector;
+          console.log(`✅ Found ${listingElements.length} listings using selector: ${selector}`);
+          break;
+        }
+      } catch (e) {
+        // Continue to next selector
       }
     }
     
+    // If still no listings, try to get all links and filter
     if (listingElements.length === 0) {
-      // Fallback: try to find all links that might be listings
-      listingElements = await page.$$('a[href*="inventory"], a[href*="vehicle"], a[href*="motorcycle"]');
-      console.log(`✅ Found ${listingElements.length} potential listing links`);
+      console.log('🔍 Trying alternative approach: finding all links...');
+      const allLinks = await page.$$('a[href]');
+      console.log(`Found ${allLinks.length} total links on page`);
+      
+      // Filter links that might be inventory listings
+      for (const link of allLinks) {
+        const href = await page.evaluate(el => el.href, link);
+        if (href && (
+          href.includes('/inventory/') ||
+          href.includes('/vehicle/') ||
+          href.includes('/motorcycle/') ||
+          href.includes('/pre-owned/') ||
+          href.match(/\/\d+\//) // URLs with numbers (common for vehicle IDs)
+        )) {
+          listingElements.push(link);
+        }
+      }
+      
+      if (listingElements.length > 0) {
+        console.log(`✅ Found ${listingElements.length} potential listing links`);
+      }
     }
     
+    // Debug: Log page structure if no listings found
     if (listingElements.length === 0) {
-      throw new Error('No listings found on page. The page structure may have changed.');
+      console.log('\n⚠️  DEBUG: No listings found. Analyzing page structure...');
+      
+      // Get some diagnostic info
+      const diagnostic = await page.evaluate(() => {
+        return {
+          title: document.title,
+          url: window.location.href,
+          bodyClasses: document.body.className,
+          hasInventory: document.body.innerHTML.includes('inventory'),
+          hasVehicle: document.body.innerHTML.includes('vehicle'),
+          linkCount: document.querySelectorAll('a').length,
+          articleCount: document.querySelectorAll('article').length,
+          divCount: document.querySelectorAll('div').length
+        };
+      });
+      
+      console.log('Page diagnostics:', JSON.stringify(diagnostic, null, 2));
+      
+      // Save screenshot for debugging
+      await page.screenshot({ path: 'debug-page.png', fullPage: true });
+      console.log('📸 Saved screenshot to debug-page.png for inspection');
+      
+      throw new Error('No listings found on page. The page structure may have changed. Check debug-page.png for reference.');
     }
     
     // Scrape each listing
