@@ -136,11 +136,28 @@ export async function GET() {
           'Harley-Davidson Motorcycle';
         
         // Get image URL - try multiple field names
-        const imageField = getField(['Image', 'image', 'Images', 'images', 'Photo', 'photo']) as any;
+        const imageField = getField(['Image', 'image', 'Images', 'images', 'Photo', 'photo', 'Attachment', 'attachment']) as any;
         let imageUrl = '';
-        if (imageField && Array.isArray(imageField) && imageField.length > 0) {
-          const image = imageField[0];
-          imageUrl = image.thumbnails?.large?.url || image.url || '';
+        if (imageField) {
+          if (Array.isArray(imageField) && imageField.length > 0) {
+            const image = imageField[0];
+            // Airtable attachment format: { url: string, thumbnails: { large: { url: string } } }
+            imageUrl = image.thumbnails?.large?.url || 
+                      image.thumbnails?.small?.url || 
+                      image.url || 
+                      (typeof image === 'string' ? image : '');
+          } else if (typeof imageField === 'string') {
+            imageUrl = imageField;
+          }
+        }
+        
+        // Log for debugging
+        if (!imageUrl && imageField) {
+          console.log('Image field found but no URL extracted:', {
+            imageFieldType: typeof imageField,
+            isArray: Array.isArray(imageField),
+            imageFieldKeys: imageField && typeof imageField === 'object' ? Object.keys(imageField) : 'not an object',
+          });
         }
 
         // Build specs if not provided
