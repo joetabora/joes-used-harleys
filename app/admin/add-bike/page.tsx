@@ -18,6 +18,21 @@ export default function AddBikePage() {
     featured: false,
     justArrived: false,
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,12 +41,33 @@ export default function AddBikePage() {
     setSuccess(false);
 
     try {
+      // Convert image to base64 if provided
+      let imageBase64 = null;
+      if (imageFile) {
+        imageBase64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64String = (reader.result as string).split(',')[1]; // Remove data:image/...;base64, prefix
+            resolve(base64String);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(imageFile);
+        });
+      }
+
       const response = await fetch('/api/bikes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          image: imageBase64 ? {
+            base64: imageBase64,
+            filename: imageFile?.name || 'bike.jpg',
+            contentType: imageFile?.type || 'image/jpeg',
+          } : null,
+        }),
       });
 
       const data = await response.json();
@@ -54,6 +90,8 @@ export default function AddBikePage() {
         featured: false,
         justArrived: false,
       });
+      setImageFile(null);
+      setImagePreview(null);
       
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000);
@@ -338,6 +376,52 @@ export default function AddBikePage() {
           />
         </div>
 
+        <div style={{ marginBottom: '1.5rem' }}>
+          <label style={{
+            display: 'block',
+            marginBottom: '0.5rem',
+            color: '#FF6600',
+            fontWeight: '600',
+          }}>
+            Bike Photo
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              background: '#000',
+              border: '1px solid #2A2A2A',
+              borderRadius: '6px',
+              color: '#fff',
+              fontSize: '1rem',
+              cursor: 'pointer',
+            }}
+          />
+          {imagePreview && (
+            <div style={{
+              marginTop: '1rem',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              border: '2px solid #FF6600',
+            }}>
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  maxHeight: '400px',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
+            </div>
+          )}
+        </div>
+
         <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem' }}>
           <label style={{
             display: 'flex',
@@ -407,7 +491,7 @@ export default function AddBikePage() {
           fontSize: '0.9rem',
           textAlign: 'center',
         }}>
-          Note: You'll need to add the image in Airtable after creating the bike.
+          💡 Tip: Upload a high-quality photo for best results. Images are automatically hosted and added to your inventory.
         </p>
       </form>
 

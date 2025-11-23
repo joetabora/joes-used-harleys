@@ -280,6 +280,45 @@ export async function POST(request: Request) {
       fields['Just Arrived'] = body.justArrived;
       fields.justArrived = body.justArrived;
     }
+    
+    // Image attachment - upload to Imgur first (free, no API key needed for basic uploads)
+    if (body.image && body.image.base64) {
+      try {
+        // Upload to Imgur (free image hosting)
+        const imgurResponse = await fetch('https://api.imgur.com/3/image', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Client-ID 546c25a59c58ad7', // Public Imgur client ID
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            image: body.image.base64,
+            type: 'base64',
+          }),
+        });
+
+        if (imgurResponse.ok) {
+          const imgurData = await imgurResponse.json();
+          const imageUrl = imgurData.data?.link;
+          
+          if (imageUrl) {
+            // Airtable attachment format: array of objects with url
+            fields.Image = [
+              {
+                url: imageUrl,
+                filename: body.image.filename,
+              },
+            ];
+            fields.image = fields.Image; // Also set lowercase version
+          }
+        } else {
+          console.warn('Imgur upload failed, continuing without image');
+        }
+      } catch (imgurError) {
+        console.warn('Error uploading to Imgur:', imgurError);
+        // Continue without image - user can add it manually in Airtable
+      }
+    }
 
     // Create record in Airtable
     const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}`;
