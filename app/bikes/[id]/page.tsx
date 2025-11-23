@@ -184,94 +184,31 @@ export default async function BikeDetailPage({ params }: { params: Promise<{ id:
       />
 
       {/* Breadcrumb Navigation */}
-      <nav style={{ 
-        padding: '1rem 1.5rem', 
-        background: 'var(--black)',
-        borderBottom: '1px solid var(--gray-light)'
-      }}>
-        <div style={{ 
-          maxWidth: '1400px', 
-          margin: '0 auto',
-          display: 'flex',
-          gap: '0.5rem',
-          alignItems: 'center',
-          fontSize: '0.9rem',
-          color: 'var(--text-light)'
-        }}>
-          <Link href="/" style={{ color: 'var(--orange)', textDecoration: 'none' }}>
-            Home
-          </Link>
+      <nav className="bike-detail-breadcrumb">
+        <div className="bike-detail-breadcrumb-content">
+          <Link href="/">Home</Link>
           <span>/</span>
-          <Link href="/inventory" style={{ color: 'var(--orange)', textDecoration: 'none' }}>
-            Inventory
-          </Link>
+          <Link href="/inventory">Inventory</Link>
           <span>/</span>
-          <span style={{ color: 'var(--text)' }}>{bike.name}</span>
+          <span>{bike.name}</span>
         </div>
       </nav>
 
       {/* Bike Detail Section */}
-      <section style={{ 
-        padding: '4rem 1.5rem', 
-        background: 'var(--dark)',
-        minHeight: '80vh'
-      }}>
-        <div style={{ 
-          maxWidth: '1400px', 
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: '3rem'
-        }}>
-          <div style={{ 
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gap: '3rem'
-          }}
-          className="bike-detail-grid"
-          >
+      <section className="bike-detail-page">
+        <div className="bike-detail-container">
+          <div className="bike-detail-grid">
             {/* Image Section */}
-            <div>
-              {bike.featured && (
-                <div style={{
-                  display: 'inline-block',
-                  padding: '0.5rem 1rem',
-                  background: 'var(--orange)',
-                  color: 'var(--black)',
-                  fontWeight: 'bold',
-                  fontSize: '0.8rem',
-                  letterSpacing: '1px',
-                  marginBottom: '1rem',
-                  borderRadius: '4px'
-                }}>
-                  FEATURED
-                </div>
-              )}
-              {bike.justArrived && (
-                <div style={{
-                  display: 'inline-block',
-                  padding: '0.5rem 1rem',
-                  background: 'var(--orange)',
-                  color: 'var(--black)',
-                  fontWeight: 'bold',
-                  fontSize: '0.8rem',
-                  letterSpacing: '1px',
-                  marginBottom: '1rem',
-                  marginLeft: bike.featured ? '0.5rem' : '0',
-                  borderRadius: '4px'
-                }}>
-                  JUST ARRIVED
-                </div>
-              )}
-              <div style={{
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '4/3',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                background: 'var(--black)',
-                border: '1px solid var(--gray-light)'
-              }}>
+            <div className="bike-detail-image-wrapper">
+              <div className="bike-detail-badges">
+                {bike.featured && (
+                  <div className="bike-detail-badge">FEATURED</div>
+                )}
+                {bike.justArrived && (
+                  <div className="bike-detail-badge just-arrived">JUST ARRIVED</div>
+                )}
+              </div>
+              <div className="bike-detail-image-container">
                 <Image
                   src={bike.image || '/placeholder-bike.jpg'}
                   alt={`${bike.name} for sale in Milwaukee, Wisconsin`}
@@ -284,73 +221,25 @@ export default async function BikeDetailPage({ params }: { params: Promise<{ id:
             </div>
 
             {/* Details Section */}
-            <div>
-              <h1 style={{
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                color: 'var(--text)',
-                marginBottom: '1rem',
-                lineHeight: '1.2'
-              }}>
-                {bike.name}
-              </h1>
+            <div className="bike-detail-info">
+              <h1 className="bike-detail-title">{bike.name}</h1>
 
               {/* Price */}
-              <div style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                color: 'var(--orange)',
-                fontWeight: 'bold',
-                marginBottom: '1.5rem'
-              }}>
-                {bike.priceFormatted}
-              </div>
+              <div className="bike-detail-price">{bike.priceFormatted}</div>
 
               {/* Financing */}
               {bike.financing && (
-                <p style={{
-                  fontSize: '1.2rem',
-                  color: 'var(--text-light)',
-                  marginBottom: '2rem',
-                  padding: '1rem',
-                  background: 'var(--black)',
-                  borderRadius: '8px',
-                  border: '1px solid var(--gray-light)'
-                }}>
-                  <strong style={{ color: 'var(--orange)' }}>Financing:</strong> {bike.financing}
+                <p className="bike-detail-financing">
+                  <strong>Financing:</strong> {bike.financing}
                 </p>
               )}
 
               {/* Specs */}
-              <div style={{
-                marginBottom: '2rem',
-                padding: '1.5rem',
-                background: 'var(--black)',
-                borderRadius: '8px',
-                border: '1px solid var(--gray-light)'
-              }}>
-                <h2 style={{
-                  fontSize: '1.5rem',
-                  color: 'var(--orange)',
-                  marginBottom: '1rem'
-                }}>
-                  Specifications
-                </h2>
-                <ul style={{
-                  listStyle: 'none',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem'
-                }}>
+              <div className="bike-detail-specs">
+                <h2>Specifications</h2>
+                <ul className="bike-detail-specs-list">
                   {specsArray.map((spec, index) => (
-                    <li key={index} style={{
-                      color: 'var(--text-light)',
-                      fontSize: '1.1rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem'
-                    }}>
-                      <span style={{ color: 'var(--orange)', fontSize: '1.2rem' }}>•</span>
+                    <li key={index} className="bike-detail-spec-item">
                       {spec}
                     </li>
                   ))}
@@ -358,12 +247,7 @@ export default async function BikeDetailPage({ params }: { params: Promise<{ id:
               </div>
 
               {/* Action Buttons */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                marginBottom: '2rem'
-              }}>
+              <div className="bike-detail-actions">
                 <CTAButton 
                   href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} - ${bike.priceFormatted}`}
                   variant="primary"
@@ -379,62 +263,19 @@ export default async function BikeDetailPage({ params }: { params: Promise<{ id:
               </div>
 
               {/* Why Buy Section */}
-              <div style={{
-                padding: '1.5rem',
-                background: 'var(--black)',
-                borderRadius: '8px',
-                border: '1px solid var(--gray-light)',
-                marginBottom: '2rem'
-              }}>
-                <h3 style={{
-                  fontSize: '1.3rem',
-                  color: 'var(--orange)',
-                  marginBottom: '1rem'
-                }}>
-                  Why Buy From Joe&apos;s?
-                </h3>
-                <ul style={{
-                  listStyle: 'none',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem'
-                }}>
-                  <li style={{ color: 'var(--text-light)', display: 'flex', gap: '0.5rem' }}>
-                    <span style={{ color: 'var(--orange)' }}>✓</span>
-                    <span>48-hour money-back guarantee</span>
-                  </li>
-                  <li style={{ color: 'var(--text-light)', display: 'flex', gap: '0.5rem' }}>
-                    <span style={{ color: 'var(--orange)' }}>✓</span>
-                    <span>Full warranty included</span>
-                  </li>
-                  <li style={{ color: 'var(--text-light)', display: 'flex', gap: '0.5rem' }}>
-                    <span style={{ color: 'var(--orange)' }}>✓</span>
-                    <span>Complete service history & Carfax</span>
-                  </li>
-                  <li style={{ color: 'var(--text-light)', display: 'flex', gap: '0.5rem' }}>
-                    <span style={{ color: 'var(--orange)' }}>✓</span>
-                    <span>Bad credit financing available</span>
-                  </li>
-                  <li style={{ color: 'var(--text-light)', display: 'flex', gap: '0.5rem' }}>
-                    <span style={{ color: 'var(--orange)' }}>✓</span>
-                    <span>$499 nationwide shipping</span>
-                  </li>
+              <div className="bike-detail-why-buy">
+                <h3>Why Buy From Joe&apos;s?</h3>
+                <ul className="bike-detail-why-buy-list">
+                  <li className="bike-detail-why-buy-item">48-hour money-back guarantee</li>
+                  <li className="bike-detail-why-buy-item">Full warranty included</li>
+                  <li className="bike-detail-why-buy-item">Complete service history & Carfax</li>
+                  <li className="bike-detail-why-buy-item">Bad credit financing available</li>
+                  <li className="bike-detail-why-buy-item">$499 nationwide shipping</li>
                 </ul>
               </div>
 
               {/* Back Link */}
-              <Link 
-                href="/inventory"
-                style={{
-                  display: 'inline-block',
-                  color: 'var(--orange)',
-                  textDecoration: 'none',
-                  fontSize: '1rem',
-                  fontWeight: '600'
-                }}
-              >
+              <Link href="/inventory" className="bike-detail-back-link">
                 ← Back to Inventory
               </Link>
             </div>
@@ -443,33 +284,17 @@ export default async function BikeDetailPage({ params }: { params: Promise<{ id:
       </section>
 
       {/* SEO Content Section */}
-      <section style={{
-        padding: '4rem 1.5rem',
-        background: 'var(--black)',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
-        <div style={{
-          maxWidth: '900px',
-          margin: '0 auto',
-          color: 'var(--text-light)',
-          lineHeight: '1.8'
-        }}>
-          <h2 style={{
-            color: 'var(--orange)',
-            fontSize: 'clamp(2rem, 5vw, 2.5rem)',
-            marginBottom: '2rem'
-          }}>
-            {bike.name} for Sale in Milwaukee
-          </h2>
-          <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
+      <section className="bike-detail-seo-section">
+        <div className="bike-detail-seo-content">
+          <h2>{bike.name} for Sale in Milwaukee</h2>
+          <p>
             This <strong>used {bike.name}</strong> is available now at Joe&apos;s Used Harleys in Milwaukee, Wisconsin. 
             {bike.mileage && ` With only ${bike.mileage.toLocaleString()} miles, `}
             This pre-owned Harley-Davidson motorcycle has been thoroughly inspected and is ready to ride.
           </p>
-          <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
+          <p>
             Located at House of Harley, 6221 W Layton Ave, Milwaukee, WI 53220. 
-            Contact Joe directly at <a href="tel:4144396211" style={{ color: 'var(--orange)' }}>(414) 439-6211</a> to schedule a test ride or ask any questions.
+            Contact Joe directly at <a href="tel:4144396211">(414) 439-6211</a> to schedule a test ride or ask any questions.
           </p>
         </div>
       </section>
