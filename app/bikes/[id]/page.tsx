@@ -23,16 +23,31 @@ interface Bike {
 
 async function getBike(id: string): Promise<Bike | null> {
   try {
-    // For server-side rendering, we need an absolute URL
-    // In production, use the actual domain, in dev use localhost
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+    // For server-side rendering, construct the API URL
+    // Try multiple fallbacks to ensure we get the right URL
+    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
     
-    const apiUrl = `${baseUrl}/api/bikes/${id}`;
+    if (!baseUrl) {
+      // In Vercel, use VERCEL_URL if available
+      if (process.env.VERCEL_URL) {
+        baseUrl = `https://${process.env.VERCEL_URL}`;
+      } else if (process.env.VERCEL) {
+        // Fallback for Vercel deployments
+        baseUrl = 'https://joes-used-harleys.vercel.app';
+      } else {
+        // Local development
+        baseUrl = 'http://localhost:3000';
+      }
+    }
+    
+    const apiUrl = `${baseUrl}/api/bikes/${encodeURIComponent(id)}`;
     console.log('Fetching bike from:', apiUrl, 'Bike ID:', id);
     
     const response = await fetch(apiUrl, {
       next: { revalidate: 60 },
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!response.ok) {
@@ -42,6 +57,7 @@ async function getBike(id: string): Promise<Bike | null> {
         statusText: response.statusText,
         error: errorText,
         bikeId: id,
+        apiUrl: apiUrl,
       });
       return null;
     }
