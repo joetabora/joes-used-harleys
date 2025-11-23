@@ -10,7 +10,8 @@
     "payload": "payload",
     "payload:generate:types": "payload generate:types",
     "payload:generate:importmap": "payload generate:importmap",
-    "scrape": "node scripts/scrape-house-of-harley.js"
+    "scrape": "node scripts/scrape-house-of-harley.js",
+    "fetch-inventory": "node scripts/fetch-inventory-api.js"
   },
   "keywords": [
     "harley",
