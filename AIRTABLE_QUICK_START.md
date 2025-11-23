@@ -7,14 +7,18 @@
    - Use Google, Apple, or email to sign up (100% free)
 
 2. **Create a new base**
-   - After logging in, you'll see your workspace
-   - Click the big **"+ Add a base"** button (or the **"+"** icon)
-   - Select **"Start from scratch"** (don't use a template)
+   - After logging in, look for the **"+ Create"** button (usually at the top or in the left sidebar)
+   - Click **"+ Create"**
+   - You'll see 3 options:
+     - ❌ "Build an app with Omni" (AI-powered - skip this)
+     - ❌ "Start with a managed app" (Enterprise only - skip this)
+     - ✅ **"Build an app on your own"** ← **Click this one!**
 
 3. **Name your base**
-   - Click "Untitled Base" at the top
+   - You'll be prompted to name it
    - Type: **"Joe's Used Harleys Inventory"**
-   - Press Enter
+   - Choose a color/icon if you want (optional)
+   - Click **"Create base"** or **"Continue"**
 
 ✅ **You now have a base!** You should see a table with columns like "Name" and "Notes"
 
