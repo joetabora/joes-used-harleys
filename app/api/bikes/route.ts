@@ -25,15 +25,18 @@ export async function GET() {
     // Check if Airtable is configured
     const baseId = process.env.AIRTABLE_BASE_ID;
     const apiKey = process.env.AIRTABLE_API_KEY;
+    // Try table ID first, then table name
+    const tableId = process.env.AIRTABLE_TABLE_ID;
     const tableName = process.env.AIRTABLE_TABLE_NAME || 'Table 1';
+    const tableIdentifier = tableId || tableName;
 
     if (!baseId || !apiKey) {
       console.log('Airtable not configured, returning empty bikes array');
       return NextResponse.json({ bikes: [] });
     }
 
-    // Fetch from Airtable
-    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}?maxRecords=100&view=Grid%20view`;
+    // Fetch from Airtable - use table ID if available, otherwise table name
+    const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableIdentifier)}?maxRecords=100`;
     
     const response = await fetch(url, {
       headers: {
@@ -48,9 +51,20 @@ export async function GET() {
         status: response.status,
         statusText: response.statusText,
         error: errorText,
-        url: url.replace(apiKey, 'HIDDEN'),
+        baseId: baseId,
+        tableIdentifier: tableIdentifier,
+        hasApiKey: !!apiKey,
       });
-      throw new Error(`Airtable API error: ${response.status} ${response.statusText} - ${errorText}`);
+      // Return error details in response for debugging
+      return NextResponse.json({ 
+        bikes: [],
+        error: `Airtable API error: ${response.status} ${response.statusText}`,
+        details: errorText,
+        debug: {
+          baseId: baseId,
+          tableIdentifier: tableIdentifier,
+        }
+      }, { status: response.status });
     }
 
     const data = await response.json();
