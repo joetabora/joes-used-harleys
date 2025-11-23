@@ -6,17 +6,29 @@ export const dynamic = 'force-dynamic';
 interface AirtableRecord {
   id: string;
   fields: {
+    [key: string]: any; // Allow any field names for flexibility
     Name?: string;
+    name?: string;
+    'A Name'?: string;
     Year?: number;
+    year?: number;
     Model?: string;
+    model?: string;
     Mileage?: number;
+    mileage?: number;
     Price?: number;
+    price?: number;
     'Price Formatted'?: string;
     Specs?: string;
+    specs?: string;
     Image?: Array<{ url: string; thumbnails?: { large?: { url: string } } }>;
+    image?: Array<{ url: string; thumbnails?: { large?: { url: string } } }>;
     Financing?: string;
+    financing?: string;
     Featured?: boolean;
+    featured?: boolean;
     'Just Arrived'?: boolean;
+    justArrived?: boolean;
   };
 }
 
