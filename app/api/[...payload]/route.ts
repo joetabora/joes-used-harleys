@@ -45,6 +45,19 @@ async function getPayloadInstance() {
   }
 }
 
+// Convert NextRequest to Express-compatible format
+function createExpressRequest(nextRequest: NextRequest) {
+  const url = new URL(nextRequest.url);
+  return {
+    method: nextRequest.method,
+    url: url.pathname + url.search,
+    headers: Object.fromEntries(nextRequest.headers.entries()),
+    body: null, // Will be handled separately for POST/PUT
+    query: Object.fromEntries(url.searchParams.entries()),
+    params: {},
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const payload = await getPayloadInstance();
@@ -71,18 +84,19 @@ export async function POST(request: NextRequest) {
   try {
     const payload = await getPayloadInstance();
     
-    // Check if router exists and is callable
-    if (!payload.router) {
-      console.error('Payload router not available. Payload instance keys:', Object.keys(payload));
-      throw new Error('Payload router is not available');
-    }
+    const url = new URL(request.url);
+    const path = url.pathname.replace('/api/payload', '') || '/';
+    const body = await request.json().catch(() => ({}));
     
-    // Try calling router as a function
-    if (typeof payload.router === 'function') {
-      return await payload.router(request);
-    }
+    // Handle different Payload API endpoints
+    // This is a simplified implementation - full router would require Express adapter
     
-    throw new Error(`Payload router is not a function. Type: ${typeof payload.router}`);
+    return NextResponse.json({ 
+      error: 'Endpoint not implemented',
+      message: 'Use Payload collection methods directly instead of router',
+      path: path
+    }, { status: 404 });
+    
   } catch (error) {
     console.error('Payload POST error:', error);
     return NextResponse.json({ 
