@@ -70,46 +70,90 @@ export async function GET() {
     const data = await response.json();
     const records: AirtableRecord[] = data.records || [];
 
+    // Log for debugging
+    console.log('Airtable response:', {
+      recordCount: records.length,
+      firstRecordFields: records[0]?.fields ? Object.keys(records[0].fields) : 'no records',
+      firstRecordName: records[0]?.fields?.Name || 'no name field',
+    });
+
     // Transform Airtable data to match InventoryGrid interface
     const transformedBikes = records
-      .filter((record) => record.fields.Name) // Only include records with a name
+      .filter((record) => {
+        // Check for Name field (case-insensitive)
+        const hasName = record.fields.Name || 
+                       record.fields.name || 
+                       record.fields['A Name'] ||
+                       Object.keys(record.fields).find(key => key.toLowerCase() === 'name');
+        return hasName;
+      })
       .map((record) => {
-        // Get image URL - use first image if available
+        // Get field values (try multiple possible field names)
+        const getName = () => {
+          return record.fields.Name || 
+                 record.fields.name || 
+                 record.fields['A Name'] ||
+                 record.fields[Object.keys(record.fields).find(key => key.toLowerCase() === 'name') || ''] ||
+                 `${record.fields.Year || ''} ${record.fields.Model || record.fields.model || 'Harley-Davidson'}`.trim();
+        };
+        
+        const getField = (possibleNames: string[]) => {
+          for (const name of possibleNames) {
+            if (record.fields[name as keyof typeof record.fields] !== undefined) {
+              return record.fields[name as keyof typeof record.fields];
+            }
+          }
+          // Try case-insensitive match
+          const fieldKey = Object.keys(record.fields).find(key => 
+            possibleNames.some(n => key.toLowerCase() === n.toLowerCase())
+          );
+          return fieldKey ? record.fields[fieldKey as keyof typeof record.fields] : undefined;
+        };
+        const name = getName();
+        
+        // Get image URL - try multiple field names
+        const imageField = getField(['Image', 'image', 'Images', 'images', 'Photo', 'photo']) as any;
         let imageUrl = '';
-        if (record.fields.Image && record.fields.Image.length > 0) {
-          const image = record.fields.Image[0];
-          // Try large thumbnail first, then full URL
+        if (imageField && Array.isArray(imageField) && imageField.length > 0) {
+          const image = imageField[0];
           imageUrl = image.thumbnails?.large?.url || image.url || '';
         }
 
-        // Build name if not provided
-        const name = record.fields.Name || 
-          `${record.fields.Year || ''} ${record.fields.Model || 'Harley-Davidson'}`.trim();
+        // Get other fields
+        const year = getField(['Year', 'year']) as number;
+        const model = getField(['Model', 'model']) as string;
+        const mileage = getField(['Mileage', 'mileage']) as number;
+        const price = getField(['Price', 'price']) as number;
+        const priceFormatted = getField(['Price Formatted', 'Price Formatted', 'priceFormatted']) as string;
+        const specs = getField(['Specs', 'specs', 'Specifications', 'specifications']) as string;
+        const financing = getField(['Financing', 'financing']) as string;
+        const featured = getField(['Featured', 'featured']) as boolean;
+        const justArrived = getField(['Just Arrived', 'justArrived', 'Just Arrived']) as boolean;
 
         // Build specs if not provided
-        const specs = record.fields.Specs || 
+        const finalSpecs = specs || 
           [
-            record.fields.Year && `${record.fields.Year}`,
-            record.fields.Model && `Harley-Davidson ${record.fields.Model}`,
-            record.fields.Mileage && `${record.fields.Mileage.toLocaleString()} miles`,
+            year && `${year}`,
+            model && `Harley-Davidson ${model}`,
+            mileage && `${mileage.toLocaleString()} miles`,
           ]
             .filter(Boolean)
             .join(' • ') || '';
 
         // Get price formatted
-        const priceFormatted = record.fields['Price Formatted'] || 
-          (record.fields.Price ? `$${record.fields.Price.toLocaleString()}` : 'Call for price');
+        const finalPriceFormatted = priceFormatted || 
+          (price ? `$${price.toLocaleString()}` : 'Call for price');
 
         return {
           id: record.id,
           name: name,
           image: imageUrl,
-          specs: specs,
-          price: record.fields.Price || 0,
-          priceFormatted: priceFormatted,
-          financing: record.fields.Financing || '',
-          featured: record.fields.Featured || false,
-          justArrived: record.fields['Just Arrived'] || false,
+          specs: finalSpecs,
+          price: price || 0,
+          priceFormatted: finalPriceFormatted,
+          financing: financing || '',
+          featured: featured || false,
+          justArrived: justArrived || false,
         };
       });
 
