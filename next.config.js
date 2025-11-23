@@ -45,6 +45,15 @@ const nextConfig = {
         ];
       }
     }
+    
+    // Disable pino-pretty in production to fix logging errors
+    if (process.env.NODE_ENV === 'production') {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'pino-pretty': false,
+      };
+    }
+    
     return config;
   },
 };
