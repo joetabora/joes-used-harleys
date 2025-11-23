@@ -420,6 +420,19 @@ h1, h2, h3 {
   }
 }
 
+/* Bike Detail Page Grid */
+.bike-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .bike-detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 /* Bike Card with Flip/Glow Effect */
     .bike {
       background: var(--gray);

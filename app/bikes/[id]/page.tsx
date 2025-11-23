@@ -129,20 +129,13 @@ export default async function BikeDetailPage({ params }: { params: { id: string 
           gridTemplateColumns: '1fr',
           gap: '3rem'
         }}>
-          {/* Mobile-first: stack on small screens */}
-          <style jsx>{`
-            @media (min-width: 1024px) {
-              .bike-detail-grid {
-                grid-template-columns: 1fr 1fr !important;
-              }
-            }
-          `}</style>
-
-          <div className="bike-detail-grid" style={{ 
+          <div style={{ 
             display: 'grid',
             gridTemplateColumns: '1fr',
             gap: '3rem'
-          }}>
+          }}
+          className="bike-detail-grid"
+          >
             {/* Image Section */}
             <div>
               {bike.featured && (
