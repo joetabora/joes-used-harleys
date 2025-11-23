@@ -1,8 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getPayloadClient } from '@/lib/payload';
 
+// Make this route dynamic - don't try to generate it at build time
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
+    // Check if Payload is configured
+    if (!process.env.PAYLOAD_SECRET || !process.env.DATABASE_URI) {
+      console.log('Payload not configured, returning empty bikes array');
+      return NextResponse.json({ bikes: [] });
+    }
+
     const payload = await getPayloadClient();
     
     const bikes = await payload.find({

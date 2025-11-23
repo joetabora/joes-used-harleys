@@ -1,11 +1,19 @@
 import config from '@payload-config';
 import { NextRequest, NextResponse } from 'next/server';
 
+// Make this route dynamic
+export const dynamic = 'force-dynamic';
+
 let cachedPayload: any = null;
 
 async function getPayloadInstance() {
   if (cachedPayload) {
     return cachedPayload;
+  }
+
+  // Check if Payload is configured
+  if (!process.env.PAYLOAD_SECRET || !process.env.DATABASE_URI) {
+    throw new Error('Payload not configured. Missing PAYLOAD_SECRET or DATABASE_URI');
   }
 
   try {
