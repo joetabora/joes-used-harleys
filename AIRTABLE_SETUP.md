@@ -10,9 +10,18 @@
 
 ## Step 1: Create Airtable Base
 
-1. Go to https://airtable.com and sign up (free)
-2. Click "Add a base" → "Start from scratch"
-3. Name it "Joe's Used Harleys Inventory"
+1. **Go to https://airtable.com** and sign up for a free account (or log in if you already have one)
+
+2. **Once logged in**, you'll see your workspace. Look for one of these buttons:
+   - A big **"+ Add a base"** button (usually at the top or center)
+   - Or click **"Create a base"** in the left sidebar
+   - Or click the **"+"** icon in the top right
+
+3. **Choose "Start from scratch"** (not a template)
+
+4. **Name your base**: Click on "Untitled Base" at the top and rename it to **"Joe's Used Harleys Inventory"**
+
+5. **Your base is created!** You should now see a table with some default columns (like "Name", "Notes", etc.)
 
 ## Step 2: Create Table Structure
 
