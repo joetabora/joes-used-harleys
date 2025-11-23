@@ -210,10 +210,17 @@ async function scrapeInventory() {
   let listings = [];
   
   try {
-    // Launch browser
+    // Launch browser with more robust settings
     browser = await puppeteer.launch({
       headless: 'new', // Use new headless mode
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu',
+        '--window-size=1920,1080'
+      ]
     });
     
     const page = await browser.newPage();
@@ -221,16 +228,68 @@ async function scrapeInventory() {
     // Set viewport
     await page.setViewport({ width: 1920, height: 1080 });
     
-    // Navigate to inventory page
-    console.log(`📍 Navigating to: ${INVENTORY_URL}`);
-    await page.goto(INVENTORY_URL, { 
-      waitUntil: 'networkidle2', 
-      timeout: 60000 
+    // Set user agent to avoid bot detection
+    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    
+    // Set extra headers
+    await page.setExtraHTTPHeaders({
+      'Accept-Language': 'en-US,en;q=0.9'
     });
     
-    // Wait for listings to load
+    // Navigate to inventory page with retry logic
+    console.log(`📍 Navigating to: ${INVENTORY_URL}`);
+    
+    let navigationSuccess = false;
+    let retries = 3;
+    
+    while (!navigationSuccess && retries > 0) {
+      try {
+        await page.goto(INVENTORY_URL, { 
+          waitUntil: 'domcontentloaded', // Less strict than networkidle2
+          timeout: 90000, // Increased timeout
+          waitForSelector: 'body' // Wait for body to exist
+        });
+        navigationSuccess = true;
+        console.log('✅ Page loaded successfully');
+      } catch (error) {
+        retries--;
+        if (retries > 0) {
+          console.log(`⚠️  Navigation failed, retrying... (${retries} attempts left)`);
+          await page.waitForTimeout(2000);
+        } else {
+          throw new Error(`Failed to load page after 3 attempts: ${error.message}`);
+        }
+      }
+    }
+    
+    // Wait for listings to load - try multiple strategies
     console.log('⏳ Waiting for listings to load...');
-    await page.waitForTimeout(5000);
+    
+    // Wait for page to be interactive
+    await page.waitForTimeout(3000);
+    
+    // Try to wait for common inventory elements
+    const waitSelectors = [
+      '.inventory-item',
+      '.vehicle-card',
+      '[class*="inventory"]',
+      '[class*="vehicle"]',
+      'article',
+      'body'
+    ];
+    
+    for (const selector of waitSelectors) {
+      try {
+        await page.waitForSelector(selector, { timeout: 5000 });
+        console.log(`✅ Found element: ${selector}`);
+        break;
+      } catch (e) {
+        // Continue to next selector
+      }
+    }
+    
+    // Additional wait for dynamic content
+    await page.waitForTimeout(3000);
     
     // Debug: Save page HTML to see what we're working with
     const pageContent = await page.content();
