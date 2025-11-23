@@ -1,4 +1,3 @@
-import { BasePayload } from 'payload';
 import config from '@payload-config';
 
 let cachedPayload: any = null;
@@ -9,7 +8,8 @@ export async function getPayloadClient() {
   }
 
   try {
-    // Use BasePayload.init() instead of getPayload
+    // Import BasePayload from the payload subpath
+    const { BasePayload } = await import('payload/payload');
     const payloadInstance = new BasePayload();
     cachedPayload = await payloadInstance.init({
       config,
