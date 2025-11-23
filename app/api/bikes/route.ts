@@ -215,44 +215,43 @@ export async function POST(request: Request) {
     const body = await request.json();
     
     // Map form data to Airtable field names
-    // Try to match common field name variations
+    // Only set fields that exist - Airtable will reject if we try to set non-existent fields
     const fields: any = {};
     
-    // Name field - try multiple variations
+    // First, try to get existing fields from Airtable to see what field names are actually used
+    // For now, we'll use a smart approach: try common variations and let Airtable accept what it can
+    
+    // Name field - only set if provided (user might not have this column)
     if (body.name) {
-      fields.Name = body.name;
-      fields.name = body.name;
-      fields['A Name'] = body.name;
+      // Try common name field variations - Airtable will ignore ones that don't exist
+      const nameFields = ['Name', 'name', 'A Name'];
+      // Set the first one (most common)
+      fields[nameFields[0]] = body.name;
     }
     
-    // Year
+    // Year - set with common variations
     if (body.year) {
       fields.Year = parseInt(body.year);
-      fields.year = parseInt(body.year);
     }
     
     // Model
     if (body.model) {
       fields.Model = body.model;
-      fields.model = body.model;
     }
     
     // Mileage
     if (body.mileage) {
       fields.Mileage = parseInt(body.mileage);
-      fields.mileage = parseInt(body.mileage);
     }
     
     // Price
     if (body.price) {
       fields.Price = parseInt(body.price);
-      fields.price = parseInt(body.price);
     }
     
     // Price Formatted
     if (body.priceFormatted) {
       fields['Price Formatted'] = body.priceFormatted;
-      fields.priceFormatted = body.priceFormatted;
     } else if (body.price) {
       fields['Price Formatted'] = `$${parseInt(body.price).toLocaleString()}`;
     }
@@ -260,25 +259,21 @@ export async function POST(request: Request) {
     // Specs
     if (body.specs) {
       fields.Specs = body.specs;
-      fields.specs = body.specs;
     }
     
     // Financing
     if (body.financing) {
       fields.Financing = body.financing;
-      fields.financing = body.financing;
     }
     
     // Featured
     if (body.featured !== undefined) {
       fields.Featured = body.featured;
-      fields.featured = body.featured;
     }
     
     // Just Arrived
     if (body.justArrived !== undefined) {
       fields['Just Arrived'] = body.justArrived;
-      fields.justArrived = body.justArrived;
     }
     
     // Image attachment - upload to Imgur first (free, no API key needed for basic uploads)
@@ -340,13 +335,30 @@ export async function POST(request: Request) {
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error');
+      let errorDetails = errorText;
+      
+      // Try to parse error for more details
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorDetails = errorJson.error?.message || errorText;
+        console.error('Airtable create error details:', errorJson);
+      } catch {
+        // Not JSON, use as-is
+      }
+      
       console.error('Airtable create error:', {
         status: response.status,
         statusText: response.statusText,
-        error: errorText,
+        error: errorDetails,
+        fieldsAttempted: Object.keys(fields),
       });
+      
       return NextResponse.json(
-        { error: `Failed to create bike: ${response.statusText}`, details: errorText },
+        { 
+          error: `Failed to create bike: ${response.statusText}`,
+          details: errorDetails,
+          hint: 'Make sure your Airtable table has columns matching: Year, Model, Price, etc. Check that field names match exactly (case-sensitive).'
+        },
         { status: response.status }
       );
     }
