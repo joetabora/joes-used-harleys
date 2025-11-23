@@ -27,11 +27,5 @@ export default buildConfig({
     process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
     'http://localhost:3000',
   ],
-  // Disable pretty logging in production (fixes pino-pretty error)
-  logger: process.env.NODE_ENV === 'production' 
-    ? {
-        level: 'warn', // Only log warnings and errors in production
-      }
-    : undefined, // Use default pretty logging in development
 });
 
