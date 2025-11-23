@@ -9,10 +9,15 @@ async function getPayloadInstance() {
   }
 
   try {
-    // Import BasePayload from the payload subpath
-    const { BasePayload } = await import('payload/payload');
-    const payloadInstance = new BasePayload();
-    cachedPayload = await payloadInstance.init({
+    // Import getPayload from payload/dist/payload where it's actually defined
+    const payloadModule = await import('payload/dist/payload');
+    const getPayload = payloadModule.getPayload;
+    
+    if (!getPayload || typeof getPayload !== 'function') {
+      throw new Error('getPayload not found in payload/dist/payload');
+    }
+    
+    cachedPayload = await getPayload({
       config,
       secret: process.env.PAYLOAD_SECRET || '',
     });
