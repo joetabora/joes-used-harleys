@@ -9,7 +9,8 @@
     "lint": "next lint",
     "payload": "payload",
     "payload:generate:types": "payload generate:types",
-    "payload:generate:importmap": "payload generate:importmap"
+    "payload:generate:importmap": "payload generate:importmap",
+    "scrape": "node scripts/scrape-house-of-harley.js"
   },
   "keywords": [
     "harley",
@@ -25,7 +26,9 @@
     "payload": "^2.0.0",
     "@payloadcms/db-mongodb": "^1.0.0",
     "@payloadcms/richtext-slate": "^1.0.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "puppeteer": "^21.6.0",
+    "csv-writer": "^1.6.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",
