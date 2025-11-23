@@ -1,4 +1,4 @@
-import { getPayload } from 'payload';
+import { BasePayload } from 'payload';
 import config from '@payload-config';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,7 +10,9 @@ async function getPayloadInstance() {
   }
 
   try {
-    cachedPayload = await getPayload({ 
+    // Use BasePayload.init() instead of getPayload
+    const payloadInstance = new BasePayload();
+    cachedPayload = await payloadInstance.init({
       config,
       secret: process.env.PAYLOAD_SECRET || '',
     });
