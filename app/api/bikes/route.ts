@@ -293,23 +293,33 @@ export async function POST(request: Request) {
           const imgurData = await imgurResponse.json();
           const imageUrl = imgurData.data?.link;
           
+          console.log('Imgur upload response:', {
+            success: true,
+            imageUrl: imageUrl,
+            hasData: !!imgurData.data,
+          });
+          
           if (imageUrl) {
             // Airtable attachment format: array of objects with url
-            // Use exact field name "Image" (case-sensitive)
+            // Format must be: [{ url: "https://..." }]
             fields.Image = [
               {
                 url: imageUrl,
               },
             ];
             
-            console.log('Image uploaded to Imgur:', imageUrl);
-            console.log('Setting Image field:', fields.Image);
+            console.log('✅ Image uploaded to Imgur:', imageUrl);
+            console.log('✅ Setting Image field for Airtable:', JSON.stringify(fields.Image));
           } else {
-            console.warn('Imgur returned no image URL');
+            console.error('❌ Imgur returned no image URL. Full response:', JSON.stringify(imgurData, null, 2));
           }
         } else {
-          const imgurError = await imgurResponse.text().catch(() => 'Unknown error');
-          console.warn('Imgur upload failed:', imgurError);
+          const imgurErrorText = await imgurResponse.text().catch(() => 'Unknown error');
+          console.error('❌ Imgur upload failed:', {
+            status: imgurResponse.status,
+            statusText: imgurResponse.statusText,
+            error: imgurErrorText,
+          });
         }
       } catch (imgurError) {
         console.warn('Error uploading to Imgur:', imgurError);
