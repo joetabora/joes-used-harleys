@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { generateProductSchema } from '@/lib/seo';
 
@@ -16,13 +16,38 @@ interface Bike {
   justArrived?: boolean;
 }
 
+// Fallback image URLs for broken Dealer.com images
+const FALLBACK_IMAGES = [
+  'https://files.catbox.moe/3n8q1r.jpg',
+  'https://files.catbox.moe/7p4h2s.jpg',
+  'https://files.catbox.moe/9t6u8x.jpg',
+  'https://files.catbox.moe/1y3h5j.jpg',
+  'https://files.catbox.moe/2p9m1k.jpg',
+  'https://files.catbox.moe/4q7w3e.jpg',
+  'https://files.catbox.moe/6r5t7u.jpg',
+  'https://files.catbox.moe/8v7x1z.jpg'
+];
+
 export function InventoryGrid() {
   const [bikes, setBikes] = useState<Bike[]>([]);
   const [loading, setLoading] = useState(true);
+  const revSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined') return;
+    
+    // Load engine rev sound
+    // Add your Harley engine rev sound file to /public/sounds/engine-rev.mp3
+    // Or use a CDN URL for the sound file
+    try {
+      revSoundRef.current = new Audio('/sounds/engine-rev.mp3');
+      revSoundRef.current.volume = 0.15;
+      revSoundRef.current.preload = 'auto';
+    } catch (error) {
+      // Fallback: create a simple beep sound if file doesn't exist
+      console.log('Engine rev sound not found - add /public/sounds/engine-rev.mp3');
+    }
     
     async function loadInventory() {
       try {
@@ -31,7 +56,18 @@ export function InventoryGrid() {
           throw new Error('Failed to load inventory');
         }
         const data = await response.json();
-        setBikes(data.bikes || []);
+        
+        // Replace broken Dealer.com images with fallback catbox.moe URLs
+        const bikesWithFixedImages = (data.bikes || []).map((bike: Bike, index: number) => {
+          // Check if image URL is broken (contains dealer.com or is empty)
+          if (!bike.image || bike.image.includes('dealer.com') || bike.image.includes('placeholder')) {
+            // Use fallback image based on index
+            bike.image = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
+          }
+          return bike;
+        });
+        
+        setBikes(bikesWithFixedImages);
         
         // Generate and inject product schema for all bikes (client-side only)
         if (data.bikes && typeof document !== 'undefined') {
@@ -108,11 +144,25 @@ export function InventoryGrid() {
     );
   }
 
+  const handleBikeHover = () => {
+    if (revSoundRef.current) {
+      try {
+        revSoundRef.current.currentTime = 0;
+        revSoundRef.current.play().catch(() => {
+          // Ignore autoplay errors (browser may block autoplay)
+        });
+      } catch (error) {
+        // Sound file not available
+      }
+    }
+  };
+
   return (
     <div className="grid" role="list">
       {bikes.map((bike) => {
         const specsFormatted = bike.specs.replace(/ • /g, '<span class="divider">•</span>');
-                const altText = `Used ${bike.name} for sale in Milwaukee, Wisconsin. ${bike.specs}. Price: ${bike.priceFormatted}. ${bike.financing}. Buy pre-owned Harley-Davidson motorcycle at Joe's Used Harleys with full warranty and financing options.`;
+        // Improved alt text format
+        const altText = `Used ${bike.name} for sale in Milwaukee, Wisconsin`;
         
         return (
           <article 
@@ -122,6 +172,8 @@ export function InventoryGrid() {
             itemScope 
             itemType="https://schema.org/Product" 
             role="listitem"
+            onMouseEnter={handleBikeHover}
+            onTouchStart={handleBikeHover}
           >
             <div className="bike-inner">
               {bike.featured && <div className="featured-badge">FEATURED</div>}
@@ -129,13 +181,19 @@ export function InventoryGrid() {
               <div className="image-wrapper">
                 <Image 
                   src={bike.image} 
-                  alt={altText} 
+                  alt={altText}
                   loading="lazy" 
                   width={800} 
                   height={600}
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1400px) 33vw, 25vw"
                   quality={85}
                   itemProp="image"
+                  onError={(e) => {
+                    // Fallback to catbox.moe if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    const fallbackIndex = parseInt(bike.id) % FALLBACK_IMAGES.length || 0;
+                    target.src = FALLBACK_IMAGES[fallbackIndex];
+                  }}
                 />
               </div>
               <div className="details">

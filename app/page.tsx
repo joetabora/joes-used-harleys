@@ -37,10 +37,14 @@ const faqData = [
 ];
 
 export default function HomePage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [zipCode, setZipCode] = useState('');
+  const [showShippingResult, setShowShippingResult] = useState(false);
 
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
+  const calculateShipping = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (zipCode.trim()) {
+      setShowShippingResult(true);
+    }
   };
 
   return (
@@ -68,6 +72,83 @@ export default function HomePage() {
         textTransform: 'uppercase'
       }}>
         WE SHIP NATIONWIDE FOR ONLY $499
+      </div>
+
+      {/* Shipping Calculator */}
+      <div style={{
+        background: '#000000',
+        padding: '2rem 1.5rem',
+        textAlign: 'center',
+        borderBottom: '2px solid #FF6600'
+      }}>
+        <form onSubmit={calculateShipping} style={{
+          maxWidth: '500px',
+          margin: '0 auto',
+          display: 'flex',
+          gap: '1rem',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <input
+            type="text"
+            placeholder="Enter ZIP code"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value.replace(/\D/g, '').slice(0, 5))}
+            style={{
+              padding: '0.75rem 1rem',
+              background: '#0A0A0A',
+              border: '2px solid #FF6600',
+              color: '#FFFFFF',
+              fontSize: '1rem',
+              fontWeight: 600,
+              borderRadius: '4px',
+              flex: '1',
+              minWidth: '200px',
+              fontFamily: 'var(--font-inter)'
+            }}
+            maxLength={5}
+            pattern="[0-9]{5}"
+          />
+          <button
+            type="submit"
+            style={{
+              padding: '0.75rem 2rem',
+              background: '#FF6600',
+              color: '#000000',
+              border: 'none',
+              fontSize: '1rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+              fontFamily: 'var(--font-clash)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#FF8833';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#FF6600';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            Calculate Shipping
+          </button>
+        </form>
+        {showShippingResult && (
+          <p style={{
+            marginTop: '1.5rem',
+            color: '#FF6600',
+            fontSize: '1.1rem',
+            fontWeight: 700,
+            fontFamily: 'var(--font-clash)'
+          }}>
+            $499 flat rate nationwide — ships in 3–7 days
+          </p>
+        )}
       </div>
 
       {/* Hero Section with Full-Screen Video */}
@@ -215,8 +296,8 @@ export default function HomePage() {
               alignItems: 'flex-start',
               gap: '1rem'
             }}>
-              <span style={{ 
-                color: '#FF6600', 
+              <span className="chrome-check" style={{ 
+                color: '#c0c0c0', 
                 fontSize: '1.5rem', 
                 fontWeight: 'bold', 
                 flexShrink: 0,
@@ -225,11 +306,11 @@ export default function HomePage() {
                 justifyContent: 'center',
                 width: '32px',
                 height: '32px',
-                border: '2px solid #FF6600',
+                border: '2px solid #c0c0c0',
                 borderRadius: '50%',
-                textShadow: '0 0 10px rgba(255, 102, 0, 0.5), 0 0 20px rgba(255, 102, 0, 0.3)',
-                boxShadow: 'inset 0 0 10px rgba(255, 102, 0, 0.2), 0 0 15px rgba(255, 102, 0, 0.3)',
-                background: 'linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%)'
+                textShadow: '0 0 10px rgba(192, 192, 192, 0.6), 0 0 20px rgba(192, 192, 192, 0.4)',
+                boxShadow: 'inset 0 0 10px rgba(192, 192, 192, 0.3), 0 0 15px rgba(192, 192, 192, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.3)',
+                background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.1) 100%)'
               }}>✓</span>
               <div>
                 <strong style={{ color: '#FF6600', fontSize: '1.1rem', display: 'block', marginBottom: '0.5rem' }}>
@@ -304,7 +385,7 @@ export default function HomePage() {
         </form>
       </section>
 
-      {/* FAQ Section with Accordion */}
+      {/* FAQ Section with Native HTML Accordion */}
       <section className="faq-section" itemScope itemType="https://schema.org/FAQPage" style={{ 
         padding: '6rem 1.5rem', 
         background: '#000000' 
@@ -323,21 +404,20 @@ export default function HomePage() {
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {faqData.map((faq, index) => (
-              <div 
+              <details
                 key={index}
-                className="faq-item" 
-                itemScope 
-                itemProp="mainEntity" 
+                className="faq-item"
+                itemScope
+                itemProp="mainEntity"
                 itemType="https://schema.org/Question"
-                style={{ 
-                  padding: '1.5rem', 
-                  background: '#0A0A0A', 
-                  borderRadius: '8px', 
+                style={{
+                  padding: '0',
+                  background: '#0A0A0A',
+                  borderRadius: '8px',
                   border: '1px solid #2A2A2A',
-                  cursor: 'pointer',
+                  overflow: 'hidden',
                   transition: 'all 0.3s ease'
                 }}
-                onClick={() => toggleFaq(index)}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#FF6600';
                 }}
@@ -345,44 +425,45 @@ export default function HomePage() {
                   e.currentTarget.style.borderColor = '#2A2A2A';
                 }}
               >
-                <h3 
-                  className="faq-question" 
-                  itemProp="name" 
-                  style={{ 
-                    color: '#FF6600', 
-                    fontSize: '1.3rem', 
-                    fontWeight: 600, 
-                    marginBottom: openFaq === index ? '1rem' : 0,
+                <summary
+                  className="faq-question"
+                  itemProp="name"
+                  style={{
+                    color: '#FF6600',
+                    fontSize: '1.3rem',
+                    fontWeight: 600,
                     fontFamily: 'var(--font-clash)',
+                    padding: '1.5rem',
+                    cursor: 'pointer',
+                    listStyle: 'none',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center'
                   }}
                 >
                   <span>{faq.question}</span>
-                  <span style={{ 
-                    fontSize: '1.5rem',
+                  <span style={{
+                    fontSize: '1.2rem',
                     transition: 'transform 0.3s ease',
-                    transform: openFaq === index ? 'rotate(180deg)' : 'rotate(0deg)'
+                    marginLeft: '1rem'
                   }}>▼</span>
-                </h3>
-                <div 
-                  className="faq-answer" 
-                  itemScope 
-                  itemProp="acceptedAnswer" 
+                </summary>
+                <div
+                  className="faq-answer"
+                  itemScope
+                  itemProp="acceptedAnswer"
                   itemType="https://schema.org/Answer"
                   style={{
-                    maxHeight: openFaq === index ? '500px' : '0',
-                    overflow: 'hidden',
-                    transition: 'max-height 0.3s ease, opacity 0.3s ease',
-                    opacity: openFaq === index ? 1 : 0
+                    padding: '0 1.5rem 1.5rem 1.5rem',
+                    color: '#CCCCCC',
+                    lineHeight: '1.8'
                   }}
                 >
-                  <p itemProp="text" style={{ color: '#CCCCCC', lineHeight: '1.8', margin: 0, paddingTop: openFaq === index ? '1rem' : 0 }}>
+                  <p itemProp="text" style={{ margin: 0 }}>
                     {faq.answer}
                   </p>
                 </div>
-              </div>
+              </details>
             ))}
           </div>
         </div>
@@ -604,6 +685,26 @@ export default function HomePage() {
         .bike:hover {
           transform: translateY(-8px);
           box-shadow: 0 12px 40px rgba(255, 102, 0, 0.3);
+        }
+
+        /* Chrome check icon styling */
+        .chrome-check {
+          color: #c0c0c0 !important;
+          border-color: #c0c0c0 !important;
+        }
+
+        /* Native HTML details/summary styling */
+        details summary::-webkit-details-marker {
+          display: none;
+        }
+
+        details[open] summary span:last-child {
+          transform: rotate(180deg);
+        }
+
+        details summary:focus {
+          outline: 2px solid #FF6600;
+          outline-offset: 2px;
         }
 
         /* Mobile responsive adjustments */
