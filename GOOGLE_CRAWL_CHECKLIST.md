@@ -1,9 +1,9 @@
-# Google Crawl Readiness Checklist for joesusedharley.com
+# Google Crawl Readiness Checklist for joesusedharleys.com
 
 ## ✅ Completed Setup
 
 ### 1. Domain Configuration
-- [x] Site URL updated to `https://joesusedharley.com` in `lib/seo.ts`
+- [x] Site URL updated to `https://joesusedharleys.com` in `lib/seo.ts`
 - [x] Canonical URLs will use new domain automatically
 - [x] robots.txt sitemap URL updated
 - [x] All structured data (JSON-LD) will use new domain
@@ -11,7 +11,7 @@
 ### 2. Robots.txt & Crawling
 - [x] `/app/robots.ts` - Allows all crawlers, no blocking
 - [x] `/robots.txt` - Static file with sitemap reference
-- [x] Sitemap URL: `https://joesusedharley.com/sitemap.xml`
+- [x] Sitemap URL: `https://joesusedharleys.com/sitemap.xml`
 - [x] No disallowed paths (except /admin/ and /private/)
 
 ### 3. Sitemap
@@ -65,18 +65,18 @@
 
 ### 1. Verify Domain Ownership
 1. Go to [Google Search Console](https://search.google.com/search-console)
-2. Add property: `joesusedharley.com`
+2. Add property: `joesusedharleys.com`
 3. Choose verification method (DNS, HTML file, or meta tag)
 4. Complete verification
 
 ### 2. Submit Sitemap
 1. In Search Console, go to "Sitemaps"
-2. Submit: `https://joesusedharley.com/sitemap.xml`
+2. Submit: `https://joesusedharleys.com/sitemap.xml`
 3. Google will automatically discover it via robots.txt, but manual submission is faster
 
 ### 3. Request Indexing (Optional)
 1. Use "URL Inspection" tool
-2. Test homepage: `https://joesusedharley.com`
+2. Test homepage: `https://joesusedharleys.com`
 3. Click "Request Indexing" for important pages
 
 ### 4. Monitor Coverage
@@ -88,10 +88,10 @@
 
 Before submitting to Google, verify:
 
-- [ ] Site loads at `https://joesusedharley.com` (not just www)
+- [ ] Site loads at `https://joesusedharleys.com` (not just www)
 - [ ] SSL certificate is valid (HTTPS)
-- [ ] robots.txt accessible: `https://joesusedharley.com/robots.txt`
-- [ ] sitemap.xml accessible: `https://joesusedharley.com/sitemap.xml`
+- [ ] robots.txt accessible: `https://joesusedharleys.com/robots.txt`
+- [ ] sitemap.xml accessible: `https://joesusedharleys.com/sitemap.xml`
 - [ ] No console errors in browser
 - [ ] All images load correctly
 - [ ] Mobile-friendly (test with Google's Mobile-Friendly Test)
@@ -101,16 +101,16 @@ Before submitting to Google, verify:
 
 Test these URLs after deployment:
 
-1. **Homepage**: `https://joesusedharley.com/`
-2. **Robots**: `https://joesusedharley.com/robots.txt`
-3. **Sitemap**: `https://joesusedharley.com/sitemap.xml`
-4. **Inventory**: `https://joesusedharley.com/inventory`
-5. **Sample Bike**: `https://joesusedharley.com/bikes/[any-bike-id]`
+1. **Homepage**: `https://joesusedharleys.com/`
+2. **Robots**: `https://joesusedharleys.com/robots.txt`
+3. **Sitemap**: `https://joesusedharleys.com/sitemap.xml`
+4. **Inventory**: `https://joesusedharleys.com/inventory`
+5. **Sample Bike**: `https://joesusedharleys.com/bikes/[any-bike-id]`
 
 ## ⚠️ Important Notes
 
-1. **Domain Redirect**: If you're redirecting from vercel.app to joesusedharley.com, use 301 redirects
-2. **Canonical URLs**: All pages automatically use `joesusedharley.com` as canonical
+1. **Domain Redirect**: If you're redirecting from vercel.app to joesusedharleys.com, use 301 redirects
+2. **Canonical URLs**: All pages automatically use `joesusedharleys.com` as canonical
 3. **Structured Data**: Test with [Google Rich Results Test](https://search.google.com/test/rich-results)
 4. **Mobile Test**: Use [Mobile-Friendly Test](https://search.google.com/test/mobile-friendly)
 
