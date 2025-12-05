@@ -27,6 +27,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.airtableusercontent.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'files.catbox.moe',
+      },
     ],
   },
   trailingSlash: false,

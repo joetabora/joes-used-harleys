@@ -49,9 +49,9 @@ export interface SEOConfig {
 
 export const SITE_CONFIG = {
   name: "Joe's Used Harleys",
-  url: "https://joes-used-harleys.vercel.app",
+  url: "https://joesusedharley.com",
   description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available.",
-  image: "https://joes-used-harleys.vercel.app/juh2.png",
+  image: "https://joesusedharley.com/juh2.png",
   phone: "414-439-6211",
   address: {
     street: "6221 W Layton Ave",
