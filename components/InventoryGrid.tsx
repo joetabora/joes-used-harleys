@@ -31,6 +31,7 @@ const FALLBACK_IMAGES = [
 export function InventoryGrid() {
   const [bikes, setBikes] = useState<Bike[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const revSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -157,9 +158,116 @@ export function InventoryGrid() {
     }
   };
 
+  // Filter bikes based on search term (case-insensitive, matches model name)
+  const filteredBikes = searchTerm.trim()
+    ? bikes.filter(bike => 
+        bike.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : bikes;
+
   return (
-    <div className="grid" role="list">
-      {bikes.map((bike) => {
+    <>
+      {/* Quick Bike Finder Search Bar */}
+      <div style={{
+        width: '100%',
+        marginBottom: '2rem',
+        position: 'relative'
+      }}>
+        <div style={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%'
+        }}>
+          <input
+            type="text"
+            placeholder="Search by model (e.g., Street Glide, Fat Boy, Low Rider)"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '1rem 3.5rem 1rem 1rem',
+              background: '#000000',
+              border: '2px solid #2A2A2A',
+              color: '#FFFFFF',
+              fontSize: '1rem',
+              fontWeight: 500,
+              fontFamily: 'var(--font-inter)',
+              transition: 'border-color 0.3s ease',
+              outline: 'none'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#FF6600';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#2A2A2A';
+            }}
+            aria-label="Search bikes by model name"
+          />
+          {/* Search Icon */}
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            style={{
+              position: 'absolute',
+              right: '1rem',
+              pointerEvents: 'none'
+            }}
+          >
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+              stroke="#FF6600"
+              strokeWidth="2"
+              fill="none"
+            />
+            <path
+              d="m20 20-4-4"
+              stroke="#FF6600"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* No Matches Message */}
+      {searchTerm.trim() && filteredBikes.length === 0 && (
+        <div style={{
+          textAlign: 'center',
+          padding: '3rem 1.5rem',
+          background: '#0A0A0A',
+          border: '2px solid #FF6600',
+          marginBottom: '2rem'
+        }}>
+          <p style={{
+            color: '#CCCCCC',
+            fontSize: '1.1rem',
+            marginBottom: '1rem',
+            fontFamily: 'var(--font-inter)'
+          }}>
+            No bikes match — text Joe at{' '}
+            <a
+              href="sms:4144396211"
+              style={{
+                color: '#FF6600',
+                textDecoration: 'none',
+                fontWeight: 700
+              }}
+            >
+              414-439-6211
+            </a>
+            {' '}for incoming rides
+          </p>
+        </div>
+      )}
+
+      {/* Inventory Grid */}
+      <div className="grid" role="list">
+        {filteredBikes.map((bike) => {
         const specsFormatted = bike.specs.replace(/ • /g, '<span class="divider">•</span>');
         // Improved alt text format
         const altText = `Used ${bike.name} for sale in Milwaukee, Wisconsin`;
@@ -231,7 +339,8 @@ export function InventoryGrid() {
           </article>
         );
       })}
-    </div>
+      </div>
+    </>
   );
 }
 
