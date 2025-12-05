@@ -5,6 +5,7 @@ import { generateFAQSchema } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
 import { InventoryGrid } from '@/components/InventoryGrid';
 import { InternalLinks } from '@/components/InternalLinks';
+import { generateReviewSchema } from '@/lib/customer-reviews';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -55,6 +56,12 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(generateFAQSchema(faqData))
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateReviewSchema())
         }}
       />
 
