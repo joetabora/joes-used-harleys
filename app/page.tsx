@@ -593,13 +593,13 @@ export default function HomePage() {
         bottom: 0,
         left: 0,
         right: 0,
-        background: '#000000',
-        borderTop: '2px solid #FF6600',
+        background: 'linear-gradient(to top, #000000 0%, #0A0A0A 100%)',
+        borderTop: '1px solid #1A1A1A',
         display: 'flex',
         justifyContent: 'space-around',
         padding: '1rem',
         zIndex: 999,
-        boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.5)'
+        boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 102, 0, 0.1)'
       }}>
         <a 
           href="tel:4144396211" 
@@ -608,12 +608,24 @@ export default function HomePage() {
           style={{
             color: '#FF6600',
             textDecoration: 'none',
-            fontWeight: 700,
-            fontSize: '0.9rem',
+            fontWeight: 800,
+            fontSize: '0.95rem',
             textTransform: 'uppercase',
-            letterSpacing: '1px',
-            padding: '0.5rem 1rem',
-            transition: 'all 0.3s'
+            letterSpacing: '2px',
+            padding: '0.75rem 1.25rem',
+            transition: 'all 0.3s',
+            borderRadius: '4px',
+            position: 'relative'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#000000';
+            e.currentTarget.style.background = '#FF6600';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#FF6600';
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
           CALL
@@ -625,12 +637,23 @@ export default function HomePage() {
           style={{
             color: '#FF6600',
             textDecoration: 'none',
-            fontWeight: 700,
-            fontSize: '0.9rem',
+            fontWeight: 800,
+            fontSize: '0.95rem',
             textTransform: 'uppercase',
-            letterSpacing: '1px',
-            padding: '0.5rem 1rem',
-            transition: 'all 0.3s'
+            letterSpacing: '2px',
+            padding: '0.75rem 1.25rem',
+            transition: 'all 0.3s',
+            borderRadius: '4px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#000000';
+            e.currentTarget.style.background = '#FF6600';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#FF6600';
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
           TEXT
@@ -642,12 +665,23 @@ export default function HomePage() {
           style={{
             color: '#FF6600',
             textDecoration: 'none',
-            fontWeight: 700,
-            fontSize: '0.9rem',
+            fontWeight: 800,
+            fontSize: '0.95rem',
             textTransform: 'uppercase',
-            letterSpacing: '1px',
-            padding: '0.5rem 1rem',
-            transition: 'all 0.3s'
+            letterSpacing: '2px',
+            padding: '0.75rem 1.25rem',
+            transition: 'all 0.3s',
+            borderRadius: '4px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#000000';
+            e.currentTarget.style.background = '#FF6600';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#FF6600';
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
           INVENTORY
