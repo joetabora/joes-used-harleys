@@ -286,7 +286,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'You don\'t need $30,000 to get a badass Harley. Here are 7 used models under $20,000 that still deliver serious performance and style.',
     date: '2025-01-13',
     readTime: '12 min read',
-    featuredImage: 'https://files.catbox.moe/6r5t7u.jpg',
+    featuredImage: '/19rg.jpg',
     keywords: ['used harleys under 20000', 'affordable harley davidson', 'cheap used harley', 'best harley under 20k'],
     categories: ['Models'],
     images: [
