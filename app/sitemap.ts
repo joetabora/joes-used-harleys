@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { SITE_CONFIG } from '@/lib/seo';
 import { getAllModelSlugs } from '@/lib/model-data';
 import { getAllModelPageSlugs } from '@/lib/model-pages-data';
+import { getAllCityPageSlugs } from '@/lib/city-pages-data';
 
 async function getBikes() {
   try {
@@ -78,6 +79,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Dedicated model pages at root level
     ...getAllModelPageSlugs().map((slug) => ({
       url: `${baseUrl}/${slug}`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    })),
+    // City landing pages
+    ...getAllCityPageSlugs().map((slug) => ({
+      url: `${baseUrl}/used-harleys-${slug}`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.9,
