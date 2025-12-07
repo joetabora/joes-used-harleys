@@ -3,6 +3,7 @@ import { SITE_CONFIG } from '@/lib/seo';
 import { getAllModelSlugs } from '@/lib/model-data';
 import { getAllModelPageSlugs } from '@/lib/model-pages-data';
 import { getAllCityPageSlugs } from '@/lib/city-pages-data';
+import { getAllBlogPosts } from '@/lib/blog-data';
 
 async function getBikes() {
   try {
@@ -89,6 +90,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.9,
+    })),
+    // Blog index
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    // Blog posts
+    ...getAllBlogPosts().map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: post.date,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     })),
     {
       url: `${baseUrl}/used-street-glide-milwaukee`,
