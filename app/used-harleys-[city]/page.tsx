@@ -328,6 +328,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                   </p>
                   <Link
                     href={`/${modelSlug}`}
+                    className="model-link-city"
                     style={{
                       display: 'block',
                       color: '#FF6600',
@@ -338,12 +339,6 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                       textTransform: 'uppercase',
                       letterSpacing: '1px',
                       transition: 'color 0.3s'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = '#FF8833';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = '#FF6600';
                     }}
                   >
                     Used {modelName} {cityData.name} →
@@ -564,6 +559,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           </div>
           <button
             type="submit"
+            className="preapproval-button"
             style={{
               padding: '1.25rem 2rem',
               background: '#FF6600',
@@ -577,14 +573,6 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               cursor: 'pointer',
               transition: 'all 0.3s',
               fontFamily: 'var(--font-clash)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#FF8833';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#FF6600';
-              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
             Get Pre-Approved
@@ -702,16 +690,6 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           transition: 'all 0.3s',
           fontFamily: 'var(--font-clash)',
           display: 'none'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = '#FF8833';
-          e.currentTarget.style.transform = 'translateY(-4px)';
-          e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 102, 0, 0.6)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = '#FF6600';
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 8px 30px rgba(255, 102, 0, 0.4)';
         }}
       >
         TEXT JOE
@@ -854,6 +832,21 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           background: #FF6600;
           color: #000000;
           border-color: #FF6600;
+        }
+
+        .model-link-city:hover {
+          color: #FF8833;
+        }
+
+        .preapproval-button:hover {
+          background: #FF8833;
+          transform: translateY(-2px);
+        }
+
+        .floating-cta:hover {
+          background: #FF8833;
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.6);
         }
       `}} />
     </>
