@@ -35,8 +35,8 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   }
   
   return setPageSEO({
-    pageTitle: `Used Harleys ${cityData.name} | Pre-Owned Harley-Davidson ${cityData.state} | Joe's Used Harleys`,
-    pageDescription: `Low-mile used Harleys shipped to ${cityData.name} for only $499. Street Glide, Road Glide, Fat Boy & more. Bad credit OK. Text Joe 414-439-6211`,
+    pageTitle: `Used Harleys ${cityData.name} | Pre-Owned Harley-Davidson ${cityData.state} | Joe's Used Harleys $499 Shipping`,
+    pageDescription: `Low-mile used Harleys shipped to ${cityData.name}, ${cityData.stateAbbr} for only $499. Street Glide, Road Glide, Fat Boy & more. Bad credit OK. Text Joe 414-439-6211`,
     location: cityData.name,
     path: `/used-harleys-${cityData.slug}`
   });
@@ -126,11 +126,27 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         zIndex: 100,
         textTransform: 'uppercase'
       }}>
-        WE SHIP TO {cityData.name.toUpperCase()} FOR ONLY $499
+        WE SHIP NATIONWIDE FOR ONLY $499
       </div>
 
       {/* Shipping Calculator */}
-      <ShippingCalculator />
+      <div style={{
+        background: '#000000',
+        padding: '2rem 1.5rem',
+        textAlign: 'center',
+        borderBottom: '1px solid #2A2A2A'
+      }}>
+        <ShippingCalculator />
+        <p style={{
+          marginTop: '1rem',
+          color: '#FF6600',
+          fontSize: '1rem',
+          fontWeight: 700,
+          fontFamily: 'var(--font-clash)'
+        }}>
+          Ships to {cityData.name} in 3-7 days for $499
+        </p>
+      </div>
 
       {/* Hero Section with Video Background */}
       <section className="hero" style={{
@@ -206,7 +222,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             fontWeight: 700,
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 102, 0, 0.3)'
           }}>
-            Used Harleys in {cityData.name}
+            {cityData.name} Used Harleys
           </h1>
           <p style={{
             fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
@@ -217,7 +233,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             textTransform: 'uppercase',
             letterSpacing: '2px'
           }}>
-            $499 Ships from Milwaukee
+            $499 Ships Nationwide from Milwaukee
           </p>
         </div>
       </section>
@@ -237,7 +253,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           fontFamily: 'var(--font-clash)',
           fontWeight: 700
         }}>
-          Used Harleys for Sale in {cityData.name} — $499 Ships from Milwaukee
+          Used Harleys for Sale in {cityData.name} — $499 Ships Nationwide from Milwaukee
         </h2>
         <div style={{
           color: '#CCCCCC',
@@ -397,7 +413,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           fontFamily: 'var(--font-clash)',
           fontWeight: 700
         }}>
-          Why Ship from Joe?
+          Why Ship from Joe to {cityData.name}?
         </h2>
         <ul style={{
           listStyle: 'none',
