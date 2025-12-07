@@ -169,8 +169,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
   return (
     <>
-      {/* Product Schemas for Example Bikes */}
-      {productSchemas.map((schema, index) => (
+      {/* Product Schemas for Real Bikes */}
+      {productSchemas.map((schema: any, index: number) => (
         <script
           key={index}
           type="application/ld+json"
