@@ -1,5 +1,6 @@
 import { setPageSEO, SITE_CONFIG } from '@/lib/seo';
 import { getBlogPost, getAllBlogPosts } from '@/lib/blog-data';
+import { BlogImage } from '@/components/BlogImage';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -166,9 +167,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           width: '100%',
           paddingTop: '56.25%' // 16:9 aspect ratio
         }}>
-          <img
+          <BlogImage
             src={post.featuredImage}
             alt={post.title}
+            index={0}
             style={{
               position: 'absolute',
               top: 0,
@@ -177,10 +179,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               height: '100%',
               objectFit: 'cover',
               display: 'block'
-            }}
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = 'https://files.catbox.moe/3n8q1r.jpg';
             }}
           />
         </div>
@@ -212,9 +210,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               width: '100%',
               paddingTop: '56.25%' // 16:9 aspect ratio
             }}>
-              <img
+              <BlogImage
                 src={img.url}
                 alt={img.alt}
+                index={index + 1}
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -223,20 +222,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   height: '100%',
                   objectFit: 'cover',
                   display: 'block'
-                }}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  const fallbackImages = [
-                    'https://files.catbox.moe/3n8q1r.jpg',
-                    'https://files.catbox.moe/7p4h2s.jpg',
-                    'https://files.catbox.moe/9t6u8x.jpg',
-                    'https://files.catbox.moe/1y3h5j.jpg',
-                    'https://files.catbox.moe/2p9m1k.jpg',
-                    'https://files.catbox.moe/4q7w3e.jpg',
-                    'https://files.catbox.moe/6r5t7u.jpg',
-                    'https://files.catbox.moe/8v7x1z.jpg'
-                  ];
-                  target.src = fallbackImages[index % fallbackImages.length];
                 }}
               />
             </div>
@@ -376,28 +361,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   className="related-post-card"
                 >
                   <div style={{ position: 'relative', width: '100%', height: '200px' }}>
-                    <img
+                    <BlogImage
                       src={relatedPost.featuredImage}
                       alt={relatedPost.title}
+                      index={index}
                       style={{
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
                         display: 'block'
-                      }}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        const fallbackImages = [
-                          'https://files.catbox.moe/3n8q1r.jpg',
-                          'https://files.catbox.moe/7p4h2s.jpg',
-                          'https://files.catbox.moe/9t6u8x.jpg',
-                          'https://files.catbox.moe/1y3h5j.jpg',
-                          'https://files.catbox.moe/2p9m1k.jpg',
-                          'https://files.catbox.moe/4q7w3e.jpg',
-                          'https://files.catbox.moe/6r5t7u.jpg',
-                          'https://files.catbox.moe/8v7x1z.jpg'
-                        ];
-                        target.src = fallbackImages[index % fallbackImages.length];
                       }}
                     />
                   </div>
