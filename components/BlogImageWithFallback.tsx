@@ -37,25 +37,29 @@ export function BlogImageWithFallback({
 }: BlogImageWithFallbackProps) {
   const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
+  const [useFallback, setUseFallback] = useState(false);
 
-  const handleError = () => {
-    if (!hasError) {
-      const fallbackIndex = Math.floor(Math.random() * FALLBACK_IMAGES.length);
-      setImgSrc(FALLBACK_IMAGES[fallbackIndex]);
-      setHasError(true);
+  // Use unoptimized for external images to avoid Next.js optimization issues
+  const imageProps: any = {
+    src: useFallback ? FALLBACK_IMAGES[Math.floor(Math.random() * FALLBACK_IMAGES.length)] : imgSrc,
+    alt,
+    style,
+    className,
+    priority,
+    unoptimized: true, // Bypass Next.js image optimization for external URLs
+    onError: () => {
+      if (!hasError) {
+        setUseFallback(true);
+        setHasError(true);
+      }
     }
   };
 
   if (fill) {
     return (
       <Image
-        src={imgSrc}
-        alt={alt}
+        {...imageProps}
         fill
-        style={style}
-        className={className}
-        priority={priority}
-        onError={handleError}
         sizes="100vw"
       />
     );
@@ -63,14 +67,9 @@ export function BlogImageWithFallback({
 
   return (
     <Image
-      src={imgSrc}
-      alt={alt}
+      {...imageProps}
       width={width || 800}
       height={height || 600}
-      style={style}
-      className={className}
-      priority={priority}
-      onError={handleError}
       loading={priority ? undefined : 'lazy'}
     />
   );
