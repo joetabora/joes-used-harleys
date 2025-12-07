@@ -30,21 +30,21 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Everyone wants to know: what does it really cost to ship a used Harley across the country? I\'ll give you the straight answer – no BS, no hidden fees.',
     date: '2025-01-15',
     readTime: '8 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
     keywords: ['used harley shipping cost', 'harley davidson shipping', 'motorcycle shipping cost', 'ship harley nationwide'],
     images: [
       {
-        url: 'https://files.catbox.moe/3n8q1r.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson motorcycle being loaded onto transport truck for nationwide shipping',
         caption: 'Professional motorcycle transport – fully insured, door-to-door service'
       },
       {
-        url: 'https://files.catbox.moe/7p4h2s.jpg',
+        url: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
         alt: 'Harley-Davidson Street Glide ready for nationwide shipping from Milwaukee',
         caption: 'Every bike is secured and protected during transport'
       },
       {
-        url: 'https://files.catbox.moe/9t6u8x.jpg',
+        url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Road Glide being prepared for shipping',
         caption: 'We handle all paperwork – you just sign and go'
       }
@@ -143,21 +143,21 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Trying to decide between a 2023 and 2024 Street Glide? Here\'s the real difference – and which one makes more sense for your money.',
     date: '2025-01-14',
     readTime: '10 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
     keywords: ['2023 street glide', '2024 street glide', 'used street glide comparison', 'street glide specs'],
     images: [
       {
-        url: 'https://files.catbox.moe/3n8q1r.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: '2023 Harley-Davidson Street Glide Special with batwing fairing and Milwaukee-Eight 114 engine',
         caption: '2023 Street Glide – Proven reliability, great value'
       },
       {
-        url: 'https://files.catbox.moe/1y3h5j.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: '2024 Harley-Davidson Street Glide Special with updated styling',
         caption: '2024 Street Glide – Latest features, higher price'
       },
       {
-        url: 'https://files.catbox.moe/7p4h2s.jpg',
+        url: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
         alt: 'Side-by-side comparison of 2023 and 2024 Street Glide motorcycles',
         caption: 'Both models share the same Milwaukee-Eight engine platform'
       }
@@ -267,22 +267,22 @@ export const blogPosts: BlogPost[] = [
     keywords: ['used harleys under 20000', 'affordable harley davidson', 'cheap used harley', 'best harley under 20k'],
     images: [
       {
-        url: 'https://files.catbox.moe/6r5t7u.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Fat Boy 114 under $20,000 with solid disc wheels',
         caption: 'Fat Boy – Iconic style, serious power, under $20K'
       },
       {
-        url: 'https://files.catbox.moe/7p4h2s.jpg',
+        url: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Heritage Classic with classic styling under $20,000',
         caption: 'Heritage Classic – Classic looks, modern reliability'
       },
       {
-        url: 'https://files.catbox.moe/9t6u8x.jpg',
+        url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Street Glide Special under $20,000',
         caption: 'Street Glide – Touring comfort, proven performance'
       },
       {
-        url: 'https://files.catbox.moe/1y3h5j.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Road Glide with frame-mounted fairing under $20,000',
         caption: 'Road Glide – Superior wind protection, aggressive styling'
       }
@@ -419,21 +419,21 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'The Milwaukee-Eight vs Twin Cam debate is real. Here\'s the straight answer on which engine is better for used Harleys – and which one you should buy.',
     date: '2025-01-12',
     readTime: '11 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
     keywords: ['milwaukee eight vs twin cam', 'harley engine comparison', 'best harley engine', 'used harley engine'],
     images: [
       {
-        url: 'https://files.catbox.moe/3n8q1r.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Milwaukee-Eight 114 engine in Harley-Davidson Street Glide',
         caption: 'Milwaukee-Eight 114 – More power, smoother operation'
       },
       {
-        url: 'https://files.catbox.moe/7p4h2s.jpg',
+        url: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
         alt: 'Twin Cam 103 engine in older Harley-Davidson touring bike',
         caption: 'Twin Cam 103 – Proven reliability, classic Harley sound'
       },
       {
-        url: 'https://files.catbox.moe/9t6u8x.jpg',
+        url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
         alt: 'Engine comparison showing Milwaukee-Eight vs Twin Cam differences',
         caption: 'Both engines are reliable – the choice depends on your priorities'
       }
@@ -556,17 +556,17 @@ export const blogPosts: BlogPost[] = [
     keywords: ['first harley', 'beginner harley', 'best first motorcycle', 'used harley for beginners'],
     images: [
       {
-        url: 'https://files.catbox.moe/7p4h2s.jpg',
+        url: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Sportster 883 perfect for first-time Harley owners',
         caption: 'Sportster 883 – Lightweight, affordable, perfect for beginners'
       },
       {
-        url: 'https://files.catbox.moe/9t6u8x.jpg',
+        url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Softail Standard ideal for first Harley',
         caption: 'Softail Standard – Manageable size, classic styling'
       },
       {
-        url: 'https://files.catbox.moe/1y3h5j.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Heritage Classic great for first-time buyers',
         caption: 'Heritage Classic – Comfortable, reliable, easy to ride'
       }
@@ -691,21 +691,21 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Not all Harleys hold their value the same. Here are the models that depreciate the least – and which ones you should avoid if resale matters.',
     date: '2025-01-10',
     readTime: '10 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
     keywords: ['harley resale value', 'best harley investment', 'harley depreciation', 'used harley value'],
     images: [
       {
-        url: 'https://files.catbox.moe/3n8q1r.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Street Glide Special holding value well in 2025',
         caption: 'Street Glide – Best resale value in touring category'
       },
       {
-        url: 'https://files.catbox.moe/6r5t7u.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Fat Boy maintaining strong resale value',
         caption: 'Fat Boy – Iconic styling holds value'
       },
       {
-        url: 'https://files.catbox.moe/1y3h5j.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson Road Glide with excellent resale value',
         caption: 'Road Glide – Strong demand, strong resale'
       }
@@ -846,17 +846,17 @@ export const blogPosts: BlogPost[] = [
     keywords: ['winter harley', 'cold weather motorcycle', 'wisconsin harley', 'winter riding harley'],
     images: [
       {
-        url: 'https://files.catbox.moe/1y3h5j.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Harley-Davidson Road Glide with frame-mounted fairing providing excellent wind protection for winter riding',
         caption: 'Road Glide – Superior wind protection for cold weather'
       },
       {
-        url: 'https://files.catbox.moe/3n8q1r.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Harley-Davidson Street Glide with batwing fairing ideal for Wisconsin winter riding',
         caption: 'Street Glide – Great wind protection, heated grips available'
       },
       {
-        url: 'https://files.catbox.moe/7p4h2s.jpg',
+        url: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
         alt: 'Harley-Davidson Heritage Classic with detachable windshield for winter protection',
         caption: 'Heritage Classic – Versatile wind protection for changing conditions'
       }
@@ -977,21 +977,21 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Buying a used Harley out of state is risky. Here\'s how to do it right – and avoid the scams, hidden problems, and dealer tricks.',
     date: '2025-01-08',
     readTime: '13 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
     keywords: ['buy harley out of state', 'out of state motorcycle purchase', 'used harley inspection', 'harley shipping'],
     images: [
       {
-        url: 'https://files.catbox.moe/3n8q1r.jpg',
+        url: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
         alt: 'Used Harley-Davidson being inspected before out-of-state purchase',
         caption: 'Always inspect before you buy – or work with someone you trust'
       },
       {
-        url: 'https://files.catbox.moe/7p4h2s.jpg',
+        url: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
         alt: 'Professional motorcycle transport for out-of-state Harley purchase',
         caption: 'Professional shipping protects you and your investment'
       },
       {
-        url: 'https://files.catbox.moe/9t6u8x.jpg',
+        url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
         alt: 'Harley-Davidson paperwork and title transfer for out-of-state purchase',
         caption: 'Proper paperwork is essential for out-of-state purchases'
       }

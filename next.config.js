@@ -31,6 +31,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'files.catbox.moe',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
   trailingSlash: false,

@@ -3,14 +3,14 @@
 import { useState } from 'react';
 
 const FALLBACK_IMAGES = [
-  'https://files.catbox.moe/3n8q1r.jpg',
-  'https://files.catbox.moe/7p4h2s.jpg',
-  'https://files.catbox.moe/9t6u8x.jpg',
-  'https://files.catbox.moe/1y3h5j.jpg',
-  'https://files.catbox.moe/2p9m1k.jpg',
-  'https://files.catbox.moe/4q7w3e.jpg',
-  'https://files.catbox.moe/6r5t7u.jpg',
-  'https://files.catbox.moe/8v7x1z.jpg'
+  'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80'
 ];
 
 interface BlogImageProps {
