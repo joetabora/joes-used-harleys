@@ -448,7 +448,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'The Milwaukee-Eight vs Twin Cam debate is real. Here\'s the straight answer on which engine is better for used Harleys – and which one you should buy.',
     date: '2025-01-12',
     readTime: '11 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: '/twin.jpg',
     keywords: ['milwaukee eight vs twin cam', 'harley engine comparison', 'best harley engine', 'used harley engine'],
     categories: ['Engines'],
     images: [
