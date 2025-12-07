@@ -1,9 +1,7 @@
 import { setPageSEO, SITE_CONFIG } from '@/lib/seo';
 import { getAllBlogPosts, getFeaturedPost } from '@/lib/blog-data';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { BikeImage } from '@/components/BikeImage';
 
 export const metadata: Metadata = setPageSEO({
   pageTitle: 'Used Harley Buyer\'s Guide Blog | Expert Tips & Reviews | Joe\'s Used Harleys',
@@ -109,11 +107,25 @@ export default function BlogIndexPage() {
             gridTemplateColumns: '1fr 1fr',
             gap: 0
           }}>
-            <div style={{ position: 'relative', minHeight: '400px' }}>
-              <BikeImage
+            <div style={{ 
+              position: 'relative', 
+              minHeight: '400px',
+              width: '100%'
+            }}>
+              <img
                 src={featuredPost.featuredImage}
                 alt={featuredPost.title}
-                index={0}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                  minHeight: '400px'
+                }}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'https://files.catbox.moe/3n8q1r.jpg';
+                }}
               />
             </div>
             <div style={{ padding: '3rem' }}>
@@ -232,10 +244,29 @@ export default function BlogIndexPage() {
               className="blog-card"
             >
               <div style={{ position: 'relative', width: '100%', height: '250px' }}>
-                <BikeImage
+                <img
                   src={post.featuredImage}
                   alt={post.title}
-                  index={index}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block'
+                  }}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    const fallbackImages = [
+                      'https://files.catbox.moe/3n8q1r.jpg',
+                      'https://files.catbox.moe/7p4h2s.jpg',
+                      'https://files.catbox.moe/9t6u8x.jpg',
+                      'https://files.catbox.moe/1y3h5j.jpg',
+                      'https://files.catbox.moe/2p9m1k.jpg',
+                      'https://files.catbox.moe/4q7w3e.jpg',
+                      'https://files.catbox.moe/6r5t7u.jpg',
+                      'https://files.catbox.moe/8v7x1z.jpg'
+                    ];
+                    target.src = fallbackImages[index % fallbackImages.length];
+                  }}
                 />
               </div>
               <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
