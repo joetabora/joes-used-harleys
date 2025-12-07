@@ -352,15 +352,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   className="related-post-card"
                 >
                   <div style={{ position: 'relative', width: '100%', height: '200px' }}>
-                    <BlogImage
+                    <BlogImageWithFallback
                       src={relatedPost.featuredImage}
                       alt={relatedPost.title}
-                      index={index}
+                      fill
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block'
+                        objectFit: 'cover'
                       }}
                     />
                   </div>
