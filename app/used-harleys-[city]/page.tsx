@@ -17,6 +17,13 @@ export async function generateStaticParams() {
 // Generate metadata
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
   const { city } = await params;
+  if (!city) {
+    return setPageSEO({
+      pageTitle: 'City Not Found',
+      noindex: true,
+      path: '/used-harleys-[city]'
+    });
+  }
   const cityData = getCityPageData(city);
   
   if (!cityData) {
@@ -37,6 +44,9 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
 
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
   const { city } = await params;
+  if (!city) {
+    notFound();
+  }
   const cityData = getCityPageData(city);
   
   if (!cityData) {
@@ -267,8 +277,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         }}>
           {cityData.exampleBikes.map((bike, index) => {
             // Extract model name for linking
-            const modelName = bike.name.replace(/^\d{4}\s+Harley-Davidson\s+/, '').replace(/\s+\d+.*$/, '').trim();
-            const modelSlug = bike.modelSlug;
+            const modelName = bike.name.replace(/^\d{4}\s+Harley-Davidson\s+/, '').replace(/\s+\d+.*$/, '').trim() || bike.name;
+            const modelSlug = bike.modelSlug || 'street-glide';
             
             return (
               <article

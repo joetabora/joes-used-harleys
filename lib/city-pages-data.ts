@@ -731,7 +731,8 @@ Milwaukee riders consistently choose us because we're local, we're transparent, 
   }
 };
 
-export function getCityPageData(slug: string): CityPageData | null {
+export function getCityPageData(slug: string | undefined): CityPageData | null {
+  if (!slug) return null;
   return cityPagesData[slug.toLowerCase()] || null;
 }
 
