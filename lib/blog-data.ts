@@ -263,7 +263,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'You don\'t need $30,000 to get a badass Harley. Here are 7 used models under $20,000 that still deliver serious performance and style.',
     date: '2025-01-13',
     readTime: '12 min read',
-    featuredImage: 'https://files.catbox.moe/6r5t7u.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=1200&h=800&fit=crop&q=80',
     keywords: ['used harleys under 20000', 'affordable harley davidson', 'cheap used harley', 'best harley under 20k'],
     images: [
       {
@@ -552,7 +552,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Buying your first Harley? Don\'t start with a 900-pound touring bike. Here are 5 used models that are perfect for first-time Harley owners.',
     date: '2025-01-11',
     readTime: '9 min read',
-    featuredImage: 'https://files.catbox.moe/7p4h2s.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1558980664-1db506751c6e?w=1200&h=800&fit=crop&q=80',
     keywords: ['first harley', 'beginner harley', 'best first motorcycle', 'used harley for beginners'],
     images: [
       {
@@ -842,7 +842,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Wisconsin winters are brutal. Here are the used Harleys that handle cold weather, salt, and rough roads – and which ones to avoid.',
     date: '2025-01-09',
     readTime: '9 min read',
-    featuredImage: 'https://files.catbox.moe/1y3h5j.jpg',
+    featuredImage: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=1200&h=800&fit=crop&q=80',
     keywords: ['winter harley', 'cold weather motorcycle', 'wisconsin harley', 'winter riding harley'],
     images: [
       {
