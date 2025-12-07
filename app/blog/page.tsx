@@ -1,8 +1,7 @@
 import { setPageSEO, SITE_CONFIG } from '@/lib/seo';
 import { getAllBlogPosts, getFeaturedPost } from '@/lib/blog-data';
-import { BlogImage } from '@/components/BlogImage';
+import { BlogIndexClient } from '@/components/BlogIndexClient';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 export const metadata: Metadata = setPageSEO({
   pageTitle: 'Used Harley Buyer\'s Guide Blog | Expert Tips & Reviews | Joe\'s Used Harleys',
@@ -81,254 +80,8 @@ export default function BlogIndexPage() {
         </p>
       </section>
 
-      {/* Featured Post */}
-      {featuredPost && (
-        <section style={{
-          padding: '4rem 1.5rem',
-          background: '#0A0A0A',
-          maxWidth: '1400px',
-          margin: '0 auto'
-        }}>
-          <h2 style={{
-            color: '#FF6600',
-            fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-            marginBottom: '2rem',
-            fontFamily: 'var(--font-clash)',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '1px'
-          }}>
-            Featured Post
-          </h2>
-          <article style={{
-            background: '#000000',
-            border: '2px solid #FF6600',
-            overflow: 'hidden',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 0
-          }}>
-            <div style={{ 
-              position: 'relative', 
-              minHeight: '400px',
-              width: '100%'
-            }}>
-              <BlogImage
-                src={featuredPost.featuredImage}
-                alt={featuredPost.title}
-                index={0}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block',
-                  minHeight: '400px'
-                }}
-              />
-            </div>
-            <div style={{ padding: '3rem' }}>
-              <time style={{
-                color: '#FF6600',
-                fontSize: '0.9rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                display: 'block',
-                marginBottom: '1rem'
-              }}>
-                {new Date(featuredPost.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-              </time>
-              <h3 style={{
-                fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
-                color: '#FFFFFF',
-                marginBottom: '1rem',
-                lineHeight: '1.2',
-                fontFamily: 'var(--font-clash)',
-                fontWeight: 700
-              }}>
-                <Link
-                  href={`/blog/${featuredPost.slug}`}
-                  style={{
-                    color: 'inherit',
-                    textDecoration: 'none',
-                    transition: 'color 0.3s'
-                  }}
-                  className="blog-title-link"
-                >
-                  {featuredPost.title}
-                </Link>
-              </h3>
-              <p style={{
-                color: '#CCCCCC',
-                fontSize: '1.1rem',
-                lineHeight: '1.7',
-                marginBottom: '1.5rem'
-              }}>
-                {featuredPost.excerpt}
-              </p>
-              <div style={{
-                display: 'flex',
-                gap: '1rem',
-                alignItems: 'center',
-                marginBottom: '1.5rem'
-              }}>
-                <span style={{
-                  color: '#FF6600',
-                  fontSize: '0.9rem',
-                  fontWeight: 600
-                }}>
-                  {featuredPost.readTime}
-                </span>
-              </div>
-              <Link
-                href={`/blog/${featuredPost.slug}`}
-                style={{
-                  display: 'inline-block',
-                  padding: '1rem 2rem',
-                  background: '#FF6600',
-                  color: '#000000',
-                  textDecoration: 'none',
-                  fontWeight: 800,
-                  fontSize: '1rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  borderRadius: '0',
-                  transition: 'all 0.3s',
-                  fontFamily: 'var(--font-clash)'
-                }}
-                className="blog-read-more"
-              >
-                Read More →
-              </Link>
-            </div>
-          </article>
-        </section>
-      )}
-
-      {/* All Posts Grid */}
-      <section style={{
-        padding: '6rem 1.5rem',
-        background: '#000000',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{
-          color: '#FF6600',
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          marginBottom: '3rem',
-          textAlign: 'center',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          All Posts
-        </h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '2.5rem'
-        }}>
-          {posts.map((post, index) => (
-            <article
-              key={post.slug}
-              style={{
-                background: '#0A0A0A',
-                border: '1px solid #2A2A2A',
-                borderRadius: '0',
-                overflow: 'hidden',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-              className="blog-card"
-            >
-              <div style={{ position: 'relative', width: '100%', height: '250px' }}>
-                <BlogImage
-                  src={post.featuredImage}
-                  alt={post.title}
-                  index={index}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    display: 'block'
-                  }}
-                />
-              </div>
-              <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <time style={{
-                  color: '#FF6600',
-                  fontSize: '0.85rem',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  display: 'block',
-                  marginBottom: '0.75rem'
-                }}>
-                  {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                </time>
-                <h3 style={{
-                  fontSize: 'clamp(1.3rem, 3vw, 1.6rem)',
-                  color: '#FFFFFF',
-                  marginBottom: '1rem',
-                  lineHeight: '1.3',
-                  fontFamily: 'var(--font-clash)',
-                  fontWeight: 700
-                }}>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    style={{
-                      color: 'inherit',
-                      textDecoration: 'none',
-                      transition: 'color 0.3s'
-                    }}
-                    className="blog-title-link"
-                  >
-                    {post.title}
-                  </Link>
-                </h3>
-                <p style={{
-                  color: '#CCCCCC',
-                  fontSize: '0.95rem',
-                  lineHeight: '1.6',
-                  marginBottom: '1rem',
-                  flex: 1
-                }}>
-                  {post.excerpt}
-                </p>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: 'auto'
-                }}>
-                  <span style={{
-                    color: '#FF6600',
-                    fontSize: '0.85rem',
-                    fontWeight: 600
-                  }}>
-                    {post.readTime}
-                  </span>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    style={{
-                      color: '#FF6600',
-                      textDecoration: 'none',
-                      fontWeight: 700,
-                      fontSize: '0.9rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      transition: 'color 0.3s'
-                    }}
-                    className="blog-read-link"
-                  >
-                    Read →
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      {/* Blog Index Client Component */}
+      <BlogIndexClient posts={posts} featuredPost={featuredPost} />
 
       {/* CTA Section */}
       <section style={{
@@ -372,7 +125,7 @@ export default function BlogIndexPage() {
           justifyContent: 'center',
           flexWrap: 'wrap'
         }}>
-          <Link
+          <a
             href="/inventory"
             style={{
               padding: '1rem 2rem',
@@ -390,7 +143,7 @@ export default function BlogIndexPage() {
             className="cta-button"
           >
             View Inventory
-          </Link>
+          </a>
           <a
             href="sms:4144396211"
             style={{
@@ -521,9 +274,6 @@ export default function BlogIndexPage() {
           .floating-cta {
             display: none !important;
           }
-          article[style*="grid-template-columns: 1fr 1fr"] {
-            grid-template-columns: 1fr !important;
-          }
         }
 
         @media (min-width: 769px) {
@@ -533,29 +283,6 @@ export default function BlogIndexPage() {
           .floating-cta {
             display: block !important;
           }
-        }
-
-        .blog-card {
-          cursor: pointer;
-        }
-
-        .blog-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.3);
-          border-color: #FF6600;
-        }
-
-        .blog-title-link:hover {
-          color: #FF6600;
-        }
-
-        .blog-read-link:hover {
-          color: #FF8833;
-        }
-
-        .blog-read-more:hover {
-          background: #FF8833;
-          transform: translateY(-2px);
         }
 
         .cta-button:hover {
@@ -578,4 +305,3 @@ export default function BlogIndexPage() {
     </>
   );
 }
-

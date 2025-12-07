@@ -25,6 +25,11 @@ export async function GET() {
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <author>joe@joesusedharleys.com (Joe Tabora)</author>
       <enclosure url="${post.featuredImage}" type="image/jpeg" />
+      <image>
+        <url>${post.featuredImage}</url>
+        <title>${post.title}</title>
+        <link>${baseUrl}/blog/${post.slug}</link>
+      </image>
     </item>
     `).join('')}
   </channel>

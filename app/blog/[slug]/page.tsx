@@ -1,6 +1,8 @@
 import { setPageSEO, SITE_CONFIG } from '@/lib/seo';
 import { getBlogPost, getAllBlogPosts } from '@/lib/blog-data';
 import { BlogImage } from '@/components/BlogImage';
+import { SocialShare } from '@/components/SocialShare';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -122,42 +124,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           ← Back to Blog
         </Link>
 
-        <header style={{ marginBottom: '3rem' }}>
-          <time style={{
-            color: '#FF6600',
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '1px',
-            display: 'block',
-            marginBottom: '1rem'
-          }}>
-            {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-          <h1 style={{
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-            color: '#FFFFFF',
-            marginBottom: '1rem',
-            lineHeight: '1.2',
-            fontFamily: 'var(--font-clash)',
-            fontWeight: 700
-          }}>
-            {post.title}
-          </h1>
-          <div style={{
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'center',
-            color: '#CCCCCC',
-            fontSize: '0.95rem'
-          }}>
-            <span>{post.readTime}</span>
-            <span style={{ color: '#FF6600' }}>•</span>
-            <span>By Joe Tabora</span>
-          </div>
-        </header>
 
-        {/* Featured Image */}
+        {/* Hero Image with Overlay Title */}
         <div style={{
           marginBottom: '3rem',
           borderRadius: '0',
@@ -165,22 +133,49 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           border: '2px solid #2A2A2A',
           position: 'relative',
           width: '100%',
-          paddingTop: '56.25%' // 16:9 aspect ratio
+          minHeight: '500px'
         }}>
-          <BlogImage
+          <Image
             src={post.featuredImage}
             alt={post.title}
-            index={0}
+            fill
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              display: 'block'
+              objectFit: 'cover'
             }}
+            priority
           />
+          {/* Overlay with Title */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, transparent 100%)',
+            padding: '3rem 2rem 2rem',
+            color: '#FFFFFF'
+          }}>
+            <h1 style={{
+              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+              color: '#FFFFFF',
+              marginBottom: '1rem',
+              lineHeight: '1.2',
+              fontFamily: 'var(--font-clash)',
+              fontWeight: 700
+            }}>
+              {post.title}
+            </h1>
+            <div style={{
+              display: 'flex',
+              gap: '1rem',
+              alignItems: 'center',
+              color: '#CCCCCC',
+              fontSize: '0.95rem'
+            }}>
+              <span>{post.readTime}</span>
+              <span style={{ color: '#FF6600' }}>•</span>
+              <span>By Joe Tabora</span>
+            </div>
+          </div>
         </div>
 
         {/* Article Content */}
@@ -190,10 +185,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             color: '#CCCCCC',
             fontSize: '1.1rem',
             lineHeight: '1.9',
-            marginBottom: '4rem'
+            marginBottom: '2rem'
           }}
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
+        {/* Social Share Buttons */}
+        <SocialShare title={post.title} url={`/blog/${post.slug}`} />
 
         {/* Images from post */}
         {post.images.map((img, index) => (
@@ -208,21 +206,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               border: '2px solid #2A2A2A',
               position: 'relative',
               width: '100%',
-              paddingTop: '56.25%' // 16:9 aspect ratio
+              minHeight: '400px'
             }}>
-              <BlogImage
+              <Image
                 src={img.url}
                 alt={img.alt}
-                index={index + 1}
+                fill
                 style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block'
+                  objectFit: 'cover'
                 }}
+                loading="lazy"
               />
             </div>
             {img.caption && (
