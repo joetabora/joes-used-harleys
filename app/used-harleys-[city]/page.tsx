@@ -42,6 +42,51 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   });
 }
 
+// Helper function to extract model slug from bike name
+function getModelSlugFromName(name: string): string {
+  const nameLower = name.toLowerCase();
+  if (nameLower.includes('street glide')) return 'street-glide';
+  if (nameLower.includes('road glide')) return 'road-glide';
+  if (nameLower.includes('fat boy')) return 'fat-boy';
+  if (nameLower.includes('heritage classic')) return 'heritage-classic';
+  if (nameLower.includes('low rider s')) return 'low-rider-s';
+  if (nameLower.includes('breakout')) return 'breakout';
+  if (nameLower.includes('softail standard')) return 'softail-standard';
+  if (nameLower.includes('road king')) return 'road-king';
+  if (nameLower.includes('pan america')) return 'pan-america-1250';
+  if (nameLower.includes('nightster')) return 'nightster';
+  if (nameLower.includes('sportster s')) return 'sportster-s';
+  if (nameLower.includes('iron 883')) return 'iron-883';
+  return 'street-glide'; // Default fallback
+}
+
+// Fetch real inventory from API
+async function getRealInventory() {
+  try {
+    // Use absolute URL for server-side fetch
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_CONFIG.url || 'http://localhost:3000';
+    const apiUrl = `${baseUrl}/api/bikes`;
+    
+    const response = await fetch(apiUrl, {
+      next: { revalidate: 60 }, // Cache for 60 seconds
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      console.error('Failed to fetch inventory:', response.status);
+      return [];
+    }
+    
+    const data = await response.json();
+    return data.bikes || [];
+  } catch (error) {
+    console.error('Error fetching inventory:', error);
+    return [];
+  }
+}
+
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
   const { city } = await params;
   if (!city) {
@@ -53,18 +98,44 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
     notFound();
   }
 
-  // Generate Product schemas for example bikes
-  const productSchemas = cityData.exampleBikes.map((bike, index) => 
-    generateProductSchema({
-      id: `${cityData.slug}-bike-${index + 1}`,
+  // Fetch real inventory
+  const realBikes = await getRealInventory();
+  
+  // Transform real bikes to match expected format, limit to 8 bikes
+  const displayBikes = realBikes.slice(0, 8).map((bike: any) => {
+    // Extract model name for linking
+    const modelSlug = getModelSlugFromName(bike.name);
+    const modelName = bike.name.replace(/^\d{4}\s+Harley-Davidson\s+/, '').replace(/\s+\d+.*$/, '').trim() || bike.name;
+    
+    // Extract mileage from specs if available
+    const mileageMatch = bike.specs?.match(/(\d{1,3}(?:,\d{3})*)\s*miles/i);
+    const miles = mileageMatch ? mileageMatch[1] : 'N/A';
+    
+    return {
+      id: bike.id,
+      name: bike.name,
+      price: bike.priceFormatted || `$${bike.price?.toLocaleString() || 'Call'}`,
+      miles: miles,
+      image: bike.image || 'https://files.catbox.moe/3n8q1r.jpg',
+      specs: bike.specs || '',
+      modelSlug: modelSlug,
+      modelName: modelName
+    };
+  });
+
+  // Generate Product schemas for real bikes
+  const productSchemas = displayBikes.length > 0 ? displayBikes.map((bike: any, index: number) => {
+    const priceNum = parseInt(bike.price.replace(/[^0-9]/g, '')) || 0;
+    return generateProductSchema({
+      id: bike.id || `${cityData.slug}-bike-${index + 1}`,
       name: bike.name,
       image: bike.image,
       specs: bike.specs,
-      price: parseInt(bike.price.replace(/[^0-9]/g, '')),
+      price: priceNum,
       priceFormatted: bike.price,
       financing: `Financing available • ${bike.miles} miles • Ships to ${cityData.name} for $499`
-    })
-  );
+    });
+  }) : [];
 
   // Generate LocalBusiness schema for this city
   const localBusinessSchema = {
@@ -291,110 +362,137 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '2.5rem'
         }}>
-          {cityData.exampleBikes.map((bike, index) => {
-            // Extract model name for linking
-            const modelName = bike.name.replace(/^\d{4}\s+Harley-Davidson\s+/, '').replace(/\s+\d+.*$/, '').trim() || bike.name;
-            const modelSlug = bike.modelSlug || 'street-glide';
-            
-            return (
-              <article
-                key={index}
-                itemScope
-                itemType="https://schema.org/Product"
-                className="bike-card"
-                style={{
-                  background: '#0A0A0A',
-                  border: '1px solid #2A2A2A',
-                  borderRadius: '0',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease'
-                }}
-              >
-                <div style={{ position: 'relative' }}>
-                  <BikeImage
-                    src={bike.image}
-                    alt={`${bike.name} shipped to ${cityData.name}, ${cityData.stateAbbr}. ${bike.specs}. Price: ${bike.price}. ${bike.miles} miles.`}
-                    index={index}
-                    itemProp="image"
-                  />
-                </div>
-                <div style={{ padding: '1.5rem' }}>
-                  <h3 itemProp="name" style={{
-                    color: '#FF6600',
-                    fontSize: '1.3rem',
-                    fontWeight: 700,
-                    marginBottom: '1rem',
-                    fontFamily: 'var(--font-clash)'
-                  }}>
-                    {bike.name}
-                  </h3>
-                  <p style={{
-                    color: '#CCCCCC',
-                    fontSize: '0.95rem',
-                    marginBottom: '0.75rem',
-                    lineHeight: '1.6'
-                  }}>
-                    {bike.specs}
-                  </p>
-                  <p style={{
-                    color: '#FFFFFF',
-                    fontSize: '1.5rem',
-                    fontWeight: 800,
-                    marginBottom: '0.5rem',
-                    fontFamily: 'var(--font-clash)'
-                  }}>
-                    {bike.price}
-                  </p>
-                  <p style={{
-                    color: '#CCCCCC',
-                    fontSize: '0.9rem',
-                    marginBottom: '1rem'
-                  }}>
-                    {bike.miles} miles
-                  </p>
-                  <Link
-                    href={`/${modelSlug}`}
-                    className="model-link-city"
-                    style={{
-                      display: 'block',
+          {displayBikes.length > 0 ? (
+            displayBikes.map((bike: any, index: number) => {
+              return (
+                <article
+                  key={bike.id || index}
+                  itemScope
+                  itemType="https://schema.org/Product"
+                  className="bike-card"
+                  style={{
+                    background: '#0A0A0A',
+                    border: '1px solid #2A2A2A',
+                    borderRadius: '0',
+                    overflow: 'hidden',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <div style={{ position: 'relative' }}>
+                    <BikeImage
+                      src={bike.image}
+                      alt={`${bike.name} shipped to ${cityData.name}, ${cityData.stateAbbr}. ${bike.specs}. Price: ${bike.price}. ${bike.miles} miles.`}
+                      index={index}
+                      itemProp="image"
+                    />
+                  </div>
+                  <div style={{ padding: '1.5rem' }}>
+                    <h3 itemProp="name" style={{
                       color: '#FF6600',
-                      textDecoration: 'none',
-                      fontSize: '1rem',
+                      fontSize: '1.3rem',
                       fontWeight: 700,
                       marginBottom: '1rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      transition: 'color 0.3s'
-                    }}
-                  >
-                    Used {modelName} {cityData.name} →
-                  </Link>
-                  <a
-                    href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} shipped to ${cityData.name} - ${bike.price} - ${bike.miles} miles`}
-                    className="bike-cta-button"
-                    style={{
-                      display: 'block',
-                      width: '100%',
-                      padding: '1rem',
-                      background: '#FF6600',
-                      color: '#000000',
-                      textAlign: 'center',
-                      textDecoration: 'none',
-                      fontWeight: 800,
-                      fontSize: '0.95rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      borderRadius: '0',
-                      transition: 'all 0.3s',
                       fontFamily: 'var(--font-clash)'
-                    }}
-                  >
-                    TEXT JOE ABOUT THIS BIKE
-                  </a>
-                </div>
-              </article>
-            );
-          })}
+                    }}>
+                      {bike.name}
+                    </h3>
+                    <p style={{
+                      color: '#CCCCCC',
+                      fontSize: '0.95rem',
+                      marginBottom: '0.75rem',
+                      lineHeight: '1.6'
+                    }}>
+                      {bike.specs}
+                    </p>
+                    <p style={{
+                      color: '#FFFFFF',
+                      fontSize: '1.5rem',
+                      fontWeight: 800,
+                      marginBottom: '0.5rem',
+                      fontFamily: 'var(--font-clash)'
+                    }}>
+                      {bike.price}
+                    </p>
+                    {bike.miles !== 'N/A' && (
+                      <p style={{
+                        color: '#CCCCCC',
+                        fontSize: '0.9rem',
+                        marginBottom: '1rem'
+                      }}>
+                        {bike.miles} miles
+                      </p>
+                    )}
+                    <Link
+                      href={`/${bike.modelSlug}`}
+                      className="model-link-city"
+                      style={{
+                        display: 'block',
+                        color: '#FF6600',
+                        textDecoration: 'none',
+                        fontSize: '1rem',
+                        fontWeight: 700,
+                        marginBottom: '1rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        transition: 'color 0.3s'
+                      }}
+                    >
+                      Used {bike.modelName} {cityData.name} →
+                    </Link>
+                    <a
+                      href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} shipped to ${cityData.name} - ${bike.price} - ${bike.miles} miles`}
+                      className="bike-cta-button"
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        padding: '1rem',
+                        background: '#FF6600',
+                        color: '#000000',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        fontWeight: 800,
+                        fontSize: '0.95rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        borderRadius: '0',
+                        transition: 'all 0.3s',
+                        fontFamily: 'var(--font-clash)'
+                      }}
+                    >
+                      TEXT JOE ABOUT THIS BIKE
+                    </a>
+                  </div>
+                </article>
+              );
+            })
+          ) : (
+            <div style={{
+              gridColumn: '1 / -1',
+              textAlign: 'center',
+              padding: '3rem',
+              background: '#0A0A0A',
+              border: '2px solid #FF6600'
+            }}>
+              <p style={{
+                color: '#CCCCCC',
+                fontSize: '1.2rem',
+                marginBottom: '1rem'
+              }}>
+                Inventory loading... Check back soon or text Joe at{' '}
+                <a
+                  href="sms:4144396211"
+                  style={{
+                    color: '#FF6600',
+                    textDecoration: 'none',
+                    fontWeight: 700
+                  }}
+                >
+                  414-439-6211
+                </a>
+                {' '}for current availability
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
