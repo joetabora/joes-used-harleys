@@ -6,6 +6,42 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+// Fetch real inventory from API
+async function getRealInventory() {
+  try {
+    // Use absolute URL for server-side fetch
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_CONFIG.url || 'http://localhost:3000';
+    const apiUrl = `${baseUrl}/api/bikes`;
+    
+    const response = await fetch(apiUrl, {
+      next: { revalidate: 60 }, // Cache for 60 seconds
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if (!response.ok) {
+      console.error('Failed to fetch inventory:', response.status);
+      return [];
+    }
+    
+    const data = await response.json();
+    return data.bikes || [];
+  } catch (error) {
+    console.error('Error fetching inventory:', error);
+    return [];
+  }
+}
+
+// Filter bikes by model name
+function filterBikesByModel(bikes: any[], modelName: string): any[] {
+  const modelLower = modelName.toLowerCase();
+  return bikes.filter((bike: any) => {
+    const bikeNameLower = bike.name?.toLowerCase() || '';
+    return bikeNameLower.includes(modelLower);
+  });
+}
+
 // Generate static params for all model pages
 export async function generateStaticParams() {
   const slugs = getAllModelPageSlugs();
@@ -44,23 +80,44 @@ export default async function ModelPage({ params }: { params: Promise<{ 'model-s
     notFound();
   }
 
-  // Generate Product schemas for example bikes
-  const productSchemas = modelData.exampleBikes.map((bike, index) => 
-    generateProductSchema({
-      id: `${slug}-example-${index + 1}`,
+  // Fetch real inventory and filter by model
+  const allBikes = await getRealInventory();
+  const filteredBikes = filterBikesByModel(allBikes, modelData.name);
+  
+  // Transform real bikes to match expected format, limit to 5 bikes
+  const displayBikes = filteredBikes.slice(0, 5).map((bike: any) => {
+    // Extract mileage from specs if available
+    const mileageMatch = bike.specs?.match(/(\d{1,3}(?:,\d{3})*)\s*miles/i);
+    const miles = mileageMatch ? mileageMatch[1] : 'N/A';
+    
+    return {
+      id: bike.id,
+      name: bike.name,
+      price: bike.priceFormatted || `$${bike.price?.toLocaleString() || 'Call'}`,
+      miles: miles,
+      image: bike.image || 'https://files.catbox.moe/3n8q1r.jpg',
+      specs: bike.specs || ''
+    };
+  });
+
+  // Generate Product schemas for real bikes
+  const productSchemas = displayBikes.length > 0 ? displayBikes.map((bike: any, index: number) => {
+    const priceNum = parseInt(bike.price.replace(/[^0-9]/g, '')) || 0;
+    return generateProductSchema({
+      id: bike.id || `${slug}-bike-${index + 1}`,
       name: bike.name,
       image: bike.image,
       specs: bike.specs,
-      price: parseInt(bike.price.replace(/[^0-9]/g, '')),
+      price: priceNum,
       priceFormatted: bike.price,
       financing: `Financing available • ${bike.miles} miles`
-    })
-  );
+    });
+  }) : [];
 
   return (
     <>
-      {/* Product Schemas for Example Bikes */}
-      {productSchemas.map((schema, index) => (
+      {/* Product Schemas for Real Bikes */}
+      {productSchemas.map((schema: any, index: number) => (
         <script
           key={index}
           type="application/ld+json"
@@ -138,7 +195,7 @@ export default async function ModelPage({ params }: { params: Promise<{ 'model-s
         </div>
       </section>
 
-      {/* Example Bikes Section */}
+      {/* Real Inventory Section */}
       <section style={{ 
         padding: '6rem 1.5rem', 
         background: '#000000',
@@ -160,87 +217,118 @@ export default async function ModelPage({ params }: { params: Promise<{ 'model-s
           gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '2.5rem'
         }}>
-          {modelData.exampleBikes.map((bike, index) => (
-            <article
-              key={index}
-              itemScope
-              itemType="https://schema.org/Product"
-              className="bike-card"
-              style={{
-                background: '#0A0A0A',
-                border: '1px solid #2A2A2A',
-                borderRadius: '0',
-                overflow: 'hidden',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <div style={{ position: 'relative' }}>
-                <BikeImage
-                  src={bike.image}
-                  alt={`${bike.name} for sale in Milwaukee, Wisconsin. ${bike.specs}. Price: ${bike.price}. ${bike.miles} miles.`}
-                  index={index}
-                  itemProp="image"
-                />
-              </div>
-              <div style={{ padding: '1.5rem' }}>
-                <h3 itemProp="name" style={{
-                  color: '#FF6600',
-                  fontSize: '1.3rem',
-                  fontWeight: 700,
-                  marginBottom: '1rem',
-                  fontFamily: 'var(--font-clash)'
-                }}>
-                  {bike.name}
-                </h3>
-                <p style={{
-                  color: '#CCCCCC',
-                  fontSize: '0.95rem',
-                  marginBottom: '0.75rem',
-                  lineHeight: '1.6'
-                }}>
-                  {bike.specs}
-                </p>
-                <p style={{
-                  color: '#FFFFFF',
-                  fontSize: '1.5rem',
-                  fontWeight: 800,
-                  marginBottom: '0.5rem',
-                  fontFamily: 'var(--font-clash)'
-                }}>
-                  {bike.price}
-                </p>
-                <p style={{
-                  color: '#CCCCCC',
-                  fontSize: '0.9rem',
-                  marginBottom: '1.5rem'
-                }}>
-                  {bike.miles} miles
-                </p>
-                <a
-                  href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} - ${bike.price} - ${bike.miles} miles`}
-                  className="bike-cta-button"
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '1rem',
-                    background: '#FF6600',
-                    color: '#000000',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    fontWeight: 800,
-                    fontSize: '0.95rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    borderRadius: '0',
-                    transition: 'all 0.3s',
+          {displayBikes.length > 0 ? (
+            displayBikes.map((bike: any, index: number) => (
+              <article
+                key={bike.id || index}
+                itemScope
+                itemType="https://schema.org/Product"
+                className="bike-card"
+                style={{
+                  background: '#0A0A0A',
+                  border: '1px solid #2A2A2A',
+                  borderRadius: '0',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <div style={{ position: 'relative' }}>
+                  <BikeImage
+                    src={bike.image}
+                    alt={`${bike.name} for sale in Milwaukee, Wisconsin. ${bike.specs}. Price: ${bike.price}. ${bike.miles} miles.`}
+                    index={index}
+                    itemProp="image"
+                  />
+                </div>
+                <div style={{ padding: '1.5rem' }}>
+                  <h3 itemProp="name" style={{
+                    color: '#FF6600',
+                    fontSize: '1.3rem',
+                    fontWeight: 700,
+                    marginBottom: '1rem',
                     fontFamily: 'var(--font-clash)'
+                  }}>
+                    {bike.name}
+                  </h3>
+                  <p style={{
+                    color: '#CCCCCC',
+                    fontSize: '0.95rem',
+                    marginBottom: '0.75rem',
+                    lineHeight: '1.6'
+                  }}>
+                    {bike.specs}
+                  </p>
+                  <p style={{
+                    color: '#FFFFFF',
+                    fontSize: '1.5rem',
+                    fontWeight: 800,
+                    marginBottom: '0.5rem',
+                    fontFamily: 'var(--font-clash)'
+                  }}>
+                    {bike.price}
+                  </p>
+                  {bike.miles !== 'N/A' && (
+                    <p style={{
+                      color: '#CCCCCC',
+                      fontSize: '0.9rem',
+                      marginBottom: '1.5rem'
+                    }}>
+                      {bike.miles} miles
+                    </p>
+                  )}
+                  <a
+                    href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} - ${bike.price} - ${bike.miles} miles`}
+                    className="bike-cta-button"
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '1rem',
+                      background: '#FF6600',
+                      color: '#000000',
+                      textAlign: 'center',
+                      textDecoration: 'none',
+                      fontWeight: 800,
+                      fontSize: '0.95rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      borderRadius: '0',
+                      transition: 'all 0.3s',
+                      fontFamily: 'var(--font-clash)'
+                    }}
+                  >
+                    TEXT JOE ABOUT THIS {modelData.displayName.toUpperCase()}
+                  </a>
+                </div>
+              </article>
+            ))
+          ) : (
+            <div style={{
+              gridColumn: '1 / -1',
+              textAlign: 'center',
+              padding: '3rem',
+              background: '#0A0A0A',
+              border: '2px solid #FF6600'
+            }}>
+              <p style={{
+                color: '#CCCCCC',
+                fontSize: '1.2rem',
+                marginBottom: '1rem'
+              }}>
+                No {modelData.displayName} bikes in stock right now. Text Joe at{' '}
+                <a
+                  href="sms:4144396211"
+                  style={{
+                    color: '#FF6600',
+                    textDecoration: 'none',
+                    fontWeight: 700
                   }}
                 >
-                  TEXT JOE ABOUT THIS {modelData.displayName.toUpperCase()}
+                  414-439-6211
                 </a>
-              </div>
-            </article>
-          ))}
+                {' '}to be notified when we get one in
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
