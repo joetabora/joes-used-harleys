@@ -31,7 +31,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Everyone wants to know: what does it really cost to ship a used Harley across the country? I\'ll give you the straight answer – no BS, no hidden fees.',
     date: '2025-01-15',
     readTime: '8 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: '/usa.jpg',
     keywords: ['used harley shipping cost', 'harley davidson shipping', 'motorcycle shipping cost', 'ship harley nationwide'],
     categories: ['Shipping'],
     images: [
