@@ -155,7 +155,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Trying to decide between a 2023 and 2024 Street Glide? Here\'s the real difference – and which one makes more sense for your money.',
     date: '2025-01-14',
     readTime: '10 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: '/24sg.jpg',
     keywords: ['2023 street glide', '2024 street glide', 'used street glide comparison', 'street glide specs'],
     categories: ['Models'],
     images: [
