@@ -1,8 +1,8 @@
 import { setPageSEO, generateProductSchema, SITE_CONFIG } from '@/lib/seo';
 import { getModelPageData, getAllModelPageSlugs } from '@/lib/model-pages-data';
 import { ShippingCalculator } from '@/components/ShippingCalculator';
+import { BikeImage } from '@/components/BikeImage';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -175,20 +175,11 @@ export default async function ModelPage({ params }: { params: Promise<{ 'model-s
               }}
             >
               <div style={{ position: 'relative' }}>
-                <Image
+                <BikeImage
                   src={bike.image}
                   alt={`${bike.name} for sale in Milwaukee, Wisconsin. ${bike.specs}. Price: ${bike.price}. ${bike.miles} miles.`}
-                  width={800}
-                  height={600}
-                  loading="lazy"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  quality={85}
+                  index={index}
                   itemProp="image"
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    display: 'block'
-                  }}
                 />
               </div>
               <div style={{ padding: '1.5rem' }}>
