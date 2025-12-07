@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 
 const FALLBACK_IMAGES = [
   'https://files.catbox.moe/3n8q1r.jpg',
@@ -37,40 +36,40 @@ export function BlogImageWithFallback({
 }: BlogImageWithFallbackProps) {
   const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
-  const [useFallback, setUseFallback] = useState(false);
 
-  // Use unoptimized for external images to avoid Next.js optimization issues
-  const imageProps: any = {
-    src: useFallback ? FALLBACK_IMAGES[Math.floor(Math.random() * FALLBACK_IMAGES.length)] : imgSrc,
-    alt,
-    style,
-    className,
-    priority,
-    unoptimized: true, // Bypass Next.js image optimization for external URLs
-    onError: () => {
-      if (!hasError) {
-        setUseFallback(true);
-        setHasError(true);
-      }
+  const handleError = () => {
+    if (!hasError) {
+      const fallbackIndex = Math.floor(Math.random() * FALLBACK_IMAGES.length);
+      setImgSrc(FALLBACK_IMAGES[fallbackIndex]);
+      setHasError(true);
     }
   };
 
-  if (fill) {
-    return (
-      <Image
-        {...imageProps}
-        fill
-        sizes="100vw"
-      />
-    );
-  }
+  // Use regular img tag for better compatibility with external URLs
+  const imgStyle: React.CSSProperties = fill 
+    ? {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        ...style
+      }
+    : {
+        width: width || '100%',
+        height: height || 'auto',
+        ...style
+      };
 
   return (
-    <Image
-      {...imageProps}
-      width={width || 800}
-      height={height || 600}
-      loading={priority ? undefined : 'lazy'}
+    <img
+      src={imgSrc}
+      alt={alt}
+      style={imgStyle}
+      className={className}
+      loading={priority ? 'eager' : 'lazy'}
+      onError={handleError}
     />
   );
 }
