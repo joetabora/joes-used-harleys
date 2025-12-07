@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { BlogImageWithFallback } from './BlogImageWithFallback';
 import { BlogFilter, BLOG_CATEGORIES, type BlogCategory } from './BlogFilter';
 import { BlogPost } from '@/lib/blog-data';
 
@@ -73,7 +73,7 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
                 height: '500px',
                 overflow: 'hidden'
               }}>
-                <Image
+                <BlogImageWithFallback
                   src={featuredPost.featuredImage}
                   alt={featuredPost.title}
                   fill
@@ -201,14 +201,13 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
                   className="blog-card"
                 >
                   <div style={{ position: 'relative', width: '100%', height: '250px' }}>
-                    <Image
+                    <BlogImageWithFallback
                       src={post.featuredImage}
                       alt={post.title}
                       fill
                       style={{
                         objectFit: 'cover'
                       }}
-                      loading="lazy"
                     />
                   </div>
                   <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>

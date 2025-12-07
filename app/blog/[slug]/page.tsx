@@ -1,8 +1,7 @@
 import { setPageSEO, SITE_CONFIG } from '@/lib/seo';
 import { getBlogPost, getAllBlogPosts } from '@/lib/blog-data';
-import { BlogImage } from '@/components/BlogImage';
 import { SocialShare } from '@/components/SocialShare';
-import Image from 'next/image';
+import { BlogImageWithFallback } from '@/components/BlogImageWithFallback';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -135,7 +134,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           width: '100%',
           minHeight: '500px'
         }}>
-          <Image
+          <BlogImageWithFallback
             src={post.featuredImage}
             alt={post.title}
             fill
@@ -208,14 +207,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               width: '100%',
               minHeight: '400px'
             }}>
-              <Image
+              <BlogImageWithFallback
                 src={img.url}
                 alt={img.alt}
                 fill
                 style={{
                   objectFit: 'cover'
                 }}
-                loading="lazy"
               />
             </div>
             {img.caption && (
