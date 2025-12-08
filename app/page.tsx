@@ -326,40 +326,6 @@ export default function HomePage() {
             { title: 'Ships Anywhere', desc: '$499 flat rate nationwide. Fully insured, handled by pros.' },
             { title: 'FaceTime the Bike Before You Buy', desc: 'I\'ll fire it up, walk around, show every detail live on your phone. No pressure, no deposit to look.' }
           ].map((item, idx) => (
-        </div>
-      </section>
-
-      {/* Why Joe Section */}
-      <section style={{ 
-        padding: '6rem 1.5rem', 
-        background: '#000000',
-        maxWidth: '1000px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{ 
-          color: '#FF6600', 
-          marginBottom: '3rem', 
-          fontSize: 'clamp(2rem, 5vw, 3rem)', 
-          textAlign: 'center',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Why Joe
-        </h2>
-        <ul style={{
-          listStyle: 'none',
-          padding: 0,
-          margin: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.5rem'
-        }}>
-          {[
-            { title: 'No BS Pricing', desc: 'The price you see is what you pay — no prep fees or hidden add-ons.' },
-            { title: 'Inspected & Guaranteed', desc: '48hr/100-mile refund. Every bike inspected, full service records included.' },
-            { title: 'Financing That Works', desc: 'Bad credit OK. Rates as low as $299/month. First-time buyers welcome.' },
-            { title: 'Ships Anywhere', desc: '$499 flat rate nationwide. Fully insured, handled by pros.' }
-          ].map((item, idx) => (
             <li key={idx} style={{
               padding: '1.5rem',
               background: '#0A0A0A',
@@ -647,10 +613,43 @@ export default function HomePage() {
           padding: '0.5rem',
           textTransform: 'uppercase',
           letterSpacing: '0.5px',
-          animation: 'pulse-float 3s ease-in-out infinite'
+          animation: 'pulse-float 3s ease-in-out infinite',
+          fontFamily: 'var(--font-clash)'
         }}
       >
         TEXT<br />JOE<br />NOW →
+      </a>
+      <a
+        href="sms:4144396211?body=FaceTime%20tour%20please"
+        className="floating-cta facetime-cta" 
+        aria-label="Request a FaceTime tour of used Harley-Davidson motorcycles"
+        style={{
+          position: 'fixed',
+          bottom: '11rem',
+          right: '2.5rem',
+          background: '#FF6600',
+          color: '#000000',
+          width: '80px',
+          height: '80px',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textDecoration: 'none',
+          fontWeight: 800,
+          fontSize: '0.65rem',
+          textAlign: 'center',
+          boxShadow: '0 0 0 3px rgba(255, 102, 0, 0.3), 0 8px 30px rgba(255, 102, 0, 0.5)',
+          zIndex: 1000,
+          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          fontFamily: 'var(--font-clash)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          lineHeight: '1.1',
+          padding: '0.4rem'
+        }}
+      >
+        📱<br />FACETIME<br />TOUR
       </a>
 
       {/* Mobile Sticky Bottom Bar */}
