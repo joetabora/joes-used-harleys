@@ -874,7 +874,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Wisconsin winters are brutal. Here are the used Harleys that handle cold weather, salt, and rough roads – and which ones to avoid.',
     date: '2025-01-09',
     readTime: '9 min read',
-    featuredImage: 'https://files.catbox.moe/1y3h5j.jpg',
+    featuredImage: '/winter.jpg',
     keywords: ['winter harley', 'cold weather motorcycle', 'wisconsin harley', 'winter riding harley'],
     categories: ['Wisconsin', 'Models'],
     images: [
