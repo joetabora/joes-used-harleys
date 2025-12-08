@@ -585,47 +585,14 @@ export default function HomePage() {
         </p>
       </footer>
 
-      {/* Pulsing Floating CTA */}
-      <a 
-        href="sms:4144396211" 
-        className="floating-cta" 
-        aria-label="Text Joe now about used Harley-Davidson motorcycles for sale in Milwaukee"
-        style={{
-          position: 'fixed',
-          bottom: '2.5rem',
-          right: '2.5rem',
-          background: '#FF6600',
-          color: '#000000',
-          width: '80px',
-          height: '80px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textDecoration: 'none',
-          fontWeight: 800,
-          fontSize: '0.7rem',
-          textAlign: 'center',
-          boxShadow: '0 0 0 3px rgba(255, 102, 0, 0.3), 0 8px 30px rgba(255, 102, 0, 0.5)',
-          zIndex: 1000,
-          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          lineHeight: '1.1',
-          padding: '0.5rem',
-          textTransform: 'uppercase',
-          letterSpacing: '0.5px',
-          animation: 'pulse-float 3s ease-in-out infinite',
-          fontFamily: 'var(--font-clash)'
-        }}
-      >
-        TEXT<br />JOE<br />NOW →
-      </a>
+      {/* Floating FaceTime CTA */}
       <a
         href="sms:4144396211?body=FaceTime%20tour%20please"
         className="floating-cta facetime-cta" 
         aria-label="Request a FaceTime tour of used Harley-Davidson motorcycles"
         style={{
           position: 'fixed',
-          bottom: '11rem',
+          bottom: '2.5rem',
           right: '2.5rem',
           background: '#FF6600',
           color: '#000000',
