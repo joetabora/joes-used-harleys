@@ -318,6 +318,17 @@ export function InventoryGrid() {
                   {bike.priceFormatted}
                 </p>
                 <p className="financing">{bike.financing}</p>
+                <p style={{
+                  color: '#FF6600',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  marginTop: '0.5rem',
+                  marginBottom: '1rem',
+                  textAlign: 'center',
+                  fontStyle: 'italic'
+                }}>
+                  Live FaceTime tour available — text Joe
+                </p>
                 <div className="bike-actions">
                   <a 
                     href={`/bikes/${bike.id}`}

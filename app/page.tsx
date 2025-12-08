@@ -247,7 +247,7 @@ export default function HomePage() {
           </h1>
           <p className="subheadline" style={{ 
             fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', 
-            marginBottom: '3rem', 
+            marginBottom: '2rem', 
             color: '#CCCCCC',
             fontWeight: 400,
             textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)',
@@ -255,11 +255,77 @@ export default function HomePage() {
           }}>
             Low miles • Full warranty • $499 ships nationwide
           </p>
-          
-          {/* InventoryGrid immediately below hero text */}
-          <div style={{ width: '100%', marginTop: '2rem' }}>
-            <InventoryGrid />
-          </div>
+        </div>
+      </section>
+
+      {/* FaceTime Banner */}
+      <a
+        href="sms:4144396211?body=FaceTime%20tour%20please"
+        style={{
+          display: 'block',
+          background: '#FF6600',
+          color: '#000000',
+          textAlign: 'center',
+          padding: 'clamp(1.5rem, 3vw, 2rem) 1.5rem',
+          fontWeight: 800,
+          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+          letterSpacing: '1px',
+          textDecoration: 'none',
+          textTransform: 'uppercase',
+          borderTop: '3px solid #000000',
+          borderBottom: '3px solid #000000',
+          transition: 'all 0.3s',
+          fontFamily: 'var(--font-clash)',
+          position: 'relative',
+          zIndex: 99
+        }}
+        className="facetime-banner"
+      >
+        🔴 LIVE FACETIME TOURS AVAILABLE — See any bike in real time. Text 414-439-6211 and say "FaceTime the [year/model]"
+      </a>
+
+      {/* Inventory Section */}
+      <section style={{
+        padding: '4rem 1.5rem',
+        background: '#000000',
+        maxWidth: '1400px',
+        margin: '0 auto'
+      }}>
+        <InventoryGrid />
+      </section>
+
+      {/* Why Joe Section */}
+      <section style={{ 
+        padding: '6rem 1.5rem', 
+        background: '#000000',
+        maxWidth: '1000px',
+        margin: '0 auto'
+      }}>
+        <h2 style={{ 
+          color: '#FF6600', 
+          marginBottom: '3rem', 
+          fontSize: 'clamp(2rem, 5vw, 3rem)', 
+          textAlign: 'center',
+          fontFamily: 'var(--font-clash)',
+          fontWeight: 700
+        }}>
+          Why Joe
+        </h2>
+        <ul style={{
+          listStyle: 'none',
+          padding: 0,
+          margin: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.5rem'
+        }}>
+          {[
+            { title: 'No BS Pricing', desc: 'The price you see is what you pay — no prep fees or hidden add-ons.' },
+            { title: 'Inspected & Guaranteed', desc: '48hr/100-mile refund. Every bike inspected, full service records included.' },
+            { title: 'Financing That Works', desc: 'Bad credit OK. Rates as low as $299/month. First-time buyers welcome.' },
+            { title: 'Ships Anywhere', desc: '$499 flat rate nationwide. Fully insured, handled by pros.' },
+            { title: 'FaceTime the Bike Before You Buy', desc: 'I\'ll fire it up, walk around, show every detail live on your phone. No pressure, no deposit to look.' }
+          ].map((item, idx) => (
         </div>
       </section>
 
@@ -718,6 +784,12 @@ export default function HomePage() {
           background: #FF8833;
         }
 
+        .facetime-banner:hover {
+          background: #FF8833;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(255, 102, 0, 0.4);
+        }
+
         /* Bike card hover effect with slight lift */
         .bike {
           transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -756,6 +828,11 @@ export default function HomePage() {
             bottom: 90px;
             right: 1.5rem;
             font-size: 0.6rem;
+          }
+
+          .facetime-cta {
+            bottom: 170px !important;
+            font-size: 0.55rem !important;
           }
 
           .mobile-bar {
