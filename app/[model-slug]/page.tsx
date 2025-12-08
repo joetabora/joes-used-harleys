@@ -174,6 +174,32 @@ export default async function ModelPage({ params }: { params: Promise<{ 'model-s
         </p>
       </section>
 
+      {/* FaceTime Banner */}
+      <a
+        href="sms:4144396211?body=FaceTime%20tour%20please"
+        style={{
+          display: 'block',
+          background: '#FF6600',
+          color: '#000000',
+          textAlign: 'center',
+          padding: 'clamp(1.5rem, 3vw, 2rem) 1.5rem',
+          fontWeight: 800,
+          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+          letterSpacing: '1px',
+          textDecoration: 'none',
+          textTransform: 'uppercase',
+          borderTop: '3px solid #000000',
+          borderBottom: '3px solid #000000',
+          transition: 'all 0.3s',
+          fontFamily: 'var(--font-clash)',
+          position: 'relative',
+          zIndex: 99
+        }}
+        className="facetime-banner"
+      >
+        🔴 LIVE FACETIME TOURS AVAILABLE — See any bike in real time. Text 414-439-6211 and say "FaceTime the [year/model]"
+      </a>
+
       {/* Main Content Section */}
       <section style={{ 
         padding: '4rem 1.5rem', 
