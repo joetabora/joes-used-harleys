@@ -821,16 +821,11 @@ export default function HomePage() {
 
         /* Mobile responsive adjustments */
         @media (max-width: 768px) {
-          .floating-cta {
+          .facetime-cta {
             width: 65px;
             height: 65px;
             bottom: 90px;
             right: 1.5rem;
-            font-size: 0.6rem;
-          }
-
-          .facetime-cta {
-            bottom: 170px !important;
             font-size: 0.55rem !important;
           }
 

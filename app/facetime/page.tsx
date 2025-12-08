@@ -406,45 +406,14 @@ export default function FaceTimePage() {
         </a>
       </div>
 
-      {/* Floating CTA Buttons */}
-      <a
-        href="sms:4144396211"
-        className="floating-cta" 
-        aria-label="Text Joe now about used Harley-Davidson motorcycles for sale in Milwaukee"
-        style={{
-          position: 'fixed',
-          bottom: '2.5rem',
-          right: '2.5rem',
-          background: '#FF6600',
-          color: '#000000',
-          width: '80px',
-          height: '80px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textDecoration: 'none',
-          fontWeight: 800,
-          fontSize: '0.7rem',
-          textAlign: 'center',
-          boxShadow: '0 0 0 3px rgba(255, 102, 0, 0.3), 0 8px 30px rgba(255, 102, 0, 0.5)',
-          zIndex: 1000,
-          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          fontFamily: 'var(--font-clash)',
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-          lineHeight: '1.2'
-        }}
-      >
-        TEXT<br />JOE
-      </a>
+      {/* Floating FaceTime CTA */}
       <a
         href="sms:4144396211?body=FaceTime%20tour%20please"
         className="floating-cta facetime-cta" 
         aria-label="Request a FaceTime tour of used Harley-Davidson motorcycles"
         style={{
           position: 'fixed',
-          bottom: '11rem',
+          bottom: '2.5rem',
           right: '2.5rem',
           background: '#FF6600',
           color: '#000000',
@@ -464,7 +433,8 @@ export default function FaceTimePage() {
           fontFamily: 'var(--font-clash)',
           textTransform: 'uppercase',
           letterSpacing: '0.5px',
-          lineHeight: '1.1'
+          lineHeight: '1.1',
+          padding: '0.4rem'
         }}
       >
         📱<br />FACETIME<br />TOUR
@@ -490,16 +460,11 @@ export default function FaceTimePage() {
         }
 
         @media (max-width: 768px) {
-          .floating-cta {
+          .facetime-cta {
             width: 65px;
             height: 65px;
             bottom: 90px;
             right: 1.5rem;
-            font-size: 0.6rem;
-          }
-
-          .facetime-cta {
-            bottom: 170px !important;
             font-size: 0.55rem !important;
           }
 
