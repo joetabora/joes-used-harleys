@@ -582,7 +582,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Buying your first Harley? Don\'t start with a 900-pound touring bike. Here are 5 used models that are perfect for first-time Harley owners.',
     date: '2025-01-11',
     readTime: '9 min read',
-    featuredImage: 'https://files.catbox.moe/7p4h2s.jpg',
+    featuredImage: '/883.jpg',
     keywords: ['first harley', 'beginner harley', 'best first motorcycle', 'used harley for beginners'],
     categories: ['Beginners'],
     images: [
