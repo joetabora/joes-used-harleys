@@ -1010,7 +1010,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Buying a used Harley out of state is risky. Here\'s how to do it right – and avoid the scams, hidden problems, and dealer tricks.',
     date: '2025-01-08',
     readTime: '13 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: '/ship.jpg',
     keywords: ['buy harley out of state', 'out of state motorcycle purchase', 'used harley inspection', 'harley shipping'],
     categories: ['Shipping', 'Beginners'],
     images: [
