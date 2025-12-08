@@ -393,21 +393,29 @@ export default function HomePage() {
         </p>
         <form 
           id="preapprovalForm"
-          action="https://formspree.io/f/xjknegnl"
-          method="POST"
           onSubmit={async (e) => {
+            e.preventDefault();
             setIsSubmitting(true);
             setFormStatus({ type: null, message: '' });
 
             const formData = new FormData(e.currentTarget);
+            const data = {
+              name: formData.get('name'),
+              email: formData.get('email'),
+              phone: formData.get('phone'),
+              credit_score: formData.get('credit_score'),
+              income: formData.get('income'),
+              bike_interest: formData.get('bike_interest') || '',
+            };
             
             try {
               const response = await fetch('https://formspree.io/f/xjknegnl', {
                 method: 'POST',
                 headers: {
+                  'Content-Type': 'application/json',
                   'Accept': 'application/json',
                 },
-                body: formData,
+                body: JSON.stringify(data),
               });
 
               const result = await response.json();
@@ -427,7 +435,7 @@ export default function HomePage() {
                 } else {
                   setFormStatus({ 
                     type: 'error', 
-                    message: 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
+                    message: result.error || 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
                   });
                 }
               }
@@ -440,8 +448,6 @@ export default function HomePage() {
             } finally {
               setIsSubmitting(false);
             }
-            
-            e.preventDefault();
           }}
         >
           {formStatus.type && (
