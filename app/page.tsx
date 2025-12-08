@@ -393,28 +393,21 @@ export default function HomePage() {
         </p>
         <form 
           id="preapprovalForm"
+          action="https://formspree.io/f/xjknegnl"
+          method="POST"
           onSubmit={async (e) => {
-            e.preventDefault();
             setIsSubmitting(true);
             setFormStatus({ type: null, message: '' });
 
             const formData = new FormData(e.currentTarget);
-            const data = {
-              name: formData.get('name'),
-              email: formData.get('email'),
-              phone: formData.get('phone'),
-              credit_score: formData.get('credit_score'),
-              income: formData.get('income'),
-              bike_interest: formData.get('bike_interest') || '',
-            };
-
+            
             try {
-              const response = await fetch('/api/preapproval', {
+              const response = await fetch('https://formspree.io/f/xjknegnl', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: formData,
               });
 
               const result = await response.json();
@@ -422,14 +415,21 @@ export default function HomePage() {
               if (response.ok) {
                 setFormStatus({ 
                   type: 'success', 
-                  message: result.message || 'Thank you! We\'ll contact you soon via text or email.' 
+                  message: 'Thank you! We\'ll contact you soon via text or email.' 
                 });
                 (e.target as HTMLFormElement).reset();
               } else {
-                setFormStatus({ 
-                  type: 'error', 
-                  message: result.error || 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
-                });
+                if (result.errors) {
+                  setFormStatus({ 
+                    type: 'error', 
+                    message: result.errors.map((err: any) => err.message).join(', ') || 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
+                  });
+                } else {
+                  setFormStatus({ 
+                    type: 'error', 
+                    message: 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
+                  });
+                }
               }
             } catch (error) {
               console.error('Form submission error:', error);
@@ -440,6 +440,8 @@ export default function HomePage() {
             } finally {
               setIsSubmitting(false);
             }
+            
+            e.preventDefault();
           }}
         >
           {formStatus.type && (
