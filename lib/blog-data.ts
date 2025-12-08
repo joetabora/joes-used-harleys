@@ -722,7 +722,7 @@ export const blogPosts: BlogPost[] = [
     excerpt: 'Not all Harleys hold their value the same. Here are the models that depreciate the least – and which ones you should avoid if resale matters.',
     date: '2025-01-10',
     readTime: '10 min read',
-    featuredImage: 'https://files.catbox.moe/3n8q1r.jpg',
+    featuredImage: '/20rg.jpg',
     keywords: ['harley resale value', 'best harley investment', 'harley depreciation', 'used harley value'],
     categories: ['Models'],
     images: [
