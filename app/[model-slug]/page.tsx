@@ -555,6 +555,12 @@ export default async function ModelPage({ params }: { params: Promise<{ 'model-s
           color: #000000;
           border-color: #FF6600;
         }
+
+        .facetime-banner:hover {
+          background: #FF8833;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(255, 102, 0, 0.4);
+        }
       `}} />
     </>
   );
