@@ -40,6 +40,8 @@ const faqData = [
 export default function HomePage() {
   const [zipCode, setZipCode] = useState('');
   const [showShippingResult, setShowShippingResult] = useState(false);
+  const [formStatus, setFormStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const calculateShipping = (e: React.FormEvent) => {
     e.preventDefault();
@@ -389,22 +391,86 @@ export default function HomePage() {
         }}>
           Pre-Approved in Minutes — I'll text you back fast
         </p>
-        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="preapprovalForm">
+        <form 
+          id="preapprovalForm"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setIsSubmitting(true);
+            setFormStatus({ type: null, message: '' });
+
+            const formData = new FormData(e.currentTarget);
+            const data = {
+              name: formData.get('name'),
+              email: formData.get('email'),
+              phone: formData.get('phone'),
+              credit_score: formData.get('credit_score'),
+              income: formData.get('income'),
+              bike_interest: formData.get('bike_interest') || '',
+            };
+
+            try {
+              const response = await fetch('/api/preapproval', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+              });
+
+              const result = await response.json();
+
+              if (response.ok) {
+                setFormStatus({ 
+                  type: 'success', 
+                  message: result.message || 'Thank you! We\'ll contact you soon via text or email.' 
+                });
+                (e.target as HTMLFormElement).reset();
+              } else {
+                setFormStatus({ 
+                  type: 'error', 
+                  message: result.error || 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
+                });
+              }
+            } catch (error) {
+              console.error('Form submission error:', error);
+              setFormStatus({ 
+                type: 'error', 
+                message: 'Network error. Please text Joe at 414-439-6211 instead.' 
+              });
+            } finally {
+              setIsSubmitting(false);
+            }
+          }}
+        >
+          {formStatus.type && (
+            <div style={{
+              padding: '1rem',
+              marginBottom: '1.5rem',
+              background: formStatus.type === 'success' ? '#0A4A0A' : '#4A0A0A',
+              border: `2px solid ${formStatus.type === 'success' ? '#00FF00' : '#FF6600'}`,
+              color: '#FFFFFF',
+              textAlign: 'center',
+              fontWeight: 600,
+              borderRadius: '4px'
+            }}>
+              {formStatus.message}
+            </div>
+          )}
           <div className="form-group">
             <label>Full Name</label>
-            <input type="text" name="name" required />
+            <input type="text" name="name" required disabled={isSubmitting} />
           </div>
           <div className="form-group">
             <label>Email</label>
-            <input type="email" name="email" required />
+            <input type="email" name="email" required disabled={isSubmitting} />
           </div>
           <div className="form-group">
             <label>Phone</label>
-            <input type="tel" name="phone" required />
+            <input type="tel" name="phone" required disabled={isSubmitting} />
           </div>
           <div className="form-group">
             <label>Credit Score Range</label>
-            <select name="credit_score" required>
+            <select name="credit_score" required disabled={isSubmitting}>
               <option value="">Select...</option>
               <option value="excellent">750+</option>
               <option value="good">700-749</option>
@@ -414,13 +480,23 @@ export default function HomePage() {
           </div>
           <div className="form-group">
             <label>Monthly Income</label>
-            <input type="number" name="income" placeholder="$" required />
+            <input type="number" name="income" placeholder="$" required disabled={isSubmitting} />
           </div>
           <div className="form-group">
             <label>Bike of Interest (Optional)</label>
-            <input type="text" name="bike_interest" placeholder="e.g., 2023 Street Glide Special" />
+            <input type="text" name="bike_interest" placeholder="e.g., 2023 Street Glide Special" disabled={isSubmitting} />
           </div>
-          <button type="submit" className="form-submit">SUBMIT FOR PRE-APPROVAL</button>
+          <button 
+            type="submit" 
+            className="form-submit" 
+            disabled={isSubmitting}
+            style={{
+              opacity: isSubmitting ? 0.6 : 1,
+              cursor: isSubmitting ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {isSubmitting ? 'SUBMITTING...' : 'SUBMIT FOR PRE-APPROVAL'}
+          </button>
         </form>
       </section>
 
