@@ -285,7 +285,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             />
           </div>
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+            fontSize: 'clamp(2rem, 5vw, 4rem)',
             color: '#FFFFFF',
             marginBottom: '1.5rem',
             lineHeight: '1.1',
@@ -293,19 +293,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             fontWeight: 700,
             textShadow: '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 102, 0, 0.3)'
           }}>
-            {cityData.name} Used Harleys
+            Used Harleys for Sale in {cityData.name} — $499 Ships Nationwide from Milwaukee
           </h1>
-          <p style={{
-            fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
-            color: '#FF6600',
-            fontWeight: 700,
-            marginBottom: '2rem',
-            textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)',
-            textTransform: 'uppercase',
-            letterSpacing: '2px'
-          }}>
-            $499 Ships Nationwide from Milwaukee
-          </p>
         </div>
       </section>
 
@@ -363,6 +352,182 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               {paragraph}
             </p>
           ))}
+        </div>
+      </section>
+
+      {/* Model-Specific H2 Sections */}
+      <section style={{ 
+        padding: '6rem 1.5rem', 
+        background: '#000000',
+        maxWidth: '1000px',
+        margin: '0 auto'
+      }}>
+        {/* Used Street Glide [City] */}
+        <h2 style={{ 
+          color: '#FF6600', 
+          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', 
+          marginBottom: '2rem',
+          marginTop: '3rem',
+          fontFamily: 'var(--font-clash)',
+          fontWeight: 700
+        }}>
+          Used Street Glide {cityData.name}
+        </h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '2rem',
+          marginBottom: '4rem'
+        }}>
+          <div>
+            <img 
+              src="https://files.catbox.moe/3n8q1r.jpg" 
+              alt={`Used 2023 Street Glide ${cityData.name} low miles`}
+              style={{
+                width: '100%',
+                height: 'auto',
+                border: '2px solid #FF6600',
+                marginBottom: '1rem'
+              }}
+            />
+          </div>
+          <div style={{ color: '#CCCCCC', lineHeight: '1.8' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Perfect for {cityData.name} highways</strong> – Wind protection and premium audio make long rides comfortable</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Milwaukee-Eight 114 power</strong> – Plenty of torque for passing and city traffic</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Low-mile examples available</strong> – Typically 3,000-8,000 miles, full service history</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ships to {cityData.name} for $499</strong> – Insured transport, arrives ready to ride</li>
+            </ul>
+            <Link
+              href="/street-glide"
+              style={{
+                display: 'inline-block',
+                marginTop: '1.5rem',
+                color: '#FF6600',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontSize: '1.1rem',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                borderBottom: '2px solid #FF6600',
+                transition: 'color 0.3s'
+              }}
+            >
+              View All Street Glides →
+            </Link>
+          </div>
+        </div>
+
+        {/* Used Road Glide [City] */}
+        <h2 style={{ 
+          color: '#FF6600', 
+          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', 
+          marginBottom: '2rem',
+          marginTop: '3rem',
+          fontFamily: 'var(--font-clash)',
+          fontWeight: 700
+        }}>
+          Used Road Glide {cityData.name}
+        </h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '2rem',
+          marginBottom: '4rem'
+        }}>
+          <div>
+            <img 
+              src="https://files.catbox.moe/1y3h5j.jpg" 
+              alt={`Used 2022 Road Glide ${cityData.name} low miles`}
+              style={{
+                width: '100%',
+                height: 'auto',
+                border: '2px solid #FF6600',
+                marginBottom: '1rem'
+              }}
+            />
+          </div>
+          <div style={{ color: '#CCCCCC', lineHeight: '1.8' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Frame-mounted fairing</strong> – Handles crosswinds better than batwing fairings</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ideal for {cityData.name} conditions</strong> – Stable handling on highways and open roads</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Premium audio standard</strong> – BOOM! Box GTS infotainment system</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ships to {cityData.name} for $499</strong> – Professional transport, fully insured</li>
+            </ul>
+            <Link
+              href="/road-glide"
+              style={{
+                display: 'inline-block',
+                marginTop: '1.5rem',
+                color: '#FF6600',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontSize: '1.1rem',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                borderBottom: '2px solid #FF6600',
+                transition: 'color 0.3s'
+              }}
+            >
+              View All Road Glides →
+            </Link>
+          </div>
+        </div>
+
+        {/* Used Fat Boy [City] */}
+        <h2 style={{ 
+          color: '#FF6600', 
+          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', 
+          marginBottom: '2rem',
+          marginTop: '3rem',
+          fontFamily: 'var(--font-clash)',
+          fontWeight: 700
+        }}>
+          Used Fat Boy {cityData.name}
+        </h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '2rem',
+          marginBottom: '4rem'
+        }}>
+          <div>
+            <img 
+              src="https://files.catbox.moe/6r5t7u.jpg" 
+              alt={`Used 2023 Fat Boy ${cityData.name} low miles`}
+              style={{
+                width: '100%',
+                height: 'auto',
+                border: '2px solid #FF6600',
+                marginBottom: '1rem'
+              }}
+            />
+          </div>
+          <div style={{ color: '#CCCCCC', lineHeight: '1.8' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Classic cruiser styling</strong> – Timeless design perfect for {cityData.name} streets</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Milwaukee-Eight 114 engine</strong> – Powerful and reliable for city and highway</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Low miles available</strong> – Many under 3,000 miles, like-new condition</li>
+              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ships to {cityData.name} for $499</strong> – Fast delivery, ready to ride</li>
+            </ul>
+            <Link
+              href="/fat-boy"
+              style={{
+                display: 'inline-block',
+                marginTop: '1.5rem',
+                color: '#FF6600',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontSize: '1.1rem',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                borderBottom: '2px solid #FF6600',
+                transition: 'color 0.3s'
+              }}
+            >
+              View All Fat Boys →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -743,7 +908,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           fontFamily: 'var(--font-clash)',
           fontWeight: 700
         }}>
-          Other Cities We Ship To
+          More Resources
         </h3>
         <div style={{
           display: 'flex',
@@ -751,11 +916,30 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           gap: '1rem',
           justifyContent: 'center',
           maxWidth: '1000px',
-          margin: '0 auto'
+          margin: '0 auto 2rem'
         }}>
+          <Link
+            href="/"
+            className="city-link"
+            style={{
+              padding: '0.75rem 1.5rem',
+              background: '#000000',
+              color: '#FF6600',
+              textDecoration: 'none',
+              border: '1px solid #2A2A2A',
+              borderRadius: '0',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              transition: 'all 0.3s',
+              textTransform: 'uppercase',
+              letterSpacing: '1px'
+            }}
+          >
+            Home
+          </Link>
           {getAllCityPageSlugs()
             .filter(s => s !== cityData.slug)
-            .slice(0, 6)
+            .slice(0, 3)
             .map((otherSlug) => {
               const otherCity = getCityPageData(otherSlug);
               if (!otherCity) return null;
@@ -778,25 +962,10 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                     letterSpacing: '1px'
                   }}
                 >
-                  {otherCity.name}
+                  Used Harleys {otherCity.name}
                 </Link>
               );
             })}
-        </div>
-        <div style={{ marginTop: '2rem' }}>
-          <Link
-            href="/"
-            style={{
-              color: '#FF6600',
-              textDecoration: 'none',
-              fontWeight: 700,
-              fontSize: '1.1rem',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
-            }}
-          >
-            ← Back to Home
-          </Link>
         </div>
       </section>
 
