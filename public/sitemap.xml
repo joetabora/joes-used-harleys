@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage and Inventory -->
+  <url>
+    <loc>https://www.joesusedharleys.com/</loc>
+    <lastmod>2025-12-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/inventory</loc>
+    <lastmod>2025-12-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Model Pages (root level) -->
+  <url>
+    <loc>https://www.joesusedharleys.com/street-glide</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/road-glide</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/fat-boy</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/heritage-classic</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/low-rider-s</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/breakout</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/softail-standard</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/road-king</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/pan-america-1250</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/nightster</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/sportster-s</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/iron-883</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- City Landing Pages -->
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-los-angeles</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-san-diego</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-san-francisco</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-miami</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-tampa</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-orlando</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-houston</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-dallas</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-austin</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-chicago</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-cleveland</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-columbus</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-madison</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-philadelphia</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-pittsburgh</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-new-york-city</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-buffalo</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-detroit</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-harleys-st-louis</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Milwaukee-Specific Pages -->
+  <url>
+    <loc>https://www.joesusedharleys.com/harley-for-sale-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/milwaukee-harley-dealership</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Legacy Model Pages (Milwaukee-specific) -->
+  <url>
+    <loc>https://www.joesusedharleys.com/used-street-glide-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-road-glide-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-fat-boy-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-heritage-classic-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-low-rider-s-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/used-softail-deluxe-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Pages -->
+  <url>
+    <loc>https://www.joesusedharleys.com/blog</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/real-cost-shipping-used-harley-nationwide-2025</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/2023-vs-2024-street-glide-which-used-one-buy</loc>
+    <lastmod>2025-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/7-best-used-harleys-under-20000-2025</loc>
+    <lastmod>2025-01-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/milwaukee-eight-vs-twin-cam-which-used-harley-engine-better</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/first-harley-these-5-used-models-wont-scare-you</loc>
+    <lastmod>2025-01-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/used-harleys-hold-value-best-2025</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/winter-proof-used-harleys-wisconsin-riders</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/blog/how-buy-used-harley-out-state-without-getting-screwed</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Content Pages -->
+  <url>
+    <loc>https://www.joesusedharleys.com/buyers-guide-used-harley-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/road-glide-vs-street-glide-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/best-used-harleys-under-10k-milwaukee</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Additional Pages -->
+  <url>
+    <loc>https://www.joesusedharleys.com/contact</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/facetime</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/models</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Bike Inventory Pages -->
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/1</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/2</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/3</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/4</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/5</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/6</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/7</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/8</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/9</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/10</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/11</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Bike Image Sitemap (10 bikes) -->
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike1</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/3n8q1r.jpg</image:loc>
+      <image:title>Used Street Glide Milwaukee</image:title>
+      <image:caption>Low miles $26,999</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike2</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/1y3h5j.jpg</image:loc>
+      <image:title>Used Road Glide Milwaukee</image:title>
+      <image:caption>Low miles $24,500</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike3</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/6r5t7u.jpg</image:loc>
+      <image:title>Used Fat Boy Milwaukee</image:title>
+      <image:caption>Low miles $20,500</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike4</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/7p4h2s.jpg</image:loc>
+      <image:title>Used Heritage Classic Milwaukee</image:title>
+      <image:caption>Low miles $21,000</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike5</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/2p9m1k.jpg</image:loc>
+      <image:title>Used Low Rider S Milwaukee</image:title>
+      <image:caption>Low miles $22,500</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike6</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/8v7x1z.jpg</image:loc>
+      <image:title>Used Breakout Milwaukee</image:title>
+      <image:caption>Low miles $21,500</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike7</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/9t6u8x.jpg</image:loc>
+      <image:title>Used Street Glide Special Milwaukee</image:title>
+      <image:caption>Low miles $23,999</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike8</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/3n8q1r.jpg</image:loc>
+      <image:title>Used Road Glide Special Milwaukee</image:title>
+      <image:caption>Low miles $24,500</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike9</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/1y3h5j.jpg</image:loc>
+      <image:title>Used Fat Boy 114 Milwaukee</image:title>
+      <image:caption>Low miles $20,500</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.joesusedharleys.com/bikes/bike10</loc>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://files.catbox.moe/6r5t7u.jpg</image:loc>
+      <image:title>Used Heritage Classic 114 Milwaukee</image:title>
+      <image:caption>Low miles $21,000</image:caption>
+    </image:image>
+  </url>
+
+</urlset>
+
