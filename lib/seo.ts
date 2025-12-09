@@ -51,7 +51,7 @@ export const SITE_CONFIG = {
   name: "Joe's Used Harleys",
   url: "https://joesusedharleys.com",
   description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available.",
-  image: "https://joesusedharleys.com/juh2.png",
+  image: "https://joesusedharleys.com/juh3.png",
   phone: "414-439-6211",
   address: {
     street: "6221 W Layton Ave",

@@ -34,7 +34,7 @@ export function generateWebsiteSchema(searchUrl?: string) {
       "name": "Joe's Used Harleys",
       "logo": {
         "@type": "ImageObject",
-        "url": `${SITE_CONFIG.url}/juh2.png`
+        "url": `${SITE_CONFIG.url}/juh3.png`
       }
     }
   };

@@ -275,7 +275,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             animation: 'logo-fade-in 1.5s ease-out'
           }}>
             <img
-              src="/juh2.png"
+              src="/juh3.png"
               alt="Joe's Used Harleys Logo"
               style={{
                 width: '100%',

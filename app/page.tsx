@@ -218,7 +218,7 @@ export default function HomePage() {
           margin: '0 auto'
         }}>
           <Image 
-            src="/juh2.png" 
+            src="/juh3.png" 
             alt="Joe's Used Harleys Logo - Buy Used Harley-Davidson Motorcycles in Milwaukee Wisconsin" 
             className="hero-logo" 
             width={600} 

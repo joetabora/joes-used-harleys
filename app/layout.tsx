@@ -85,7 +85,7 @@ export default function RootLayout({
         {/* Preload critical resources */}
         <link
           rel="preload"
-          href="/juh2.png"
+          href="/juh3.png"
           as="image"
           type="image/png"
         />

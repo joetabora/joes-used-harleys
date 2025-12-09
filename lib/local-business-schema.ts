@@ -36,8 +36,8 @@ export function generateLocalBusinessSchema(options: LocalBusinessSchemaOptions 
     "alternateName": "Joe's Used Harleys Milwaukee",
     "description": "Used Harley-Davidson motorcycle dealership in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Serving Milwaukee and Wisconsin.",
     "url": SITE_CONFIG.url,
-    "logo": `${SITE_CONFIG.url}/juh2.png`,
-    "image": `${SITE_CONFIG.url}/juh2.png`,
+    "logo": `${SITE_CONFIG.url}/juh3.png`,
+    "image": `${SITE_CONFIG.url}/juh3.png`,
     "telephone": phone,
     "email": "info@joesusedharleys.com", // Placeholder
     "address": {
