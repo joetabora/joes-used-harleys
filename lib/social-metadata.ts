@@ -23,7 +23,7 @@ export function generateSocialMetadata(options: SocialMetadataOptions = {}) {
   const {
     title = "Used Harley Milwaukee | Harley for Sale Milwaukee | Joe's Used Harleys",
     description = "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy & more.",
-    image = `${SITE_CONFIG.url}/juh2.png`,
+    image = `${SITE_CONFIG.url}/juh3.png`,
     url = SITE_CONFIG.url,
     type = 'website'
   } = options;
