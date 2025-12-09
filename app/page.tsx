@@ -245,7 +245,7 @@ export default function HomePage() {
             fontFamily: 'var(--font-clash)',
             fontWeight: 700
           }}>
-            Used Harleys in Milwaukee
+            Used Harleys Milwaukee | $499 Ship Nationwide
           </h1>
           <p className="subheadline" style={{ 
             fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', 

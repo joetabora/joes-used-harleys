@@ -78,8 +78,8 @@ export const SITE_CONFIG = {
  * Comprehensive SEO Configuration - Centralized and strongly typed
  */
 export const SEO_CONFIG: SEOConfig = {
-  title: "Used Harley Milwaukee | Used Harley for Sale Milwaukee | Joe's Used Harleys",
-  description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy, Heritage Classic & more.",
+  title: "Used Harleys Milwaukee | $499 Shipping | Joe's",
+  description: "🔥 Best prices on used Harleys in Milwaukee! $499 nationwide shipping. Low miles, full warranty, financing from $299/month. Text Joe: 414-439-6211",
   keywords: [
     // Primary Milwaukee keywords
     "used harley milwaukee",
@@ -124,8 +124,8 @@ export const SEO_CONFIG: SEOConfig = {
     "harley for sale racine"
   ],
   openGraph: {
-    title: "Used Harley Milwaukee | Used Harley for Sale Milwaukee | Joe's Used Harleys",
-    description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available. Street Glide, Road Glide, Fat Boy, Heritage Classic & more.",
+    title: "Used Harleys Milwaukee | $499 Shipping | Joe's",
+    description: "🔥 Best prices on used Harleys in Milwaukee! $499 nationwide shipping. Low miles, full warranty, financing from $299/month. Text Joe: 414-439-6211",
     url: SITE_CONFIG.url,
     siteName: SITE_CONFIG.name,
     images: [
@@ -141,8 +141,8 @@ export const SEO_CONFIG: SEOConfig = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Used Harley Milwaukee | Used Harley for Sale Milwaukee",
-    description: "Buy used Harley-Davidson motorcycles in Milwaukee, Wisconsin. Low miles, full warranty, financing available.",
+    title: "Used Harleys Milwaukee | $499 Shipping | Joe's",
+    description: "🔥 Best prices on used Harleys in Milwaukee! $499 nationwide shipping. Low miles, full warranty, financing from $299/month. Text Joe: 414-439-6211",
     images: [SITE_CONFIG.image]
   },
   canonicalBaseUrl: SITE_CONFIG.url,
