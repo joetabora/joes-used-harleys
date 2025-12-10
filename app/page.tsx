@@ -443,7 +443,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ Section with Native HTML Accordion */}
-      <section className="faq-section" itemScope itemType="https://schema.org/FAQPage" style={{ 
+      <section className="faq-section" style={{ 
         padding: '6rem 1.5rem', 
         background: '#000000' 
       }}>
@@ -464,9 +464,6 @@ export default function HomePage() {
               <details
                 key={index}
                 className="faq-item"
-                itemScope
-                itemProp="mainEntity"
-                itemType="https://schema.org/Question"
                 style={{
                   padding: '0',
                   background: '#0A0A0A',
@@ -484,7 +481,6 @@ export default function HomePage() {
               >
                 <summary
                   className="faq-question"
-                  itemProp="name"
                   style={{
                     color: '#FF6600',
                     fontSize: '1.3rem',
@@ -507,16 +503,13 @@ export default function HomePage() {
                 </summary>
                 <div
                   className="faq-answer"
-                  itemScope
-                  itemProp="acceptedAnswer"
-                  itemType="https://schema.org/Answer"
                   style={{
                     padding: '0 1.5rem 1.5rem 1.5rem',
                     color: '#CCCCCC',
                     lineHeight: '1.8'
                   }}
                 >
-                  <p itemProp="text" style={{ margin: 0 }}>
+                  <p style={{ margin: 0 }}>
                     {faq.answer}
                   </p>
                 </div>
