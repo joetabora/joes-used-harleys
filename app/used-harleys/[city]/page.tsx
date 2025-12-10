@@ -124,14 +124,17 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
   // Generate Product schemas for real bikes
   const productSchemas = displayBikes.length > 0 ? displayBikes.map((bike: any, index: number) => {
-    const priceNum = parseInt(bike.price.replace(/[^0-9]/g, '')) || 0;
+    // Extract numeric price from formatted string, with fallback to default
+    const priceStr = bike.price || bike.priceFormatted || 'Call';
+    const priceNum = parseInt(priceStr.toString().replace(/[^0-9]/g, '')) || 0;
+    
     return generateProductSchema({
       id: bike.id || `${cityData.slug}-bike-${index + 1}`,
       name: bike.name,
       image: bike.image,
-      specs: bike.specs,
-      price: priceNum,
-      priceFormatted: bike.price,
+      specs: bike.specs || '',
+      price: priceNum, // Will be handled by generateProductSchema if 0
+      priceFormatted: priceStr.toString(),
       financing: `Financing available • ${bike.miles} miles • Ships to ${cityData.name} for $499`
     });
   }) : [];
