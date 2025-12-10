@@ -545,6 +545,33 @@ export function InventoryGrid({ limit }: InventoryGridProps = {}) {
         );
       })}
       </div>
+
+      {/* Styles for edgy bike cards */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.8;
+            transform: scale(1.05);
+          }
+        }
+        .bike-card-edgy {
+          animation: fade-in-up 0.6s ease-out;
+        }
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}} />
     </>
   );
 }
