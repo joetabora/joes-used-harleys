@@ -28,7 +28,11 @@ const FALLBACK_IMAGES = [
   'https://files.catbox.moe/8v7x1z.jpg'
 ];
 
-export function InventoryGrid() {
+interface InventoryGridProps {
+  limit?: number;
+}
+
+export function InventoryGrid({ limit }: InventoryGridProps = {}) {
   const [bikes, setBikes] = useState<Bike[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -164,6 +168,9 @@ export function InventoryGrid() {
         bike.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : bikes;
+  
+  // Apply limit if provided
+  const displayBikes = limit ? filteredBikes.slice(0, limit) : filteredBikes;
 
   return (
     <>
@@ -235,7 +242,7 @@ export function InventoryGrid() {
       </div>
 
       {/* No Matches Message */}
-      {searchTerm.trim() && filteredBikes.length === 0 && (
+      {searchTerm.trim() && displayBikes.length === 0 && (
         <div style={{
           textAlign: 'center',
           padding: '3rem 1.5rem',
@@ -267,7 +274,7 @@ export function InventoryGrid() {
 
       {/* Inventory Grid */}
       <div className="grid" role="list">
-        {filteredBikes.map((bike) => {
+        {displayBikes.map((bike) => {
         const specsFormatted = bike.specs.replace(/ • /g, '<span class="divider">•</span>');
         // Improved alt text format
         const altText = `Used ${bike.name} for sale in Milwaukee, Wisconsin`;
