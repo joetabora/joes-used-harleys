@@ -50,6 +50,11 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
   }
   
   // Generate Product schema for this model
+  // Extract numeric price and ensure it's valid
+  const priceMatch = modelData.startingPrice.match(/\$?([\d,]+)/);
+  const numericPrice = priceMatch ? parseInt(priceMatch[1].replace(/,/g, '')) : 18500; // Default to $18,500 if extraction fails
+  const priceValidUntil = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 90 days from now
+  
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -65,9 +70,10 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
     model: modelData.name,
     offers: {
       "@type": "Offer",
-      price: modelData.startingPrice.replace(/[^0-9]/g, ''),
+      price: numericPrice,
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
+      priceValidUntil: priceValidUntil,
       url: `${SITE_CONFIG.url}/models/${model}`,
       seller: {
         "@type": "AutoDealer",

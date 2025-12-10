@@ -74,8 +74,9 @@ export function generateProductSchema(options: ProductSchemaOptions) {
     "offers": {
       "@type": "Offer",
       "availability": availability,
-      "price": price,
+      "price": price === "0.00" ? "18500" : price, // Default to $18,500 if price is 0
       "priceCurrency": priceCurrency,
+      "priceValidUntil": new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 90 days from now
       "seller": {
         "@type": "AutoDealer",
         "name": "Joe's Used Harleys",
