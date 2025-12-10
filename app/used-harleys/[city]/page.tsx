@@ -221,16 +221,15 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
       {/* Hero Section with Video Background */}
       <section className="hero" style={{
-        height: '100vh',
-        minHeight: '700px',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         textAlign: 'center',
-        padding: '2rem 1rem',
+        padding: '4rem 1rem 4rem',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'visible'
       }}>
         <video
           className="hero-video"
@@ -262,15 +261,24 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%)',
           zIndex: 1
         }} />
-        <div style={{
+        <div className="hero-content" style={{
           position: 'relative',
           zIndex: 2,
-          animation: 'fade-in-up 1s ease-out'
+          animation: 'fade-in-up 1s ease-out',
+          width: '100%',
+          maxWidth: '1400px',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          paddingTop: '2rem'
         }}>
           <div style={{
             maxWidth: 'min(75vw, 600px)',
-            height: 'auto',
-            marginBottom: '2rem',
+            width: '100%',
+            margin: '0 auto 2rem',
+            padding: '0 1rem',
             filter: 'drop-shadow(0 0 40px rgba(255, 102, 0, 0.3)) drop-shadow(0 4px 20px rgba(0, 0, 0, 0.9)) drop-shadow(0 8px 40px rgba(0, 0, 0, 0.7))',
             animation: 'logo-fade-in 1.5s ease-out'
           }}>
@@ -280,7 +288,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               style={{
                 width: '100%',
                 height: 'auto',
-                display: 'block'
+                display: 'block',
+                maxWidth: '100%',
+                margin: '0 auto'
               }}
             />
           </div>
