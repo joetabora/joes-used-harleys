@@ -272,87 +272,274 @@ export function InventoryGrid({ limit }: InventoryGridProps = {}) {
         </div>
       )}
 
-      {/* Inventory Grid */}
-      <div className="grid" role="list">
-        {displayBikes.map((bike) => {
-        const specsFormatted = bike.specs.replace(/ • /g, '<span class="divider">•</span>');
-        // Improved alt text format
+      {/* Inventory Grid - Edgy Rockstar Design */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+        gap: '2.5rem',
+        padding: '2rem 0'
+      }} role="list">
+        {displayBikes.map((bike, index) => {
         const altText = `Used ${bike.name} for sale in Milwaukee, Wisconsin`;
         
         return (
           <article 
             key={bike.id}
-            className="bike scroll-fade" 
+            className="bike-card-edgy" 
             data-bike-id={bike.id} 
             itemScope 
             itemType="https://schema.org/Product" 
             role="listitem"
-            onMouseEnter={handleBikeHover}
-            onTouchStart={handleBikeHover}
+            style={{
+              position: 'relative',
+              background: '#0A0A0A',
+              border: '2px solid #1A1A1A',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              transform: 'translateY(0)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+            }}
+            onMouseEnter={(e) => {
+              const card = e.currentTarget;
+              card.style.transform = 'translateY(-12px)';
+              card.style.borderColor = '#FF6600';
+              card.style.boxShadow = '0 12px 50px rgba(255, 102, 0, 0.4), 0 0 30px rgba(255, 102, 0, 0.2)';
+              handleBikeHover(e as any);
+            }}
+            onMouseLeave={(e) => {
+              const card = e.currentTarget;
+              card.style.transform = 'translateY(0)';
+              card.style.borderColor = '#1A1A1A';
+              card.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.5)';
+            }}
           >
-            <div className="bike-inner">
-              {bike.featured && <div className="featured-badge">FEATURED</div>}
-              {bike.justArrived && <div className="just-arrived">JUST ARRIVED</div>}
-              <div className="image-wrapper">
-                <Image 
-                  src={bike.image} 
-                  alt={altText}
-                  loading="lazy" 
-                  width={800} 
-                  height={600}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1400px) 33vw, 25vw"
-                  quality={85}
-                  itemProp="image"
-                  onError={(e) => {
-                    // Fallback to catbox.moe if image fails to load
-                    const target = e.target as HTMLImageElement;
-                    const fallbackIndex = parseInt(bike.id) % FALLBACK_IMAGES.length || 0;
-                    target.src = FALLBACK_IMAGES[fallbackIndex];
-                  }}
-                />
+            {/* Featured Badge */}
+            {(bike.featured || bike.justArrived) && (
+              <div style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                background: bike.featured ? '#FF6600' : '#00FF00',
+                color: '#000000',
+                padding: '0.4rem 1rem',
+                fontSize: '0.75rem',
+                fontWeight: 900,
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                fontFamily: 'var(--font-clash)',
+                zIndex: 10,
+                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+                animation: bike.justArrived ? 'pulse 2s infinite' : 'none'
+              }}>
+                {bike.featured ? '⭐ FEATURED' : '🔥 JUST ARRIVED'}
               </div>
-              <div className="details">
-                <h3 itemProp="name">{bike.name}</h3>
-                <p 
-                  className="price" 
+            )}
+
+            {/* Image Section - Large & Prominent */}
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              height: '400px',
+              overflow: 'hidden',
+              background: '#000000'
+            }}>
+              <Image 
+                src={bike.image} 
+                alt={altText}
+                fill
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1400px) 33vw, 350px"
+                quality={90}
+                itemProp="image"
+                style={{
+                  objectFit: 'cover',
+                  transition: 'transform 0.5s ease',
+                  transform: 'scale(1)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  const fallbackIndex = parseInt(bike.id) % FALLBACK_IMAGES.length || 0;
+                  target.src = FALLBACK_IMAGES[fallbackIndex];
+                }}
+              />
+              
+              {/* Price Badge Overlay */}
+              <div style={{
+                position: 'absolute',
+                bottom: '1rem',
+                left: '1rem',
+                background: 'rgba(0, 0, 0, 0.9)',
+                border: '2px solid #FF6600',
+                padding: '0.75rem 1.5rem',
+                zIndex: 5
+              }}>
+                <div 
+                  className="price-edgy"
                   itemScope 
                   itemProp="offers" 
                   itemType="https://schema.org/Offer"
+                  style={{
+                    color: '#FF6600',
+                    fontSize: '1.8rem',
+                    fontWeight: 900,
+                    fontFamily: 'var(--font-clash)',
+                    letterSpacing: '2px',
+                    textShadow: '0 0 20px rgba(255, 102, 0, 0.8)'
+                  }}
                 >
                   <meta itemProp="price" content={bike.price.toString()} />
                   <meta itemProp="priceCurrency" content="USD" />
                   <meta itemProp="availability" content="https://schema.org/InStock" />
                   {bike.priceFormatted}
-                </p>
-                <p className="financing">{bike.financing}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Details Section */}
+            <div style={{
+              padding: '2rem',
+              background: '#0A0A0A'
+            }}>
+              <h3 
+                itemProp="name"
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: '1.5rem',
+                  fontWeight: 800,
+                  fontFamily: 'var(--font-clash)',
+                  letterSpacing: '1px',
+                  marginBottom: '1rem',
+                  lineHeight: '1.3',
+                  textTransform: 'uppercase'
+                }}
+              >
+                {bike.name}
+              </h3>
+
+              {/* Specs */}
+              <div style={{
+                color: '#CCCCCC',
+                fontSize: '0.95rem',
+                lineHeight: '1.6',
+                marginBottom: '1.5rem',
+                minHeight: '3rem'
+              }}>
+                {bike.specs}
+              </div>
+
+              {/* Financing Info */}
+              <div style={{
+                background: '#000000',
+                border: '1px solid #2A2A2A',
+                padding: '1rem',
+                marginBottom: '1.5rem'
+              }}>
                 <p style={{
                   color: '#FF6600',
                   fontSize: '0.85rem',
-                  fontWeight: 600,
-                  marginTop: '0.5rem',
-                  marginBottom: '1rem',
-                  textAlign: 'center',
-                  fontStyle: 'italic'
+                  fontWeight: 700,
+                  margin: 0,
+                  letterSpacing: '1px',
+                  fontFamily: 'var(--font-clash)'
                 }}>
-                  Live FaceTime tour available — text Joe
+                  {bike.financing}
                 </p>
-                <div className="bike-actions">
-                  <a 
-                    href={`/bikes/${bike.id}`}
-                    className="bike-action-btn primary" 
-                    aria-label={`View details for ${bike.name}`}
-                  >
-                    VIEW DETAILS
-                  </a>
-                  <a 
-                    href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} - ${bike.priceFormatted}`} 
-                    className="bike-action-btn" 
-                    aria-label={`Inquire about ${bike.name}`}
-                  >
-                    INQUIRE
-                  </a>
-                </div>
               </div>
+
+              {/* CTA Buttons */}
+              <div style={{
+                display: 'flex',
+                gap: '1rem',
+                flexDirection: 'column'
+              }}>
+                <a 
+                  href={`/bikes/${bike.id}`}
+                  className="bike-cta-primary"
+                  aria-label={`View details for ${bike.name}`}
+                  style={{
+                    display: 'block',
+                    background: '#FF6600',
+                    color: '#000000',
+                    padding: '1rem 2rem',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 900,
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    fontFamily: 'var(--font-clash)',
+                    border: '2px solid #FF6600',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 15px rgba(255, 102, 0, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#000000';
+                    e.currentTarget.style.color = '#FF6600';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 102, 0, 0.6)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#FF6600';
+                    e.currentTarget.style.color = '#000000';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 15px rgba(255, 102, 0, 0.3)';
+                  }}
+                >
+                  VIEW DETAILS
+                </a>
+                <a 
+                  href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} - ${bike.priceFormatted}`} 
+                  className="bike-cta-secondary"
+                  aria-label={`Inquire about ${bike.name}`}
+                  style={{
+                    display: 'block',
+                    background: 'transparent',
+                    color: '#FF6600',
+                    padding: '0.875rem 2rem',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    fontSize: '0.95rem',
+                    fontWeight: 800,
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    fontFamily: 'var(--font-clash)',
+                    border: '2px solid #FF6600',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#FF6600';
+                    e.currentTarget.style.color = '#000000';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = '#FF6600';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  TEXT JOE
+                </a>
+              </div>
+
+              {/* FaceTime CTA */}
+              <p style={{
+                color: '#FF6600',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                marginTop: '1rem',
+                textAlign: 'center',
+                fontStyle: 'italic',
+                opacity: 0.9
+              }}>
+                📱 FaceTime tour available
+              </p>
             </div>
           </article>
         );
