@@ -411,35 +411,26 @@ export function InventoryGrid({ limit }: InventoryGridProps = {}) {
                 itemProp="name"
                 style={{
                   color: '#FFFFFF',
-                  fontSize: '1.5rem',
+                  fontSize: '1.4rem',
                   fontWeight: 800,
                   fontFamily: 'var(--font-clash)',
                   letterSpacing: '1px',
-                  marginBottom: '1rem',
+                  marginBottom: '1.5rem',
                   lineHeight: '1.3',
-                  textTransform: 'uppercase'
+                  textTransform: 'uppercase',
+                  textAlign: 'center'
                 }}
               >
                 {bike.name}
               </h3>
-
-              {/* Specs */}
-              <div style={{
-                color: '#CCCCCC',
-                fontSize: '0.95rem',
-                lineHeight: '1.6',
-                marginBottom: '1.5rem',
-                minHeight: '3rem'
-              }}>
-                {bike.specs}
-              </div>
 
               {/* Financing Info */}
               <div style={{
                 background: '#000000',
                 border: '1px solid #2A2A2A',
                 padding: '1rem',
-                marginBottom: '1.5rem'
+                marginBottom: '1.5rem',
+                textAlign: 'center'
               }}>
                 <p style={{
                   color: '#FF6600',
