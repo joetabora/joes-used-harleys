@@ -520,7 +520,7 @@ export default function HomePage() {
       </section>
 
       {/* Local SEO + Map Section */}
-      <section className="local-seo" itemScope itemType="https://schema.org/LocalBusiness" style={{
+      <section className="local-seo" style={{
         padding: '4rem 1.5rem',
         background: '#0A0A0A',
         textAlign: 'center'
