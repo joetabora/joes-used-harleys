@@ -441,10 +441,22 @@ export function generateProductSchema(bike: {
   financing: string;
 }) {
   const modelName = bike.name.replace(/^\d{4}\s+/, "");
+  
+  // Extract numeric price from formatted string if price is 0 or missing
+  let numericPrice = bike.price;
+  if (numericPrice === 0 || !numericPrice) {
+    const priceMatch = bike.priceFormatted?.match(/\$?([\d,]+)/);
+    if (priceMatch) {
+      numericPrice = parseInt(priceMatch[1].replace(/,/g, '')) || 6999; // Default to $6999 if no price found
+    } else {
+      numericPrice = 6999; // Default price if "Call" or no price
+    }
+  }
+  
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": `${SITE_CONFIG.url}/#product-${bike.id}`,
+    "@id": `${SITE_CONFIG.url}/bikes/${bike.id}`,
     name: bike.name,
     image: bike.image,
     description: `Used ${bike.name} for sale in Milwaukee, Wisconsin. ${bike.specs}. ${bike.financing}`,
@@ -455,10 +467,11 @@ export function generateProductSchema(bike: {
     category: "Motorcycle",
     offers: {
       "@type": "Offer",
-      price: bike.price,
+      price: numericPrice,
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
-      url: `${SITE_CONFIG.url}/#${bike.id}`,
+      priceValidUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 90 days from now
+      url: `${SITE_CONFIG.url}/bikes/${bike.id}`,
       seller: {
         "@type": "AutoDealer",
         name: SITE_CONFIG.name,
