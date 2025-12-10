@@ -305,7 +305,7 @@ export function InventoryGrid({ limit }: InventoryGridProps = {}) {
               card.style.transform = 'translateY(-12px)';
               card.style.borderColor = '#FF6600';
               card.style.boxShadow = '0 12px 50px rgba(255, 102, 0, 0.4), 0 0 30px rgba(255, 102, 0, 0.2)';
-              handleBikeHover(e as any);
+              handleBikeHover();
             }}
             onMouseLeave={(e) => {
               const card = e.currentTarget;
