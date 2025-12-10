@@ -115,25 +115,7 @@ export default function HomePage() {
           margin: '0 auto',
           width: '100%'
         }}>
-          {/* Banner Logo */}
-          <div style={{
-            marginBottom: '3rem',
-            filter: 'drop-shadow(0 0 40px rgba(255, 102, 0, 0.6)) drop-shadow(0 8px 30px rgba(0, 0, 0, 0.8))'
-          }}>
-            <Image
-              src="/bannerjoe.jpeg"
-              alt="Joe's Used Harleys"
-              width={800}
-              height={240}
-              priority
-              style={{
-                maxWidth: 'min(90vw, 800px)',
-                height: 'auto',
-                margin: '0 auto',
-                display: 'block'
-              }}
-            />
-          </div>
+          {/* Hero Content - Banner is now at top of page */}
 
           {/* Main Headline - Rockstar Style */}
           <h1 style={{

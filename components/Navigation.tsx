@@ -35,15 +35,34 @@ export function Navigation() {
 
   return (
     <>
-      {/* Top Banner */}
+      {/* Full-Width Banner Image */}
+      <div style={{
+        width: '100%',
+        position: 'relative',
+        background: '#000000'
+      }}>
+        <Image
+          src="/bannerjoe.jpeg"
+          alt="Joe's Used Harleys"
+          width={1920}
+          height={300}
+          priority
+          style={{
+            width: '100%',
+            height: 'auto',
+            display: 'block',
+            objectFit: 'cover'
+          }}
+        />
+      </div>
+
+      {/* Top Banner Info */}
       <div style={{
         background: 'linear-gradient(90deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
         borderBottom: '2px solid #FF6600',
         padding: '0.75rem 1rem',
         textAlign: 'center',
-        position: 'sticky',
-        top: 0,
-        zIndex: 1000,
+        zIndex: 998,
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
       }}>
         <p style={{
@@ -64,7 +83,7 @@ export function Navigation() {
         background: isScrolled ? 'rgba(0, 0, 0, 0.98)' : '#000000',
         borderBottom: isScrolled ? '2px solid #FF6600' : 'none',
         position: 'sticky',
-        top: '42px',
+        top: 0,
         zIndex: 999,
         transition: 'all 0.3s ease',
         backdropFilter: 'blur(10px)',
@@ -78,22 +97,54 @@ export function Navigation() {
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-          {/* Banner Logo */}
-          <Link href="/" style={{ textDecoration: 'none', zIndex: 1001, display: 'flex', alignItems: 'center' }}>
-            <Image
-              src="/bannerjoe.jpeg"
-              alt="Joe's Used Harleys"
-              width={200}
-              height={60}
-              priority
-              style={{
-                height: 'auto',
-                maxHeight: '60px',
-                width: 'auto',
-                maxWidth: '200px',
-                filter: 'drop-shadow(0 0 10px rgba(255, 102, 0, 0.5))'
-              }}
-            />
+          {/* Logo Text */}
+          <Link href="/" style={{ textDecoration: 'none', zIndex: 1001 }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem'
+            }}>
+              <div style={{
+                width: '50px',
+                height: '50px',
+                background: '#FF6600',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '3px solid #000000',
+                boxShadow: '0 0 20px rgba(255, 102, 0, 0.5)'
+              }}>
+                <span style={{
+                  color: '#000000',
+                  fontSize: '1.5rem',
+                  fontWeight: 900,
+                  fontFamily: 'var(--font-clash)'
+                }}>J</span>
+              </div>
+              <div>
+                <div style={{
+                  color: '#FFFFFF',
+                  fontSize: '1.5rem',
+                  fontWeight: 900,
+                  letterSpacing: '2px',
+                  fontFamily: 'var(--font-clash)',
+                  lineHeight: '1.1'
+                }}>
+                  JOE'S
+                </div>
+                <div style={{
+                  color: '#FF6600',
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  letterSpacing: '4px',
+                  fontFamily: 'var(--font-clash)',
+                  textTransform: 'uppercase'
+                }}>
+                  USED HARLEYS
+                </div>
+              </div>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
