@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { generateFAQSchema } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
 import { InventoryGrid } from '@/components/InventoryGrid';
-import { InternalLinks } from '@/components/InternalLinks';
+import { Navigation } from '@/components/Navigation';
 import { generateReviewSchema } from '@/lib/customer-reviews';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -58,417 +58,532 @@ export default function HomePage() {
         }}
       />
 
-      {/* Urgency Banner */}
-      <div className="urgency-banner" style={{
-        background: '#FF6600',
-        color: '#000000',
-        textAlign: 'center',
-        padding: '1rem 1.5rem',
-        fontWeight: 800,
-        fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-        letterSpacing: '1.5px',
-        position: 'relative',
-        zIndex: 100,
-        textTransform: 'uppercase'
-      }}>
-        WE SHIP NATIONWIDE FOR ONLY $499
-      </div>
+      {/* Navigation */}
+      <Navigation />
 
-      {/* Shipping Info */}
-      <div style={{
-        background: '#000000',
-        padding: '2rem 1.5rem',
-        textAlign: 'center',
-        borderBottom: '2px solid #FF6600'
-      }}>
-        <p style={{
-          color: '#FF6600',
-          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-          fontWeight: 800,
-          fontFamily: 'var(--font-clash)',
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-          margin: 0
-        }}>
-          $499 FLAT RATE NATIONWIDE — SHIPS IN 3–7 DAYS
-        </p>
-      </div>
-
-      {/* Hero Section with Full-Screen Video */}
-      <section className="hero" aria-label="Used Harley-Davidsons for Sale in Milwaukee" style={{
+      {/* HERO SECTION - Full Screen, Edgy, Rockstar */}
+      <section style={{
         minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: '2rem 1rem 4rem',
         position: 'relative',
-        overflow: 'visible'
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        background: '#000000'
       }}>
-        <video 
-          className="hero-video" 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          aria-hidden="true"
-          preload="metadata"
-          poster="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+        {/* Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: 'translate3d(-50%, -50%, 0)',
+            transform: 'translate(-50%, -50%)',
             minWidth: '100%',
             minHeight: '100%',
             width: 'auto',
             height: 'auto',
             zIndex: 0,
-            objectFit: 'cover'
+            objectFit: 'cover',
+            opacity: 0.4
           }}
         >
-          <source src="https://videos.pexels.com/video-files/3045163/3045163-hd_1920_1080_30fps.mp4" type="video/mp4" />
+          <source src="https://videos.pexels.com/video-files/3045163/3045163-uhd_2560_1440_25fps.mp4" type="video/mp4" />
         </video>
-        <div className="hero-overlay" aria-hidden="true" style={{
+
+        {/* Dark Overlay with Gradient */}
+        <div style={{
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%)',
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.95) 100%)',
           zIndex: 1
-        }}></div>
-        <div className="hero-content" style={{
+        }} />
+
+        {/* Content */}
+        <div style={{
           position: 'relative',
           zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          width: '100%',
-          maxWidth: '1200px',
-          padding: '2rem 1.5rem',
+          textAlign: 'center',
+          padding: '4rem 2rem',
+          maxWidth: '1400px',
+          margin: '0 auto',
+          width: '100%'
+        }}>
+          {/* Logo */}
+          <div style={{
+            marginBottom: '3rem',
+            filter: 'drop-shadow(0 0 40px rgba(255, 102, 0, 0.6)) drop-shadow(0 8px 30px rgba(0, 0, 0, 0.8))'
+          }}>
+            <Image
+              src="/juh3.png"
+              alt="Joe's Used Harleys"
+              width={600}
+              height={200}
+              priority
+              style={{
+                maxWidth: 'min(80vw, 600px)',
+                height: 'auto',
+                margin: '0 auto'
+              }}
+            />
+          </div>
+
+          {/* Main Headline - Rockstar Style */}
+          <h1 style={{
+            fontSize: 'clamp(3rem, 8vw, 7rem)',
+            fontWeight: 900,
+            color: '#FFFFFF',
+            marginBottom: '1.5rem',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '4px',
+            textTransform: 'uppercase',
+            lineHeight: '1.1',
+            textShadow: '0 0 40px rgba(255, 102, 0, 0.5), 0 8px 30px rgba(0, 0, 0, 0.9)'
+          }}>
+            RIDE HARD
+            <span style={{
+              display: 'block',
+              color: '#FF6600',
+              fontSize: 'clamp(2rem, 6vw, 5rem)',
+              marginTop: '0.5rem',
+              textShadow: '0 0 60px rgba(255, 102, 0, 0.8)'
+            }}>
+              PAY SMART
+            </span>
+          </h1>
+
+          {/* Subheadline */}
+          <p style={{
+            fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
+            color: '#CCCCCC',
+            marginBottom: '3rem',
+            fontWeight: 600,
+            letterSpacing: '2px',
+            maxWidth: '800px',
+            margin: '0 auto 3rem',
+            textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)'
+          }}>
+            LOW MILES • FULL WARRANTY • BAD CREDIT FINANCING
+          </p>
+
+          {/* CTA Buttons */}
+          <div style={{
+            display: 'flex',
+            gap: '2rem',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            marginTop: '3rem'
+          }}>
+            <Link
+              href="/inventory"
+              style={{
+                background: '#FF6600',
+                color: '#000000',
+                padding: '1.25rem 3rem',
+                fontSize: '1.1rem',
+                fontWeight: 900,
+                textTransform: 'uppercase',
+                letterSpacing: '3px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-clash)',
+                border: '3px solid #FF6600',
+                boxShadow: '0 0 30px rgba(255, 102, 0, 0.6)',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#000000';
+                e.currentTarget.style.color = '#FF6600';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 8px 40px rgba(255, 102, 0, 0.8)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#FF6600';
+                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 102, 0, 0.6)';
+              }}
+            >
+              VIEW INVENTORY
+            </Link>
+            <a
+              href="sms:4144396211"
+              style={{
+                background: 'transparent',
+                color: '#FF6600',
+                padding: '1.25rem 3rem',
+                fontSize: '1.1rem',
+                fontWeight: 900,
+                textTransform: 'uppercase',
+                letterSpacing: '3px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-clash)',
+                border: '3px solid #FF6600',
+                boxShadow: '0 0 20px rgba(255, 102, 0, 0.3)',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#FF6600';
+                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 8px 40px rgba(255, 102, 0, 0.8)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#FF6600';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 102, 0, 0.3)';
+              }}
+            >
+              TEXT JOE
+            </a>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div style={{
+            position: 'absolute',
+            bottom: '3rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            animation: 'bounce 2s infinite'
+          }}>
+            <div style={{
+              width: '30px',
+              height: '50px',
+              border: '3px solid #FF6600',
+              borderRadius: '25px',
+              position: 'relative',
+              boxShadow: '0 0 20px rgba(255, 102, 0, 0.5)'
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                background: '#FF6600',
+                borderRadius: '50%',
+                position: 'absolute',
+                top: '10px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                animation: 'scroll 2s infinite'
+              }}></div>
+            </div>
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+              transform: translateX(-50%) translateY(0);
+            }
+            40% {
+              transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+              transform: translateX(-50%) translateY(-5px);
+            }
+          }
+          @keyframes scroll {
+            0% {
+              opacity: 1;
+              transform: translateX(-50%) translateY(0);
+            }
+            100% {
+              opacity: 0;
+              transform: translateX(-50%) translateY(20px);
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* FEATURED INVENTORY SECTION - Grid Style like Dixxon */}
+      <section style={{
+        background: '#0A0A0A',
+        padding: '6rem 2rem',
+        position: 'relative'
+      }}>
+        {/* Section Header */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '4rem'
+        }}>
+          <div style={{
+            display: 'inline-block',
+            padding: '0.5rem 2rem',
+            background: '#FF6600',
+            color: '#000000',
+            fontSize: '0.9rem',
+            fontWeight: 800,
+            letterSpacing: '4px',
+            textTransform: 'uppercase',
+            fontFamily: 'var(--font-clash)',
+            marginBottom: '1.5rem'
+          }}>
+            JUST DROPPED
+          </div>
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 900,
+            color: '#FFFFFF',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            marginBottom: '1rem',
+            textShadow: '0 4px 20px rgba(0, 0, 0, 0.8)'
+          }}>
+            FEATURED RIDES
+          </h2>
+          <p style={{
+            fontSize: '1.2rem',
+            color: '#CCCCCC',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }}>
+            Low-mile bikes, full warranty, ready to ride
+          </p>
+        </div>
+
+        {/* Inventory Grid */}
+        <InventoryGrid limit={8} />
+      </section>
+
+      {/* WHY CHOOSE JOE - Edgy Cards */}
+      <section style={{
+        background: '#000000',
+        padding: '6rem 2rem',
+        position: 'relative'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
           margin: '0 auto'
         }}>
-          <Image 
-            src="/juh3.png" 
-            alt="Joe's Used Harleys Logo - Buy Used Harley-Davidson Motorcycles in Milwaukee Wisconsin" 
-            className="hero-logo" 
-            width={600} 
-            height={200}
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 600px"
-            quality={90}
-            style={{
-              maxWidth: 'min(75vw, 600px)',
-              width: '100%',
-              height: 'auto',
-              margin: '0 auto 2rem',
-              display: 'block',
-              filter: 'drop-shadow(0 0 40px rgba(255, 102, 0, 0.3)) drop-shadow(0 4px 20px rgba(0, 0, 0, 0.9)) drop-shadow(0 8px 40px rgba(0, 0, 0, 0.7))',
-              animation: 'logo-scale-in 1.5s ease-out'
-            }}
-          />
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', 
-            marginBottom: '1rem', 
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 900,
             color: '#FFFFFF',
-            textShadow: '0 4px 20px rgba(0, 0, 0, 0.9)',
-            lineHeight: '1.1',
             fontFamily: 'var(--font-clash)',
-            fontWeight: 700
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            marginBottom: '4rem',
+            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
           }}>
-            Used Harleys Milwaukee | $499 Ship Nationwide
-          </h1>
-          <p className="subheadline" style={{ 
-            fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', 
-            marginBottom: '2rem', 
-            color: '#CCCCCC',
-            fontWeight: 400,
-            textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)',
-            maxWidth: '700px'
+            WHY RIDE WITH JOE
+          </h2>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem',
+            marginTop: '3rem'
           }}>
-            Low miles • Full warranty • $499 ships nationwide
-          </p>
+            {[
+              {
+                icon: '⚡',
+                title: 'NO BULLSHIT PRICING',
+                text: 'What you see is what you pay. No hidden fees, no market adjustments, no surprises.'
+              },
+              {
+                icon: '🛡️',
+                title: '48-HOUR GUARANTEE',
+                text: 'Not right? Bring it back. We fix it or refund it. Simple as that.'
+              },
+              {
+                icon: '💳',
+                title: 'BAD CREDIT? NO PROBLEM',
+                text: 'We work with everyone. First-time buyers, bad credit, self-employed — we got you.'
+              },
+              {
+                icon: '🚚',
+                title: '$499 NATIONWIDE SHIPPING',
+                text: 'Coast to coast, insured, professional transport. Your bike, delivered.'
+              },
+              {
+                icon: '🔧',
+                title: 'FULL WARRANTY',
+                text: 'Every bike inspected, documented, and backed by our warranty.'
+              },
+              {
+                icon: '📱',
+                title: 'TEXT JOE DIRECTLY',
+                text: 'No automated BS. Text 414-439-6211 and talk to a real person who gets it.'
+              }
+            ].map((feature, index) => (
+              <div
+                key={index}
+                style={{
+                  background: '#0A0A0A',
+                  border: '2px solid #1A1A1A',
+                  padding: '2.5rem',
+                  position: 'relative',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#FF6600';
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 102, 0, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#1A1A1A';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                <div style={{
+                  fontSize: '3rem',
+                  marginBottom: '1rem'
+                }}>
+                  {feature.icon}
+                </div>
+                <h3 style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 800,
+                  color: '#FF6600',
+                  fontFamily: 'var(--font-clash)',
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  marginBottom: '1rem'
+                }}>
+                  {feature.title}
+                </h3>
+                <p style={{
+                  color: '#CCCCCC',
+                  lineHeight: '1.8',
+                  fontSize: '1rem'
+                }}>
+                  {feature.text}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* FaceTime Banner */}
-      <a
-        href="sms:4144396211?body=FaceTime%20tour%20please"
-        style={{
-          display: 'block',
-          background: '#FF6600',
-          color: '#000000',
-          textAlign: 'center',
-          padding: 'clamp(1.5rem, 3vw, 2rem) 1.5rem',
-          fontWeight: 800,
-          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-          letterSpacing: '1px',
-          textDecoration: 'none',
-          textTransform: 'uppercase',
-          borderTop: '3px solid #000000',
-          borderBottom: '3px solid #000000',
-          transition: 'all 0.3s',
-          fontFamily: 'var(--font-clash)',
-          position: 'relative',
-          zIndex: 99
-        }}
-        className="facetime-banner"
-      >
-        🔴 LIVE FACETIME TOURS AVAILABLE — See any bike in real time. Text 414-439-6211 and say "FaceTime the [year/model]"
-      </a>
-
-      {/* Inventory Section */}
+      {/* CTA SECTION - Bold, In Your Face */}
       <section style={{
-        padding: '4rem 1.5rem',
-        background: '#000000',
-        maxWidth: '1400px',
-        margin: '0 auto'
+        background: 'linear-gradient(135deg, #FF6600 0%, #E55A00 100%)',
+        padding: '6rem 2rem',
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <InventoryGrid />
-      </section>
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          opacity: 0.1
+        }}></div>
 
-      {/* Why Joe Section */}
-      <section style={{ 
-        padding: '6rem 1.5rem', 
-        background: '#000000',
-        maxWidth: '1000px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{ 
-          color: '#FF6600', 
-          marginBottom: '3rem', 
-          fontSize: 'clamp(2rem, 5vw, 3rem)', 
-          textAlign: 'center',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          maxWidth: '800px',
+          margin: '0 auto'
         }}>
-          Why Joe
-        </h2>
-        <ul style={{
-          listStyle: 'none',
-          padding: 0,
-          margin: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.5rem'
-        }}>
-          {[
-            { title: 'No BS Pricing', desc: 'The price you see is what you pay — no prep fees or hidden add-ons.' },
-            { title: 'Inspected & Guaranteed', desc: '48hr/100-mile refund. Every bike inspected, full service records included.' },
-            { title: 'Financing That Works', desc: 'Bad credit OK. Rates as low as $299/month. First-time buyers welcome.' },
-            { title: 'Ships Anywhere', desc: '$499 flat rate nationwide. Fully insured, handled by pros.' },
-            { title: 'FaceTime the Bike Before You Buy', desc: 'I\'ll fire it up, walk around, show every detail live on your phone. No pressure, no deposit to look.' }
-          ].map((item, idx) => (
-            <li key={idx} style={{
-              padding: '1.5rem',
-              background: '#0A0A0A',
-              borderRadius: '8px',
-              border: '1px solid #2A2A2A',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '1rem'
-            }}>
-              <span className="chrome-check" style={{ 
-                color: '#c0c0c0', 
-                fontSize: '1.5rem', 
-                fontWeight: 'bold', 
-                flexShrink: 0,
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '32px',
-                height: '32px',
-                border: '2px solid #c0c0c0',
-                borderRadius: '50%',
-                textShadow: '0 0 10px rgba(192, 192, 192, 0.6), 0 0 20px rgba(192, 192, 192, 0.4)',
-                boxShadow: 'inset 0 0 10px rgba(192, 192, 192, 0.3), 0 0 15px rgba(192, 192, 192, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.3)',
-                background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.1) 100%)'
-              }}>✓</span>
-              <div>
-                <strong style={{ color: '#FF6600', fontSize: '1.1rem', display: 'block', marginBottom: '0.5rem' }}>
-                  {item.title}
-                </strong>
-                <p style={{ color: '#CCCCCC', lineHeight: '1.7', margin: 0 }}>
-                  {item.desc}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Pre-Approval Form */}
-      <section className="preapproval" style={{
-        padding: '6rem 1.5rem',
-        background: '#0A0A0A',
-        maxWidth: '600px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{
-          textAlign: 'center',
-          marginBottom: '1rem',
-          color: '#FF6600',
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Get Pre-Approved
-        </h2>
-        <p style={{ 
-          textAlign: 'center', 
-          color: '#CCCCCC', 
-          fontSize: '1.1rem',
-          marginBottom: '2rem'
-        }}>
-          Pre-Approved in Minutes — I'll text you back fast
-        </p>
-        <form 
-          id="preapprovalForm"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setIsSubmitting(true);
-            setFormStatus({ type: null, message: '' });
-
-            const formData = new FormData(e.currentTarget);
-            const data = {
-              name: formData.get('name'),
-              email: formData.get('email'),
-              phone: formData.get('phone'),
-              credit_score: formData.get('credit_score'),
-              income: formData.get('income'),
-              bike_interest: formData.get('bike_interest') || '',
-            };
-            
-            try {
-              const response = await fetch('https://formspree.io/f/xjknegnl', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                },
-                body: JSON.stringify(data),
-              });
-
-              const result = await response.json();
-
-              if (response.ok) {
-                setFormStatus({ 
-                  type: 'success', 
-                  message: 'Thank you! We\'ll contact you soon via text or email.' 
-                });
-                (e.target as HTMLFormElement).reset();
-              } else {
-                if (result.errors) {
-                  setFormStatus({ 
-                    type: 'error', 
-                    message: result.errors.map((err: any) => err.message).join(', ') || 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
-                  });
-                } else {
-                  setFormStatus({ 
-                    type: 'error', 
-                    message: result.error || 'Something went wrong. Please text Joe at 414-439-6211 instead.' 
-                  });
-                }
-              }
-            } catch (error) {
-              console.error('Form submission error:', error);
-              setFormStatus({ 
-                type: 'error', 
-                message: 'Network error. Please text Joe at 414-439-6211 instead.' 
-              });
-            } finally {
-              setIsSubmitting(false);
-            }
-          }}
-        >
-          {formStatus.type && (
-            <div style={{
-              padding: '1rem',
-              marginBottom: '1.5rem',
-              background: formStatus.type === 'success' ? '#0A4A0A' : '#4A0A0A',
-              border: `2px solid ${formStatus.type === 'success' ? '#00FF00' : '#FF6600'}`,
-              color: '#FFFFFF',
-              textAlign: 'center',
-              fontWeight: 600,
-              borderRadius: '4px'
-            }}>
-              {formStatus.message}
-            </div>
-          )}
-          <div className="form-group">
-            <label>Full Name</label>
-            <input type="text" name="name" required disabled={isSubmitting} />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" required disabled={isSubmitting} />
-          </div>
-          <div className="form-group">
-            <label>Phone</label>
-            <input type="tel" name="phone" required disabled={isSubmitting} />
-          </div>
-          <div className="form-group">
-            <label>Credit Score Range</label>
-            <select name="credit_score" required disabled={isSubmitting}>
-              <option value="">Select...</option>
-              <option value="excellent">750+</option>
-              <option value="good">700-749</option>
-              <option value="fair">650-699</option>
-              <option value="poor">Below 650</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Monthly Income</label>
-            <input type="number" name="income" placeholder="$" required disabled={isSubmitting} />
-          </div>
-          <div className="form-group">
-            <label>Bike of Interest (Optional)</label>
-            <input type="text" name="bike_interest" placeholder="e.g., 2023 Street Glide Special" disabled={isSubmitting} />
-          </div>
-          <button 
-            type="submit" 
-            className="form-submit" 
-            disabled={isSubmitting}
-            style={{
-              opacity: isSubmitting ? 0.6 : 1,
-              cursor: isSubmitting ? 'not-allowed' : 'pointer'
-            }}
-          >
-            {isSubmitting ? 'SUBMITTING...' : 'SUBMIT FOR PRE-APPROVAL'}
-          </button>
-        </form>
-      </section>
-
-      {/* FAQ Section with Native HTML Accordion */}
-      <section className="faq-section" style={{ 
-        padding: '6rem 1.5rem', 
-        background: '#000000' 
-      }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <h2 style={{ 
-            color: '#FF6600', 
-            marginBottom: '3rem', 
-            fontSize: 'clamp(2rem, 5vw, 3rem)', 
-            textAlign: 'center',
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 900,
+            color: '#000000',
             fontFamily: 'var(--font-clash)',
-            fontWeight: 700
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            marginBottom: '1.5rem',
+            textShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
           }}>
-            Frequently Asked Questions
+            READY TO RIDE?
           </h2>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <p style={{
+            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
+            color: '#000000',
+            fontWeight: 700,
+            marginBottom: '3rem',
+            letterSpacing: '1px'
+          }}>
+            Text Joe at <a href="sms:4144396211" style={{ color: '#000000', textDecoration: 'underline' }}>414-439-6211</a> or browse inventory now
+          </p>
+          <div style={{
+            display: 'flex',
+            gap: '1.5rem',
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <Link
+              href="/inventory"
+              style={{
+                background: '#000000',
+                color: '#FF6600',
+                padding: '1.5rem 3rem',
+                fontSize: '1.2rem',
+                fontWeight: 900,
+                textTransform: 'uppercase',
+                letterSpacing: '3px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-clash)',
+                border: '3px solid #000000',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#000000';
+                e.currentTarget.style.color = '#FF6600';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              VIEW ALL BIKES
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ SECTION - Accordion Style */}
+      <section style={{
+        background: '#0A0A0A',
+        padding: '6rem 2rem'
+      }}>
+        <div style={{
+          maxWidth: '1000px',
+          margin: '0 auto'
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 900,
+            color: '#FFFFFF',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            marginBottom: '4rem'
+          }}>
+            QUESTIONS?
+          </h2>
+
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
+          }}>
             {faqData.map((faq, index) => (
               <details
                 key={index}
-                className="faq-item"
                 style={{
+                  background: '#000000',
+                  border: '2px solid #1A1A1A',
                   padding: '0',
-                  background: '#0A0A0A',
-                  borderRadius: '8px',
-                  border: '1px solid #2A2A2A',
                   overflow: 'hidden',
                   transition: 'all 0.3s ease'
                 }}
@@ -476,17 +591,24 @@ export default function HomePage() {
                   e.currentTarget.style.borderColor = '#FF6600';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#2A2A2A';
+                  if (!e.currentTarget.open) {
+                    e.currentTarget.style.borderColor = '#1A1A1A';
+                  }
+                }}
+                onToggle={(e) => {
+                  if (e.currentTarget.open) {
+                    e.currentTarget.style.borderColor = '#FF6600';
+                  }
                 }}
               >
                 <summary
-                  className="faq-question"
                   style={{
-                    color: '#FF6600',
-                    fontSize: '1.3rem',
-                    fontWeight: 600,
+                    padding: '1.5rem 2rem',
+                    color: '#FFFFFF',
+                    fontSize: '1.2rem',
+                    fontWeight: 700,
                     fontFamily: 'var(--font-clash)',
-                    padding: '1.5rem',
+                    letterSpacing: '1px',
                     cursor: 'pointer',
                     listStyle: 'none',
                     display: 'flex',
@@ -496,22 +618,18 @@ export default function HomePage() {
                 >
                   <span>{faq.question}</span>
                   <span style={{
-                    fontSize: '1.2rem',
-                    transition: 'transform 0.3s ease',
-                    marginLeft: '1rem'
-                  }}>▼</span>
+                    color: '#FF6600',
+                    fontSize: '1.5rem',
+                    transition: 'transform 0.3s ease'
+                  }}>+</span>
                 </summary>
-                <div
-                  className="faq-answer"
-                  style={{
-                    padding: '0 1.5rem 1.5rem 1.5rem',
-                    color: '#CCCCCC',
-                    lineHeight: '1.8'
-                  }}
-                >
-                  <p style={{ margin: 0 }}>
-                    {faq.answer}
-                  </p>
+                <div style={{
+                  padding: '0 2rem 1.5rem 2rem',
+                  color: '#CCCCCC',
+                  lineHeight: '1.8',
+                  fontSize: '1rem'
+                }}>
+                  {faq.answer}
                 </div>
               </details>
             ))}
@@ -519,305 +637,72 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Local SEO + Map Section */}
-      <section className="local-seo" style={{
-        padding: '4rem 1.5rem',
-        background: '#0A0A0A',
+      {/* FOOTER - Edgy, Minimal */}
+      <footer style={{
+        background: '#000000',
+        borderTop: '2px solid #FF6600',
+        padding: '4rem 2rem 2rem',
         textAlign: 'center'
       }}>
-        <h2 style={{
-          color: '#FF6600',
-          marginBottom: '2rem',
-          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto'
         }}>
-          Used Harleys in Milwaukee, Wisconsin
-        </h2>
-        <p style={{
-          color: '#CCCCCC',
-          maxWidth: '700px',
-          margin: '0 auto 1.5rem',
-          lineHeight: '1.8',
-          fontSize: '1.1rem'
-        }}>
-          Looking for used Harleys in Milwaukee? I'm at House of Harley (6221 W Layton Ave, Milwaukee, WI 53220) — the spot for low-mile pre-owned rides like Street Glides, Road Glides, Fat Boys, Heritage Classics, and Low Rider S. Serving Waukesha, Racine, Kenosha, and all of Wisconsin. Full warranty, financing, $499 nationwide shipping.
-        </p>
-        
-        {/* Google Maps Embed */}
-        <div style={{ margin: '3rem 0', maxWidth: '100%', height: '400px', border: '2px solid #FF6600', borderRadius: '8px', overflow: 'hidden' }}>
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2919.9243178731476!2d-87.99424712384211!3d42.95879927114352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880511b5f0600ac3%3A0x87f5600c68b8d805!2s6221%20W%20Layton%20Ave%2C%20Greenfield%2C%20WI%2053220!5e0!3m2!1sen!2sus!4v1763599487508!5m2!1sen!2sus" 
-            width="100%" 
-            height="400" 
-            style={{ border: 0 }} 
-            allowFullScreen={true}
-            loading="lazy" 
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Joe's Used Harleys Location - House Of Harley, 6221 W Layton Ave, Milwaukee Wisconsin 53220"
-          />
-        </div>
-        
-        <div className="local-links" style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '1rem',
-          justifyContent: 'center',
-          marginTop: '2rem'
-        }}>
-          <Link href="/used-harleys-milwaukee" className="local-link">Used Harleys Milwaukee</Link>
-          <Link href="/harley-for-sale-milwaukee" className="local-link">Harley for Sale Milwaukee</Link>
-          <Link href="/milwaukee-harley-dealership" className="local-link">Milwaukee Harley Dealership</Link>
-          <Link href="/used-street-glide-milwaukee" className="local-link">Street Glide Milwaukee</Link>
-          <Link href="/used-road-glide-milwaukee" className="local-link">Road Glide Milwaukee</Link>
-          <Link href="/used-fat-boy-milwaukee" className="local-link">Fat Boy Milwaukee</Link>
-          <Link href="/used-heritage-classic-milwaukee" className="local-link">Heritage Classic Milwaukee</Link>
-          <Link href="/used-low-rider-s-milwaukee" className="local-link">Low Rider S Milwaukee</Link>
-        </div>
-      </section>
+          <div style={{
+            marginBottom: '2rem'
+          }}>
+            <div style={{
+              fontSize: '2rem',
+              fontWeight: 900,
+              color: '#FF6600',
+              fontFamily: 'var(--font-clash)',
+              letterSpacing: '4px',
+              textTransform: 'uppercase',
+              marginBottom: '1rem'
+            }}>
+              JOE'S USED HARLEYS
+            </div>
+            <p style={{
+              color: '#CCCCCC',
+              fontSize: '1rem',
+              marginBottom: '0.5rem'
+            }}>
+              6221 W Layton Ave, Milwaukee, WI 53220
+            </p>
+            <p style={{
+              color: '#CCCCCC',
+              fontSize: '1rem',
+              marginBottom: '2rem'
+            }}>
+              <a href="tel:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>414-439-6211</a> • <a href="sms:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>TEXT</a>
+            </p>
+          </div>
 
-      {/* Internal Links for SEO */}
-      <InternalLinks currentPage="home" />
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '2rem',
+            flexWrap: 'wrap',
+            marginBottom: '2rem'
+          }}>
+            <Link href="/" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>HOME</Link>
+            <Link href="/inventory" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>INVENTORY</Link>
+            <Link href="/events" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>EVENTS</Link>
+            <Link href="/merch" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>MERCH</Link>
+            <Link href="/contact" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>CONTACT</Link>
+          </div>
 
-      {/* Footer */}
-      <footer style={{
-        padding: '3rem 1.5rem',
-        background: '#000000',
-        textAlign: 'center',
-        borderTop: '1px solid #2A2A2A'
-      }}>
-        <p style={{
-          color: '#CCCCCC',
-          fontSize: '1rem'
-        }}>
-          Joe Tabora<span style={{ color: '#FF6600', margin: '0 0.75rem' }}>•</span>
-          @joetabora<span style={{ color: '#FF6600', margin: '0 0.75rem' }}>•</span>
-          All bikes titled through House Of Harley
-        </p>
+          <div style={{
+            borderTop: '1px solid #1A1A1A',
+            paddingTop: '2rem',
+            color: '#666666',
+            fontSize: '0.85rem'
+          }}>
+            © {new Date().getFullYear()} Joe's Used Harleys. All Rights Reserved. | Built for riders, by riders.
+          </div>
+        </div>
       </footer>
-
-      {/* Floating FaceTime CTA */}
-      <a
-        href="sms:4144396211?body=FaceTime%20tour%20please"
-        className="floating-cta facetime-cta" 
-        aria-label="Request a FaceTime tour of used Harley-Davidson motorcycles"
-        style={{
-          position: 'fixed',
-          bottom: '2.5rem',
-          right: '2.5rem',
-          background: '#FF6600',
-          color: '#000000',
-          width: '80px',
-          height: '80px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textDecoration: 'none',
-          fontWeight: 800,
-          fontSize: '0.65rem',
-          textAlign: 'center',
-          boxShadow: '0 0 0 3px rgba(255, 102, 0, 0.3), 0 8px 30px rgba(255, 102, 0, 0.5)',
-          zIndex: 1000,
-          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          fontFamily: 'var(--font-clash)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.5px',
-          lineHeight: '1.1',
-          padding: '0.4rem'
-        }}
-      >
-        📱<br />FACETIME<br />TOUR
-      </a>
-
-      {/* Mobile Sticky Bottom Bar */}
-      <div className="mobile-bar" role="navigation" aria-label="Mobile navigation menu" style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        background: 'linear-gradient(to top, #000000 0%, #0A0A0A 100%)',
-        borderTop: '1px solid #1A1A1A',
-        display: 'flex',
-        justifyContent: 'space-around',
-        padding: '1rem',
-        zIndex: 999,
-        boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 102, 0, 0.1)'
-      }}>
-        <a 
-          href="tel:4144396211" 
-          className="mobile-bar-btn" 
-          aria-label="Call Joe at 414-439-6211 about used Harleys in Milwaukee"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px',
-            position: 'relative'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#000000';
-            e.currentTarget.style.background = '#FF6600';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#FF6600';
-            e.currentTarget.style.background = 'transparent';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-        >
-          CALL
-        </a>
-        <a 
-          href="sms:4144396211" 
-          className="mobile-bar-btn" 
-          aria-label="Text Joe at 414-439-6211 about used Harleys in Milwaukee"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#000000';
-            e.currentTarget.style.background = '#FF6600';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#FF6600';
-            e.currentTarget.style.background = 'transparent';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-        >
-          TEXT
-        </a>
-        <a 
-          href="#inventory" 
-          className="mobile-bar-btn" 
-          aria-label="View inventory of used Harley-Davidson motorcycles"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#000000';
-            e.currentTarget.style.background = '#FF6600';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#FF6600';
-            e.currentTarget.style.background = 'transparent';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-        >
-          INVENTORY
-        </a>
-      </div>
-
-      {/* Add CSS for logo scale-in animation and bike card hover effects */}
-      <style jsx global>{`
-        @keyframes logo-scale-in {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes pulse-float {
-          0%, 100% { 
-            transform: translateY(0);
-            box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.3), 0 8px 30px rgba(255, 102, 0, 0.5);
-          }
-          50% { 
-            transform: translateY(-10px);
-            box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.5), 0 12px 40px rgba(255, 102, 0, 0.7);
-          }
-        }
-
-        .floating-cta:hover {
-          transform: translateY(-5px) scale(1.1);
-          box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.5), 0 12px 40px rgba(255, 102, 0, 0.7);
-          background: #FF8833;
-        }
-
-        .facetime-banner:hover {
-          background: #FF8833;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(255, 102, 0, 0.4);
-        }
-
-        /* Bike card hover effect with slight lift */
-        .bike {
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .bike:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.3);
-        }
-
-        /* Chrome check icon styling */
-        .chrome-check {
-          color: #c0c0c0 !important;
-          border-color: #c0c0c0 !important;
-        }
-
-        /* Native HTML details/summary styling */
-        details summary::-webkit-details-marker {
-          display: none;
-        }
-
-        details[open] summary span:last-child {
-          transform: rotate(180deg);
-        }
-
-        details summary:focus {
-          outline: 2px solid #FF6600;
-          outline-offset: 2px;
-        }
-
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-          .facetime-cta {
-            width: 65px;
-            height: 65px;
-            bottom: 90px;
-            right: 1.5rem;
-            font-size: 0.55rem !important;
-          }
-
-          .mobile-bar {
-            display: flex;
-          }
-        }
-
-        @media (min-width: 769px) {
-          .mobile-bar {
-            display: none;
-          }
-        }
-      `}</style>
     </>
   );
 }
+

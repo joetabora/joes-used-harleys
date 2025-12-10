@@ -1,0 +1,281 @@
+'use client';
+
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+
+export function Navigation() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { href: '/', label: 'HOME' },
+    { href: '/inventory', label: 'INVENTORY' },
+    { href: '/events', label: 'EVENTS' },
+    { href: '/merch', label: 'MERCH' },
+    { href: '/contact', label: 'CONTACT' },
+  ];
+
+  const isActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname?.startsWith(href);
+  };
+
+  return (
+    <>
+      {/* Top Banner */}
+      <div style={{
+        background: 'linear-gradient(90deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
+        borderBottom: '2px solid #FF6600',
+        padding: '0.75rem 1rem',
+        textAlign: 'center',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <p style={{
+          color: '#FF6600',
+          fontSize: 'clamp(0.7rem, 1.5vw, 0.9rem)',
+          fontWeight: 800,
+          letterSpacing: '3px',
+          textTransform: 'uppercase',
+          margin: 0,
+          fontFamily: 'var(--font-clash)'
+        }}>
+          ⚡ $499 NATIONWIDE SHIPPING ⚡ BAD CREDIT OK ⚡ TEXT JOE: 414-439-6211
+        </p>
+      </div>
+
+      {/* Main Navigation */}
+      <nav style={{
+        background: isScrolled ? 'rgba(0, 0, 0, 0.98)' : '#000000',
+        borderBottom: isScrolled ? '2px solid #FF6600' : 'none',
+        position: 'sticky',
+        top: '42px',
+        zIndex: 999,
+        transition: 'all 0.3s ease',
+        backdropFilter: 'blur(10px)',
+        boxShadow: isScrolled ? '0 8px 30px rgba(255, 102, 0, 0.2)' : 'none'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: '1.25rem 2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          {/* Logo */}
+          <Link href="/" style={{ textDecoration: 'none', zIndex: 1001 }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem'
+            }}>
+              <div style={{
+                width: '50px',
+                height: '50px',
+                background: '#FF6600',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '3px solid #000000',
+                boxShadow: '0 0 20px rgba(255, 102, 0, 0.5)'
+              }}>
+                <span style={{
+                  color: '#000000',
+                  fontSize: '1.5rem',
+                  fontWeight: 900,
+                  fontFamily: 'var(--font-clash)'
+                }}>J</span>
+              </div>
+              <div>
+                <div style={{
+                  color: '#FFFFFF',
+                  fontSize: '1.5rem',
+                  fontWeight: 900,
+                  letterSpacing: '2px',
+                  fontFamily: 'var(--font-clash)',
+                  lineHeight: '1.1'
+                }}>
+                  JOE'S
+                </div>
+                <div style={{
+                  color: '#FF6600',
+                  fontSize: '0.9rem',
+                  fontWeight: 700,
+                  letterSpacing: '4px',
+                  fontFamily: 'var(--font-clash)',
+                  textTransform: 'uppercase'
+                }}>
+                  USED HARLEYS
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="desktop-nav" style={{
+            display: 'none',
+            alignItems: 'center',
+            gap: '3rem'
+          }}>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={{
+                  color: isActive(link.href) ? '#FF6600' : '#FFFFFF',
+                  textDecoration: 'none',
+                  fontSize: '0.95rem',
+                  fontWeight: 800,
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  fontFamily: 'var(--font-clash)',
+                  position: 'relative',
+                  padding: '0.5rem 0',
+                  transition: 'all 0.3s ease',
+                  borderBottom: isActive(link.href) ? '2px solid #FF6600' : '2px solid transparent'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive(link.href)) {
+                    e.currentTarget.style.color = '#FF6600';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive(link.href)) {
+                    e.currentTarget.style.color = '#FFFFFF';
+                  }
+                }}
+              >
+                {link.label}
+              </Link>
+          ))}
+        </div>
+        
+        <style jsx>{`
+          @media (min-width: 768px) {
+            .desktop-nav {
+              display: flex !important;
+            }
+          }
+        `}</style>
+
+        {/* Mobile Menu Button */}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '5px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.5rem',
+              zIndex: 1001
+            }}
+            aria-label="Toggle menu"
+          >
+            <style jsx>{`
+              @media (min-width: 768px) {
+                .mobile-menu-btn {
+                  display: none !important;
+                }
+              }
+            `}</style>
+            <span style={{
+              width: '25px',
+              height: '3px',
+              background: isMobileMenuOpen ? '#FF6600' : '#FFFFFF',
+              transition: 'all 0.3s ease',
+              transform: isMobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none'
+            }}></span>
+            <span style={{
+              width: '25px',
+              height: '3px',
+              background: isMobileMenuOpen ? 'transparent' : '#FFFFFF',
+              transition: 'all 0.3s ease',
+              opacity: isMobileMenuOpen ? 0 : 1
+            }}></span>
+            <span style={{
+              width: '25px',
+              height: '3px',
+              background: isMobileMenuOpen ? '#FF6600' : '#FFFFFF',
+              transition: 'all 0.3s ease',
+              transform: isMobileMenuOpen ? 'rotate(-45deg) translate(7px, -6px)' : 'none'
+            }}></span>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className="mobile-menu" style={{
+          display: isMobileMenuOpen ? 'flex' : 'none',
+          flexDirection: 'column',
+          background: '#000000',
+          borderTop: '2px solid #FF6600',
+          padding: '2rem',
+          gap: '1.5rem',
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          right: 0,
+          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.8)'
+        }}>
+          <style jsx>{`
+            @media (min-width: 768px) {
+              .mobile-menu {
+                display: none !important;
+              }
+            }
+          `}</style>
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              style={{
+                color: isActive(link.href) ? '#FF6600' : '#FFFFFF',
+                textDecoration: 'none',
+                fontSize: '1.2rem',
+                fontWeight: 800,
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                fontFamily: 'var(--font-clash)',
+                padding: '1rem',
+                borderLeft: isActive(link.href) ? '4px solid #FF6600' : '4px solid transparent',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#1a1a1a';
+                e.currentTarget.style.borderLeftColor = '#FF6600';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                if (!isActive(link.href)) {
+                  e.currentTarget.style.borderLeftColor = 'transparent';
+                }
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </>
+  );
+}
+
