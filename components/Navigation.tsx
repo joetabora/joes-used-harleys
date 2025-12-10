@@ -165,38 +165,23 @@ export function Navigation() {
               </Link>
           ))}
         </div>
-        
-        <style jsx>{`
-          @media (min-width: 768px) {
-            .desktop-nav {
-              display: flex !important;
-            }
-          }
-        `}</style>
 
         {/* Mobile Menu Button */}
-          <button
-            className="mobile-menu-btn"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '5px',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0.5rem',
-              zIndex: 1001
-            }}
-            aria-label="Toggle menu"
-          >
-            <style jsx>{`
-              @media (min-width: 768px) {
-                .mobile-menu-btn {
-                  display: none !important;
-                }
-              }
-            `}</style>
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '5px',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0.5rem',
+            zIndex: 1001
+          }}
+          aria-label="Toggle menu"
+        >
             <span style={{
               width: '25px',
               height: '3px',
@@ -235,13 +220,6 @@ export function Navigation() {
           right: 0,
           boxShadow: '0 8px 30px rgba(0, 0, 0, 0.8)'
         }}>
-          <style jsx>{`
-            @media (min-width: 768px) {
-              .mobile-menu {
-                display: none !important;
-              }
-            }
-          `}</style>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -275,6 +253,21 @@ export function Navigation() {
           ))}
         </div>
       </nav>
+      
+      {/* Global styles for navigation - must be outside nav to avoid nesting */}
+      <style jsx global>{`
+        @media (min-width: 768px) {
+          .desktop-nav {
+            display: flex !important;
+          }
+          .mobile-menu-btn {
+            display: none !important;
+          }
+          .mobile-menu {
+            display: none !important;
+          }
+        }
+      `}</style>
     </>
   );
 }
