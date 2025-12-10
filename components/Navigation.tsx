@@ -35,34 +35,15 @@ export function Navigation() {
 
   return (
     <>
-      {/* Full-Width Banner Image */}
-      <div style={{
-        width: '100%',
-        position: 'relative',
-        background: '#000000'
-      }}>
-        <Image
-          src="/bannerjoe.jpeg"
-          alt="Joe's Used Harleys"
-          width={1920}
-          height={300}
-          priority
-          style={{
-            width: '100%',
-            height: 'auto',
-            display: 'block',
-            objectFit: 'cover'
-          }}
-        />
-      </div>
-
       {/* Top Banner Info */}
       <div style={{
         background: 'linear-gradient(90deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
         borderBottom: '2px solid #FF6600',
         padding: '0.75rem 1rem',
         textAlign: 'center',
-        zIndex: 998,
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
       }}>
         <p style={{
@@ -83,7 +64,7 @@ export function Navigation() {
         background: isScrolled ? 'rgba(0, 0, 0, 0.98)' : '#000000',
         borderBottom: isScrolled ? '2px solid #FF6600' : 'none',
         position: 'sticky',
-        top: 0,
+        top: '42px',
         zIndex: 999,
         transition: 'all 0.3s ease',
         backdropFilter: 'blur(10px)',
@@ -273,6 +254,27 @@ export function Navigation() {
           ))}
         </div>
       </nav>
+
+      {/* Full-Width Banner Image - Below Navigation */}
+      <div style={{
+        width: '100%',
+        position: 'relative',
+        background: '#000000'
+      }}>
+        <Image
+          src="/bannerjoe.jpeg"
+          alt="Joe's Used Harleys"
+          width={1920}
+          height={300}
+          priority
+          style={{
+            width: '100%',
+            height: 'auto',
+            display: 'block',
+            objectFit: 'cover'
+          }}
+        />
+      </div>
       
       {/* Global styles for navigation - using regular style tag to avoid styled-jsx nesting */}
       <style dangerouslySetInnerHTML={{ __html: `
