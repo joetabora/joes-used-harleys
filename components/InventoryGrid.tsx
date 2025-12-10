@@ -242,7 +242,7 @@ export function InventoryGrid({ limit }: InventoryGridProps = {}) {
       </div>
 
       {/* No Matches Message */}
-      {searchTerm.trim() && displayBikes.length === 0 && (
+      {searchTerm.trim() && filteredBikes.length === 0 && (
         <div style={{
           textAlign: 'center',
           padding: '3rem 1.5rem',
