@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -77,54 +78,22 @@ export function Navigation() {
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-          {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none', zIndex: 1001 }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem'
-            }}>
-              <div style={{
-                width: '50px',
-                height: '50px',
-                background: '#FF6600',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '3px solid #000000',
-                boxShadow: '0 0 20px rgba(255, 102, 0, 0.5)'
-              }}>
-                <span style={{
-                  color: '#000000',
-                  fontSize: '1.5rem',
-                  fontWeight: 900,
-                  fontFamily: 'var(--font-clash)'
-                }}>J</span>
-              </div>
-              <div>
-                <div style={{
-                  color: '#FFFFFF',
-                  fontSize: '1.5rem',
-                  fontWeight: 900,
-                  letterSpacing: '2px',
-                  fontFamily: 'var(--font-clash)',
-                  lineHeight: '1.1'
-                }}>
-                  JOE'S
-                </div>
-                <div style={{
-                  color: '#FF6600',
-                  fontSize: '0.9rem',
-                  fontWeight: 700,
-                  letterSpacing: '4px',
-                  fontFamily: 'var(--font-clash)',
-                  textTransform: 'uppercase'
-                }}>
-                  USED HARLEYS
-                </div>
-              </div>
-            </div>
+          {/* Banner Logo */}
+          <Link href="/" style={{ textDecoration: 'none', zIndex: 1001, display: 'flex', alignItems: 'center' }}>
+            <Image
+              src="/bannerjoe.jpeg"
+              alt="Joe's Used Harleys"
+              width={200}
+              height={60}
+              priority
+              style={{
+                height: 'auto',
+                maxHeight: '60px',
+                width: 'auto',
+                maxWidth: '200px',
+                filter: 'drop-shadow(0 0 10px rgba(255, 102, 0, 0.5))'
+              }}
+            />
           </Link>
 
           {/* Desktop Navigation */}
