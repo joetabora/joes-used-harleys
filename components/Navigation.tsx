@@ -254,8 +254,8 @@ export function Navigation() {
         </div>
       </nav>
       
-      {/* Global styles for navigation - must be outside nav to avoid nesting */}
-      <style jsx global>{`
+      {/* Global styles for navigation - using regular style tag to avoid styled-jsx nesting */}
+      <style dangerouslySetInnerHTML={{ __html: `
         @media (min-width: 768px) {
           .desktop-nav {
             display: flex !important;
@@ -267,7 +267,7 @@ export function Navigation() {
             display: none !important;
           }
         }
-      `}</style>
+      `}} />
     </>
   );
 }
