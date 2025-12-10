@@ -38,17 +38,8 @@ const faqData = [
 ];
 
 export default function HomePage() {
-  const [zipCode, setZipCode] = useState('');
-  const [showShippingResult, setShowShippingResult] = useState(false);
   const [formStatus, setFormStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const calculateShipping = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (zipCode.trim()) {
-      setShowShippingResult(true);
-    }
-  };
 
   return (
     <>
@@ -83,81 +74,24 @@ export default function HomePage() {
         WE SHIP NATIONWIDE FOR ONLY $499
       </div>
 
-      {/* Shipping Calculator */}
+      {/* Shipping Info */}
       <div style={{
         background: '#000000',
         padding: '2rem 1.5rem',
         textAlign: 'center',
         borderBottom: '2px solid #FF6600'
       }}>
-        <form onSubmit={calculateShipping} style={{
-          maxWidth: '500px',
-          margin: '0 auto',
-          display: 'flex',
-          gap: '1rem',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'center'
+        <p style={{
+          color: '#FF6600',
+          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+          fontWeight: 800,
+          fontFamily: 'var(--font-clash)',
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+          margin: 0
         }}>
-          <input
-            type="text"
-            placeholder="Enter ZIP code"
-            value={zipCode}
-            onChange={(e) => setZipCode(e.target.value.replace(/\D/g, '').slice(0, 5))}
-            style={{
-              padding: '0.75rem 1rem',
-              background: '#0A0A0A',
-              border: '2px solid #FF6600',
-              color: '#FFFFFF',
-              fontSize: '1rem',
-              fontWeight: 600,
-              borderRadius: '4px',
-              flex: '1',
-              minWidth: '200px',
-              fontFamily: 'var(--font-inter)'
-            }}
-            maxLength={5}
-            pattern="[0-9]{5}"
-          />
-          <button
-            type="submit"
-            style={{
-              padding: '0.75rem 2rem',
-              background: '#FF6600',
-              color: '#000000',
-              border: 'none',
-              fontSize: '1rem',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              fontFamily: 'var(--font-clash)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#FF8833';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#FF6600';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            Calculate Shipping
-          </button>
-        </form>
-        {showShippingResult && (
-          <p style={{
-            marginTop: '1.5rem',
-            color: '#FF6600',
-            fontSize: '1.1rem',
-            fontWeight: 700,
-            fontFamily: 'var(--font-clash)'
-          }}>
-            $499 flat rate nationwide — ships in 3–7 days
-          </p>
-        )}
+          $499 FLAT RATE NATIONWIDE — SHIPS IN 3–7 DAYS
+        </p>
       </div>
 
       {/* Hero Section with Full-Screen Video */}

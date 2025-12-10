@@ -1,6 +1,5 @@
 import { setPageSEO, generateProductSchema, SITE_CONFIG } from '@/lib/seo';
 import { getModelPageData, getAllModelPageSlugs } from '@/lib/model-pages-data';
-import { ShippingCalculator } from '@/components/ShippingCalculator';
 import { BikeImage } from '@/components/BikeImage';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -141,8 +140,25 @@ export default async function ModelPage({ params }: { params: Promise<{ 'model-s
         WE SHIP NATIONWIDE FOR ONLY $499
       </div>
 
-      {/* Shipping Calculator */}
-      <ShippingCalculator />
+      {/* Shipping Info */}
+      <div style={{
+        background: '#000000',
+        padding: '2rem 1.5rem',
+        textAlign: 'center',
+        borderBottom: '1px solid #2A2A2A'
+      }}>
+        <p style={{
+          color: '#FF6600',
+          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+          fontWeight: 800,
+          fontFamily: 'var(--font-clash)',
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+          margin: 0
+        }}>
+          $499 FLAT RATE NATIONWIDE — SHIPS IN 3–7 DAYS
+        </p>
+      </div>
 
       {/* Hero Section */}
       <section style={{ 

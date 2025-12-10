@@ -1,6 +1,5 @@
 import { setPageSEO, generateProductSchema, SITE_CONFIG } from '@/lib/seo';
 import { getCityPageData, getAllCityPageSlugs } from '@/lib/city-pages-data';
-import { ShippingCalculator } from '@/components/ShippingCalculator';
 import { BikeImage } from '@/components/BikeImage';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -200,22 +199,23 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         WE SHIP NATIONWIDE FOR ONLY $499
       </div>
 
-      {/* Shipping Calculator */}
+      {/* Shipping Info */}
       <div style={{
         background: '#000000',
         padding: '2rem 1.5rem',
         textAlign: 'center',
         borderBottom: '1px solid #2A2A2A'
       }}>
-        <ShippingCalculator />
         <p style={{
-          marginTop: '1rem',
           color: '#FF6600',
-          fontSize: '1rem',
-          fontWeight: 700,
-          fontFamily: 'var(--font-clash)'
+          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+          fontWeight: 800,
+          fontFamily: 'var(--font-clash)',
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+          margin: 0
         }}>
-          Ships to {cityData.name} in 3-7 days for $499
+          SHIPS TO {cityData.name.toUpperCase()} IN 3–7 DAYS FOR $499
         </p>
       </div>
 
