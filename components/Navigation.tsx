@@ -262,7 +262,7 @@ export function Navigation() {
         background: '#000000'
       }}>
         <Image
-          src="/bannerjoe.jpeg"
+          src="/juh4.jpg"
           alt="Joe's Used Harleys"
           width={1920}
           height={300}
