@@ -1,26 +1,9 @@
-import { setPageSEO } from '@/lib/seo';
+'use client';
+
 import { Navigation } from '@/components/Navigation';
 import { FloatingActionButtons } from '@/components/FloatingActionButtons';
 import { SEO } from '@/components/SEO';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-
-// Events page SEO
-export const metadata: Metadata = setPageSEO({
-  pageTitle: 'Harley Events Milwaukee 2025 | House of Harley-Davidson Events',
-  pageDescription: 'Upcoming Harley events in Milwaukee — service workshops, Photos with Santa, Kill Winter Party. Text Joe 414-439-6211',
-  pageKeywords: [
-    'harley events milwaukee',
-    'house of harley events',
-    'harley davidson events milwaukee',
-    'milwaukee harley events 2025',
-    'harley service workshop milwaukee',
-    'kill winter party milwaukee',
-    'harley events wisconsin'
-  ],
-  location: 'Milwaukee',
-  path: '/events'
-});
 
 // Event data - easy to update monthly
 const events = [
