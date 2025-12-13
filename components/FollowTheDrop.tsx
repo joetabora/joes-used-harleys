@@ -4,8 +4,8 @@ export function FollowTheDrop() {
   const socialLinks = [
     {
       platform: 'TikTok',
-      handle: '@joetabora',
-      url: 'https://www.tiktok.com/@joetabora',
+      handle: '@suchgrime',
+      url: 'https://www.tiktok.com/@suchgrime',
       icon: '🎵',
       color: '#000000',
       hoverColor: '#FF6600'

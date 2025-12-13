@@ -121,7 +121,7 @@ export default function HomePage() {
           margin: '0 auto'
         }}>
           <SocialFeed
-            tiktokHandle="@joetabora"
+            tiktokHandle="@suchgrime"
             instagramHandle="@joetabora"
             widgetId="9c7cbdce-5662-4a22-92f3-c17153f3f1c8"
           />

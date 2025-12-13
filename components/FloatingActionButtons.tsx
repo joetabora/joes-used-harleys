@@ -67,7 +67,7 @@ export function FloatingActionButtons() {
 
       {/* Follow on TikTok Button - Bottom Left (Neon Style) */}
       <a
-        href="https://www.tiktok.com/@joetabora"
+        href="https://www.tiktok.com/@suchgrime"
         target="_blank"
         rel="noopener noreferrer"
         style={{
@@ -169,7 +169,7 @@ export function FloatingActionButtons() {
           💬 TEXT JOE
         </a>
         <a
-          href="https://www.tiktok.com/@joetabora"
+          href="https://www.tiktok.com/@suchgrime"
           target="_blank"
           rel="noopener noreferrer"
           style={{
