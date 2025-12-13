@@ -20,7 +20,7 @@ export function Navigation() {
 
   const navLinks = [
     { href: '/', label: 'HOME' },
-    { href: '/inventory', label: 'INVENTORY' },
+    { href: '/blog', label: 'BLOG' },
     { href: '/events', label: 'EVENTS' },
     { href: '/merch', label: 'MERCH' },
     { href: '/contact', label: 'CONTACT' },
