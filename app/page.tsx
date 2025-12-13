@@ -15,23 +15,23 @@ import Link from 'next/link';
 const faqData = [
   {
     question: "Where to buy used Harleys in Milwaukee?",
-    answer: "I'm at House of Harley (6221 W Layton Ave, Milwaukee, WI 53220). It's the largest selection in town — Street Glides, Road Glides, Fat Boys, and more. Easy to browse online or stop by for a look. Serving all of southeastern Wisconsin."
+    answer: "I'm at House of Harley (6221 W Layton Ave, Milwaukee, WI 53220). It's the largest selection of used Harleys in Milwaukee — Street Glides, Road Glides, Fat Boys, Heritage Classic, Low Rider S, and more. Easy to browse online or stop by for a look. Serving all of southeastern Wisconsin. We're the trusted Harley-Davidson dealer Milwaukee riders count on."
   },
   {
-    question: "How much do used Harleys cost here?",
-    answer: "Prices range from $14,999 for entry-level models to $28,999 for loaded tourers. Street Glides and Road Glides usually hit $21,000–$24,000. No hidden fees — what you see is what you pay (plus tax/title). Financing makes it affordable."
+    question: "How much do used Harleys cost in Milwaukee?",
+    answer: "Used Harley prices in Milwaukee range from $14,999 for entry-level models to $28,999 for loaded tourers. Street Glides and Road Glides usually hit $21,000–$24,000. All our used Harleys for sale in Milwaukee have transparent pricing — no hidden fees, no market adjustments. What you see is what you pay (plus tax/title). Financing makes buying a used Harley in Milwaukee affordable, starting at $299/month."
   },
   {
-    question: "Financing for used Harleys?",
-    answer: "Absolutely — excellent credit, bad credit, first-time buyers, self-employed, all covered. Rates start at $299/month. I'll connect you with lenders who get it. Text me at 414-439-6211 to chat options."
+    question: "Do you offer financing for used Harleys in Milwaukee?",
+    answer: "Absolutely — we offer Harley financing Milwaukee riders trust. Excellent credit, bad credit, first-time buyers, self-employed, all covered. Rates start at $299/month. I'll connect you with lenders who get it. We work with multiple financing partners to make buying a used Harley in Milwaukee accessible to everyone. Text me at 414-439-6211 to chat options."
   },
   {
     question: "Return policy?",
     answer: "48-hour/100-mile guarantee: If it's not right, bring it back for a full refund or fix. No hassle — I want you happy on the road."
   },
   {
-    question: "Ship outside Milwaukee?",
-    answer: "Yes, nationwide for $499 — insured and handled by pros. From Wisconsin to coast-to-coast, I'll get it to you safe."
+    question: "Do you ship used Harleys outside Milwaukee?",
+    answer: "Yes, we ship used Harleys nationwide for $499 — fully insured and handled by professional transport companies. From Wisconsin to coast-to-coast, I'll get your Harley for sale Milwaukee safely to your door. Whether you're in California, Texas, Florida, or anywhere in the US, we make it easy to buy a used Harley from Milwaukee."
   },
   {
     question: "Trade-ins?",
@@ -89,7 +89,7 @@ export default function HomePage() {
             lineHeight: '1.1',
             textShadow: '0 0 40px rgba(255, 102, 0, 0.5), 0 8px 30px rgba(0, 0, 0, 0.9)'
           }}>
-            NEW HARLEYS DROP DAILY
+            USED HARLEYS MILWAUKEE
           </h1>
           <p style={{
             fontSize: 'clamp(1.3rem, 4vw, 2rem)',
@@ -101,16 +101,19 @@ export default function HomePage() {
             fontFamily: 'var(--font-clash)',
             textShadow: '0 0 30px rgba(255, 102, 0, 0.8)'
           }}>
-            FOLLOW ON TIKTOK & IG TO NEVER MISS ONE
+            NEW BIKES DROP DAILY — FOLLOW ON TIKTOK & IG
           </p>
           <p style={{
             fontSize: 'clamp(1.1rem, 3vw, 1.5rem)',
             color: '#CCCCCC',
             fontWeight: 700,
             letterSpacing: '2px',
-            marginTop: '1.5rem'
+            marginTop: '1.5rem',
+            maxWidth: '800px',
+            margin: '1.5rem auto 0',
+            lineHeight: '1.6'
           }}>
-            $499 SHIPS ANYWHERE
+            <strong style={{ color: '#FF6600' }}>Used Harley-Davidson motorcycles for sale in Milwaukee, Wisconsin</strong> at House of Harley. Low-mileage <strong>Street Glide, Road Glide, Fat Boy, Heritage Classic, Low Rider S</strong>. Bad credit financing, <strong>$499 nationwide shipping</strong>, top dollar trade-ins. Text Joe <strong>414-439-6211</strong>.
           </p>
         </div>
 
@@ -296,6 +299,60 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SEO CONTENT SECTION - Keyword Rich */}
+      <section style={{
+        background: '#000000',
+        padding: '6rem 2rem',
+        position: 'relative',
+        borderTop: '2px solid #FF6600'
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto'
+        }}>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontWeight: 900,
+            color: '#FF6600',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            marginBottom: '3rem'
+          }}>
+            Used Harleys for Sale in Milwaukee, Wisconsin
+          </h2>
+          
+          <div style={{
+            color: '#CCCCCC',
+            lineHeight: '1.8',
+            fontSize: '1.1rem',
+            maxWidth: '900px',
+            margin: '0 auto'
+          }}>
+            <p style={{ marginBottom: '1.5rem' }}>
+              Looking for <strong style={{ color: '#FF6600' }}>used Harleys in Milwaukee</strong>? You&apos;re in the right place. At <strong>House of Harley-Davidson</strong> (6221 W Layton Ave, Milwaukee, WI 53220), we offer the largest selection of <strong>used Harley-Davidson motorcycles</strong> in southeastern Wisconsin. Whether you&apos;re searching for a <strong>used Street Glide Milwaukee</strong>, <strong>used Road Glide Milwaukee</strong>, <strong>used Fat Boy Milwaukee</strong>, <strong>used Heritage Classic Milwaukee</strong>, or <strong>used Low Rider S Milwaukee</strong>, we have options for every rider and budget.
+            </p>
+            
+            <p style={{ marginBottom: '1.5rem' }}>
+              Every <strong>used Harley for sale in Milwaukee</strong> in our inventory has been personally inspected, serviced, and documented. We provide complete service records, Carfax reports, and detailed condition documentation. As a trusted <strong>Harley-Davidson dealer in Wisconsin</strong>, we maintain strict quality standards. All our <strong>used Harleys Milwaukee</strong> come with our 48-hour guarantee — if something&apos;s not right in the first 48 hours or 100 miles, bring it back for a full refund or fix.
+            </p>
+            
+            <p style={{ marginBottom: '1.5rem' }}>
+              <strong>Financing for used Harleys in Milwaukee</strong> is available for all credit types. Bad credit? First-time buyer? Self-employed? We work with multiple lenders to secure financing starting as low as $299/month. We believe everyone deserves to ride, and we&apos;ll find a solution that works for your situation.
+            </p>
+            
+            <p style={{ marginBottom: '1.5rem' }}>
+              Don&apos;t live in Milwaukee? No problem. We ship <strong>used Harleys nationwide for just $499</strong>. From Wisconsin to coast-to-coast, we&apos;ll deliver your <strong>Harley for sale Milwaukee</strong> safely to your door. All shipping is fully insured and handled by professional transport companies.
+            </p>
+            
+            <p style={{ marginBottom: '0' }}>
+              Ready to find your perfect <strong>used Harley Milwaukee</strong>? Browse our latest drops above, follow us on <a href="https://www.tiktok.com/@suchgrime" target="_blank" rel="noopener noreferrer" style={{ color: '#FF6600', textDecoration: 'none' }}>TikTok</a> and <a href="https://www.instagram.com/joetabora" target="_blank" rel="noopener noreferrer" style={{ color: '#FF6600', textDecoration: 'none' }}>Instagram</a> for daily updates, or text Joe directly at <a href="sms:4144396211" style={{ color: '#FF6600', textDecoration: 'none', fontWeight: 700 }}>414-439-6211</a>. I answer fast — usually within minutes.
+            </p>
           </div>
         </div>
       </section>
