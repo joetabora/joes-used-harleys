@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { generateFAQSchema } from '@/lib/seo';
 import { SEO } from '@/components/SEO';
-import { InventoryGrid } from '@/components/InventoryGrid';
 import { Navigation } from '@/components/Navigation';
 import { generateReviewSchema } from '@/lib/customer-reviews';
-import Image from 'next/image';
+import { SocialFeed } from '@/components/SocialFeed';
+import { FloatingActionButtons } from '@/components/FloatingActionButtons';
+import { GetAlerts } from '@/components/GetAlerts';
+import { FollowTheDrop } from '@/components/FollowTheDrop';
 import Link from 'next/link';
 
 // FAQ data
@@ -38,9 +40,6 @@ const faqData = [
 ];
 
 export default function HomePage() {
-  const [formStatus, setFormStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   return (
     <>
       {/* SEO Structured Data */}
@@ -61,282 +60,247 @@ export default function HomePage() {
       {/* Navigation */}
       <Navigation />
 
-      {/* HERO SECTION - Full Screen, Edgy, Rockstar */}
+      {/* HERO SECTION - Social Feed Grid */}
       <section style={{
         minHeight: '100vh',
         position: 'relative',
+        background: '#000000',
+        padding: '6rem 2rem 4rem',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        background: '#000000'
+        justifyContent: 'center'
       }}>
-        {/* Video Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            minWidth: '100%',
-            minHeight: '100%',
-            width: 'auto',
-            height: 'auto',
-            zIndex: 0,
-            objectFit: 'cover',
-            opacity: 0.4
-          }}
-        >
-          <source src="https://videos.pexels.com/video-files/3045163/3045163-uhd_2560_1440_25fps.mp4" type="video/mp4" />
-        </video>
-
-        {/* Dark Overlay with Gradient */}
+        {/* Main Tagline */}
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.95) 100%)',
-          zIndex: 1
-        }} />
-
-        {/* Content */}
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
           textAlign: 'center',
-          padding: '4rem 2rem',
-          maxWidth: '1400px',
-          margin: '0 auto',
+          marginBottom: '4rem',
+          maxWidth: '1200px',
           width: '100%'
         }}>
-          {/* Hero Content - Banner is now at top of page */}
-
-          {/* Main Headline - Rockstar Style */}
           <h1 style={{
-            fontSize: 'clamp(3rem, 8vw, 7rem)',
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
             fontWeight: 900,
             color: '#FFFFFF',
-            marginBottom: '1.5rem',
+            marginBottom: '2rem',
             fontFamily: 'var(--font-clash)',
             letterSpacing: '4px',
             textTransform: 'uppercase',
             lineHeight: '1.1',
             textShadow: '0 0 40px rgba(255, 102, 0, 0.5), 0 8px 30px rgba(0, 0, 0, 0.9)'
           }}>
-            RIDE HARD
-            <span style={{
-              display: 'block',
-              color: '#FF6600',
-              fontSize: 'clamp(2rem, 6vw, 5rem)',
-              marginTop: '0.5rem',
-              textShadow: '0 0 60px rgba(255, 102, 0, 0.8)'
-            }}>
-              PAY SMART
-            </span>
+            NEW HARLEYS DROP DAILY
           </h1>
-
-          {/* Subheadline */}
           <p style={{
-            fontSize: 'clamp(1.2rem, 3vw, 1.8rem)',
-            color: '#CCCCCC',
-            marginBottom: '3rem',
-            fontWeight: 600,
-            letterSpacing: '2px',
-            maxWidth: '800px',
-            margin: '0 auto 3rem',
-            textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)'
-          }}>
-            LOW MILES • FULL WARRANTY • BAD CREDIT FINANCING
-          </p>
-
-          {/* CTA Buttons */}
-          <div style={{
-            display: 'flex',
-            gap: '2rem',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            marginTop: '3rem'
-          }}>
-            <Link
-              href="/inventory"
-              style={{
-                background: '#FF6600',
-                color: '#000000',
-                padding: '1.25rem 3rem',
-                fontSize: '1.1rem',
-                fontWeight: 900,
-                textTransform: 'uppercase',
-                letterSpacing: '3px',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-clash)',
-                border: '3px solid #FF6600',
-                boxShadow: '0 0 30px rgba(255, 102, 0, 0.6)',
-                transition: 'all 0.3s ease',
-                display: 'inline-block'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#000000';
-                e.currentTarget.style.color = '#FF6600';
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 8px 40px rgba(255, 102, 0, 0.8)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#FF6600';
-                e.currentTarget.style.color = '#000000';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 102, 0, 0.6)';
-              }}
-            >
-              VIEW INVENTORY
-            </Link>
-            <a
-              href="sms:4144396211"
-              style={{
-                background: 'transparent',
-                color: '#FF6600',
-                padding: '1.25rem 3rem',
-                fontSize: '1.1rem',
-                fontWeight: 900,
-                textTransform: 'uppercase',
-                letterSpacing: '3px',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-clash)',
-                border: '3px solid #FF6600',
-                boxShadow: '0 0 20px rgba(255, 102, 0, 0.3)',
-                transition: 'all 0.3s ease',
-                display: 'inline-block'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#FF6600';
-                e.currentTarget.style.color = '#000000';
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 8px 40px rgba(255, 102, 0, 0.8)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#FF6600';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 102, 0, 0.3)';
-              }}
-            >
-              TEXT JOE
-            </a>
-          </div>
-
-          {/* Scroll Indicator */}
-          <div style={{
-            position: 'absolute',
-            bottom: '3rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            animation: 'bounce 2s infinite'
-          }}>
-            <div style={{
-              width: '30px',
-              height: '50px',
-              border: '3px solid #FF6600',
-              borderRadius: '25px',
-              position: 'relative',
-              boxShadow: '0 0 20px rgba(255, 102, 0, 0.5)'
-            }}>
-              <div style={{
-                width: '8px',
-                height: '8px',
-                background: '#FF6600',
-                borderRadius: '50%',
-                position: 'absolute',
-                top: '10px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                animation: 'scroll 2s infinite'
-              }}></div>
-            </div>
-          </div>
-        </div>
-
-        <style jsx>{`
-          @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-              transform: translateX(-50%) translateY(0);
-            }
-            40% {
-              transform: translateX(-50%) translateY(-10px);
-            }
-            60% {
-              transform: translateX(-50%) translateY(-5px);
-            }
-          }
-          @keyframes scroll {
-            0% {
-              opacity: 1;
-              transform: translateX(-50%) translateY(0);
-            }
-            100% {
-              opacity: 0;
-              transform: translateX(-50%) translateY(20px);
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* FEATURED INVENTORY SECTION - Grid Style like Dixxon */}
-      <section style={{
-        background: '#0A0A0A',
-        padding: '6rem 2rem',
-        position: 'relative'
-      }}>
-        {/* Section Header */}
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '4rem'
-        }}>
-          <div style={{
-            display: 'inline-block',
-            padding: '0.5rem 2rem',
-            background: '#FF6600',
-            color: '#000000',
-            fontSize: '0.9rem',
+            fontSize: 'clamp(1.3rem, 4vw, 2rem)',
+            color: '#FF6600',
             fontWeight: 800,
-            letterSpacing: '4px',
-            textTransform: 'uppercase',
-            fontFamily: 'var(--font-clash)',
-            marginBottom: '1.5rem'
-          }}>
-            JUST DROPPED
-          </div>
-          <h2 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            fontWeight: 900,
-            color: '#FFFFFF',
-            fontFamily: 'var(--font-clash)',
             letterSpacing: '3px',
             textTransform: 'uppercase',
             marginBottom: '1rem',
-            textShadow: '0 4px 20px rgba(0, 0, 0, 0.8)'
+            fontFamily: 'var(--font-clash)',
+            textShadow: '0 0 30px rgba(255, 102, 0, 0.8)'
           }}>
-            FEATURED RIDES
-          </h2>
+            FOLLOW ON TIKTOK & IG TO NEVER MISS ONE
+          </p>
           <p style={{
-            fontSize: '1.2rem',
+            fontSize: 'clamp(1.1rem, 3vw, 1.5rem)',
             color: '#CCCCCC',
-            maxWidth: '600px',
-            margin: '0 auto'
+            fontWeight: 700,
+            letterSpacing: '2px',
+            marginTop: '1.5rem'
           }}>
-            Low-mile bikes, full warranty, ready to ride
+            $499 SHIPS ANYWHERE
           </p>
         </div>
 
-        {/* Inventory Grid */}
-        <InventoryGrid limit={8} />
+        {/* Social Feed Grid/Carousel */}
+        <div style={{
+          width: '100%',
+          maxWidth: '1400px',
+          margin: '0 auto'
+        }}>
+          <SocialFeed 
+            tiktokHandle="@joetabora"
+            instagramHandle="@joetabora"
+            // widgetId="YOUR_ELFSIGHT_WIDGET_ID" // Uncomment and add your Elfsight widget ID
+          />
+        </div>
       </section>
 
-      {/* WHY CHOOSE JOE - Edgy Cards */}
+      {/* LATEST DROPS SECTION */}
+      <section style={{
+        background: '#0A0A0A',
+        padding: '6rem 2rem',
+        position: 'relative',
+        borderTop: '2px solid #FF6600',
+        borderBottom: '2px solid #FF6600'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto'
+        }}>
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '4rem'
+          }}>
+            <div style={{
+              display: 'inline-block',
+              padding: '0.5rem 2rem',
+              background: '#FF6600',
+              color: '#000000',
+              fontSize: '0.9rem',
+              fontWeight: 800,
+              letterSpacing: '4px',
+              textTransform: 'uppercase',
+              fontFamily: 'var(--font-clash)',
+              marginBottom: '1.5rem'
+            }}>
+              DAILY DROPS
+            </div>
+            <h2 style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              fontWeight: 900,
+              color: '#FFFFFF',
+              fontFamily: 'var(--font-clash)',
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              marginBottom: '1rem',
+              textShadow: '0 4px 20px rgba(0, 0, 0, 0.8)'
+            }}>
+              LATEST DROPS
+            </h2>
+            <p style={{
+              fontSize: '1.2rem',
+              color: '#CCCCCC',
+              maxWidth: '600px',
+              margin: '0 auto',
+              fontWeight: 600
+            }}>
+              See every bike as it drops. Prices, specs, and real videos.
+            </p>
+          </div>
+
+          {/* Embedded Social Videos with Price/CTA Overlay */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '2rem',
+            marginTop: '3rem'
+          }}>
+            {/* Note: In production, these would be actual embedded TikTok/Instagram videos */}
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+              <div
+                key={item}
+                style={{
+                  background: '#000000',
+                  border: '2px solid #1A1A1A',
+                  borderRadius: '16px',
+                  padding: '1rem',
+                  aspectRatio: '9/16',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#FF6600';
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 102, 0, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#1A1A1A';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                {/* Price Overlay */}
+                <div style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  background: '#FF6600',
+                  color: '#000000',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '8px',
+                  fontSize: '1.2rem',
+                  fontWeight: 900,
+                  fontFamily: 'var(--font-clash)',
+                  letterSpacing: '2px',
+                  zIndex: 3,
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+                }}>
+                  ${(20000 + item * 2000).toLocaleString()}
+                </div>
+
+                {/* Video Placeholder */}
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  color: '#FF6600',
+                  fontSize: '3rem'
+                }}>
+                  <div>📱</div>
+                  <div style={{
+                    fontSize: '1rem',
+                    color: '#CCCCCC',
+                    textAlign: 'center',
+                    padding: '0 1rem'
+                  }}>
+                    Video {item}
+                  </div>
+                </div>
+
+                {/* CTA Overlay */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '1rem',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 'calc(100% - 2rem)',
+                    background: 'rgba(0, 0, 0, 0.9)',
+                    border: '2px solid #FF6600',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    textAlign: 'center',
+                    zIndex: 3,
+                    transition: 'all 0.3s ease'
+                  }}
+                  onClick={() => window.location.href = 'sms:4144396211'}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#FF6600';
+                    e.currentTarget.style.color = '#000000';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(0, 0, 0, 0.9)';
+                    e.currentTarget.style.color = '#FF6600';
+                  }}
+                >
+                  <div style={{
+                    color: '#FF6600',
+                    fontSize: '0.9rem',
+                    fontWeight: 800,
+                    fontFamily: 'var(--font-clash)',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase'
+                  }}>
+                    TEXT JOE 414-439-6211
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE JOE - Keep Existing */}
       <section style={{
         background: '#000000',
         padding: '6rem 2rem',
@@ -449,89 +413,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA SECTION - Bold, In Your Face */}
-      <section style={{
-        background: 'linear-gradient(135deg, #FF6600 0%, #E55A00 100%)',
-        padding: '6rem 2rem',
-        textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-          opacity: 0.1
-        }}></div>
+      {/* FOLLOW THE DROP SECTION */}
+      <FollowTheDrop />
 
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
-          maxWidth: '800px',
-          margin: '0 auto'
-        }}>
-          <h2 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            fontWeight: 900,
-            color: '#000000',
-            fontFamily: 'var(--font-clash)',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            marginBottom: '1.5rem',
-            textShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
-          }}>
-            READY TO RIDE?
-          </h2>
-          <p style={{
-            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
-            color: '#000000',
-            fontWeight: 700,
-            marginBottom: '3rem',
-            letterSpacing: '1px'
-          }}>
-            Text Joe at <a href="sms:4144396211" style={{ color: '#000000', textDecoration: 'underline' }}>414-439-6211</a> or browse inventory now
-          </p>
-          <div style={{
-            display: 'flex',
-            gap: '1.5rem',
-            justifyContent: 'center',
-            flexWrap: 'wrap'
-          }}>
-            <Link
-              href="/inventory"
-              style={{
-                background: '#000000',
-                color: '#FF6600',
-                padding: '1.5rem 3rem',
-                fontSize: '1.2rem',
-                fontWeight: 900,
-                textTransform: 'uppercase',
-                letterSpacing: '3px',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-clash)',
-                border: '3px solid #000000',
-                transition: 'all 0.3s ease',
-                display: 'inline-block'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#000000';
-                e.currentTarget.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#000000';
-                e.currentTarget.style.color = '#FF6600';
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-            >
-              VIEW ALL BIKES
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* GET ALERTS SECTION */}
+      <GetAlerts />
 
       {/* FAQ SECTION - Accordion Style */}
       <section style={{
@@ -685,7 +571,9 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Action Buttons */}
+      <FloatingActionButtons />
     </>
   );
 }
-
