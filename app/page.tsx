@@ -120,10 +120,10 @@ export default function HomePage() {
           maxWidth: '1400px',
           margin: '0 auto'
         }}>
-          <SocialFeed 
+          <SocialFeed
             tiktokHandle="@joetabora"
             instagramHandle="@joetabora"
-            // widgetId="YOUR_ELFSIGHT_WIDGET_ID" // Uncomment and add your Elfsight widget ID
+            widgetId="9c7cbdce-5662-4a22-92f3-c17153f3f1c8"
           />
         </div>
       </section>

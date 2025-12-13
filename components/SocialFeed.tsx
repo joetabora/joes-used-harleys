@@ -14,20 +14,17 @@ export function SocialFeed({ tiktokHandle, instagramHandle, widgetId }: SocialFe
   useEffect(() => {
     // Load Elfsight widget script if widgetId is provided
     if (widgetId && containerRef.current) {
-      const script = document.createElement('script');
-      script.src = 'https://apps.elfsight.com/p/platform.js';
-      script.defer = true;
-      script.onload = () => {
-        // Widget will auto-initialize via data-elfsight-app-id attribute
-      };
-      document.body.appendChild(script);
+      // Check if script already exists
+      const existingScript = document.querySelector('script[src*="elfsight"]');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.src = 'https://elfsightcdn.com/platform.js';
+        script.async = true;
+        document.body.appendChild(script);
+      }
 
       return () => {
-        // Cleanup
-        const existingScript = document.querySelector('script[src*="elfsight"]');
-        if (existingScript) {
-          existingScript.remove();
-        }
+        // Don't remove script on cleanup - let it persist for other widgets
       };
     }
   }, [widgetId]);
@@ -37,8 +34,8 @@ export function SocialFeed({ tiktokHandle, instagramHandle, widgetId }: SocialFe
     return (
       <div 
         ref={containerRef}
-        className="elfsight-app"
-        data-elfsight-app-id={widgetId}
+        className={`elfsight-app-${widgetId}`}
+        data-elfsight-app-lazy
         style={{
           width: '100%',
           minHeight: '600px'
