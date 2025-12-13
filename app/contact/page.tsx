@@ -334,7 +334,7 @@ export default function ContactPage() {
             boxShadow: '0 8px 30px rgba(255, 102, 0, 0.3)'
           }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.5!2d-87.99424712384211!3d42.95879927114352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880519e8b8c8c8c9%3A0x8c8c8c8c8c8c8c8c!2s6221%20W%20Layton%20Ave%2C%20Milwaukee%2C%20WI%2053220!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.5!2d-87.99424712384211!3d42.95879927114352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880519e8b8c8c8c9%3A0x8c8c8c8c8c8c8c8c!2sHouse%20of%20Harley-Davidson!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
               width="100%"
               height="450"
               style={{ border: 0 }}
