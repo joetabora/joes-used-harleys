@@ -83,46 +83,95 @@ export function Navigation() {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.75rem'
-            }}>
+              gap: '1rem',
+              transition: 'all 0.3s ease',
+              padding: '0.5rem',
+              borderRadius: '8px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+            >
               <div style={{
-                width: '50px',
-                height: '50px',
-                background: '#FF6600',
-                borderRadius: '50%',
+                width: '60px',
+                height: '60px',
+                background: 'linear-gradient(135deg, #FF6600 0%, #E55A00 100%)',
+                borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 border: '3px solid #000000',
-                boxShadow: '0 0 20px rgba(255, 102, 0, 0.5)'
+                boxShadow: '0 0 30px rgba(255, 102, 0, 0.6), inset 0 2px 10px rgba(0, 0, 0, 0.3)',
+                position: 'relative',
+                overflow: 'hidden'
               }}>
+                {/* Decorative corner accent */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-2px',
+                  right: '-2px',
+                  width: '20px',
+                  height: '20px',
+                  background: '#000000',
+                  borderRadius: '0 0 0 12px',
+                  borderLeft: '2px solid #FF6600',
+                  borderBottom: '2px solid #FF6600'
+                }}></div>
                 <span style={{
                   color: '#000000',
-                  fontSize: '1.5rem',
+                  fontSize: '2rem',
                   fontWeight: 900,
-                  fontFamily: 'var(--font-clash)'
+                  fontFamily: 'var(--font-clash)',
+                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+                  letterSpacing: '-1px'
                 }}>J</span>
               </div>
               <div>
                 <div style={{
                   color: '#FFFFFF',
-                  fontSize: '1.5rem',
+                  fontSize: '1.8rem',
                   fontWeight: 900,
-                  letterSpacing: '2px',
+                  letterSpacing: '3px',
                   fontFamily: 'var(--font-clash)',
-                  lineHeight: '1.1'
+                  lineHeight: '1.1',
+                  textShadow: '0 2px 10px rgba(255, 102, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.8)',
+                  marginBottom: '2px'
                 }}>
                   JOE'S
                 </div>
                 <div style={{
                   color: '#FF6600',
-                  fontSize: '0.9rem',
-                  fontWeight: 700,
-                  letterSpacing: '4px',
+                  fontSize: '1rem',
+                  fontWeight: 800,
+                  letterSpacing: '5px',
                   fontFamily: 'var(--font-clash)',
-                  textTransform: 'uppercase'
+                  textTransform: 'uppercase',
+                  textShadow: '0 0 15px rgba(255, 102, 0, 0.5)',
+                  position: 'relative',
+                  display: 'inline-block'
                 }}>
+                  <span style={{
+                    position: 'absolute',
+                    left: '-8px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '0.7rem',
+                    color: '#FF6600',
+                    opacity: 0.6
+                  }}>⚡</span>
                   USED HARLEYS
+                  <span style={{
+                    position: 'absolute',
+                    right: '-8px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '0.7rem',
+                    color: '#FF6600',
+                    opacity: 0.6
+                  }}>⚡</span>
                 </div>
               </div>
             </div>
