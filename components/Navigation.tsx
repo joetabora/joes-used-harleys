@@ -94,50 +94,47 @@ export function Navigation() {
               e.currentTarget.style.transform = 'scale(1)';
             }}
             >
-              <div>
-                <div style={{
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                position: 'relative'
+              }}>
+                <span style={{
+                  position: 'absolute',
+                  left: '-12px',
+                  fontSize: '0.9rem',
+                  color: '#FF6600',
+                  opacity: 0.6
+                }}>⚡</span>
+                <span style={{
                   color: '#FFFFFF',
                   fontSize: '2.2rem',
                   fontWeight: 900,
                   letterSpacing: '4px',
                   fontFamily: 'var(--font-clash)',
-                  lineHeight: '1.1',
-                  textShadow: '0 2px 10px rgba(255, 102, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.8)',
-                  marginBottom: '4px'
+                  textShadow: '0 2px 10px rgba(255, 102, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.8)'
                 }}>
                   JOE'S
-                </div>
-                <div style={{
+                </span>
+                <span style={{
                   color: '#FF6600',
-                  fontSize: '1.3rem',
+                  fontSize: '2.2rem',
                   fontWeight: 800,
-                  letterSpacing: '6px',
+                  letterSpacing: '4px',
                   fontFamily: 'var(--font-clash)',
                   textTransform: 'uppercase',
-                  textShadow: '0 0 15px rgba(255, 102, 0, 0.5)',
-                  position: 'relative',
-                  display: 'inline-block'
+                  textShadow: '0 0 15px rgba(255, 102, 0, 0.5)'
                 }}>
-                  <span style={{
-                    position: 'absolute',
-                    left: '-10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    fontSize: '0.8rem',
-                    color: '#FF6600',
-                    opacity: 0.6
-                  }}>⚡</span>
                   USED HARLEYS
-                  <span style={{
-                    position: 'absolute',
-                    right: '-10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    fontSize: '0.8rem',
-                    color: '#FF6600',
-                    opacity: 0.6
-                  }}>⚡</span>
-                </div>
+                </span>
+                <span style={{
+                  position: 'absolute',
+                  right: '-12px',
+                  fontSize: '0.9rem',
+                  color: '#FF6600',
+                  opacity: 0.6
+                }}>⚡</span>
               </div>
             </div>
           </Link>
