@@ -150,6 +150,7 @@ export default function BlogIndexPage() {
           }}>
             <a
               href="/inventory"
+              className="blog-cta-button-primary"
               style={{
                 background: '#000000',
                 color: '#FF6600',
@@ -165,21 +166,12 @@ export default function BlogIndexPage() {
                 transition: 'all 0.3s ease',
                 display: 'inline-block'
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#000000';
-                e.currentTarget.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#000000';
-                e.currentTarget.style.color = '#FF6600';
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
             >
               VIEW INVENTORY
             </a>
             <a
               href="sms:4144396211"
+              className="blog-cta-button-secondary"
               style={{
                 background: 'transparent',
                 color: '#000000',
@@ -195,16 +187,6 @@ export default function BlogIndexPage() {
                 transition: 'all 0.3s ease',
                 display: 'inline-block'
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#000000';
-                e.currentTarget.style.color = '#FF6600';
-                e.currentTarget.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#000000';
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
             >
               TEXT JOE
             </a>
@@ -214,6 +196,19 @@ export default function BlogIndexPage() {
 
       {/* Floating Action Buttons */}
       <FloatingActionButtons />
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .blog-cta-button-primary:hover {
+          background: transparent !important;
+          color: #000000 !important;
+          transform: scale(1.05);
+        }
+        .blog-cta-button-secondary:hover {
+          background: #000000 !important;
+          color: #FF6600 !important;
+          transform: scale(1.05);
+        }
+      `}} />
     </>
   );
 }
