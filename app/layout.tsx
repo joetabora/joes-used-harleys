@@ -82,6 +82,10 @@ export default function RootLayout({
   return (
     <html lang="en" itemScope itemType="https://schema.org/AutoDealer">
       <head>
+        {/* Favicon links - explicit for better browser compatibility */}
+        <link rel="icon" type="image/png" href="/fav.png" sizes="500x500" />
+        <link rel="shortcut icon" type="image/png" href="/fav.png" />
+        <link rel="apple-touch-icon" href="/fav.png" />
         {/* Preload critical resources */}
         <link
           rel="preload"
