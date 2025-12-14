@@ -184,121 +184,15 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Embedded Social Videos with Price/CTA Overlay */}
+          {/* Social Feed Widget - Shows Real TikTok/Instagram Videos */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '2rem',
             marginTop: '3rem'
           }}>
-            {/* Note: In production, these would be actual embedded TikTok/Instagram videos */}
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-              <div
-                key={item}
-                style={{
-                  background: '#000000',
-                  border: '2px solid #1A1A1A',
-                  borderRadius: '16px',
-                  padding: '1rem',
-                  aspectRatio: '9/16',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#FF6600';
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 102, 0, 0.4)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#1A1A1A';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                {/* Price Overlay */}
-                <div style={{
-                  position: 'absolute',
-                  top: '1rem',
-                  right: '1rem',
-                  background: '#FF6600',
-                  color: '#000000',
-                  padding: '0.75rem 1.5rem',
-                  borderRadius: '8px',
-                  fontSize: '1.2rem',
-                  fontWeight: 900,
-                  fontFamily: 'var(--font-clash)',
-                  letterSpacing: '2px',
-                  zIndex: 3,
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
-                }}>
-                  ${(20000 + item * 2000).toLocaleString()}
-                </div>
-
-                {/* Video Placeholder */}
-                <div style={{
-                  width: '100%',
-                  height: '100%',
-                  background: 'linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  gap: '1rem',
-                  color: '#FF6600',
-                  fontSize: '3rem'
-                }}>
-                  <div>📱</div>
-                  <div style={{
-                    fontSize: '1rem',
-                    color: '#CCCCCC',
-                    textAlign: 'center',
-                    padding: '0 1rem'
-                  }}>
-                    Video {item}
-                  </div>
-                </div>
-
-                {/* CTA Overlay */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '1rem',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: 'calc(100% - 2rem)',
-                    background: 'rgba(0, 0, 0, 0.9)',
-                    border: '2px solid #FF6600',
-                    padding: '1rem',
-                    borderRadius: '8px',
-                    textAlign: 'center',
-                    zIndex: 3,
-                    transition: 'all 0.3s ease'
-                  }}
-                  onClick={() => window.location.href = 'sms:4144396211'}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#FF6600';
-                    e.currentTarget.style.color = '#000000';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(0, 0, 0, 0.9)';
-                    e.currentTarget.style.color = '#FF6600';
-                  }}
-                >
-                  <div style={{
-                    color: '#FF6600',
-                    fontSize: '0.9rem',
-                    fontWeight: 800,
-                    fontFamily: 'var(--font-clash)',
-                    letterSpacing: '2px',
-                    textTransform: 'uppercase'
-                  }}>
-                    TEXT JOE 414-439-6211
-                  </div>
-                </div>
-              </div>
-            ))}
+            <SocialFeed
+              tiktokHandle="@suchgrime"
+              instagramHandle="@joetabora"
+              widgetId="9c7cbdce-5662-4a22-92f3-c17153f3f1c8"
+            />
           </div>
         </div>
       </section>
