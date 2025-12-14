@@ -25,6 +25,14 @@ export function FollowTheDrop() {
       icon: '👥',
       color: '#000000',
       hoverColor: '#FF6600'
+    },
+    {
+      platform: 'Discord',
+      handle: 'Join the Club',
+      url: '#', // Update with actual Discord link
+      icon: '💬',
+      color: '#000000',
+      hoverColor: '#FF6600'
     }
   ];
 

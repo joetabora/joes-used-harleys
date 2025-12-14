@@ -76,7 +76,7 @@ export function GetAlerts() {
           fontWeight: 600,
           letterSpacing: '1px'
         }}>
-          Never miss a drop. Get notified when new Harleys hit the lot.
+          Get notified when I drop a new bike — first dibs + $499 shipping
         </p>
 
         <form onSubmit={handleSubmit} style={{
