@@ -1,6 +1,11 @@
 import { setPageSEO, generateProductSchema, SITE_CONFIG } from '@/lib/seo';
 import { getCityPageData, getAllCityPageSlugs } from '@/lib/city-pages-data';
-import { BikeImage } from '@/components/BikeImage';
+import { Navigation } from '@/components/Navigation';
+import { FloatingActionButtons } from '@/components/FloatingActionButtons';
+import { SocialFeed } from '@/components/SocialFeed';
+import { FollowTheDrop } from '@/components/FollowTheDrop';
+import { GetAlerts } from '@/components/GetAlerts';
+import { SEO } from '@/components/SEO';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -37,53 +42,8 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
     pageTitle: `Used Harleys ${cityData.name} | Pre-Owned Harley-Davidson ${cityData.state} | Joe's Used Harleys $499 Shipping`,
     pageDescription: `Low-mile used Harleys shipped to ${cityData.name}, ${cityData.stateAbbr} for only $499. Street Glide, Road Glide, Fat Boy & more. Bad credit OK. Text Joe 414-439-6211`,
     location: cityData.name,
-    path: `/used-harleys-${cityData.slug}`
+    path: `/used-harleys/${cityData.slug}`
   });
-}
-
-// Helper function to extract model slug from bike name
-function getModelSlugFromName(name: string): string {
-  const nameLower = name.toLowerCase();
-  if (nameLower.includes('street glide')) return 'street-glide';
-  if (nameLower.includes('road glide')) return 'road-glide';
-  if (nameLower.includes('fat boy')) return 'fat-boy';
-  if (nameLower.includes('heritage classic')) return 'heritage-classic';
-  if (nameLower.includes('low rider s')) return 'low-rider-s';
-  if (nameLower.includes('breakout')) return 'breakout';
-  if (nameLower.includes('softail standard')) return 'softail-standard';
-  if (nameLower.includes('road king')) return 'road-king';
-  if (nameLower.includes('pan america')) return 'pan-america-1250';
-  if (nameLower.includes('nightster')) return 'nightster';
-  if (nameLower.includes('sportster s')) return 'sportster-s';
-  if (nameLower.includes('iron 883')) return 'iron-883';
-  return 'street-glide'; // Default fallback
-}
-
-// Fetch real inventory from API
-async function getRealInventory() {
-  try {
-    // Use absolute URL for server-side fetch
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || SITE_CONFIG.url || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/bikes`;
-    
-    const response = await fetch(apiUrl, {
-      next: { revalidate: 60 }, // Cache for 60 seconds
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
-    if (!response.ok) {
-      console.error('Failed to fetch inventory:', response.status);
-      return [];
-    }
-    
-    const data = await response.json();
-    return data.bikes || [];
-  } catch (error) {
-    console.error('Error fetching inventory:', error);
-    return [];
-  }
 }
 
 export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
@@ -97,56 +57,14 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
     notFound();
   }
 
-  // Fetch real inventory
-  const realBikes = await getRealInventory();
-  
-  // Transform real bikes to match expected format, limit to 8 bikes
-  const displayBikes = realBikes.slice(0, 8).map((bike: any) => {
-    // Extract model name for linking
-    const modelSlug = getModelSlugFromName(bike.name);
-    const modelName = bike.name.replace(/^\d{4}\s+Harley-Davidson\s+/, '').replace(/\s+\d+.*$/, '').trim() || bike.name;
-    
-    // Extract mileage from specs if available
-    const mileageMatch = bike.specs?.match(/(\d{1,3}(?:,\d{3})*)\s*miles/i);
-    const miles = mileageMatch ? mileageMatch[1] : 'N/A';
-    
-    return {
-      id: bike.id,
-      name: bike.name,
-      price: bike.priceFormatted || `$${bike.price?.toLocaleString() || 'Call'}`,
-      miles: miles,
-      image: bike.image || 'https://files.catbox.moe/3n8q1r.jpg',
-      specs: bike.specs || '',
-      modelSlug: modelSlug,
-      modelName: modelName
-    };
-  });
-
-  // Generate Product schemas for real bikes
-  const productSchemas = displayBikes.length > 0 ? displayBikes.map((bike: any, index: number) => {
-    // Extract numeric price from formatted string, with fallback to default
-    const priceStr = bike.price || bike.priceFormatted || 'Call';
-    const priceNum = parseInt(priceStr.toString().replace(/[^0-9]/g, '')) || 0;
-    
-    return generateProductSchema({
-      id: bike.id || `${cityData.slug}-bike-${index + 1}`,
-      name: bike.name,
-      image: bike.image,
-      specs: bike.specs || '',
-      price: priceNum, // Will be handled by generateProductSchema if 0
-      priceFormatted: priceStr.toString(),
-      financing: `Financing available • ${bike.miles} miles • Ships to ${cityData.name} for $499`
-    });
-  }) : [];
-
   // Generate LocalBusiness schema for this city
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "MotorcycleDealer", "AutomotiveBusiness"],
     "name": `Joe's Used Harleys - Shipping to ${cityData.name}, ${cityData.stateAbbr}`,
     "image": SITE_CONFIG.image,
-    "@id": `${SITE_CONFIG.url}/used-harleys-${cityData.slug}`,
-    "url": `${SITE_CONFIG.url}/used-harleys-${cityData.slug}`,
+    "@id": `${SITE_CONFIG.url}/used-harleys/${cityData.slug}`,
+    "url": `${SITE_CONFIG.url}/used-harleys/${cityData.slug}`,
     "telephone": "+1-414-439-6211",
     "priceRange": "$$",
     "address": {
@@ -171,1020 +89,458 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
   return (
     <>
-      {/* Product Schemas for Real Bikes */}
-      {productSchemas.map((schema: any, index: number) => (
-        <script
-          key={index}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
-
-      {/* LocalBusiness Schema */}
+      {/* SEO Structured Data */}
+      <SEO type="website" includeLocalBusiness={true} includeOrganization={true} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
 
-      {/* Urgency Banner */}
-      <div className="urgency-banner" style={{
-        background: '#FF6600',
-        color: '#000000',
-        textAlign: 'center',
-        padding: '1rem 1.5rem',
-        fontWeight: 800,
-        fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-        letterSpacing: '1.5px',
-        position: 'relative',
-        zIndex: 100,
-        textTransform: 'uppercase'
-      }}>
-        WE SHIP NATIONWIDE FOR ONLY $499
-      </div>
+      {/* Navigation */}
+      <Navigation />
 
-      {/* Shipping Info */}
-      <div style={{
-        background: '#000000',
-        padding: '2rem 1.5rem',
-        textAlign: 'center',
-        borderBottom: '1px solid #2A2A2A'
-      }}>
-        <p style={{
-          color: '#FF6600',
-          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-          fontWeight: 800,
-          fontFamily: 'var(--font-clash)',
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-          margin: 0
-        }}>
-          SHIPS TO {cityData.name.toUpperCase()} IN 3–7 DAYS FOR $499
-        </p>
-      </div>
-
-      {/* Hero Section with Video Background */}
-      <section className="hero" style={{
+      {/* HERO SECTION - Social Feed Grid */}
+      <section style={{
         minHeight: '100vh',
+        position: 'relative',
+        background: 'linear-gradient(180deg, #000000 0%, #0A0A0A 100%)',
+        padding: '8rem 2rem 6rem',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
         alignItems: 'center',
-        textAlign: 'center',
-        padding: '4rem 1rem 4rem',
-        position: 'relative',
-        overflow: 'visible'
+        justifyContent: 'center'
       }}>
-        <video
-          className="hero-video"
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            minWidth: '100%',
-            minHeight: '100%',
-            width: 'auto',
-            height: 'auto',
-            zIndex: 0,
-            objectFit: 'cover'
-          }}
-        >
-          <source src="https://videos.pexels.com/video-files/3045163/3045163-uhd_2560_1440_25fps.mp4" type="video/mp4" />
-        </video>
+        {/* Main Tagline - Above Grid */}
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%)',
-          zIndex: 1
-        }} />
-        <div className="hero-content" style={{
-          position: 'relative',
-          zIndex: 2,
-          animation: 'fade-in-up 1s ease-out',
+          textAlign: 'center',
+          marginBottom: '4rem',
+          maxWidth: '1200px',
+          width: '100%'
+        }}>
+          <h1 style={{
+            fontSize: 'clamp(2rem, 6vw, 4.5rem)',
+            color: '#FFFFFF',
+            fontWeight: 900,
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            marginBottom: '1.5rem',
+            fontFamily: 'var(--font-clash)',
+            textShadow: '0 0 40px rgba(255, 102, 0, 0.5), 0 4px 20px rgba(0, 0, 0, 0.9)',
+            lineHeight: '1.1'
+          }}>
+            USED HARLEYS SHIPPED TO {cityData.name.toUpperCase()}
+          </h1>
+          <p style={{
+            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+            color: '#FF6600',
+            fontWeight: 900,
+            letterSpacing: '4px',
+            textTransform: 'uppercase',
+            marginBottom: '1rem',
+            fontFamily: 'var(--font-clash)',
+            textShadow: '0 0 40px rgba(255, 102, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.9)',
+            lineHeight: '1.2'
+          }}>
+            NEW HARLEYS DROP DAILY — FOLLOW ON TIKTOK & IG TO NEVER MISS ONE. $499 SHIPS TO {cityData.name.toUpperCase()}.
+          </p>
+        </div>
+
+        {/* Social Feed Grid/Carousel - Latest 8-10 Videos */}
+        <div style={{
           width: '100%',
           maxWidth: '1400px',
+          margin: '0 auto 3rem'
+        }}>
+          <SocialFeed
+            tiktokHandle="@suchgrime"
+            instagramHandle="@joetabora"
+            widgetId="9c7cbdce-5662-4a22-92f3-c17153f3f1c8"
+          />
+        </div>
+
+        {/* Caption Under Grid */}
+        <p style={{
+          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+          color: '#CCCCCC',
+          fontWeight: 600,
+          letterSpacing: '2px',
+          textAlign: 'center',
+          fontStyle: 'italic',
+          maxWidth: '800px',
           margin: '0 auto',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          paddingTop: '2rem'
+          opacity: 0.9
+        }}>
+          Don&apos;t see what you want? Follow — new bikes every day. Ships to {cityData.name} for $499.
+        </p>
+      </section>
+
+      {/* LATEST DROPS SECTION */}
+      <section style={{
+        background: '#0A0A0A',
+        padding: '6rem 2rem',
+        position: 'relative',
+        borderTop: '3px solid #FF6600',
+        borderBottom: '3px solid #FF6600'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto'
         }}>
           <div style={{
-            maxWidth: 'min(75vw, 600px)',
-            width: '100%',
-            margin: '0 auto 2rem',
-            padding: '0 1rem',
-            filter: 'drop-shadow(0 0 40px rgba(255, 102, 0, 0.3)) drop-shadow(0 4px 20px rgba(0, 0, 0, 0.9)) drop-shadow(0 8px 40px rgba(0, 0, 0, 0.7))',
-            animation: 'logo-fade-in 1.5s ease-out'
+            textAlign: 'center',
+            marginBottom: '4rem'
           }}>
-            <img
-              src="/juh3.png"
-              alt="Joe's Used Harleys Logo"
-              style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                maxWidth: '100%',
-                margin: '0 auto'
-              }}
-            />
-          </div>
-          <h1 style={{
-            fontSize: 'clamp(2rem, 5vw, 4rem)',
-            color: '#FFFFFF',
-            marginBottom: '1.5rem',
-            lineHeight: '1.1',
-            fontFamily: 'var(--font-clash)',
-            fontWeight: 700,
-            textShadow: '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 102, 0, 0.3)'
-          }}>
-            Used Harleys for Sale in {cityData.name} — $499 Ships Nationwide from Milwaukee
-          </h1>
-        </div>
-      </section>
-
-      {/* FaceTime Banner */}
-      <a
-        href="sms:4144396211?body=FaceTime%20tour%20please"
-        style={{
-          display: 'block',
-          background: '#FF6600',
-          color: '#000000',
-          textAlign: 'center',
-          padding: 'clamp(1.5rem, 3vw, 2rem) 1.5rem',
-          fontWeight: 800,
-          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-          letterSpacing: '1px',
-          textDecoration: 'none',
-          textTransform: 'uppercase',
-          borderTop: '3px solid #000000',
-          borderBottom: '3px solid #000000',
-          transition: 'all 0.3s',
-          fontFamily: 'var(--font-clash)',
-          position: 'relative',
-          zIndex: 99
-        }}
-        className="facetime-banner"
-      >
-        🔴 LIVE FACETIME TOURS AVAILABLE — See any bike in real time. Text 414-439-6211 and say "FaceTime the [year/model]"
-      </a>
-
-      {/* Main Content Section */}
-      <section style={{ 
-        padding: '4rem 1.5rem', 
-        background: '#0A0A0A',
-        maxWidth: '1000px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{
-          color: '#FF6600',
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          marginBottom: '2rem',
-          textAlign: 'center',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Used Harleys for Sale in {cityData.name} — $499 Ships Nationwide from Milwaukee
-        </h2>
-        <div style={{
-          color: '#CCCCCC',
-          fontSize: '1.1rem',
-          lineHeight: '1.9',
-          whiteSpace: 'pre-line'
-        }}>
-          {cityData.content.split('\n\n').map((paragraph, idx) => (
-            <p key={idx} style={{ marginBottom: '1.5rem' }}>
-              {paragraph}
+            <h2 style={{
+              fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+              fontWeight: 900,
+              color: '#FFFFFF',
+              fontFamily: 'var(--font-clash)',
+              letterSpacing: '4px',
+              textTransform: 'uppercase',
+              marginBottom: '1rem',
+              textShadow: '0 4px 20px rgba(255, 102, 0, 0.5)'
+            }}>
+              LATEST DROPS TO {cityData.name.toUpperCase()}
+            </h2>
+            <p style={{
+              fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
+              color: '#CCCCCC',
+              fontWeight: 600,
+              letterSpacing: '2px'
+            }}>
+              See every bike as it drops. Prices, specs, and real videos. Ships to {cityData.name} for $499.
             </p>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      {/* Model-Specific H2 Sections */}
-      <section style={{ 
-        padding: '6rem 1.5rem', 
-        background: '#000000',
-        maxWidth: '1000px',
-        margin: '0 auto'
-      }}>
-        {/* Used Street Glide [City] */}
-        <h2 style={{ 
-          color: '#FF6600', 
-          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', 
-          marginBottom: '2rem',
-          marginTop: '3rem',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Used Street Glide {cityData.name}
-        </h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '2rem',
-          marginBottom: '4rem'
-        }}>
-          <div>
-            <img 
-              src="https://files.catbox.moe/3n8q1r.jpg" 
-              alt={`Used 2023 Street Glide ${cityData.name} low miles`}
-              style={{
-                width: '100%',
-                height: 'auto',
-                border: '2px solid #FF6600',
-                marginBottom: '1rem'
-              }}
+          {/* Social Feed Widget */}
+          <div style={{
+            marginTop: '3rem'
+          }}>
+            <SocialFeed
+              tiktokHandle="@suchgrime"
+              instagramHandle="@joetabora"
+              widgetId="9c7cbdce-5662-4a22-92f3-c17153f3f1c8"
             />
-          </div>
-          <div style={{ color: '#CCCCCC', lineHeight: '1.8' }}>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Perfect for {cityData.name} highways</strong> – Wind protection and premium audio make long rides comfortable</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Milwaukee-Eight 114 power</strong> – Plenty of torque for passing and city traffic</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Low-mile examples available</strong> – Typically 3,000-8,000 miles, full service history</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ships to {cityData.name} for $499</strong> – Insured transport, arrives ready to ride</li>
-            </ul>
-            <Link
-              href="/street-glide"
-              style={{
-                display: 'inline-block',
-                marginTop: '1.5rem',
-                color: '#FF6600',
-                textDecoration: 'none',
-                fontWeight: 700,
-                fontSize: '1.1rem',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                borderBottom: '2px solid #FF6600',
-                transition: 'color 0.3s'
-              }}
-            >
-              View All Street Glides →
-            </Link>
-          </div>
-        </div>
-
-        {/* Used Road Glide [City] */}
-        <h2 style={{ 
-          color: '#FF6600', 
-          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', 
-          marginBottom: '2rem',
-          marginTop: '3rem',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Used Road Glide {cityData.name}
-        </h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '2rem',
-          marginBottom: '4rem'
-        }}>
-          <div>
-            <img 
-              src="https://files.catbox.moe/1y3h5j.jpg" 
-              alt={`Used 2022 Road Glide ${cityData.name} low miles`}
-              style={{
-                width: '100%',
-                height: 'auto',
-                border: '2px solid #FF6600',
-                marginBottom: '1rem'
-              }}
-            />
-          </div>
-          <div style={{ color: '#CCCCCC', lineHeight: '1.8' }}>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Frame-mounted fairing</strong> – Handles crosswinds better than batwing fairings</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ideal for {cityData.name} conditions</strong> – Stable handling on highways and open roads</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Premium audio standard</strong> – BOOM! Box GTS infotainment system</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ships to {cityData.name} for $499</strong> – Professional transport, fully insured</li>
-            </ul>
-            <Link
-              href="/road-glide"
-              style={{
-                display: 'inline-block',
-                marginTop: '1.5rem',
-                color: '#FF6600',
-                textDecoration: 'none',
-                fontWeight: 700,
-                fontSize: '1.1rem',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                borderBottom: '2px solid #FF6600',
-                transition: 'color 0.3s'
-              }}
-            >
-              View All Road Glides →
-            </Link>
-          </div>
-        </div>
-
-        {/* Used Fat Boy [City] */}
-        <h2 style={{ 
-          color: '#FF6600', 
-          fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', 
-          marginBottom: '2rem',
-          marginTop: '3rem',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Used Fat Boy {cityData.name}
-        </h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '2rem',
-          marginBottom: '4rem'
-        }}>
-          <div>
-            <img 
-              src="https://files.catbox.moe/6r5t7u.jpg" 
-              alt={`Used 2023 Fat Boy ${cityData.name} low miles`}
-              style={{
-                width: '100%',
-                height: 'auto',
-                border: '2px solid #FF6600',
-                marginBottom: '1rem'
-              }}
-            />
-          </div>
-          <div style={{ color: '#CCCCCC', lineHeight: '1.8' }}>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Classic cruiser styling</strong> – Timeless design perfect for {cityData.name} streets</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Milwaukee-Eight 114 engine</strong> – Powerful and reliable for city and highway</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Low miles available</strong> – Many under 3,000 miles, like-new condition</li>
-              <li style={{ marginBottom: '0.75rem' }}>✓ <strong style={{ color: '#FF6600' }}>Ships to {cityData.name} for $499</strong> – Fast delivery, ready to ride</li>
-            </ul>
-            <Link
-              href="/fat-boy"
-              style={{
-                display: 'inline-block',
-                marginTop: '1.5rem',
-                color: '#FF6600',
-                textDecoration: 'none',
-                fontWeight: 700,
-                fontSize: '1.1rem',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                borderBottom: '2px solid #FF6600',
-                transition: 'color 0.3s'
-              }}
-            >
-              View All Fat Boys →
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* Top Used Harley Models Section */}
-      <section style={{ 
-        padding: '6rem 1.5rem', 
-        background: '#000000',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
-        <h2 style={{ 
-          color: '#FF6600', 
-          fontSize: 'clamp(2rem, 5vw, 3rem)', 
-          marginBottom: '3rem',
-          textAlign: 'center',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Top Used Harley Models Shipped to {cityData.name}
-        </h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '2.5rem'
-        }}>
-          {displayBikes.length > 0 ? (
-            displayBikes.map((bike: any, index: number) => {
-              return (
-                <article
-                  key={bike.id || index}
-                  itemScope
-                  itemType="https://schema.org/Product"
-                  className="bike-card"
-                  style={{
-                    background: '#0A0A0A',
-                    border: '1px solid #2A2A2A',
-                    borderRadius: '0',
-                    overflow: 'hidden',
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  <div style={{ position: 'relative' }}>
-                    <BikeImage
-                      src={bike.image}
-                      alt={`${bike.name} shipped to ${cityData.name}, ${cityData.stateAbbr}. ${bike.specs}. Price: ${bike.price}. ${bike.miles} miles.`}
-                      index={index}
-                      itemProp="image"
-                    />
-                  </div>
-                  <div style={{ padding: '1.5rem' }}>
-                    <h3 itemProp="name" style={{
-                      color: '#FF6600',
-                      fontSize: '1.3rem',
-                      fontWeight: 700,
-                      marginBottom: '1rem',
-                      fontFamily: 'var(--font-clash)'
-                    }}>
-                      {bike.name}
-                    </h3>
-                    <p style={{
-                      color: '#CCCCCC',
-                      fontSize: '0.95rem',
-                      marginBottom: '0.75rem',
-                      lineHeight: '1.6'
-                    }}>
-                      {bike.specs}
-                    </p>
-                    <p style={{
-                      color: '#FFFFFF',
-                      fontSize: '1.5rem',
-                      fontWeight: 800,
-                      marginBottom: '0.5rem',
-                      fontFamily: 'var(--font-clash)'
-                    }}>
-                      {bike.price}
-                    </p>
-                    {bike.miles !== 'N/A' && (
-                      <p style={{
-                        color: '#CCCCCC',
-                        fontSize: '0.9rem',
-                        marginBottom: '1rem'
-                      }}>
-                        {bike.miles} miles
-                      </p>
-                    )}
-                    <Link
-                      href={`/${bike.modelSlug}`}
-                      className="model-link-city"
-                      style={{
-                        display: 'block',
-                        color: '#FF6600',
-                        textDecoration: 'none',
-                        fontSize: '1rem',
-                        fontWeight: 700,
-                        marginBottom: '1rem',
-                        textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        transition: 'color 0.3s'
-                      }}
-                    >
-                      Used {bike.modelName} {cityData.name} →
-                    </Link>
-                    <a
-                      href={`sms:4144396211?body=Interested in ${encodeURIComponent(bike.name)} shipped to ${cityData.name} - ${bike.price} - ${bike.miles} miles`}
-                      className="bike-cta-button"
-                      style={{
-                        display: 'block',
-                        width: '100%',
-                        padding: '1rem',
-                        background: '#FF6600',
-                        color: '#000000',
-                        textAlign: 'center',
-                        textDecoration: 'none',
-                        fontWeight: 800,
-                        fontSize: '0.95rem',
-                        textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        borderRadius: '0',
-                        transition: 'all 0.3s',
-                        fontFamily: 'var(--font-clash)'
-                      }}
-                    >
-                      TEXT JOE ABOUT THIS BIKE
-                    </a>
-                  </div>
-                </article>
-              );
-            })
-          ) : (
-            <div style={{
-              gridColumn: '1 / -1',
-              textAlign: 'center',
-              padding: '3rem',
-              background: '#0A0A0A',
-              border: '2px solid #FF6600'
-            }}>
-              <p style={{
-                color: '#CCCCCC',
-                fontSize: '1.2rem',
-                marginBottom: '1rem'
-              }}>
-                Inventory loading... Check back soon or text Joe at{' '}
-                <a
-                  href="sms:4144396211"
-                  style={{
-                    color: '#FF6600',
-                    textDecoration: 'none',
-                    fontWeight: 700
-                  }}
-                >
-                  414-439-6211
-                </a>
-                {' '}for current availability
-              </p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Why Ship from Joe Section */}
+      {/* WHY BUY FROM JOE - Keep Existing 4 Bullets */}
       <section style={{
-        padding: '6rem 1.5rem',
-        background: '#0A0A0A',
-        maxWidth: '1000px',
-        margin: '0 auto'
+        background: '#000000',
+        padding: '6rem 2rem',
+        position: 'relative'
       }}>
-        <h2 style={{
-          color: '#FF6600',
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          marginBottom: '3rem',
-          textAlign: 'center',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto'
         }}>
-          Why Ship from Joe to {cityData.name}?
-        </h2>
-        <ul style={{
-          listStyle: 'none',
-          padding: 0,
-          margin: 0,
-          display: 'grid',
-          gap: '2rem'
-        }}>
-          {[
-            {
-              title: 'Transparent Pricing, Zero Hidden Fees',
-              text: `When you buy a used Harley shipped to ${cityData.name} from Joe's, the price you see is the price you pay – no surprise prep fees or market adjustments. We believe in honest, upfront pricing that makes buying a Harley simple and stress-free.`
-            },
-            {
-              title: 'Comprehensive Inspections & Full Documentation',
-              text: `Every used Harley we ship to ${cityData.name} undergoes rigorous inspection. You get complete service records, Carfax reports, and detailed condition documentation. Our standards ensure you know exactly what you're buying.`
-            },
-            {
-              title: 'Financing for All Credit Types',
-              text: `Bad credit? First-time buyer? Self-employed? We work with multiple lenders to secure financing for buyers shipping to ${cityData.name}. Our flexible options make owning a premium Harley-Davidson accessible to everyone.`
-            },
-            {
-              title: '48-Hour Money-Back Guarantee',
-              text: `We stand behind every used Harley we ship to ${cityData.name} with our 48-hour guarantee. If something's not right in the first 48 hours or 100 miles, we'll fix it or refund it, no questions asked.`
-            }
-          ].map((item, idx) => (
-            <li key={idx} style={{
-              padding: '1.5rem',
-              background: '#000000',
-              borderRadius: '0',
-              border: '1px solid #2A2A2A',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '1rem'
-            }}>
-              <span style={{
-                color: '#FF6600',
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                flexShrink: 0
-              }}>✓</span>
-              <div>
-                <strong style={{
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 900,
+            color: '#FFFFFF',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            marginBottom: '4rem',
+            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+          }}>
+            WHY SHIP FROM JOE TO {cityData.name.toUpperCase()}?
+          </h2>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '2.5rem',
+            marginTop: '3rem'
+          }}>
+            {[
+              {
+                icon: '⚡',
+                title: 'NO BULLSHIT PRICING',
+                text: `What you see is what you pay. No hidden fees, no market adjustments, no surprises. Transparent pricing for ${cityData.name} buyers.`
+              },
+              {
+                icon: '🛡️',
+                title: '48-HOUR GUARANTEE',
+                text: 'Not right? Bring it back. We fix it or refund it. Simple as that. Your peace of mind matters.'
+              },
+              {
+                icon: '💳',
+                title: 'BAD CREDIT? NO PROBLEM',
+                text: 'We work with everyone. First-time buyers, bad credit, self-employed — we got you. Financing available for all credit types.'
+              },
+              {
+                icon: '🚚',
+                title: `$499 SHIPS TO ${cityData.name.toUpperCase()}`,
+                text: `Coast to coast, insured, professional transport. Your bike, delivered to ${cityData.name} safely and on time.`
+              }
+            ].map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  background: '#0A0A0A',
+                  border: '2px solid #1A1A1A',
+                  borderRadius: '16px',
+                  padding: '2.5rem',
+                  textAlign: 'center',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                className="why-buy-card"
+              >
+                <div style={{
+                  fontSize: '4rem',
+                  marginBottom: '1.5rem',
+                  filter: 'drop-shadow(0 0 20px rgba(255, 102, 0, 0.5))'
+                }}>
+                  {item.icon}
+                </div>
+                <h3 style={{
+                  fontSize: '1.5rem',
+                  fontWeight: 900,
                   color: '#FF6600',
-                  fontSize: '1.1rem',
-                  display: 'block',
-                  marginBottom: '0.5rem'
+                  fontFamily: 'var(--font-clash)',
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  marginBottom: '1rem'
                 }}>
                   {item.title}
-                </strong>
+                </h3>
                 <p style={{
                   color: '#CCCCCC',
+                  fontSize: '1rem',
                   lineHeight: '1.7',
-                  margin: 0
+                  fontWeight: 500
                 }}>
                   {item.text}
                 </p>
               </div>
-            </li>
-          ))}
-        </ul>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Pre-Approval Form Section */}
+      {/* FOLLOW THE DROP */}
+      <FollowTheDrop />
+
+      {/* GET ALERTS */}
       <section style={{
-        padding: '6rem 1.5rem',
         background: '#000000',
-        maxWidth: '600px',
-        margin: '0 auto'
+        padding: '6rem 2rem',
+        position: 'relative',
+        borderTop: '2px solid #FF6600',
+        borderBottom: '2px solid #FF6600'
       }}>
-        <h2 style={{
-          textAlign: 'center',
-          marginBottom: '3rem',
-          color: '#FF6600',
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
+        <div style={{
+          maxWidth: '800px',
+          margin: '0 auto',
+          textAlign: 'center'
         }}>
-          GET PRE-APPROVED
-        </h2>
-        <p style={{
-          textAlign: 'center',
-          color: '#CCCCCC',
-          fontSize: '1.1rem',
-          marginBottom: '2rem',
-          lineHeight: '1.8'
-        }}>
-          Pre-Approved in Minutes — I'll text you back fast
-        </p>
-        <form action="https://formspree.io/f/xjknegnl" method="POST" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.5rem'
-        }}>
-          <div>
-            <label style={{
-              display: 'block',
-              color: '#CCCCCC',
-              marginBottom: '0.5rem',
-              fontWeight: 600
-            }}>
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              required
-              style={{
-                width: '100%',
-                padding: '1rem',
-                background: '#0A0A0A',
-                border: '2px solid #2A2A2A',
-                color: '#FFFFFF',
-                fontSize: '1rem',
-                borderRadius: '0',
-                fontFamily: 'var(--font-inter)'
-              }}
-            />
-          </div>
-          <div>
-            <label style={{
-              display: 'block',
-              color: '#CCCCCC',
-              marginBottom: '0.5rem',
-              fontWeight: 600
-            }}>
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              required
-              style={{
-                width: '100%',
-                padding: '1rem',
-                background: '#0A0A0A',
-                border: '2px solid #2A2A2A',
-                color: '#FFFFFF',
-                fontSize: '1rem',
-                borderRadius: '0',
-                fontFamily: 'var(--font-inter)'
-              }}
-            />
-          </div>
-          <div>
-            <label style={{
-              display: 'block',
-              color: '#CCCCCC',
-              marginBottom: '0.5rem',
-              fontWeight: 600
-            }}>
-              Phone
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              required
-              style={{
-                width: '100%',
-                padding: '1rem',
-                background: '#0A0A0A',
-                border: '2px solid #2A2A2A',
-                color: '#FFFFFF',
-                fontSize: '1rem',
-                borderRadius: '0',
-                fontFamily: 'var(--font-inter)'
-              }}
-            />
-          </div>
-          <button
-            type="submit"
-            className="preapproval-button"
-            style={{
-              padding: '1.25rem 2rem',
-              background: '#FF6600',
-              color: '#000000',
-              border: 'none',
-              fontSize: '1.1rem',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '2px',
-              borderRadius: '0',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              fontFamily: 'var(--font-clash)'
-            }}
-          >
-            Get Pre-Approved
-          </button>
-        </form>
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 900,
+            color: '#FFFFFF',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            marginBottom: '1rem',
+            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+          }}>
+            GET ALERTS
+          </h2>
+          <p style={{
+            fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
+            color: '#CCCCCC',
+            marginBottom: '3rem',
+            fontWeight: 600,
+            letterSpacing: '2px',
+            lineHeight: '1.6'
+          }}>
+            Get notified when I drop a new bike — first dibs + $499 shipping to {cityData.name}
+          </p>
+          <GetAlerts />
+        </div>
       </section>
 
-      {/* Internal Links Section */}
+      {/* SEO CONTENT SECTION - Keyword Rich (Less Prominent) */}
       <section style={{
-        padding: '4rem 1.5rem',
         background: '#0A0A0A',
-        textAlign: 'center'
+        padding: '4rem 2rem',
+        position: 'relative',
+        borderTop: '1px solid #1A1A1A'
       }}>
-        <h3 style={{
-          color: '#FF6600',
-          fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-          marginBottom: '2rem',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          More Resources
-        </h3>
         <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '1rem',
-          justifyContent: 'center',
-          maxWidth: '1000px',
-          margin: '0 auto 2rem'
+          maxWidth: '1200px',
+          margin: '0 auto'
         }}>
-          <Link
-            href="/"
-            className="city-link"
-            style={{
-              padding: '0.75rem 1.5rem',
-              background: '#000000',
+          <h2 style={{
+            fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+            fontWeight: 900,
+            color: '#FF6600',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            textAlign: 'center',
+            marginBottom: '3rem'
+          }}>
+            Used Harleys for Sale Shipped to {cityData.name}, {cityData.stateAbbr}
+          </h2>
+          
+          <div style={{
+            color: '#CCCCCC',
+            lineHeight: '1.8',
+            fontSize: '1rem',
+            maxWidth: '900px',
+            margin: '0 auto'
+          }}>
+            {cityData.content.split('\n\n').map((paragraph, idx) => (
+              <p key={idx} style={{ marginBottom: '1.5rem' }}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {/* Model-Specific Sections for SEO */}
+          <div style={{ marginTop: '4rem' }}>
+            <h3 style={{
               color: '#FF6600',
-              textDecoration: 'none',
-              border: '1px solid #2A2A2A',
-              borderRadius: '0',
-              fontWeight: 600,
-              fontSize: '0.95rem',
-              transition: 'all 0.3s',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
-            }}
-          >
-            Home
-          </Link>
-          {getAllCityPageSlugs()
-            .filter(s => s !== cityData.slug)
-            .slice(0, 3)
-            .map((otherSlug) => {
-              const otherCity = getCityPageData(otherSlug);
-              if (!otherCity) return null;
-              return (
+              fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+              marginBottom: '2rem',
+              fontFamily: 'var(--font-clash)',
+              fontWeight: 700
+            }}>
+              Popular Models Shipped to {cityData.name}
+            </h3>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '1.5rem'
+            }}>
+              {[
+                { name: 'Street Glide', slug: 'street-glide' },
+                { name: 'Road Glide', slug: 'road-glide' },
+                { name: 'Fat Boy', slug: 'fat-boy' },
+                { name: 'Heritage Classic', slug: 'heritage-classic' }
+              ].map((model) => (
                 <Link
-                  key={otherSlug}
-                  href={`/used-harleys-${otherSlug}`}
-                  className="city-link"
+                  key={model.slug}
+                  href={`/models/${model.slug}`}
                   style={{
-                    padding: '0.75rem 1.5rem',
                     background: '#000000',
-                    color: '#FF6600',
+                    border: '1px solid #1A1A1A',
+                    borderRadius: '8px',
+                    padding: '1.5rem',
                     textDecoration: 'none',
-                    border: '1px solid #2A2A2A',
-                    borderRadius: '0',
-                    fontWeight: 600,
-                    fontSize: '0.95rem',
-                    transition: 'all 0.3s',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    color: '#CCCCCC',
+                    transition: 'all 0.3s ease',
+                    textAlign: 'center'
                   }}
+                  className="model-link-seo"
                 >
-                  Used Harleys {otherCity.name}
+                  <div style={{
+                    color: '#FF6600',
+                    fontWeight: 800,
+                    fontSize: '1.1rem',
+                    marginBottom: '0.5rem',
+                    fontFamily: 'var(--font-clash)',
+                    letterSpacing: '1px'
+                  }}>
+                    Used {model.name} {cityData.name}
+                  </div>
+                  <div style={{
+                    fontSize: '0.9rem',
+                    color: '#888888'
+                  }}>
+                    View Details →
+                  </div>
                 </Link>
-              );
-            })}
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer style={{
-        padding: '3rem 1.5rem',
         background: '#000000',
-        textAlign: 'center',
-        borderTop: '1px solid #2A2A2A'
+        padding: '4rem 2rem 3rem',
+        borderTop: '2px solid #FF6600',
+        textAlign: 'center'
       }}>
-        <p style={{
-          color: '#CCCCCC',
-          fontSize: '1rem'
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto'
         }}>
-          Joe Tabora<span style={{ color: '#FF6600', margin: '0 0.75rem' }}>•</span>
-          @joetabora<span style={{ color: '#FF6600', margin: '0 0.75rem' }}>•</span>
-          All bikes titled through House Of Harley
-        </p>
+          <div style={{
+            marginBottom: '2rem'
+          }}>
+            <div style={{
+              fontSize: '2rem',
+              fontWeight: 900,
+              color: '#FF6600',
+              fontFamily: 'var(--font-clash)',
+              letterSpacing: '4px',
+              textTransform: 'uppercase',
+              marginBottom: '1rem'
+            }}>
+              JOE'S USED HARLEYS
+            </div>
+            <p style={{
+              color: '#CCCCCC',
+              fontSize: '1rem',
+              marginBottom: '0.5rem'
+            }}>
+              6221 W Layton Ave, Milwaukee, WI 53220
+            </p>
+            <p style={{
+              color: '#CCCCCC',
+              fontSize: '1rem',
+              marginBottom: '2rem'
+            }}>
+              <a href="tel:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>414-439-6211</a> • <a href="sms:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>TEXT</a>
+            </p>
+          </div>
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '2rem',
+            flexWrap: 'wrap',
+            marginBottom: '2rem'
+          }}>
+            <Link href="/" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>HOME</Link>
+            <Link href="/events" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>EVENTS</Link>
+            <Link href="/merch" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>MERCH</Link>
+            <Link href="/contact" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>CONTACT</Link>
+          </div>
+
+          <div style={{
+            borderTop: '1px solid #1A1A1A',
+            paddingTop: '2rem',
+            color: '#666666',
+            fontSize: '0.85rem'
+          }}>
+            © {new Date().getFullYear()} Joe's Used Harleys. All Rights Reserved. | Built for riders, by riders.
+          </div>
+        </div>
       </footer>
 
-      {/* Floating CTA Button */}
-      <a
-        href="sms:4144396211"
-        className="floating-cta"
-        aria-label="Text Joe about used Harleys"
-        style={{
-          position: 'fixed',
-          bottom: '100px',
-          right: '2rem',
-          background: '#FF6600',
-          color: '#000000',
-          padding: '1rem 2rem',
-          borderRadius: '50px',
-          textDecoration: 'none',
-          fontWeight: 800,
-          fontSize: '1rem',
-          textTransform: 'uppercase',
-          letterSpacing: '2px',
-          zIndex: 998,
-          boxShadow: '0 8px 30px rgba(255, 102, 0, 0.4)',
-          transition: 'all 0.3s',
-          fontFamily: 'var(--font-clash)',
-          display: 'none'
-        }}
-      >
-        TEXT JOE
-      </a>
+      {/* Floating Action Buttons */}
+      <FloatingActionButtons />
 
-      {/* Mobile Sticky Bottom Bar */}
-      <div className="mobile-bar" role="navigation" aria-label="Mobile navigation menu" style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        background: 'linear-gradient(to top, #000000 0%, #0A0A0A 100%)',
-        borderTop: '1px solid #1A1A1A',
-        display: 'flex',
-        justifyContent: 'space-around',
-        padding: '1rem',
-        zIndex: 999,
-        boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 102, 0, 0.1)'
-      }}>
-        <a 
-          href="tel:4144396211" 
-          className="mobile-bar-btn" 
-          aria-label="Call Joe at 414-439-6211 about used Harleys"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-        >
-          CALL
-        </a>
-        <a 
-          href="sms:4144396211" 
-          className="mobile-bar-btn" 
-          aria-label="Text Joe at 414-439-6211 about used Harleys"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-        >
-          TEXT
-        </a>
-        <a 
-          href="/inventory" 
-          className="mobile-bar-btn" 
-          aria-label="View inventory of used Harley-Davidson motorcycles"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-        >
-          INVENTORY
-        </a>
-      </div>
-
-      {/* CSS for animations and hover effects */}
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes logo-fade-in {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .mobile-bar {
-            display: flex;
-          }
-          .floating-cta {
-            display: none !important;
-          }
-        }
-
-        @media (min-width: 769px) {
-          .mobile-bar {
-            display: none;
-          }
-          .floating-cta {
-            display: block !important;
-          }
-        }
-
-        .bike-card {
-          cursor: pointer;
-        }
-
-        .bike-card:hover {
+        .why-buy-card:hover {
+          border-color: #FF6600;
           transform: translateY(-8px);
-          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.3);
+          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.4);
+        }
+        .model-link-seo:hover {
           border-color: #FF6600;
-        }
-
-        .bike-cta-button:hover {
-          background: #FF8833;
-          transform: translateY(-2px);
-        }
-
-        .mobile-bar-btn:hover {
-          color: #000000;
-          background: #FF6600;
-          transform: translateY(-2px);
-        }
-
-        .city-link:hover {
-          background: #FF6600;
-          color: #000000;
-          border-color: #FF6600;
-        }
-
-        .model-link-city:hover {
-          color: #FF8833;
-        }
-
-        .preapproval-button:hover {
-          background: #FF8833;
-          transform: translateY(-2px);
-        }
-
-        .floating-cta:hover {
-          background: #FF8833;
+          background: #1A1A1A;
           transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.6);
-        }
-
-        .facetime-banner:hover {
-          background: #FF8833;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(255, 102, 0, 0.4);
         }
       `}} />
     </>
