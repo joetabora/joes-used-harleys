@@ -1,6 +1,9 @@
 import { setPageSEO, SITE_CONFIG } from '@/lib/seo';
 import { getAllBlogPosts, getFeaturedPost } from '@/lib/blog-data';
 import { BlogIndexClient } from '@/components/BlogIndexClient';
+import { Navigation } from '@/components/Navigation';
+import { FloatingActionButtons } from '@/components/FloatingActionButtons';
+import { SEO } from '@/components/SEO';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = setPageSEO({
@@ -15,6 +18,9 @@ export default function BlogIndexPage() {
 
   return (
     <>
+      {/* SEO Structured Data */}
+      <SEO type="website" includeLocalBusiness={true} includeOrganization={true} />
+      
       {/* WebSite Schema with Blog */}
       <script
         type="application/ld+json"
@@ -34,50 +40,46 @@ export default function BlogIndexPage() {
         }}
       />
 
-      {/* Urgency Banner */}
-      <div className="urgency-banner" style={{
-        background: '#FF6600',
-        color: '#000000',
-        textAlign: 'center',
-        padding: '1rem 1.5rem',
-        fontWeight: 800,
-        fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-        letterSpacing: '1.5px',
-        position: 'relative',
-        zIndex: 100,
-        textTransform: 'uppercase'
-      }}>
-        WE SHIP NATIONWIDE FOR ONLY $499
-      </div>
+      {/* Navigation */}
+      <Navigation />
 
       {/* Hero Section */}
       <section style={{
-        padding: '4rem 1.5rem',
+        padding: '6rem 2rem 4rem',
         background: '#000000',
         textAlign: 'center',
-        maxWidth: '1400px',
-        margin: '0 auto'
+        position: 'relative'
       }}>
-        <h1 style={{
-          fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-          color: '#FFFFFF',
-          marginBottom: '1rem',
-          lineHeight: '1.1',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto'
         }}>
-          Used Harley Buyer's Guide
-        </h1>
-        <p style={{
-          fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-          color: '#CCCCCC',
-          marginBottom: '2rem',
-          maxWidth: '800px',
-          margin: '0 auto 2rem',
-          lineHeight: '1.6'
-        }}>
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 900,
+            color: '#FFFFFF',
+            marginBottom: '2rem',
+            lineHeight: '1.1',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+          }}>
+            USED HARLEY BUYER'S GUIDE
+          </h1>
+          <p style={{
+            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
+            color: '#CCCCCC',
+            marginBottom: '2rem',
+            maxWidth: '800px',
+            margin: '0 auto 2rem',
+            lineHeight: '1.8',
+            fontWeight: 600,
+            letterSpacing: '1px'
+          }}>
           Expert tips, honest reviews, and real advice from a Milwaukee rider who knows bikes
-        </p>
+          </p>
+        </div>
       </section>
 
       {/* Blog Index Client Component */}
@@ -85,223 +87,133 @@ export default function BlogIndexPage() {
 
       {/* CTA Section */}
       <section style={{
-        padding: '6rem 1.5rem',
-        background: '#0A0A0A',
+        background: 'linear-gradient(135deg, #FF6600 0%, #E55A00 100%)',
+        padding: '6rem 2rem',
         textAlign: 'center',
-        maxWidth: '1000px',
-        margin: '0 auto'
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <h2 style={{
-          color: '#FF6600',
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          marginBottom: '2rem',
-          fontFamily: 'var(--font-clash)',
-          fontWeight: 700
-        }}>
-          Ready to Buy?
-        </h2>
-        <p style={{
-          color: '#CCCCCC',
-          fontSize: '1.2rem',
-          lineHeight: '1.8',
-          marginBottom: '2rem'
-        }}>
-          Got questions after reading? Want to see current inventory? Text me at{' '}
-          <a
-            href="sms:4144396211"
-            style={{
-              color: '#FF6600',
-              textDecoration: 'none',
-              fontWeight: 700
-            }}
-          >
-            414-439-6211
-          </a>
-          {' '}and I'll help you find the perfect used Harley.
-        </p>
         <div style={{
-          display: 'flex',
-          gap: '1rem',
-          justifyContent: 'center',
-          flexWrap: 'wrap'
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          opacity: 0.1
+        }}></div>
+
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          maxWidth: '800px',
+          margin: '0 auto'
         }}>
-          <a
-            href="/inventory"
-            style={{
-              padding: '1rem 2rem',
-              background: '#FF6600',
-              color: '#000000',
-              textDecoration: 'none',
-              fontWeight: 800,
-              fontSize: '1rem',
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              borderRadius: '0',
-              transition: 'all 0.3s',
-              fontFamily: 'var(--font-clash)'
-            }}
-            className="cta-button"
-          >
-            View Inventory
-          </a>
-          <a
-            href="sms:4144396211"
-            style={{
-              padding: '1rem 2rem',
-              background: '#000000',
-              color: '#FF6600',
-              textDecoration: 'none',
-              border: '2px solid #FF6600',
-              fontWeight: 800,
-              fontSize: '1rem',
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              borderRadius: '0',
-              transition: 'all 0.3s',
-              fontFamily: 'var(--font-clash)'
-            }}
-            className="cta-button"
-          >
-            Text Joe
-          </a>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+            fontWeight: 900,
+            color: '#000000',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            marginBottom: '2rem',
+            textShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
+          }}>
+            READY TO BUY?
+          </h2>
+          <p style={{
+            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
+            color: '#000000',
+            fontWeight: 700,
+            marginBottom: '3rem',
+            letterSpacing: '1px',
+            lineHeight: '1.6'
+          }}>
+            Got questions after reading? Want to see current inventory? Text me at{' '}
+            <a
+              href="sms:4144396211"
+              style={{
+                color: '#000000',
+                textDecoration: 'underline',
+                fontWeight: 900
+              }}
+            >
+              414-439-6211
+            </a>
+            {' '}and I&apos;ll help you find the perfect used Harley.
+          </p>
+          <div style={{
+            display: 'flex',
+            gap: '1.5rem',
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <a
+              href="/inventory"
+              style={{
+                background: '#000000',
+                color: '#FF6600',
+                padding: '1.5rem 3rem',
+                fontSize: '1.2rem',
+                fontWeight: 900,
+                textTransform: 'uppercase',
+                letterSpacing: '3px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-clash)',
+                border: '3px solid #000000',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#000000';
+                e.currentTarget.style.color = '#FF6600';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              VIEW INVENTORY
+            </a>
+            <a
+              href="sms:4144396211"
+              style={{
+                background: 'transparent',
+                color: '#000000',
+                padding: '1.5rem 3rem',
+                fontSize: '1.2rem',
+                fontWeight: 900,
+                textTransform: 'uppercase',
+                letterSpacing: '3px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-clash)',
+                border: '3px solid #000000',
+                borderRadius: '8px',
+                transition: 'all 0.3s ease',
+                display: 'inline-block'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#000000';
+                e.currentTarget.style.color = '#FF6600';
+                e.currentTarget.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              TEXT JOE
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Mobile Sticky Bottom Bar */}
-      <div className="mobile-bar" role="navigation" aria-label="Mobile navigation menu" style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        background: 'linear-gradient(to top, #000000 0%, #0A0A0A 100%)',
-        borderTop: '1px solid #1A1A1A',
-        display: 'flex',
-        justifyContent: 'space-around',
-        padding: '1rem',
-        zIndex: 999,
-        boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 102, 0, 0.1)'
-      }}>
-        <a 
-          href="tel:4144396211" 
-          className="mobile-bar-btn" 
-          aria-label="Call Joe at 414-439-6211 about used Harleys"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-        >
-          CALL
-        </a>
-        <a 
-          href="sms:4144396211" 
-          className="mobile-bar-btn" 
-          aria-label="Text Joe at 414-439-6211 about used Harleys"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-        >
-          TEXT
-        </a>
-        <a 
-          href="/inventory" 
-          className="mobile-bar-btn" 
-          aria-label="View inventory of used Harley-Davidson motorcycles"
-          style={{
-            color: '#FF6600',
-            textDecoration: 'none',
-            fontWeight: 800,
-            fontSize: '0.95rem',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            padding: '0.75rem 1.25rem',
-            transition: 'all 0.3s',
-            borderRadius: '4px'
-          }}
-        >
-          INVENTORY
-        </a>
-      </div>
-
-      {/* Floating CTA Button */}
-      <a
-        href="sms:4144396211"
-        className="floating-cta"
-        aria-label="Text Joe about used Harleys"
-        style={{
-          position: 'fixed',
-          bottom: '100px',
-          right: '2rem',
-          background: '#FF6600',
-          color: '#000000',
-          padding: '1rem 2rem',
-          borderRadius: '50px',
-          textDecoration: 'none',
-          fontWeight: 800,
-          fontSize: '1rem',
-          textTransform: 'uppercase',
-          letterSpacing: '2px',
-          zIndex: 998,
-          boxShadow: '0 8px 30px rgba(255, 102, 0, 0.4)',
-          transition: 'all 0.3s',
-          fontFamily: 'var(--font-clash)',
-          display: 'none'
-        }}
-      >
-        TEXT JOE
-      </a>
-
-      {/* CSS for animations and hover effects */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media (max-width: 768px) {
-          .mobile-bar {
-            display: flex;
-          }
-          .floating-cta {
-            display: none !important;
-          }
-        }
-
-        @media (min-width: 769px) {
-          .mobile-bar {
-            display: none;
-          }
-          .floating-cta {
-            display: block !important;
-          }
-        }
-
-        .cta-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(255, 102, 0, 0.4);
-        }
-
-        .mobile-bar-btn:hover {
-          color: #000000;
-          background: #FF6600;
-          transform: translateY(-2px);
-        }
-
-        .floating-cta:hover {
-          background: #FF8833;
-          transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.6);
-        }
-      `}} />
+      {/* Floating Action Buttons */}
+      <FloatingActionButtons />
     </>
   );
 }
