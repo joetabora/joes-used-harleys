@@ -52,9 +52,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/fav.png',
+    shortcut: '/fav.png',
+    apple: '/fav.png',
   },
   manifest: '/manifest.json',
   appleWebApp: {
