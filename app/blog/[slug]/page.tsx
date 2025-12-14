@@ -100,6 +100,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       }}>
         <Link
           href="/blog"
+          className="blog-back-link"
           style={{
             color: '#FF6600',
             textDecoration: 'none',
@@ -114,16 +115,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             padding: '0.5rem 1rem',
             border: '1px solid #1A1A1A',
             borderRadius: '8px'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = '#FF6600';
-            e.currentTarget.style.color = '#FFFFFF';
-            e.currentTarget.style.background = '#FF6600';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = '#1A1A1A';
-            e.currentTarget.style.color = '#FF6600';
-            e.currentTarget.style.background = 'transparent';
           }}
         >
           ← BACK TO BLOG
@@ -298,6 +289,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             }}>
               <Link
                 href="/inventory"
+                className="blog-cta-button"
                 style={{
                   background: '#000000',
                   color: '#FF6600',
@@ -313,21 +305,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   transition: 'all 0.3s ease',
                   display: 'inline-block'
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#000000';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#000000';
-                  e.currentTarget.style.color = '#FF6600';
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
               >
                 VIEW INVENTORY
               </Link>
               <a
                 href="sms:4144396211"
+                className="blog-cta-button-secondary"
                 style={{
                   background: 'transparent',
                   color: '#000000',
@@ -342,16 +325,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   borderRadius: '8px',
                   transition: 'all 0.3s ease',
                   display: 'inline-block'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#000000';
-                  e.currentTarget.style.color = '#FF6600';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#000000';
-                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
                 TEXT JOE
@@ -388,6 +361,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 <Link
                   key={relatedPost.slug}
                   href={`/blog/${relatedPost.slug}`}
+                  className="related-post-card"
                   style={{
                     background: '#0A0A0A',
                     border: '2px solid #1A1A1A',
@@ -396,16 +370,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     textDecoration: 'none',
                     transition: 'all 0.3s ease',
                     display: 'block'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#FF6600';
-                    e.currentTarget.style.transform = 'translateY(-8px)';
-                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 102, 0, 0.3)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#1A1A1A';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   <div style={{ position: 'relative', width: '100%', height: '200px' }}>
@@ -503,12 +467,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           color: #FF8833;
         }
 
-        .back-link:hover {
-          color: #FF8833;
+        .blog-back-link:hover {
+          border-color: #FF6600;
+          color: #FFFFFF;
+          background: #FF6600;
+        }
+
+        .blog-cta-button:hover {
+          background: transparent;
+          color: #000000;
+          transform: scale(1.05);
+        }
+
+        .blog-cta-button-secondary:hover {
+          background: #000000;
+          color: #FF6600;
+          transform: scale(1.05);
         }
 
         .related-post-card:hover {
-          transform: translateY(-4px);
+          transform: translateY(-8px);
           box-shadow: 0 12px 40px rgba(255, 102, 0, 0.3);
           border-color: #FF6600;
         }
