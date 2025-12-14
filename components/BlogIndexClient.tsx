@@ -36,35 +36,45 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
       {/* Featured Post with Hero Image */}
       {featuredPost && (
         <section style={{
-          padding: '4rem 1.5rem',
+          padding: '4rem 2rem',
           background: '#0A0A0A',
           maxWidth: '1400px',
           margin: '0 auto'
         }}>
           <h2 style={{
             color: '#FF6600',
-            fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+            fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
             marginBottom: '2rem',
             fontFamily: 'var(--font-clash)',
-            fontWeight: 700,
+            fontWeight: 900,
             textTransform: 'uppercase',
-            letterSpacing: '1px'
+            letterSpacing: '3px',
+            textAlign: 'center'
           }}>
-            Featured Post
+            FEATURED POST
           </h2>
           <Link
             href={`/blog/${featuredPost.slug}`}
             style={{
               textDecoration: 'none',
-              display: 'block'
+              display: 'block',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
             <article style={{
               background: '#000000',
-              border: '2px solid #FF6600',
+              border: '3px solid #FF6600',
+              borderRadius: '16px',
               overflow: 'hidden',
               position: 'relative',
-              minHeight: '500px'
+              minHeight: '500px',
+              boxShadow: '0 8px 30px rgba(255, 102, 0, 0.3)'
             }}>
               {/* Hero Image with Overlay */}
               <div style={{
@@ -109,7 +119,9 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
                     marginBottom: '1rem',
                     lineHeight: '1.2',
                     fontFamily: 'var(--font-clash)',
-                    fontWeight: 700
+                    fontWeight: 900,
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase'
                   }}>
                     {featuredPost.title}
                   </h3>
@@ -191,14 +203,23 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
                   key={post.slug}
                   style={{
                     background: '#0A0A0A',
-                    border: '1px solid #2A2A2A',
-                    borderRadius: '0',
+                    border: '2px solid #1A1A1A',
+                    borderRadius: '16px',
                     overflow: 'hidden',
                     transition: 'all 0.3s ease',
                     display: 'flex',
                     flexDirection: 'column'
                   }}
-                  className="blog-card"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#FF6600';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 102, 0, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#1A1A1A';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                 >
                   <div style={{ position: 'relative', width: '100%', height: '250px' }}>
                     <BlogImageWithFallback
@@ -228,16 +249,22 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
                       marginBottom: '1rem',
                       lineHeight: '1.3',
                       fontFamily: 'var(--font-clash)',
-                      fontWeight: 700
+                      fontWeight: 800,
+                      letterSpacing: '1px'
                     }}>
                       <Link
                         href={`/blog/${post.slug}`}
                         style={{
                           color: 'inherit',
                           textDecoration: 'none',
-                          transition: 'color 0.3s'
+                          transition: 'color 0.3s ease'
                         }}
-                        className="blog-title-link"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = '#FF6600';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = '#FFFFFF';
+                        }}
                       >
                         {post.title}
                       </Link>
@@ -269,15 +296,26 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
                         style={{
                           color: '#FF6600',
                           textDecoration: 'none',
-                          fontWeight: 700,
+                          fontWeight: 800,
                           fontSize: '0.9rem',
                           textTransform: 'uppercase',
-                          letterSpacing: '1px',
-                          transition: 'color 0.3s'
+                          letterSpacing: '2px',
+                          fontFamily: 'var(--font-clash)',
+                          transition: 'all 0.3s ease',
+                          padding: '0.5rem 1rem',
+                          border: '1px solid #FF6600',
+                          borderRadius: '8px'
                         }}
-                        className="blog-read-link"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#FF6600';
+                          e.currentTarget.style.color = '#000000';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = '#FF6600';
+                        }}
                       >
-                        Read →
+                        READ MORE →
                       </Link>
                     </div>
                   </div>
@@ -297,17 +335,6 @@ export function BlogIndexClient({ posts, featuredPost }: BlogIndexClientProps) {
             position: relative !important;
             top: 0 !important;
           }
-        }
-        .blog-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.3);
-          border-color: #FF6600;
-        }
-        .blog-title-link:hover {
-          color: #FF6600;
-        }
-        .blog-read-link:hover {
-          color: #FF8833;
         }
       `}} />
     </>
