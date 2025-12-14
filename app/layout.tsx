@@ -52,7 +52,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: '/fav.png',
+    icon: [
+      { url: '/fav.png', sizes: '500x500', type: 'image/png' },
+      { url: '/icon.png', sizes: '500x500', type: 'image/png' },
+    ],
     shortcut: '/fav.png',
     apple: '/fav.png',
   },
