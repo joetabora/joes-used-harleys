@@ -16,9 +16,10 @@ export function BlogFilter({ categories, selectedCategory, onCategoryChange }: B
 
   return (
     <div style={{
-      background: '#0A0A0A',
-      border: '1px solid #2A2A2A',
-      padding: '1.5rem',
+      background: '#000000',
+      border: '2px solid #1A1A1A',
+      borderRadius: '16px',
+      padding: '2rem',
       marginBottom: '2rem'
     }}>
       {/* Mobile: Collapsible Header */}
@@ -70,21 +71,32 @@ export function BlogFilter({ categories, selectedCategory, onCategoryChange }: B
           onClick={() => onCategoryChange(null)}
           style={{
             padding: '0.75rem 1.5rem',
-            background: selectedCategory === null ? '#FF6600' : '#1A1A1A',
+            background: selectedCategory === null ? '#FF6600' : '#0A0A0A',
             color: selectedCategory === null ? '#000000' : '#FFFFFF',
-            border: selectedCategory === null ? 'none' : '1px solid #2A2A2A',
-            fontWeight: 700,
+            border: selectedCategory === null ? '2px solid #FF6600' : '2px solid #1A1A1A',
+            fontWeight: 800,
             fontSize: '0.9rem',
             textTransform: 'uppercase',
-            letterSpacing: '1px',
+            letterSpacing: '2px',
             cursor: 'pointer',
-            transition: 'all 0.3s',
+            transition: 'all 0.3s ease',
             fontFamily: 'var(--font-clash)',
-            borderRadius: '0'
+            borderRadius: '8px'
           }}
-          className="filter-tag"
+          onMouseEnter={(e) => {
+            if (selectedCategory !== null) {
+              e.currentTarget.style.borderColor = '#FF6600';
+              e.currentTarget.style.color = '#FF6600';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (selectedCategory !== null) {
+              e.currentTarget.style.borderColor = '#1A1A1A';
+              e.currentTarget.style.color = '#FFFFFF';
+            }
+          }}
         >
-          All Posts
+          ALL POSTS
         </button>
         {categories.map((category) => (
           <button
@@ -92,19 +104,30 @@ export function BlogFilter({ categories, selectedCategory, onCategoryChange }: B
             onClick={() => onCategoryChange(category)}
             style={{
               padding: '0.75rem 1.5rem',
-              background: selectedCategory === category ? '#FF6600' : '#1A1A1A',
+              background: selectedCategory === category ? '#FF6600' : '#0A0A0A',
               color: selectedCategory === category ? '#000000' : '#FFFFFF',
-              border: selectedCategory === category ? 'none' : '1px solid #2A2A2A',
-              fontWeight: 700,
+              border: selectedCategory === category ? '2px solid #FF6600' : '2px solid #1A1A1A',
+              fontWeight: 800,
               fontSize: '0.9rem',
               textTransform: 'uppercase',
-              letterSpacing: '1px',
+              letterSpacing: '2px',
               cursor: 'pointer',
-              transition: 'all 0.3s',
+              transition: 'all 0.3s ease',
               fontFamily: 'var(--font-clash)',
-              borderRadius: '0'
+              borderRadius: '8px'
             }}
-            className="filter-tag"
+            onMouseEnter={(e) => {
+              if (selectedCategory !== category) {
+                e.currentTarget.style.borderColor = '#FF6600';
+                e.currentTarget.style.color = '#FF6600';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (selectedCategory !== category) {
+                e.currentTarget.style.borderColor = '#1A1A1A';
+                e.currentTarget.style.color = '#FFFFFF';
+              }
+            }}
           >
             {category}
           </button>
@@ -119,12 +142,6 @@ export function BlogFilter({ categories, selectedCategory, onCategoryChange }: B
           .filter-categories {
             display: flex !important;
           }
-        }
-        .filter-tag:hover {
-          background: #FF6600 !important;
-          color: #000000 !important;
-          border-color: #FF6600 !important;
-          transform: translateY(-2px);
         }
       `}} />
     </div>
