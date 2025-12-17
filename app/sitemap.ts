@@ -3,6 +3,7 @@ import { SITE_CONFIG } from '@/lib/seo';
 import { getAllModelSlugs } from '@/lib/model-data';
 import { getAllModelPageSlugs } from '@/lib/model-pages-data';
 import { getAllCityPageSlugs } from '@/lib/city-pages-data';
+import { getAllStatePageSlugs } from '@/lib/state-pages-data';
 import { getAllBlogPosts } from '@/lib/blog-data';
 
 async function getBikes() {
@@ -87,6 +88,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // City landing pages
     ...getAllCityPageSlugs().map((slug) => ({
       url: `${baseUrl}/used-harleys-${slug}`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    })),
+    // State landing pages (NEW - High Priority SEO)
+    ...getAllStatePageSlugs().map((slug) => ({
+      url: `${baseUrl}/used-harleys-state/${slug}`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.9,
