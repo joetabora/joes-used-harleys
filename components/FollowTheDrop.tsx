@@ -19,18 +19,10 @@ export function FollowTheDrop() {
       hoverColor: '#FF6600'
     },
     {
-      platform: 'Facebook',
-      handle: 'Joe\'s Used Harleys',
-      url: 'https://www.facebook.com/joesusedharleys',
-      icon: '👥',
-      color: '#000000',
-      hoverColor: '#FF6600'
-    },
-    {
-      platform: 'Discord',
-      handle: 'Join the Club',
-      url: '#', // Update with actual Discord link
-      icon: '💬',
+      platform: 'YouTube',
+      handle: '@suchgrime414',
+      url: 'https://www.youtube.com/@suchgrime414',
+      icon: '📺',
       color: '#000000',
       hoverColor: '#FF6600'
     }
