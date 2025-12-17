@@ -42,6 +42,53 @@ const faqData = [
 export default function HomePage() {
   return (
     <>
+      {/* Global Styles for Premium Design */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        :root {
+          --premium-black: #0a0a0a;
+          --deep-black: #000000;
+          --chrome-silver: #e5e7eb;
+          --steel-gray: #6b7280;
+          --amber-accent: #f59e0b;
+          --orange-premium: #ea580c;
+          --white-smoke: #f9fafb;
+        }
+        
+        body {
+          background: var(--premium-black);
+        }
+        
+        .glass-card {
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .premium-gradient {
+          background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #0a0a0a 100%);
+        }
+        
+        .shine-effect {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .shine-effect::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+          transition: left 0.5s;
+        }
+        
+        .shine-effect:hover::before {
+          left: 100%;
+        }
+      `}} />
+
       {/* SEO Structured Data */}
       <SEO type="website" includeLocalBusiness={true} includeWebSite={true} includeOrganization={true} />
       <script
@@ -60,168 +107,391 @@ export default function HomePage() {
       {/* Navigation */}
       <Navigation />
 
-      {/* HERO SECTION - Social Feed Grid */}
+      {/* HERO SECTION - Cinematic Full Bleed */}
       <section style={{
         minHeight: '100vh',
         position: 'relative',
-        background: 'linear-gradient(180deg, #000000 0%, #0A0A0A 100%)',
-        padding: '8rem 2rem 6rem',
+        background: 'linear-gradient(135deg, #000000 0%, #0f0f0f 50%, #000000 100%)',
+        padding: '10rem 2rem 8rem',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        overflow: 'hidden'
       }}>
-        {/* Main Tagline - Above Grid */}
+        {/* Animated Background Pattern */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(234, 88, 12, 0.05) 0%, transparent 50%),
+                           radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%)`,
+          animation: 'pulse 8s ease-in-out infinite'
+        }}></div>
+
+        <style dangerouslySetInnerHTML={{ __html: `
+          @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+          }
+        `}} />
+
+        {/* Main Hero Content */}
         <div style={{
           textAlign: 'center',
-          marginBottom: '4rem',
-          maxWidth: '1200px',
-          width: '100%'
+          marginBottom: '5rem',
+          maxWidth: '1400px',
+          width: '100%',
+          position: 'relative',
+          zIndex: 2
         }}>
-          <p style={{
-            fontSize: 'clamp(1.8rem, 5vw, 3rem)',
-            color: '#FF6600',
-            fontWeight: 900,
-            letterSpacing: '4px',
-            textTransform: 'uppercase',
-            marginBottom: '1rem',
-            fontFamily: 'var(--font-clash)',
-            textShadow: '0 0 40px rgba(255, 102, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.9)',
-            lineHeight: '1.2'
+          {/* Premium Badge */}
+          <div style={{
+            display: 'inline-block',
+            background: 'linear-gradient(135deg, rgba(234, 88, 12, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%)',
+            border: '1px solid rgba(234, 88, 12, 0.3)',
+            padding: '0.75rem 2rem',
+            borderRadius: '50px',
+            marginBottom: '2rem',
+            backdropFilter: 'blur(10px)'
           }}>
-            NEW HARLEYS DROP DAILY — FOLLOW ON TIKTOK & IG TO NEVER MISS ONE. $499 SHIPS ANYWHERE.
+            <span style={{
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              ⚡ Premium Selection • Daily Drops
+            </span>
+          </div>
+
+          {/* Main Headline */}
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+            fontWeight: 900,
+            background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #ffffff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            marginBottom: '1.5rem',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '-2px',
+            lineHeight: '1.1',
+            textShadow: '0 0 80px rgba(255, 255, 255, 0.1)'
+          }}>
+            MILWAUKEE'S PREMIER
+            <br />
+            <span style={{
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              HARLEY DESTINATION
+            </span>
+          </h1>
+
+          {/* Subheadline */}
+          <p style={{
+            fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+            color: '#9ca3af',
+            fontWeight: 500,
+            letterSpacing: '1px',
+            marginBottom: '3rem',
+            maxWidth: '800px',
+            margin: '0 auto 3rem',
+            lineHeight: '1.6'
+          }}>
+            New bikes drop daily on TikTok & Instagram. Premium selection, transparent pricing, nationwide shipping for just $499.
           </p>
+
+          {/* CTA Buttons */}
+          <div style={{
+            display: 'flex',
+            gap: '1.5rem',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            marginBottom: '4rem'
+          }}>
+            <a
+              href="sms:4144396211?body=I'm interested in a Harley!"
+              className="shine-effect"
+              style={{
+                background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+                color: '#ffffff',
+                padding: '1.5rem 3.5rem',
+                fontSize: '1rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-clash)',
+                borderRadius: '50px',
+                boxShadow: '0 10px 40px rgba(234, 88, 12, 0.4), 0 0 0 1px rgba(234, 88, 12, 0.1)',
+                transition: 'all 0.3s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                border: 'none'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 20px 60px rgba(234, 88, 12, 0.6), 0 0 0 1px rgba(234, 88, 12, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = '0 10px 40px rgba(234, 88, 12, 0.4), 0 0 0 1px rgba(234, 88, 12, 0.1)';
+              }}
+            >
+              <span style={{ fontSize: '1.3rem' }}>💬</span>
+              TEXT JOE NOW
+            </a>
+
+            <a
+              href="https://www.tiktok.com/@suchgrime"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-card"
+              style={{
+                color: '#ffffff',
+                padding: '1.5rem 3.5rem',
+                fontSize: '1rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-clash)',
+                borderRadius: '50px',
+                transition: 'all 0.3s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.75rem'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+              }}
+            >
+              <span style={{ fontSize: '1.3rem' }}>🎵</span>
+              VIEW LATEST DROPS
+            </a>
+          </div>
+
+          {/* Trust Indicators */}
+          <div style={{
+            display: 'flex',
+            gap: '3rem',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            opacity: 0.7
+          }}>
+            {[
+              { icon: '⚡', text: 'No BS Pricing' },
+              { icon: '🛡️', text: '48-Hr Guarantee' },
+              { icon: '🚚', text: '$499 Nationwide Shipping' }
+            ].map((item, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem'
+              }}>
+                <span style={{ fontSize: '1.5rem' }}>{item.icon}</span>
+                <span style={{
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  color: '#9ca3af',
+                  letterSpacing: '0.5px'
+                }}>
+                  {item.text}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Social Feed Grid/Carousel - Latest 8-10 Videos */}
+        {/* Social Feed - Modern Card Layout */}
         <div style={{
           width: '100%',
           maxWidth: '1400px',
-          margin: '0 auto 3rem'
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 2
         }}>
-          <SocialFeed
-            tiktokHandle="@suchgrime"
-            instagramHandle="@joetabora"
-            widgetId="3b6dbd54_1765944311"
-          />
+          <div className="glass-card" style={{
+            padding: '3rem',
+            borderRadius: '24px',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)'
+          }}>
+            <SocialFeed
+              tiktokHandle="@suchgrime"
+              instagramHandle="@joetabora"
+              widgetId="3b6dbd54_1765944311"
+            />
+          </div>
         </div>
 
-        {/* Caption Under Grid */}
-        <p style={{
-          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-          color: '#CCCCCC',
-          fontWeight: 600,
-          letterSpacing: '2px',
-          textAlign: 'center',
-          fontStyle: 'italic',
-          maxWidth: '800px',
-          margin: '0 auto',
-          opacity: 0.9
+        {/* Scroll Indicator */}
+        <div style={{
+          position: 'absolute',
+          bottom: '3rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          animation: 'float 3s ease-in-out infinite',
+          opacity: 0.5
         }}>
-          Don&apos;t see what you want? Follow — new bikes every day.
-        </p>
+          <div style={{
+            fontSize: '2rem',
+            color: '#6b7280'
+          }}>
+            ↓
+          </div>
+        </div>
       </section>
 
-      {/* WHY BUY FROM JOE - Keep Existing 4 Bullets */}
+      {/* WHY CHOOSE JOE'S - Premium Card Grid */}
       <section style={{
-        background: '#000000',
-        padding: '6rem 2rem',
+        background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%)',
+        padding: '8rem 2rem',
         position: 'relative'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto'
         }}>
-          <h2 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            fontWeight: 900,
-            color: '#FFFFFF',
-            fontFamily: 'var(--font-clash)',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
+          {/* Section Header */}
+          <div style={{
             textAlign: 'center',
-            marginBottom: '4rem',
-            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+            marginBottom: '5rem'
           }}>
-            WHY BUY FROM JOE
-          </h2>
+            <h2 style={{
+              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+              fontWeight: 900,
+              background: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              fontFamily: 'var(--font-clash)',
+              letterSpacing: '-1px',
+              marginBottom: '1rem'
+            }}>
+              Why Riders Choose Joe's
+            </h2>
+            <p style={{
+              fontSize: '1.2rem',
+              color: '#6b7280',
+              fontWeight: 500
+            }}>
+              More than just a dealership—a rider's paradise
+            </p>
+          </div>
 
+          {/* Feature Cards */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '2.5rem',
-            marginTop: '3rem'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem'
           }}>
             {[
               {
+                icon: '💎',
+                title: 'Premium Selection',
+                description: 'Handpicked Harleys. Every bike inspected, serviced, and documented with complete service records.',
+                color: '#ea580c'
+              },
+              {
                 icon: '⚡',
-                title: 'NO BULLSHIT PRICING',
-                text: 'What you see is what you pay. No hidden fees, no market adjustments, no surprises.'
+                title: 'No BS Pricing',
+                description: 'What you see is what you pay. Zero hidden fees, zero market adjustments, zero surprises.',
+                color: '#f59e0b'
               },
               {
                 icon: '🛡️',
-                title: '48-HOUR GUARANTEE',
-                text: 'Not right? Bring it back. We fix it or refund it. Simple as that.'
+                title: '48-Hour Peace of Mind',
+                description: 'Not feeling it? Bring it back within 48 hours or 100 miles. Full refund or we fix it.',
+                color: '#ea580c'
               },
               {
                 icon: '💳',
-                title: 'BAD CREDIT? NO PROBLEM',
-                text: 'We work with everyone. First-time buyers, bad credit, self-employed — we got you.'
+                title: 'Everyone Rides',
+                description: 'Bad credit? First-time buyer? Self-employed? We work with everyone. $299/month financing available.',
+                color: '#f59e0b'
               },
               {
                 icon: '🚚',
-                title: '$499 NATIONWIDE SHIPPING',
-                text: 'Coast to coast, insured, professional transport. Your bike, delivered.'
+                title: 'Ship Anywhere',
+                description: 'Professional nationwide shipping for just $499. Fully insured, coast to coast.',
+                color: '#ea580c'
+              },
+              {
+                icon: '📱',
+                title: 'Daily Drops',
+                description: 'New bikes drop every day on TikTok & Instagram. Follow to never miss a deal.',
+                color: '#f59e0b'
               }
-            ].map((item, index) => (
+            ].map((feature, index) => (
               <div
                 key={index}
+                className="glass-card shine-effect"
                 style={{
-                  background: '#0A0A0A',
-                  border: '2px solid #1A1A1A',
-                  borderRadius: '16px',
-                  padding: '2.5rem',
+                  padding: '3rem',
+                  borderRadius: '20px',
                   textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  position: 'relative',
-                  overflow: 'hidden'
+                  transition: 'all 0.4s ease',
+                  cursor: 'pointer',
+                  border: '1px solid rgba(255, 255, 255, 0.05)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#FF6600';
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = '0 12px 40px rgba(255, 102, 0, 0.4)';
+                  e.currentTarget.style.transform = 'translateY(-10px)';
+                  e.currentTarget.style.borderColor = `${feature.color}40`;
+                  e.currentTarget.style.boxShadow = `0 20px 60px ${feature.color}20`;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#1A1A1A';
                   e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 <div style={{
                   fontSize: '4rem',
                   marginBottom: '1.5rem',
-                  filter: 'drop-shadow(0 0 20px rgba(255, 102, 0, 0.5))'
+                  filter: `drop-shadow(0 0 20px ${feature.color}60)`
                 }}>
-                  {item.icon}
+                  {feature.icon}
                 </div>
                 <h3 style={{
                   fontSize: '1.5rem',
-                  fontWeight: 900,
-                  color: '#FF6600',
+                  fontWeight: 800,
+                  color: '#ffffff',
                   fontFamily: 'var(--font-clash)',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
                   marginBottom: '1rem'
                 }}>
-                  {item.title}
+                  {feature.title}
                 </h3>
                 <p style={{
-                  color: '#CCCCCC',
+                  color: '#9ca3af',
                   fontSize: '1rem',
                   lineHeight: '1.7',
-                  fontWeight: 500
+                  fontWeight: 400
                 }}>
-                  {item.text}
+                  {feature.description}
                 </p>
               </div>
             ))}
@@ -229,16 +499,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOLLOW THE DROP - Huge Neon Buttons */}
+      {/* FOLLOW THE DROP */}
       <FollowTheDrop />
 
-      {/* GET ALERTS - Newsletter/SMS Signup */}
+      {/* GET ALERTS - Premium Form Section */}
       <section style={{
-        background: '#000000',
-        padding: '6rem 2rem',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #000000 100%)',
+        padding: '8rem 2rem',
         position: 'relative',
-        borderTop: '2px solid #FF6600',
-        borderBottom: '2px solid #FF6600'
+        borderTop: '1px solid rgba(234, 88, 12, 0.2)',
+        borderBottom: '1px solid rgba(234, 88, 12, 0.2)'
       }}>
         <div style={{
           maxWidth: '800px',
@@ -246,123 +516,266 @@ export default function HomePage() {
           textAlign: 'center'
         }}>
           <h2 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
             fontWeight: 900,
-            color: '#FFFFFF',
+            background: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             fontFamily: 'var(--font-clash)',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            marginBottom: '1rem',
-            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+            letterSpacing: '-1px',
+            marginBottom: '1rem'
           }}>
-            GET ALERTS
+            Never Miss a Drop
           </h2>
           <p style={{
-            fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-            color: '#CCCCCC',
+            fontSize: '1.2rem',
+            color: '#6b7280',
             marginBottom: '3rem',
-            fontWeight: 600,
-            letterSpacing: '2px',
+            fontWeight: 500,
             lineHeight: '1.6'
           }}>
-            Get notified when I drop a new bike — first dibs + $499 shipping
+            Get notified when new bikes drop — first dibs + $499 nationwide shipping
           </p>
           <GetAlerts />
         </div>
       </section>
 
-      {/* SEO CONTENT SECTION - Keyword Rich (Hidden but for SEO) */}
+      {/* SEO CONTENT SECTION */}
       <section style={{
         background: '#000000',
         padding: '4rem 2rem',
         position: 'relative',
-        borderTop: '1px solid #1A1A1A'
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)'
       }}>
         <div style={{
           maxWidth: '1200px',
           margin: '0 auto'
         }}>
           <div style={{
-            color: '#666666',
+            color: '#4b5563',
             lineHeight: '1.8',
             fontSize: '0.95rem',
             maxWidth: '900px',
             margin: '0 auto'
           }}>
             <p style={{ marginBottom: '1rem' }}>
-              Looking for <strong style={{ color: '#888888' }}>used Harleys in Milwaukee</strong>? You&apos;re in the right place. At <strong>House of Harley-Davidson</strong> (6221 W Layton Ave, Milwaukee, WI 53220), we offer the largest selection of <strong>used Harley-Davidson motorcycles</strong> in southeastern Wisconsin. Whether you&apos;re searching for a <strong>used Street Glide Milwaukee</strong>, <strong>used Road Glide Milwaukee</strong>, <strong>used Fat Boy Milwaukee</strong>, <strong>used Heritage Classic Milwaukee</strong>, or <strong>used Low Rider S Milwaukee</strong>, we have options for every rider and budget.
+              Looking for <strong style={{ color: '#6b7280' }}>used Harleys in Milwaukee</strong>? You're in the right place. At <strong>House of Harley-Davidson</strong> (6221 W Layton Ave, Milwaukee, WI 53220), we offer the largest selection of <strong>used Harley-Davidson motorcycles</strong> in southeastern Wisconsin. Whether you're searching for a <strong>used Street Glide Milwaukee</strong>, <strong>used Road Glide Milwaukee</strong>, <strong>used Fat Boy Milwaukee</strong>, <strong>used Heritage Classic Milwaukee</strong>, or <strong>used Low Rider S Milwaukee</strong>, we have options for every rider and budget.
             </p>
             <p style={{ marginBottom: '1rem' }}>
-              Every <strong>used Harley for sale in Milwaukee</strong> in our inventory has been personally inspected, serviced, and documented. We provide complete service records, Carfax reports, and detailed condition documentation. As a trusted <strong>Harley-Davidson dealer in Wisconsin</strong>, we maintain strict quality standards. All our <strong>used Harleys Milwaukee</strong> come with our 48-hour guarantee — if something&apos;s not right in the first 48 hours or 100 miles, bring it back for a full refund or fix.
+              Every <strong>used Harley for sale in Milwaukee</strong> in our inventory has been personally inspected, serviced, and documented. We provide complete service records, Carfax reports, and detailed condition documentation. As a trusted <strong>Harley-Davidson dealer in Wisconsin</strong>, we maintain strict quality standards. All our <strong>used Harleys Milwaukee</strong> come with our 48-hour guarantee — if something's not right in the first 48 hours or 100 miles, bring it back for a full refund or fix.
             </p>
             <p style={{ marginBottom: '0' }}>
-              Ready to find your perfect <strong>used Harley Milwaukee</strong>? Browse our latest drops above, follow us on <a href="https://www.tiktok.com/@suchgrime" target="_blank" rel="noopener noreferrer" style={{ color: '#888888', textDecoration: 'none' }}>TikTok</a> and <a href="https://www.instagram.com/joetabora" target="_blank" rel="noopener noreferrer" style={{ color: '#888888', textDecoration: 'none' }}>Instagram</a> for daily updates, or text Joe directly at <a href="sms:4144396211" style={{ color: '#888888', textDecoration: 'none', fontWeight: 700 }}>414-439-6211</a>. I answer fast — usually within minutes.
+              Ready to find your perfect <strong>used Harley Milwaukee</strong>? Browse our latest drops above, follow us on <a href="https://www.tiktok.com/@suchgrime" target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280', textDecoration: 'none' }}>TikTok</a> and <a href="https://www.instagram.com/joetabora" target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280', textDecoration: 'none' }}>Instagram</a> for daily updates, or text Joe directly at <a href="sms:4144396211" style={{ color: '#6b7280', textDecoration: 'none', fontWeight: 700 }}>414-439-6211</a>. I answer fast — usually within minutes.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* PREMIUM FOOTER */}
       <footer style={{
-        background: '#000000',
-        padding: '4rem 2rem 3rem',
-        borderTop: '2px solid #FF6600'
+        background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
+        padding: '5rem 2rem 3rem',
+        borderTop: '1px solid rgba(234, 88, 12, 0.2)'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto'
         }}>
+          {/* Main Footer Content */}
           <div style={{
-            marginBottom: '2rem'
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '4rem',
+            marginBottom: '4rem'
+          }}>
+            {/* Brand Column */}
+            <div>
+              <div style={{
+                fontSize: '1.8rem',
+                fontWeight: 900,
+                background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                fontFamily: 'var(--font-clash)',
+                letterSpacing: '2px',
+                marginBottom: '1rem'
+              }}>
+                JOE'S USED HARLEYS
+              </div>
+              <p style={{
+                color: '#6b7280',
+                fontSize: '0.95rem',
+                marginBottom: '1.5rem',
+                lineHeight: '1.6'
+              }}>
+                Milwaukee's premier destination for quality used Harley-Davidson motorcycles.
+              </p>
+              <div style={{
+                display: 'flex',
+                gap: '1rem'
+              }}>
+                {[
+                  { icon: '🎵', url: 'https://www.tiktok.com/@suchgrime' },
+                  { icon: '📸', url: 'https://www.instagram.com/joetabora' },
+                  { icon: '📺', url: 'https://www.youtube.com/@suchgrime414' }
+                ].map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="glass-card"
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.5rem',
+                      borderRadius: '12px',
+                      transition: 'all 0.3s ease',
+                      textDecoration: 'none'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-3px)';
+                      e.currentTarget.style.borderColor = 'rgba(234, 88, 12, 0.5)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    }}
+                  >
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 style={{
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: '#ffffff',
+                marginBottom: '1.5rem',
+                letterSpacing: '1px',
+                textTransform: 'uppercase'
+              }}>
+                Quick Links
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {[
+                  { label: 'Home', href: '/' },
+                  { label: 'Blog', href: '/blog' },
+                  { label: 'Events', href: '/events' },
+                  { label: 'Merch', href: '/merch' },
+                  { label: 'Contact', href: '/contact' }
+                ].map((link, i) => (
+                  <Link
+                    key={i}
+                    href={link.href}
+                    style={{
+                      color: '#6b7280',
+                      textDecoration: 'none',
+                      fontSize: '0.95rem',
+                      fontWeight: 500,
+                      transition: 'color 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#ea580c'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = '#6b7280'}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h3 style={{
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: '#ffffff',
+                marginBottom: '1.5rem',
+                letterSpacing: '1px',
+                textTransform: 'uppercase'
+              }}>
+                Get In Touch
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div>
+                  <div style={{ color: '#9ca3af', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Location</div>
+                  <div style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: 500 }}>
+                    6221 W Layton Ave<br/>Milwaukee, WI 53220
+                  </div>
+                </div>
+                <div>
+                  <div style={{ color: '#9ca3af', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Phone</div>
+                  <a href="tel:4144396211" style={{
+                    color: '#ea580c',
+                    textDecoration: 'none',
+                    fontSize: '1.1rem',
+                    fontWeight: 700
+                  }}>
+                    414-439-6211
+                  </a>
+                </div>
+                <a
+                  href="sms:4144396211?body=Hey Joe!"
+                  style={{
+                    background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+                    color: '#ffffff',
+                    padding: '0.75rem 1.5rem',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    textDecoration: 'none',
+                    fontFamily: 'var(--font-clash)',
+                    borderRadius: '8px',
+                    transition: 'all 0.3s ease',
+                    display: 'inline-block',
+                    marginTop: '0.5rem'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(234, 88, 12, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  TEXT JOE →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div style={{
+            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+            paddingTop: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1rem'
           }}>
             <div style={{
-              fontSize: '2rem',
-              fontWeight: 900,
-              color: '#FF6600',
-              fontFamily: 'var(--font-clash)',
-              letterSpacing: '4px',
-              textTransform: 'uppercase',
-              marginBottom: '1rem'
+              color: '#4b5563',
+              fontSize: '0.85rem'
             }}>
-              JOE'S USED HARLEYS
+              © {new Date().getFullYear()} Joe's Used Harleys. All Rights Reserved.
             </div>
-            <p style={{
-              color: '#CCCCCC',
-              fontSize: '1rem',
-              marginBottom: '0.5rem'
+            <div style={{
+              color: '#4b5563',
+              fontSize: '0.85rem'
             }}>
-              6221 W Layton Ave, Milwaukee, WI 53220
-            </p>
-            <p style={{
-              color: '#CCCCCC',
-              fontSize: '1rem',
-              marginBottom: '2rem'
-            }}>
-              <a href="tel:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>414-439-6211</a> • <a href="sms:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>TEXT</a>
-            </p>
-          </div>
-
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '2rem',
-            flexWrap: 'wrap',
-            marginBottom: '2rem'
-          }}>
-            <Link href="/" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>HOME</Link>
-            <Link href="/events" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>EVENTS</Link>
-            <Link href="/merch" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>MERCH</Link>
-            <Link href="/contact" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>CONTACT</Link>
-          </div>
-
-          <div style={{
-            borderTop: '1px solid #1A1A1A',
-            paddingTop: '2rem',
-            color: '#666666',
-            fontSize: '0.85rem',
-            textAlign: 'center'
-          }}>
-            © {new Date().getFullYear()} Joe's Used Harleys. All Rights Reserved. | Built for riders, by riders.
+              Built for riders, by riders. 🏍️
+            </div>
           </div>
         </div>
       </footer>

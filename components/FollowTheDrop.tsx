@@ -7,77 +7,91 @@ export function FollowTheDrop() {
       handle: '@suchgrime',
       url: 'https://www.tiktok.com/@suchgrime',
       icon: '🎵',
-      color: '#000000',
-      hoverColor: '#FF6600'
+      color: '#ea580c',
+      gradient: 'linear-gradient(135deg, #ea580c 0%, #dc2626 100%)'
     },
     {
       platform: 'Instagram',
       handle: '@joetabora',
       url: 'https://www.instagram.com/joetabora',
       icon: '📸',
-      color: '#000000',
-      hoverColor: '#FF6600'
+      color: '#f59e0b',
+      gradient: 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)'
     },
     {
       platform: 'YouTube',
       handle: '@suchgrime414',
       url: 'https://www.youtube.com/@suchgrime414',
       icon: '📺',
-      color: '#000000',
-      hoverColor: '#FF6600'
+      color: '#ea580c',
+      gradient: 'linear-gradient(135deg, #dc2626 0%, #f59e0b 100%)'
     }
   ];
 
   return (
     <section style={{
-      background: 'linear-gradient(135deg, #0A0A0A 0%, #000000 100%)',
-      padding: '6rem 2rem',
+      background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)',
+      padding: '8rem 2rem',
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Background Pattern */}
+      {/* Background Glow Effects */}
       <div style={{
         position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23FF6600\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-        opacity: 0.5
+        top: '20%',
+        left: '10%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(234, 88, 12, 0.1) 0%, transparent 70%)',
+        filter: 'blur(80px)',
+        pointerEvents: 'none'
+      }}></div>
+      <div style={{
+        position: 'absolute',
+        bottom: '20%',
+        right: '10%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%)',
+        filter: 'blur(80px)',
+        pointerEvents: 'none'
       }}></div>
 
       <div style={{
         position: 'relative',
         zIndex: 2,
-        maxWidth: '1200px',
+        maxWidth: '1400px',
         margin: '0 auto',
         textAlign: 'center'
       }}>
-        <h2 style={{
-          fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-          fontWeight: 900,
-          color: '#FFFFFF',
-          fontFamily: 'var(--font-clash)',
-          letterSpacing: '4px',
-          textTransform: 'uppercase',
-          marginBottom: '1rem',
-          textShadow: '0 4px 20px rgba(255, 102, 0, 0.5)'
-        }}>
-          FOLLOW THE DROP
-        </h2>
-        <p style={{
-          fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
-          color: '#CCCCCC',
-          marginBottom: '4rem',
-          fontWeight: 600,
-          letterSpacing: '2px'
-        }}>
-          See every bike as it drops. Follow for daily updates.
-        </p>
+        {/* Section Header */}
+        <div style={{ marginBottom: '5rem' }}>
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+            fontWeight: 900,
+            background: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontFamily: 'var(--font-clash)',
+            letterSpacing: '-1px',
+            marginBottom: '1rem'
+          }}>
+            Follow the Daily Drop
+          </h2>
+          <p style={{
+            fontSize: '1.2rem',
+            color: '#6b7280',
+            fontWeight: 500
+          }}>
+            New Harleys drop every day. Don't miss out — follow now
+          </p>
+        </div>
 
+        {/* Social Platform Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           gap: '2rem',
           marginTop: '3rem'
         }}>
@@ -88,80 +102,158 @@ export function FollowTheDrop() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                background: '#000000',
-                border: '3px solid #FF6600',
-                padding: '3rem 2rem',
-                borderRadius: '16px',
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                padding: '3.5rem 2.5rem',
+                borderRadius: '24px',
                 textDecoration: 'none',
-                transition: 'all 0.3s ease',
+                transition: 'all 0.4s ease',
                 position: 'relative',
                 overflow: 'hidden',
-                boxShadow: '0 0 30px rgba(255, 102, 0, 0.2)'
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '1.5rem'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#FF6600';
-                e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
-                e.currentTarget.style.boxShadow = '0 12px 50px rgba(255, 102, 0, 0.6)';
-                const icon = e.currentTarget.querySelector('.social-icon') as HTMLElement;
-                const title = e.currentTarget.querySelector('.social-title') as HTMLElement;
-                const handle = e.currentTarget.querySelector('.social-handle') as HTMLElement;
-                if (icon) icon.style.transform = 'scale(1.2) rotate(5deg)';
-                if (title) title.style.color = '#000000';
-                if (handle) handle.style.color = '#000000';
+                e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)';
+                e.currentTarget.style.borderColor = social.color + '80';
+                e.currentTarget.style.boxShadow = `0 25px 60px ${social.color}30`;
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                
+                const icon = e.currentTarget.querySelector('.social-icon-circle') as HTMLElement;
+                if (icon) {
+                  icon.style.background = social.gradient;
+                  icon.style.transform = 'scale(1.1) rotate(5deg)';
+                }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#000000';
                 e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 102, 0, 0.2)';
-                const icon = e.currentTarget.querySelector('.social-icon') as HTMLElement;
-                const title = e.currentTarget.querySelector('.social-title') as HTMLElement;
-                const handle = e.currentTarget.querySelector('.social-handle') as HTMLElement;
-                if (icon) icon.style.transform = 'scale(1) rotate(0deg)';
-                if (title) title.style.color = '#FF6600';
-                if (handle) handle.style.color = '#CCCCCC';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                
+                const icon = e.currentTarget.querySelector('.social-icon-circle') as HTMLElement;
+                if (icon) {
+                  icon.style.background = 'rgba(255, 255, 255, 0.05)';
+                  icon.style.transform = 'scale(1) rotate(0deg)';
+                }
               }}
             >
-              <div style={{
-                fontSize: '4rem',
-                marginBottom: '1.5rem',
-                transition: 'all 0.3s ease'
-              }} className="social-icon">
+              {/* Icon Circle */}
+              <div 
+                className="social-icon-circle"
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '3rem',
+                  transition: 'all 0.4s ease',
+                  border: `2px solid ${social.color}40`
+                }}
+              >
                 {social.icon}
               </div>
+
+              {/* Platform Name */}
               <h3 style={{
                 fontSize: '1.8rem',
                 fontWeight: 900,
-                color: '#FF6600',
+                color: '#ffffff',
                 fontFamily: 'var(--font-clash)',
-                letterSpacing: '3px',
+                letterSpacing: '1px',
                 textTransform: 'uppercase',
-                marginBottom: '0.5rem',
-                transition: 'all 0.3s ease'
-              }} className="social-title">
+                margin: 0
+              }}>
                 {social.platform}
               </h3>
+
+              {/* Handle */}
               <p style={{
-                fontSize: '1rem',
-                color: '#CCCCCC',
+                fontSize: '1.1rem',
+                color: '#9ca3af',
                 fontWeight: 600,
-                letterSpacing: '1px',
-                transition: 'all 0.3s ease'
-              }} className="social-handle">
+                letterSpacing: '0.5px',
+                margin: 0
+              }}>
                 {social.handle}
               </p>
+
+              {/* CTA */}
               <div style={{
-                marginTop: '1.5rem',
+                marginTop: '1rem',
+                padding: '0.75rem 2rem',
+                background: social.gradient,
+                color: '#ffffff',
                 fontSize: '0.9rem',
-                color: '#FF6600',
                 fontWeight: 700,
-                letterSpacing: '2px',
+                letterSpacing: '1.5px',
                 textTransform: 'uppercase',
-                opacity: 0.8
+                borderRadius: '50px',
+                fontFamily: 'var(--font-clash)'
               }}>
                 FOLLOW NOW →
               </div>
             </a>
           ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div style={{
+          marginTop: '5rem',
+          padding: '2.5rem',
+          background: 'rgba(255, 255, 255, 0.02)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(234, 88, 12, 0.2)',
+          borderRadius: '20px'
+        }}>
+          <p style={{
+            fontSize: '1.3rem',
+            color: '#e5e7eb',
+            fontWeight: 600,
+            marginBottom: '1.5rem',
+            lineHeight: '1.6'
+          }}>
+            New bikes drop <span style={{ color: '#ea580c', fontWeight: 800 }}>every single day</span>.
+            <br />
+            Follow to see them first and get first dibs.
+          </p>
+          <a
+            href="sms:4144396211?body=I want alerts for new drops!"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              color: '#ffffff',
+              padding: '1.25rem 3rem',
+              fontSize: '1rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-clash)',
+              borderRadius: '50px',
+              boxShadow: '0 10px 40px rgba(234, 88, 12, 0.4)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 20px 60px rgba(234, 88, 12, 0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = '0 10px 40px rgba(234, 88, 12, 0.4)';
+            }}
+          >
+            <span style={{ fontSize: '1.3rem' }}>💬</span>
+            TEXT FOR ALERTS
+          </a>
         </div>
       </div>
     </section>
