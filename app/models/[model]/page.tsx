@@ -205,57 +205,6 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
         </p>
       </section>
 
-      {/* LATEST DROPS SECTION */}
-      <section style={{
-        background: '#0A0A0A',
-        padding: '6rem 2rem',
-        position: 'relative',
-        borderTop: '3px solid #FF6600',
-        borderBottom: '3px solid #FF6600'
-      }}>
-        <div style={{
-          maxWidth: '1400px',
-          margin: '0 auto'
-        }}>
-          <div style={{
-            textAlign: 'center',
-            marginBottom: '4rem'
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-              fontWeight: 900,
-              color: '#FFFFFF',
-              fontFamily: 'var(--font-clash)',
-              letterSpacing: '4px',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
-              textShadow: '0 4px 20px rgba(255, 102, 0, 0.5)'
-            }}>
-              LATEST {modelData.name.toUpperCase()} DROPS
-            </h2>
-            <p style={{
-              fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-              color: '#CCCCCC',
-              fontWeight: 600,
-              letterSpacing: '2px'
-            }}>
-              See every {modelData.name} as it drops. Prices, specs, and real videos.
-            </p>
-          </div>
-
-          {/* Social Feed Widget */}
-          <div style={{
-            marginTop: '3rem'
-          }}>
-            <SocialFeed
-              tiktokHandle="@suchgrime"
-              instagramHandle="@joetabora"
-              widgetId="3b6dbd54_1765944311"
-            />
-          </div>
-        </div>
-      </section>
-
       {/* WHY BUY FROM JOE */}
       <section style={{
         background: '#000000',
