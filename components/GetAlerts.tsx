@@ -45,41 +45,8 @@ export function GetAlerts() {
   };
 
   return (
-    <section style={{
-      background: '#000000',
-      padding: '6rem 2rem',
-      position: 'relative',
-      borderTop: '2px solid #FF6600',
-      borderBottom: '2px solid #FF6600'
-    }}>
-      <div style={{
-        maxWidth: '800px',
-        margin: '0 auto',
-        textAlign: 'center'
-      }}>
-        <h2 style={{
-          fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-          fontWeight: 900,
-          color: '#FFFFFF',
-          fontFamily: 'var(--font-clash)',
-          letterSpacing: '3px',
-          textTransform: 'uppercase',
-          marginBottom: '1rem',
-          textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
-        }}>
-          GET ALERTS
-        </h2>
-        <p style={{
-          fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-          color: '#CCCCCC',
-          marginBottom: '3rem',
-          fontWeight: 600,
-          letterSpacing: '1px'
-        }}>
-          Get notified when I drop a new bike — first dibs + $499 shipping
-        </p>
-
-        <form onSubmit={handleSubmit} style={{
+    <>
+      <form onSubmit={handleSubmit} style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '1.5rem',
@@ -191,15 +158,14 @@ export function GetAlerts() {
           </div>
         )}
 
-        <p style={{
-          marginTop: '2rem',
-          fontSize: '0.9rem',
-          color: '#666666',
-          fontStyle: 'italic'
-        }}>
-          Or just text Joe directly: <a href="sms:4144396211" style={{ color: '#FF6600', textDecoration: 'none', fontWeight: 700 }}>414-439-6211</a>
-        </p>
-      </div>
-    </section>
+      <p style={{
+        marginTop: '2rem',
+        fontSize: '0.9rem',
+        color: '#666666',
+        fontStyle: 'italic'
+      }}>
+        Or just text Joe directly: <a href="sms:4144396211" style={{ color: '#FF6600', textDecoration: 'none', fontWeight: 700 }}>414-439-6211</a>
+      </p>
+    </>
   );
 }
