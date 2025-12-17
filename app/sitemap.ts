@@ -6,32 +6,12 @@ import { getAllCityPageSlugs } from '@/lib/city-pages-data';
 import { getAllStatePageSlugs } from '@/lib/state-pages-data';
 import { getAllBlogPosts } from '@/lib/blog-data';
 
-async function getBikes() {
-  try {
-    // Read from file system during build (most reliable)
-    const fs = await import('fs/promises');
-    const path = await import('path');
-    const filePath = path.join(process.cwd(), 'public', 'inventory.json');
-    const fileContents = await fs.readFile(filePath, 'utf8');
-    const data = JSON.parse(fileContents);
-    return data.bikes || [];
-  } catch (error) {
-    console.error('Error reading inventory.json for sitemap:', error);
-    return [];
-  }
-}
+// Removed getBikes() function - not using individual bike pages anymore
+// Focusing on social media drops instead
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;
   const currentDate = new Date().toISOString().split('T')[0];
-  const bikes = await getBikes();
-
-  const bikePages = bikes.map((bike: { id: string }) => ({
-    url: `${baseUrl}/bikes/${bike.id}`,
-    lastModified: currentDate,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
 
   return [
     {
@@ -40,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 1.0,
     },
-    ...bikePages,
+    // Individual bike pages removed - using social media for inventory
     {
       url: `${baseUrl}/inventory`,
       lastModified: currentDate,
