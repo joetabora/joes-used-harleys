@@ -554,6 +554,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               <Link
                 key={i}
                 href={link.href}
+                className="footer-link"
                 style={{
                   color: '#6b7280',
                   textDecoration: 'none',
@@ -562,8 +563,6 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                   letterSpacing: '1px',
                   transition: 'color 0.3s ease'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#ea580c'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#6b7280'}
               >
                 {link.label}
               </Link>
@@ -599,6 +598,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           border-color: #ea580c;
           background: rgba(234, 88, 12, 0.05);
           transform: translateY(-4px);
+        }
+        .footer-link:hover {
+          color: #ea580c;
         }
       `}} />
     </>
