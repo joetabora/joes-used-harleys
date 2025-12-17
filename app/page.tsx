@@ -102,7 +102,7 @@ export default function HomePage() {
           <SocialFeed
             tiktokHandle="@suchgrime"
             instagramHandle="@joetabora"
-            widgetId="9c7cbdce-5662-4a22-92f3-c17153f3f1c8"
+            widgetId="3b6dbd54_1765944311"
           />
         </div>
 

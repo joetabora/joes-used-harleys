@@ -5,20 +5,20 @@ import { useEffect, useRef } from 'react';
 interface SocialFeedProps {
   tiktokHandle?: string;
   instagramHandle?: string;
-  widgetId?: string; // For Elfsight/EmbedSocial widget ID
+  widgetId?: string; // For Powr.io widget ID
 }
 
 export function SocialFeed({ tiktokHandle, instagramHandle, widgetId }: SocialFeedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Load Elfsight widget script if widgetId is provided
+    // Load Powr.io widget script if widgetId is provided
     if (widgetId && containerRef.current) {
       // Check if script already exists
-      const existingScript = document.querySelector('script[src*="elfsight"]');
+      const existingScript = document.querySelector('script[src*="powr.io"]');
       if (!existingScript) {
         const script = document.createElement('script');
-        script.src = 'https://elfsightcdn.com/platform.js';
+        script.src = 'https://www.powr.io/powr.js?platform=html';
         script.async = true;
         document.body.appendChild(script);
       }
@@ -29,13 +29,13 @@ export function SocialFeed({ tiktokHandle, instagramHandle, widgetId }: SocialFe
     }
   }, [widgetId]);
 
-  // If widgetId is provided, use Elfsight widget
+  // If widgetId is provided, use Powr.io widget
   if (widgetId) {
     return (
       <div 
         ref={containerRef}
-        className={`elfsight-app-${widgetId}`}
-        data-elfsight-app-lazy
+        className="powr-social-feed"
+        id={widgetId}
         style={{
           width: '100%',
           minHeight: '600px'
