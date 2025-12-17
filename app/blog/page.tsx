@@ -45,39 +45,89 @@ export default function BlogIndexPage() {
 
       {/* Hero Section */}
       <section style={{
-        padding: '6rem 2rem 4rem',
-        background: '#000000',
+        minHeight: '60vh',
+        background: 'linear-gradient(135deg, #000000 0%, #0f0f0f 50%, #000000 100%)',
+        padding: '10rem 2rem 6rem',
         textAlign: 'center',
-        position: 'relative'
+        position: 'relative',
+        overflow: 'hidden'
       }}>
+        {/* Background Glow */}
+        <div style={{
+          position: 'absolute',
+          top: '20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(234, 88, 12, 0.15) 0%, transparent 70%)',
+          filter: 'blur(100px)',
+          pointerEvents: 'none'
+        }}></div>
+
         <div style={{
           maxWidth: '1200px',
-          margin: '0 auto'
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 2
         }}>
+          {/* Badge */}
+          <div style={{
+            display: 'inline-block',
+            background: 'linear-gradient(135deg, rgba(234, 88, 12, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%)',
+            border: '1px solid rgba(234, 88, 12, 0.3)',
+            padding: '0.75rem 2rem',
+            borderRadius: '50px',
+            marginBottom: '2rem',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <span style={{
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              📖 Buyer's Guide
+            </span>
+          </div>
+
           <h1 style={{
             fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
             fontWeight: 900,
-            color: '#FFFFFF',
-            marginBottom: '2rem',
+            background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #ffffff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            marginBottom: '1.5rem',
             lineHeight: '1.1',
             fontFamily: 'var(--font-clash)',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+            letterSpacing: '-1px'
           }}>
-            USED HARLEY BUYER'S GUIDE
+            Used Harley
+            <br />
+            <span style={{
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              Buyer's Guide
+            </span>
           </h1>
           <p style={{
-            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
-            color: '#CCCCCC',
+            fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
+            color: '#9ca3af',
             marginBottom: '2rem',
-            maxWidth: '800px',
-            margin: '0 auto 2rem',
+            maxWidth: '700px',
+            margin: '0 auto',
             lineHeight: '1.8',
-            fontWeight: 600,
-            letterSpacing: '1px'
+            fontWeight: 500
           }}>
-          Expert tips, honest reviews, and real advice from a Milwaukee rider who knows bikes
+            Expert tips, honest reviews, and real advice from a Milwaukee rider who knows bikes
           </p>
         </div>
       </section>
@@ -87,60 +137,53 @@ export default function BlogIndexPage() {
 
       {/* CTA Section */}
       <section style={{
-        background: 'linear-gradient(135deg, #FF6600 0%, #E55A00 100%)',
-        padding: '6rem 2rem',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #000000 100%)',
+        padding: '8rem 2rem',
         textAlign: 'center',
         position: 'relative',
-        overflow: 'hidden'
+        borderTop: '1px solid rgba(234, 88, 12, 0.2)'
       }}>
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-          opacity: 0.1
-        }}></div>
-
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
           maxWidth: '800px',
-          margin: '0 auto'
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 2
         }}>
           <h2 style={{
             fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: 900,
-            color: '#000000',
+            background: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             fontFamily: 'var(--font-clash)',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            marginBottom: '2rem',
-            textShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
+            letterSpacing: '-1px',
+            marginBottom: '1.5rem'
           }}>
-            READY TO BUY?
+            Ready to Buy?
           </h2>
           <p style={{
-            fontSize: 'clamp(1.2rem, 3vw, 1.6rem)',
-            color: '#000000',
-            fontWeight: 700,
+            fontSize: '1.2rem',
+            color: '#9ca3af',
+            fontWeight: 500,
             marginBottom: '3rem',
-            letterSpacing: '1px',
             lineHeight: '1.6'
           }}>
-            Got questions after reading? Want to see current inventory? Text me at{' '}
+            Got questions after reading? Text me at{' '}
             <a
               href="sms:4144396211"
               style={{
-                color: '#000000',
-                textDecoration: 'underline',
-                fontWeight: 900
+                background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                textDecoration: 'none',
+                fontWeight: 700
               }}
             >
               414-439-6211
             </a>
-            {' '}and I&apos;ll help you find the perfect used Harley.
+            {' '}and I'll help you find the perfect used Harley.
           </p>
           <div style={{
             display: 'flex',
@@ -149,46 +192,50 @@ export default function BlogIndexPage() {
             flexWrap: 'wrap'
           }}>
             <a
-              href="/inventory"
-              className="blog-cta-button-primary"
+              href="sms:4144396211"
+              className="blog-cta-primary"
               style={{
-                background: '#000000',
-                color: '#FF6600',
-                padding: '1.5rem 3rem',
-                fontSize: '1.2rem',
+                background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+                color: '#ffffff',
+                padding: '1.5rem 3.5rem',
+                fontSize: '1rem',
                 fontWeight: 900,
                 textTransform: 'uppercase',
-                letterSpacing: '3px',
+                letterSpacing: '2px',
                 textDecoration: 'none',
                 fontFamily: 'var(--font-clash)',
-                border: '3px solid #000000',
-                borderRadius: '8px',
+                borderRadius: '50px',
                 transition: 'all 0.3s ease',
-                display: 'inline-block'
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                boxShadow: '0 10px 40px rgba(234, 88, 12, 0.4)'
               }}
             >
-              VIEW INVENTORY
+              <span style={{ fontSize: '1.3rem' }}>💬</span>
+              TEXT JOE
             </a>
             <a
-              href="sms:4144396211"
-              className="blog-cta-button-secondary"
+              href="/"
+              className="blog-cta-secondary"
               style={{
-                background: 'transparent',
-                color: '#000000',
-                padding: '1.5rem 3rem',
-                fontSize: '1.2rem',
+                background: 'rgba(255, 255, 255, 0.03)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                padding: '1.5rem 3.5rem',
+                fontSize: '1rem',
                 fontWeight: 900,
                 textTransform: 'uppercase',
-                letterSpacing: '3px',
+                letterSpacing: '2px',
                 textDecoration: 'none',
                 fontFamily: 'var(--font-clash)',
-                border: '3px solid #000000',
-                borderRadius: '8px',
+                borderRadius: '50px',
                 transition: 'all 0.3s ease',
                 display: 'inline-block'
               }}
             >
-              TEXT JOE
+              VIEW LATEST DROPS
             </a>
           </div>
         </div>
@@ -198,15 +245,14 @@ export default function BlogIndexPage() {
       <FloatingActionButtons />
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .blog-cta-button-primary:hover {
-          background: transparent !important;
-          color: #000000 !important;
-          transform: scale(1.05);
+        .blog-cta-primary:hover {
+          transform: translateY(-3px) scale(1.05);
+          box-shadow: 0 20px 60px rgba(234, 88, 12, 0.6);
         }
-        .blog-cta-button-secondary:hover {
-          background: #000000 !important;
-          color: #FF6600 !important;
-          transform: scale(1.05);
+        .blog-cta-secondary:hover {
+          transform: translateY(-3px);
+          border-color: rgba(234, 88, 12, 0.5);
+          background: rgba(255, 255, 255, 0.08);
         }
       `}} />
     </>
