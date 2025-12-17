@@ -301,7 +301,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             ].map((feature, index) => (
               <div
                 key={index}
-                className="glass-card"
+                className="feature-card"
                 style={{
                   background: 'rgba(255, 255, 255, 0.02)',
                   backdropFilter: 'blur(20px)',
@@ -311,18 +311,6 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                   textAlign: 'center',
                   transition: 'all 0.4s ease',
                   cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-10px)';
-                  e.currentTarget.style.borderColor = `${feature.color}40`;
-                  e.currentTarget.style.boxShadow = `0 20px 60px ${feature.color}20`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
                 }}
               >
                 <div style={{
@@ -600,6 +588,12 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         @keyframes pulse {
           0%, 100% { opacity: 0.5; }
           50% { opacity: 0.8; }
+        }
+        .feature-card:hover {
+          transform: translateY(-10px);
+          border-color: rgba(234, 88, 12, 0.3);
+          box-shadow: 0 20px 60px rgba(234, 88, 12, 0.15);
+          background: rgba(255, 255, 255, 0.05);
         }
         .model-link-seo:hover {
           border-color: #ea580c;
