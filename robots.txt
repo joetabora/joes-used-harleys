@@ -1,21 +1,52 @@
+# Optimized Robots.txt for Joe's Used Harleys
+# Updated: January 2025
+
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://joesusedharleys.com/sitemap.xml
+# Sitemaps (Primary + New 2025)
+Sitemap: https://www.joesusedharleys.com/sitemap.xml
+Sitemap: https://www.joesusedharleys.com/sitemap-2025.xml
 
-# Disallow admin areas (if any)
+# Disallow admin and private areas
 Disallow: /admin/
 Disallow: /private/
+Disallow: /api/
 
-# Allow all important pages
+# Allow all public content
 Allow: /
-Allow: /inventory.json
+Allow: /blog
+Allow: /blog/*
+Allow: /models/*
+Allow: /used-harleys/*
+Allow: /used-harleys-state/*
+Allow: /inventory
+Allow: /contact
+Allow: /events
+Allow: /merch
+
+# Allow media assets for image SEO
 Allow: /*.png
 Allow: /*.jpg
 Allow: /*.jpeg
 Allow: /*.webp
+Allow: /*.svg
+Allow: /inventory.json
 
-# Crawl delay (optional, helps with server load)
-Crawl-delay: 1
+# Block duplicate content (if needed in future)
+# Disallow: /*?*sort=
+# Disallow: /*?*filter=
+
+# Crawl delay (helps with server load)
+Crawl-delay: 0.5
+
+# Googlebot specific (no delay)
+User-agent: Googlebot
+Crawl-delay: 0
+Allow: /
+
+# Bingbot specific
+User-agent: Bingbot
+Crawl-delay: 0.5
+Allow: /
 

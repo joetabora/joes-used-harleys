@@ -1172,6 +1172,333 @@ export const blogPosts: BlogPost[] = [
 <p>Buying a used Harley out of state is risky, but it doesn't have to be. Work with someone you trust, get proof of everything, use protected payment methods, and inspect before you pay.</p>
 
 <p>Or work with me. I'll give you full transparency, honest pricing, and stand behind every bike I sell. <a href="/inventory">Browse my inventory</a> or <a href="sms:4144396211">text me at 414-439-6211</a> to see what I've got. I'll get you current pricing and get that bike shipped to your door for $499.</p>`
+  },
+  {
+    slug: 'bad-credit-harley-financing-actually-works',
+    title: 'Bad Credit Harley Financing That Actually Works (2025 Guide)',
+    metaTitle: 'Bad Credit Harley Financing | Get Approved | Joe\'s Used Harleys',
+    metaDescription: 'Bad credit? No problem. Real financing options that work for Harley buyers with credit challenges. $299/month options available. Text Joe 414-439-6211',
+    excerpt: 'Bad credit doesn\'t mean no Harley. Here\'s how financing actually works when your credit sucks.',
+    date: '2025-01-16',
+    readTime: '6 min read',
+    featuredImage: '/twin.jpg',
+    keywords: ['bad credit harley financing', 'harley financing bad credit', 'buy harley bad credit', 'motorcycle financing poor credit'],
+    categories: ['Financing'],
+    images: [],
+    content: `<p>Bad credit? Join the club. Most of my customers don't have perfect credit. Some have no credit. Some have really bad credit. They all ride Harleys now.</p>
+
+<h2>The Truth About Bad Credit Harley Financing</h2>
+
+<p>Banks say no. Harley dealerships want 20% down and 18% APR. Most dealers won't even try if your score is under 650. That's BS.</p>
+
+<p>I work with everyone. Good credit, bad credit, no credit – doesn't matter. If you want to ride and you're reasonable, we'll figure it out.</p>
+
+<h2>What "Bad Credit" Actually Means</h2>
+
+<p>Credit scores under 600, recent bankruptcy, collections, repossessions – these don't mean you can't get a Harley. They just mean traditional financing won't work. So we use other options.</p>
+
+<h2>Real Financing Options That Work</h2>
+
+<p><strong>Owner Financing:</strong> I hold the note, you make payments directly to me. $299/month options available.</p>
+
+<p><strong>Buy Here Pay Here:</strong> Similar to owner financing but through approved partners.</p>
+
+<p><strong>Cosigner:</strong> Someone with good credit signs with you. Easier approval, better rates.</p>
+
+<p><strong>Larger Down Payment:</strong> Put more down, finance less, easier approval.</p>
+
+<h2>How It Actually Works</h2>
+
+<p>Text me at 414-439-6211. Tell me your situation honestly – credit score, income, down payment. I'll tell you what options work for you. No BS, no false hope.</p>
+
+<p>Most people with bad credit get approved. The payments might be higher than someone with perfect credit, but you'll be riding.</p>
+
+<h2>What I Need From You</h2>
+
+<ul>
+<li>Proof of income (pay stubs, tax returns, bank statements)</li>
+<li>Down payment (usually $1,000-$2,000 minimum)</li>
+<li>Valid driver's license</li>
+<li>Honest communication about your credit situation</li>
+</ul>
+
+<p>That's it. I don't need perfect credit, I need reliable people who want to ride.</p>
+
+<h2>The Bottom Line</h2>
+
+<p>Bad credit sucks, but it doesn't mean you can't ride. I work with people in your situation every week. Text me at 414-439-6211 and let's figure it out.</p>`
+  },
+  {
+    slug: 'used-harley-pre-purchase-inspection-checklist',
+    title: 'Used Harley Pre-Purchase Inspection Checklist (Don\'t Skip This)',
+    metaTitle: 'Used Harley Inspection Checklist | Pre-Purchase Guide 2025',
+    metaDescription: 'Complete pre-purchase inspection checklist for used Harleys. What to check before buying. Download printable checklist. Text Joe 414-439-6211',
+    excerpt: 'Never buy a used Harley without this inspection checklist. It\'ll save you thousands.',
+    date: '2025-01-17',
+    readTime: '10 min read',
+    featuredImage: '/883.jpg',
+    keywords: ['used harley inspection checklist', 'harley pre purchase inspection', 'what to check buying used harley', 'harley inspection guide'],
+    categories: ['Buyers Guide'],
+    images: [],
+    content: `<p>Don't buy any used Harley without checking these things first. This checklist has saved my customers thousands. Use it.</p>
+
+<h2>Engine & Mechanical</h2>
+
+<ul>
+<li><strong>Oil leaks</strong> – Check engine cases, rocker boxes, primary</li>
+<li><strong>Smoke on startup</strong> – Blue smoke = burning oil (expensive)</li>
+<li><strong>Strange noises</strong> – Knocking, rattling, grinding = problems</li>
+<li><strong>Compression test</strong> – Both cylinders should be within 10%</li>
+<li><strong>Oil condition</strong> – Check color, metal particles, smell</li>
+</ul>
+
+<h2>Transmission & Drivetrain</h2>
+
+<ul>
+<li><strong>Shifting smoothness</strong> – Hard shifts, grinding, slipping</li>
+<li><strong>Clutch slippage</strong> – Rev engine, clutch shouldn't slip</li>
+<li><strong>Belt condition</strong> – Cracks, fraying, missing teeth</li>
+<li><strong>Chain/sprocket wear</strong> – If chain drive, check for wear</li>
+</ul>
+
+<h2>Frame & Suspension</h2>
+
+<ul>
+<li><strong>Frame damage</strong> – Look for cracks, bends, welds</li>
+<li><strong>Fork seals</strong> – Check for oil leaking from forks</li>
+<li><strong>Shock condition</strong> – Bounce test, look for leaks</li>
+<li><strong>Wheel bearings</strong> – Wiggle wheels, feel for play</li>
+</ul>
+
+<h2>Brakes</h2>
+
+<ul>
+<li><strong>Pad thickness</strong> – Should have 50%+ life left</li>
+<li><strong>Rotor condition</strong> – No warping, deep grooves, or rust</li>
+<li><strong>Brake fluid</strong> – Should be clear, not dark/contaminated</li>
+<li><strong>Brake feel</strong> – Firm lever/pedal, no spongy feel</li>
+</ul>
+
+<h2>Electrical</h2>
+
+<ul>
+<li><strong>Battery voltage</strong> – 12.6V+ when off, 13.5-14.5V running</li>
+<li><strong>All lights work</strong> – Headlight, tail, turn signals, brake</li>
+<li><strong>No warning lights</strong> – Check engine, ABS, security issues</li>
+<li><strong>Charging system</strong> – Voltage should increase when running</li>
+</ul>
+
+<h2>Service History</h2>
+
+<ul>
+<li><strong>Maintenance records</strong> – Oil changes, major services</li>
+<li><strong>Carfax/title history</strong> – Accidents, ownership, liens</li>
+<li><strong>Recall status</strong> – Check if recalls were completed</li>
+</ul>
+
+<h2>Test Ride Checklist</h2>
+
+<ul>
+<li>Engine starts easily (cold and hot)</li>
+<li>Smooth acceleration in all gears</li>
+<li>No vibration or wobble at speed</li>
+<li>Brakes work smoothly and powerfully</li>
+<li>No strange noises or smells</li>
+</ul>
+
+<h2>Red Flags to Walk Away From</h2>
+
+<ul>
+<li>Seller won't let you inspect or test ride</li>
+<li>No title or title issues</li>
+<li>Major engine/transmission problems</li>
+<li>Frame damage or poor repairs</li>
+<li>Salvage title without disclosure</li>
+</ul>
+
+<h2>When You Buy From Me</h2>
+
+<p>Every bike I sell passes this checklist plus a 150-point inspection. Complete service records, honest condition disclosure, 48-hour guarantee. Text me at 414-439-6211 to see current inventory.</p>`
+  },
+  {
+    slug: 'harley-davidson-touring-bikes-comparison-guide',
+    title: 'Harley Touring Bikes Comparison: Which One Is Right For You?',
+    metaTitle: 'Harley Touring Bikes Comparison | Street vs Road Glide Guide 2025',
+    metaDescription: 'Complete comparison of Harley touring bikes. Street Glide, Road Glide, Road King, Ultra - which is best? Expert buying guide. Text Joe 414-439-6211',
+    excerpt: 'Street Glide vs Road Glide vs Road King – here\'s how to choose the right Harley touring bike.',
+    date: '2025-01-18',
+    readTime: '8 min read',
+    featuredImage: '/24sg.jpg',
+    keywords: ['harley touring bikes comparison', 'street glide vs road glide', 'best harley touring bike', 'harley touring models'],
+    categories: ['Models'],
+    images: [],
+    content: `<p>Choosing between Harley touring bikes is tough – they're all good. Here's how to pick the right one for you.</p>
+
+<h2>Street Glide – The Classic Choice</h2>
+
+<p><strong>Best for:</strong> Riders who want classic looks, lower wind protection, more aggressive stance.</p>
+
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Fork-mounted fairing (classic Harley look)</li>
+<li>Better low-speed maneuverability</li>
+<li>More customization options</li>
+<li>Lower seat height</li>
+</ul>
+
+<p><strong>Cons:</strong></p>
+<ul>
+<li>More buffeting at highway speeds</li>
+<li>Fairing moves with handlebars</li>
+<li>Less wind protection than Road Glide</li>
+</ul>
+
+<h2>Road Glide – The Highway King</h2>
+
+<p><strong>Best for:</strong> Long-distance riders, highway miles, maximum wind protection.</p>
+
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Frame-mounted fairing (better stability)</li>
+<li>Superior wind protection</li>
+<li>Better at high speeds</li>
+<li>Unique aggressive look</li>
+</ul>
+
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Heavier steering at low speed</li>
+<li>Shark-nose look isn't for everyone</li>
+<li>More expensive than Street Glide</li>
+</ul>
+
+<h2>Road King – The Traditional Cruiser</h2>
+
+<p><strong>Best for:</strong> Riders who want versatility, classic styling, removable windshield.</p>
+
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Most versatile (windshield on/off)</li>
+<li>Classic Harley looks</li>
+<li>Lighter than Glides</li>
+<li>Lower price point</li>
+</ul>
+
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Less weather protection</li>
+<li>Less storage than Glides</li>
+<li>Not ideal for long highway trips</li>
+</ul>
+
+<h2>Ultra Limited – The Luxury Tourer</h2>
+
+<p><strong>Best for:</strong> Riders who want every feature, maximum comfort, two-up touring.</p>
+
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Every available feature</li>
+<li>Maximum comfort for passenger</li>
+<li>Best audio system</li>
+<li>Most storage space</li>
+</ul>
+
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Heaviest touring bike</li>
+<li>Most expensive</li>
+<li>Lower resale value</li>
+</ul>
+
+<h2>How to Choose</h2>
+
+<p><strong>Pick Street Glide if:</strong> You want classic looks, do mixed riding (city + highway), prefer lighter steering.</p>
+
+<p><strong>Pick Road Glide if:</strong> You do serious highway miles, want maximum wind protection, don't care about fork-mounted fairing.</p>
+
+<p><strong>Pick Road King if:</strong> You want versatility, classic styling, mostly solo riding.</p>
+
+<p><strong>Pick Ultra Limited if:</strong> You do two-up touring, want every feature, budget isn't a concern.</p>
+
+<h2>Used vs New</h2>
+
+<p>Used touring bikes are smart buys – they depreciate fast, hold value well after initial hit, and most are babied by their owners. I stock used Street Glides, Road Glides, and Road Kings. <a href="/inventory">Browse current inventory</a> or text me at 414-439-6211.</p>`
+  },
+  {
+    slug: 'how-many-miles-too-many-used-harley',
+    title: 'How Many Miles Is Too Many On A Used Harley? (2025 Guide)',
+    metaTitle: 'How Many Miles On Used Harley | High Mileage Guide 2025',
+    metaDescription: 'What\'s high mileage for a Harley? When to worry about miles. Expert guide to buying high-mileage used Harleys. Text Joe 414-439-6211',
+    excerpt: 'Is 20,000 miles too much? 50,000? Here\'s the truth about used Harley mileage.',
+    date: '2025-01-19',
+    readTime: '7 min read',
+    featuredImage: '/20rg.jpg',
+    keywords: ['how many miles too many harley', 'high mileage harley', 'used harley mileage guide', 'harley davidson mileage'],
+    categories: ['Buyers Guide'],
+    images: [],
+    content: `<p>Everyone asks: "How many miles is too many on a used Harley?" Here's the real answer.</p>
+
+<h2>The Quick Answer</h2>
+
+<p>Modern Harleys (2007+) can easily do 100,000+ miles with proper maintenance. Milwaukee-Eight engines (2017+) are bulletproof – 150,000+ miles if maintained.</p>
+
+<p>Mileage matters, but maintenance matters more.</p>
+
+<h2>Mileage Ranges Explained</h2>
+
+<p><strong>Under 10,000 miles:</strong> Barely broken in. Still in break-in period for first 5,000 miles. Premium pricing.</p>
+
+<p><strong>10,000-30,000 miles:</strong> Sweet spot for used Harleys. Fully broken in, major depreciation done, still plenty of life left.</p>
+
+<p><strong>30,000-60,000 miles:</strong> Still good with proper maintenance. Expect to do some maintenance (tires, brakes, fluids). Better prices.</p>
+
+<p><strong>60,000-100,000 miles:</strong> High mileage but not a problem if maintained. Major services needed. Lowest prices.</p>
+
+<p><strong>Over 100,000 miles:</strong> Very high mileage. Expect major maintenance. Only buy if service records are perfect.</p>
+
+<h2>What Matters More Than Mileage</h2>
+
+<p><strong>Maintenance history:</strong> 20,000 miles with perfect maintenance is better than 10,000 miles with no records.</p>
+
+<p><strong>How miles were accumulated:</strong> Highway miles are easy. City miles and short trips are harder on engines.</p>
+
+<p><strong>Storage and care:</strong> Garage-kept beats outdoor-stored every time.</p>
+
+<p><strong>Modifications:</strong> Stage 1 upgrades can extend engine life. Bad mods can shorten it.</p>
+
+<h2>Milwaukee-Eight vs Twin Cam vs Evolution</h2>
+
+<p><strong>Milwaukee-Eight (2017+):</strong> Most reliable. 100,000+ miles easily. Can handle 150,000+ with care.</p>
+
+<p><strong>Twin Cam (1999-2016):</strong> Reliable after cam chain tensioner fix. 80,000-120,000 miles typical.</p>
+
+<p><strong>Evolution (1984-1999):</strong> Bulletproof. Can do 200,000+ miles. Cheap to maintain.</p>
+
+<h2>Red Flags for High-Mileage Bikes</h2>
+
+<ul>
+<li>No maintenance records</li>
+<li>Oil leaks everywhere</li>
+<li>Excessive engine noise</li>
+<li>Smoke on startup</li>
+<li>Worn-out parts not replaced</li>
+</ul>
+
+<h2>What To Expect At Different Mileages</h2>
+
+<p><strong>At 20,000 miles:</strong> First major service. Tires might need replacing.</p>
+
+<p><strong>At 40,000 miles:</strong> Brake pads, possibly rotors. Belt might need replacing. Fluids for sure.</p>
+
+<p><strong>At 60,000 miles:</strong> All of the above plus clutch, maybe cam chain tensioner (Twin Cam).</p>
+
+<p><strong>At 80,000+ miles:</strong> Expect to do everything. Budget $2,000-$4,000 for maintenance.</p>
+
+<h2>My Take</h2>
+
+<p>I sell bikes with 5,000 miles and bikes with 50,000 miles. Mileage doesn't scare me if maintenance is documented. I'd rather sell you a 40,000-mile bike with perfect records than a 10,000-mile bike that was neglected.</p>
+
+<p><a href="/inventory">Browse my inventory</a> or <a href="sms:4144396211">text me at 414-439-6211</a> – I'll tell you exactly what condition each bike is in and what maintenance it needs.</p>`
   }
 ];
 
