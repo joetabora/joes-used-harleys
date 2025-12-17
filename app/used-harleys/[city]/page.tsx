@@ -99,172 +99,256 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* Navigation */}
       <Navigation />
 
-      {/* HERO SECTION - Social Feed Grid */}
+      {/* HERO SECTION - Premium Social Feed */}
       <section style={{
         minHeight: '100vh',
         position: 'relative',
-        background: 'linear-gradient(180deg, #000000 0%, #0A0A0A 100%)',
-        padding: '8rem 2rem 6rem',
+        background: 'linear-gradient(135deg, #000000 0%, #0f0f0f 50%, #000000 100%)',
+        padding: '10rem 2rem 8rem',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        overflow: 'hidden'
       }}>
-        {/* Main Tagline - Above Grid */}
+        {/* Animated Background */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(234, 88, 12, 0.05) 0%, transparent 50%),
+                           radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%)`,
+          animation: 'pulse 8s ease-in-out infinite'
+        }}></div>
+
+        {/* Main Content */}
         <div style={{
           textAlign: 'center',
-          marginBottom: '4rem',
-          maxWidth: '1200px',
-          width: '100%'
+          marginBottom: '5rem',
+          maxWidth: '1400px',
+          width: '100%',
+          position: 'relative',
+          zIndex: 2
         }}>
+          {/* Premium Badge */}
+          <div style={{
+            display: 'inline-block',
+            background: 'linear-gradient(135deg, rgba(234, 88, 12, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%)',
+            border: '1px solid rgba(234, 88, 12, 0.3)',
+            padding: '0.75rem 2rem',
+            borderRadius: '50px',
+            marginBottom: '2rem',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <span style={{
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              🚚 $499 Shipping to {cityData.name}
+            </span>
+          </div>
+
           <h1 style={{
             fontSize: 'clamp(2rem, 6vw, 4.5rem)',
-            color: '#FFFFFF',
             fontWeight: 900,
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
+            background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #ffffff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             marginBottom: '1.5rem',
             fontFamily: 'var(--font-clash)',
-            textShadow: '0 0 40px rgba(255, 102, 0, 0.5), 0 4px 20px rgba(0, 0, 0, 0.9)',
+            letterSpacing: '-2px',
             lineHeight: '1.1'
           }}>
-            USED HARLEYS SHIPPED TO {cityData.name.toUpperCase()}
+            USED HARLEYS
+            <br />
+            <span style={{
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              SHIPPED TO {cityData.name.toUpperCase()}
+            </span>
           </h1>
+
           <p style={{
-            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-            color: '#FF6600',
-            fontWeight: 900,
-            letterSpacing: '4px',
-            textTransform: 'uppercase',
-            marginBottom: '1rem',
-            fontFamily: 'var(--font-clash)',
-            textShadow: '0 0 40px rgba(255, 102, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.9)',
-            lineHeight: '1.2'
+            fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+            color: '#9ca3af',
+            fontWeight: 500,
+            letterSpacing: '1px',
+            marginBottom: '3rem',
+            maxWidth: '800px',
+            margin: '0 auto',
+            lineHeight: '1.6'
           }}>
-            NEW HARLEYS DROP DAILY — FOLLOW ON TIKTOK & IG TO NEVER MISS ONE. $499 SHIPS TO {cityData.name.toUpperCase()}.
+            New bikes drop daily on TikTok & Instagram. Premium selection, transparent pricing, $499 shipping to {cityData.name}.
           </p>
         </div>
 
-        {/* Social Feed Grid/Carousel - Latest 8-10 Videos */}
+        {/* Social Feed - Glass Card */}
         <div style={{
           width: '100%',
           maxWidth: '1400px',
-          margin: '0 auto 3rem'
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 2
         }}>
-          <SocialFeed
-            tiktokHandle="@suchgrime"
-            instagramHandle="@joetabora"
-            widgetId="3b6dbd54_1765944311"
-          />
+          <div className="glass-card" style={{
+            background: 'rgba(255, 255, 255, 0.02)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            padding: '3rem',
+            borderRadius: '24px',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)'
+          }}>
+            <SocialFeed
+              tiktokHandle="@suchgrime"
+              instagramHandle="@joetabora"
+              widgetId="3b6dbd54_1765944311"
+            />
+          </div>
         </div>
 
-        {/* Caption Under Grid */}
         <p style={{
-          fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-          color: '#CCCCCC',
-          fontWeight: 600,
-          letterSpacing: '2px',
+          fontSize: '1.1rem',
+          color: '#6b7280',
+          fontWeight: 500,
           textAlign: 'center',
-          fontStyle: 'italic',
-          maxWidth: '800px',
-          margin: '0 auto',
-          opacity: 0.9
+          maxWidth: '600px',
+          margin: '3rem auto 0',
+          position: 'relative',
+          zIndex: 2
         }}>
-          Don&apos;t see what you want? Follow — new bikes every day. Ships to {cityData.name} for $499.
+          Don't see what you want? Follow — new bikes every day. $499 ships to {cityData.name}.
         </p>
       </section>
 
-      {/* WHY BUY FROM JOE - Keep Existing 4 Bullets */}
+      {/* WHY CHOOSE JOE'S - Premium Card Grid */}
       <section style={{
-        background: '#000000',
-        padding: '6rem 2rem',
+        background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%)',
+        padding: '8rem 2rem',
         position: 'relative'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto'
         }}>
-          <h2 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            fontWeight: 900,
-            color: '#FFFFFF',
-            fontFamily: 'var(--font-clash)',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
+          <div style={{
             textAlign: 'center',
-            marginBottom: '4rem',
-            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+            marginBottom: '5rem'
           }}>
-            WHY SHIP FROM JOE TO {cityData.name.toUpperCase()}?
-          </h2>
+            <h2 style={{
+              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+              fontWeight: 900,
+              background: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              fontFamily: 'var(--font-clash)',
+              letterSpacing: '-1px',
+              marginBottom: '1rem'
+            }}>
+              Why Ship From Joe to {cityData.name}?
+            </h2>
+            <p style={{
+              fontSize: '1.2rem',
+              color: '#6b7280',
+              fontWeight: 500
+            }}>
+              More than just shipping—a rider's promise
+            </p>
+          </div>
 
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '2.5rem',
-            marginTop: '3rem'
+            gap: '2rem'
           }}>
             {[
               {
+                icon: '💎',
+                title: 'Premium Selection',
+                text: `Handpicked Harleys for ${cityData.name} riders. Every bike inspected, serviced, and documented with complete records.`,
+                color: '#ea580c'
+              },
+              {
                 icon: '⚡',
-                title: 'NO BULLSHIT PRICING',
-                text: `What you see is what you pay. No hidden fees, no market adjustments, no surprises. Transparent pricing for ${cityData.name} buyers.`
+                title: 'No BS Pricing',
+                text: 'What you see is what you pay. Zero hidden fees, zero market adjustments, zero surprises.',
+                color: '#f59e0b'
               },
               {
                 icon: '🛡️',
-                title: '48-HOUR GUARANTEE',
-                text: 'Not right? Bring it back. We fix it or refund it. Simple as that. Your peace of mind matters.'
-              },
-              {
-                icon: '💳',
-                title: 'BAD CREDIT? NO PROBLEM',
-                text: 'We work with everyone. First-time buyers, bad credit, self-employed — we got you. Financing available for all credit types.'
+                title: '48-Hour Peace of Mind',
+                text: 'Not feeling it? Bring it back within 48 hours or 100 miles. Full refund or we fix it.',
+                color: '#ea580c'
               },
               {
                 icon: '🚚',
-                title: `$499 SHIPS TO ${cityData.name.toUpperCase()}`,
-                text: `Coast to coast, insured, professional transport. Your bike, delivered to ${cityData.name} safely and on time.`
+                title: `$499 Ships to ${cityData.name}`,
+                text: `Professional nationwide shipping. Fully insured, coast to coast delivery to ${cityData.name}.`,
+                color: '#f59e0b'
               }
-            ].map((item, index) => (
+            ].map((feature, index) => (
               <div
                 key={index}
+                className="glass-card"
                 style={{
-                  background: '#0A0A0A',
-                  border: '2px solid #1A1A1A',
-                  borderRadius: '16px',
-                  padding: '2.5rem',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  padding: '3rem',
+                  borderRadius: '20px',
                   textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  position: 'relative',
-                  overflow: 'hidden'
+                  transition: 'all 0.4s ease',
+                  cursor: 'pointer'
                 }}
-                className="why-buy-card"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-10px)';
+                  e.currentTarget.style.borderColor = `${feature.color}40`;
+                  e.currentTarget.style.boxShadow = `0 20px 60px ${feature.color}20`;
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                }}
               >
                 <div style={{
                   fontSize: '4rem',
                   marginBottom: '1.5rem',
-                  filter: 'drop-shadow(0 0 20px rgba(255, 102, 0, 0.5))'
+                  filter: `drop-shadow(0 0 20px ${feature.color}60)`
                 }}>
-                  {item.icon}
+                  {feature.icon}
                 </div>
                 <h3 style={{
                   fontSize: '1.5rem',
-                  fontWeight: 900,
-                  color: '#FF6600',
+                  fontWeight: 800,
+                  color: '#ffffff',
                   fontFamily: 'var(--font-clash)',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
                   marginBottom: '1rem'
                 }}>
-                  {item.title}
+                  {feature.title}
                 </h3>
                 <p style={{
-                  color: '#CCCCCC',
+                  color: '#9ca3af',
                   fontSize: '1rem',
                   lineHeight: '1.7',
-                  fontWeight: 500
+                  fontWeight: 400
                 }}>
-                  {item.text}
+                  {feature.text}
                 </p>
               </div>
             ))}
@@ -275,13 +359,13 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* FOLLOW THE DROP */}
       <FollowTheDrop />
 
-      {/* GET ALERTS */}
+      {/* GET ALERTS - Premium Form */}
       <section style={{
-        background: '#000000',
-        padding: '6rem 2rem',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #000000 100%)',
+        padding: '8rem 2rem',
         position: 'relative',
-        borderTop: '2px solid #FF6600',
-        borderBottom: '2px solid #FF6600'
+        borderTop: '1px solid rgba(234, 88, 12, 0.2)',
+        borderBottom: '1px solid rgba(234, 88, 12, 0.2)'
       }}>
         <div style={{
           maxWidth: '800px',
@@ -289,26 +373,26 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           textAlign: 'center'
         }}>
           <h2 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
             fontWeight: 900,
-            color: '#FFFFFF',
+            background: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             fontFamily: 'var(--font-clash)',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            marginBottom: '1rem',
-            textShadow: '0 4px 20px rgba(255, 102, 0, 0.3)'
+            letterSpacing: '-1px',
+            marginBottom: '1rem'
           }}>
-            GET ALERTS
+            Never Miss a Drop
           </h2>
           <p style={{
-            fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-            color: '#CCCCCC',
+            fontSize: '1.2rem',
+            color: '#6b7280',
             marginBottom: '3rem',
-            fontWeight: 600,
-            letterSpacing: '2px',
+            fontWeight: 500,
             lineHeight: '1.6'
           }}>
-            Get notified when I drop a new bike — first dibs + $499 shipping to {cityData.name}
+            Get notified when new bikes drop — first dibs + $499 shipping to {cityData.name}
           </p>
           <GetAlerts />
         </div>
@@ -316,10 +400,10 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
       {/* SEO CONTENT SECTION - Keyword Rich (Less Prominent) */}
       <section style={{
-        background: '#0A0A0A',
+        background: '#000000',
         padding: '4rem 2rem',
         position: 'relative',
-        borderTop: '1px solid #1A1A1A'
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)'
       }}>
         <div style={{
           maxWidth: '1200px',
@@ -414,9 +498,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
       {/* Footer */}
       <footer style={{
-        background: '#000000',
+        background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
         padding: '4rem 2rem 3rem',
-        borderTop: '2px solid #FF6600',
+        borderTop: '1px solid rgba(234, 88, 12, 0.2)',
         textAlign: 'center'
       }}>
         <div style={{
@@ -427,29 +511,41 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             marginBottom: '2rem'
           }}>
             <div style={{
-              fontSize: '2rem',
+              fontSize: '1.8rem',
               fontWeight: 900,
-              color: '#FF6600',
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               fontFamily: 'var(--font-clash)',
-              letterSpacing: '4px',
-              textTransform: 'uppercase',
+              letterSpacing: '2px',
               marginBottom: '1rem'
             }}>
               JOE'S USED HARLEYS
             </div>
             <p style={{
-              color: '#CCCCCC',
-              fontSize: '1rem',
+              color: '#6b7280',
+              fontSize: '0.95rem',
               marginBottom: '0.5rem'
             }}>
               6221 W Layton Ave, Milwaukee, WI 53220
             </p>
             <p style={{
-              color: '#CCCCCC',
-              fontSize: '1rem',
+              color: '#6b7280',
+              fontSize: '0.95rem',
               marginBottom: '2rem'
             }}>
-              <a href="tel:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>414-439-6211</a> • <a href="sms:4144396211" style={{ color: '#FF6600', textDecoration: 'none' }}>TEXT</a>
+              <a href="tel:4144396211" style={{
+                color: '#ea580c',
+                textDecoration: 'none',
+                fontWeight: 700
+              }}>414-439-6211</a>
+              {' • '}
+              <a href="sms:4144396211" style={{
+                color: '#ea580c',
+                textDecoration: 'none',
+                fontWeight: 700
+              }}>TEXT</a>
             </p>
           </div>
 
@@ -460,19 +556,39 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             flexWrap: 'wrap',
             marginBottom: '2rem'
           }}>
-            <Link href="/" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>HOME</Link>
-            <Link href="/events" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>EVENTS</Link>
-            <Link href="/merch" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>MERCH</Link>
-            <Link href="/contact" style={{ color: '#CCCCCC', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>CONTACT</Link>
+            {[
+              { label: 'HOME', href: '/' },
+              { label: 'BLOG', href: '/blog' },
+              { label: 'EVENTS', href: '/events' },
+              { label: 'MERCH', href: '/merch' },
+              { label: 'CONTACT', href: '/contact' }
+            ].map((link, i) => (
+              <Link
+                key={i}
+                href={link.href}
+                style={{
+                  color: '#6b7280',
+                  textDecoration: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  letterSpacing: '1px',
+                  transition: 'color 0.3s ease'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ea580c'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#6b7280'}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           <div style={{
-            borderTop: '1px solid #1A1A1A',
+            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
             paddingTop: '2rem',
-            color: '#666666',
+            color: '#4b5563',
             fontSize: '0.85rem'
           }}>
-            © {new Date().getFullYear()} Joe's Used Harleys. All Rights Reserved. | Built for riders, by riders.
+            © {new Date().getFullYear()} Joe's Used Harleys. All Rights Reserved. Built for riders, by riders. 🏍️
           </div>
         </div>
       </footer>
@@ -481,14 +597,13 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       <FloatingActionButtons />
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .why-buy-card:hover {
-          border-color: #FF6600;
-          transform: translateY(-8px);
-          box-shadow: 0 12px 40px rgba(255, 102, 0, 0.4);
+        @keyframes pulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
         }
         .model-link-seo:hover {
-          border-color: #FF6600;
-          background: #1A1A1A;
+          border-color: #ea580c;
+          background: rgba(234, 88, 12, 0.05);
           transform: translateY(-4px);
         }
       `}} />
