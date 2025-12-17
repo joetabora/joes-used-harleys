@@ -107,8 +107,8 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
       <section style={{
         minHeight: '100vh',
         position: 'relative',
-        background: 'linear-gradient(180deg, #000000 0%, #0A0A0A 100%)',
-        padding: '8rem 2rem 6rem',
+        background: 'linear-gradient(135deg, #000000 0%, #0f0f0f 50%, #000000 100%)',
+        padding: '10rem 2rem 8rem',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -260,8 +260,8 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
               <div
                 key={index}
                 style={{
-                  background: '#0A0A0A',
-                  border: '2px solid #1A1A1A',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
                   borderRadius: '16px',
                   padding: '2.5rem',
                   textAlign: 'center',
@@ -347,7 +347,7 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
 
       {/* SEO CONTENT SECTION - Less Prominent */}
       <section style={{
-        background: '#0A0A0A',
+        background: 'rgba(255, 255, 255, 0.02)',
         padding: '4rem 2rem',
         position: 'relative',
         borderTop: '1px solid #1A1A1A'
@@ -387,7 +387,7 @@ export default async function ModelPage({ params }: { params: Promise<{ model: s
             background: '#000000',
             borderRadius: '16px',
             overflow: 'hidden',
-            border: '2px solid #1A1A1A',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
             marginBottom: '3rem'
           }}>
             <h3 style={{
