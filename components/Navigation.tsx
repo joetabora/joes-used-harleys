@@ -19,7 +19,7 @@ export function Navigation() {
     { label: 'HOME', href: '/' },
     { label: 'BLOG', href: '/blog' },
     { label: 'EVENTS', href: '/events' },
-    { label: 'MERCH', href: '/merch' },
+    { label: 'SHOP', href: '/shop' },
     { label: 'CONTACT', href: '/contact' }
   ];
 
