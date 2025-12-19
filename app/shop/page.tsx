@@ -33,6 +33,15 @@ const products: Product[] = [
   { id: '8', title: 'Patched Vest', price: 89, image: 'https://files.catbox.moe/placeholder-accessories-3.jpg', category: 'accessories' },
   { id: '9', title: 'Skull Ring Set', price: 45, image: 'https://files.catbox.moe/placeholder-accessories-4.jpg', category: 'accessories' },
   { id: '10', title: 'Leather Belt Buckle', price: 39, image: 'https://files.catbox.moe/placeholder-accessories-5.jpg', category: 'accessories' },
+  // Wind Breaker Skull Face Mask - 8 Color Variations
+  { id: '16', title: 'Wind Breaker Skull Face Mask - Khaki Red Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S3ed8cde96f75417cb4fb05e1abd64cf9r.jpg_220x220q75.jpg_.avif', category: 'accessories' },
+  { id: '17', title: 'Wind Breaker Skull Face Mask - Black Gray Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S375f10c530e2459dbff90dc2b98441aed.jpeg_220x220q75.jpeg_.avif', category: 'accessories' },
+  { id: '18', title: 'Wind Breaker Skull Face Mask - Green Gray Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S3b833fcf89ee43ce81b9efafdca839bec.jpeg_220x220q75.jpeg_.avif', category: 'accessories' },
+  { id: '19', title: 'Wind Breaker Skull Face Mask - Black Color Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S0b36f4eb41d7437db43ed7f478b17361r.jpg_220x220q75.jpg_.avif', category: 'accessories' },
+  { id: '20', title: 'Wind Breaker Skull Face Mask - Green Color Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S2b4c6861ab5c443e879f893546dd5e114.jpg_220x220q75.jpg_.avif', category: 'accessories' },
+  { id: '21', title: 'Wind Breaker Skull Face Mask - Black Red Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S185e431e45f94eb4a881ba4e61965b47T.jpg_220x220q75.jpg_.avif', category: 'accessories' },
+  { id: '22', title: 'Wind Breaker Skull Face Mask - Khaki Color Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/Sc278284b51014211981001ebb6fa85d5U.jpg_220x220q75.jpg_.avif', category: 'accessories' },
+  { id: '23', title: 'Wind Breaker Skull Face Mask - Khaki Grey Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/Se03d824cda824ee5aa709ce61081e5a0O.jpg_220x220q75.jpg_.avif', category: 'accessories' },
   
   // Parts
   { id: '11', title: 'Chrome Handlebar Grips', price: 59, image: 'https://files.catbox.moe/placeholder-parts-1.jpg', category: 'parts' },
