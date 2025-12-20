@@ -100,6 +100,22 @@ export const products: Product[] = [
     category: 'accessories',
     description: 'Heavy-duty leather belt with custom buckle. Classic biker style that never goes out of fashion.'
   },
+  { 
+    id: '24', 
+    title: 'Biker Face Mask', 
+    price: 26, 
+    image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/fbdovy1606801000622.jpg?fmt=webp&v=1', 
+    category: 'accessories',
+    description: 'Versatile and breathable biker face mask, ideal for protection against wind, dust, and sun. Features a comfortable fit and a variety of cool designs to complement your riding gear. Perfect for all seasons on the road.',
+    variants: [
+      { name: 'BLK/WHT Camo', image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/fbdovy1606801000622.jpg?fmt=webp&v=1' },
+      { name: 'Dark USA', image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/ganrnd1606800997529.jpg?fmt=webp&v=1' },
+      { name: 'Bandana Full', image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/awkstp1606800998360.jpg?fmt=webp&v=1' },
+      { name: 'America', image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/nzuwha1606801001747.jpg?fmt=webp&v=1' },
+      { name: 'Face', image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/drqzvr1606801003754.jpg?fmt=webp&v=1' },
+      { name: 'Bandana', image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/aucnku1606801006548.jpg?fmt=webp&v=1' },
+    ]
+  },
   
   // Wind Breaker Skull Face Mask - Combined with color variants
   { 
