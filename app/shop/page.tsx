@@ -1,57 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Navigation } from '@/components/Navigation';
 import { FloatingActionButtons } from '@/components/FloatingActionButtons';
 import { SEO } from '@/components/SEO';
-
-// Product types
-type Product = {
-  id: string;
-  title: string;
-  price: number;
-  image: string;
-  category: 'clothing' | 'accessories' | 'parts';
-};
+import { products, type Product } from '@/lib/shop-products';
 
 type CartItem = Product & {
   quantity: number;
+  selectedVariant?: string;
 };
 
-// Product data
-const products: Product[] = [
-  // Clothing
-  { id: '1', title: 'Skull & Crossbones Tee', price: 39, image: 'https://files.catbox.moe/placeholder-clothing-1.jpg', category: 'clothing' },
-  { id: '2', title: 'Harley Heritage Hoodie', price: 79, image: 'https://files.catbox.moe/placeholder-clothing-2.jpg', category: 'clothing' },
-  { id: '3', title: 'Biker Denim Jacket', price: 149, image: 'https://files.catbox.moe/placeholder-clothing-3.jpg', category: 'clothing' },
-  { id: '4', title: 'Rider Logo Tee', price: 29, image: 'https://files.catbox.moe/placeholder-clothing-4.jpg', category: 'clothing' },
-  { id: '5', title: 'Punk Rock Hoodie', price: 69, image: 'https://files.catbox.moe/placeholder-clothing-5.jpg', category: 'clothing' },
-  
-  // Accessories
-  { id: '6', title: 'Leather Riding Gloves', price: 49, image: 'https://files.catbox.moe/placeholder-accessories-1.jpg', category: 'accessories' },
-  { id: '7', title: 'Biker Wallet Chain', price: 35, image: 'https://files.catbox.moe/placeholder-accessories-2.jpg', category: 'accessories' },
-  { id: '8', title: 'Patched Vest', price: 89, image: 'https://files.catbox.moe/placeholder-accessories-3.jpg', category: 'accessories' },
-  { id: '9', title: 'Skull Ring Set', price: 45, image: 'https://files.catbox.moe/placeholder-accessories-4.jpg', category: 'accessories' },
-  { id: '10', title: 'Leather Belt Buckle', price: 39, image: 'https://files.catbox.moe/placeholder-accessories-5.jpg', category: 'accessories' },
-  // Wind Breaker Skull Face Mask - 8 Color Variations
-  { id: '16', title: 'Wind Breaker Skull Face Mask - Khaki Red Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S3ed8cde96f75417cb4fb05e1abd64cf9r.jpg_220x220q75.jpg_.avif', category: 'accessories' },
-  { id: '17', title: 'Wind Breaker Skull Face Mask - Black Gray Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S375f10c530e2459dbff90dc2b98441aed.jpeg_220x220q75.jpeg_.avif', category: 'accessories' },
-  { id: '18', title: 'Wind Breaker Skull Face Mask - Green Gray Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S3b833fcf89ee43ce81b9efafdca839bec.jpeg_220x220q75.jpeg_.avif', category: 'accessories' },
-  { id: '19', title: 'Wind Breaker Skull Face Mask - Black Color Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S0b36f4eb41d7437db43ed7f478b17361r.jpg_220x220q75.jpg_.avif', category: 'accessories' },
-  { id: '20', title: 'Wind Breaker Skull Face Mask - Green Color Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S2b4c6861ab5c443e879f893546dd5e114.jpg_220x220q75.jpg_.avif', category: 'accessories' },
-  { id: '21', title: 'Wind Breaker Skull Face Mask - Black Red Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/S185e431e45f94eb4a881ba4e61965b47T.jpg_220x220q75.jpg_.avif', category: 'accessories' },
-  { id: '22', title: 'Wind Breaker Skull Face Mask - Khaki Color Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/Sc278284b51014211981001ebb6fa85d5U.jpg_220x220q75.jpg_.avif', category: 'accessories' },
-  { id: '23', title: 'Wind Breaker Skull Face Mask - Khaki Grey Lenses', price: 25, image: 'https://ae-pic-a1.aliexpress-media.com/kf/Se03d824cda824ee5aa709ce61081e5a0O.jpg_220x220q75.jpg_.avif', category: 'accessories' },
-  
-  // Parts
-  { id: '11', title: 'Chrome Handlebar Grips', price: 59, image: 'https://files.catbox.moe/placeholder-parts-1.jpg', category: 'parts' },
-  { id: '12', title: 'Mirror Set - Chrome', price: 79, image: 'https://files.catbox.moe/placeholder-parts-2.jpg', category: 'parts' },
-  { id: '13', title: 'Exhaust Tips - Black', price: 89, image: 'https://files.catbox.moe/placeholder-parts-3.jpg', category: 'parts' },
-  { id: '14', title: 'Foot Pegs - Chrome', price: 65, image: 'https://files.catbox.moe/placeholder-parts-4.jpg', category: 'parts' },
-  { id: '15', title: 'LED Turn Signals', price: 49, image: 'https://files.catbox.moe/placeholder-parts-5.jpg', category: 'parts' },
-];
-
 export default function ShopPage() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<'all' | 'clothing' | 'accessories' | 'parts'>('all');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -73,34 +35,51 @@ export default function ShopPage() {
     localStorage.setItem('juh-shop-cart', JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, variant?: string) => {
     setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === product.id);
+      const cartKey = variant ? `${product.id}-${variant}` : product.id;
+      const existingItem = prevCart.find(item => {
+        const itemKey = item.selectedVariant ? `${item.id}-${item.selectedVariant}` : item.id;
+        return itemKey === cartKey;
+      });
+      
       if (existingItem) {
-        return prevCart.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
+        return prevCart.map(item => {
+          const itemKey = item.selectedVariant ? `${item.id}-${item.selectedVariant}` : item.id;
+          if (itemKey === cartKey) {
+            return { ...item, quantity: item.quantity + 1 };
+          }
+          return item;
+        });
       }
-      return [...prevCart, { ...product, quantity: 1 }];
+      
+      return [...prevCart, { ...product, quantity: 1, selectedVariant: variant }];
     });
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId: string) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+  const removeFromCart = (productId: string, variant?: string) => {
+    setCart(prevCart => prevCart.filter(item => {
+      const itemKey = item.selectedVariant ? `${item.id}-${item.selectedVariant}` : item.id;
+      const cartKey = variant ? `${productId}-${variant}` : productId;
+      return itemKey !== cartKey;
+    }));
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productId: string, quantity: number, variant?: string) => {
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(productId, variant);
       return;
     }
     setCart(prevCart =>
-      prevCart.map(item =>
-        item.id === productId ? { ...item, quantity } : item
-      )
+      prevCart.map(item => {
+        const itemKey = item.selectedVariant ? `${item.id}-${item.selectedVariant}` : item.id;
+        const cartKey = variant ? `${productId}-${variant}` : productId;
+        if (itemKey === cartKey) {
+          return { ...item, quantity };
+        }
+        return item;
+      })
     );
   };
 
@@ -278,8 +257,10 @@ export default function ShopPage() {
                 overflow: 'hidden',
                 transition: 'all 0.3s ease',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                cursor: 'pointer'
               }}
+              onClick={() => router.push(`/shop/${product.id}`)}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-8px)';
                 e.currentTarget.style.borderColor = 'rgba(234, 88, 12, 0.4)';
@@ -309,7 +290,6 @@ export default function ShopPage() {
                     opacity: 0.9
                   }}
                   onError={(e) => {
-                    // Fallback to placeholder if image fails
                     e.currentTarget.src = 'https://via.placeholder.com/400x400/1a1a1a/ea580c?text=' + encodeURIComponent(product.title);
                   }}
                 />
@@ -322,6 +302,24 @@ export default function ShopPage() {
                   height: '4px',
                   background: 'linear-gradient(90deg, transparent 0%, rgba(234, 88, 12, 0.6) 50%, transparent 100%)'
                 }}></div>
+                {/* Variant indicator */}
+                {product.variants && product.variants.length > 0 && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    right: '1rem',
+                    background: 'rgba(234, 88, 12, 0.9)',
+                    color: '#ffffff',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '20px',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    fontFamily: 'var(--font-clash)',
+                    backdropFilter: 'blur(10px)'
+                  }}>
+                    {product.variants.length} Colors
+                  </div>
+                )}
               </div>
 
               {/* Product Info */}
@@ -357,7 +355,14 @@ export default function ShopPage() {
                     ${product.price}
                   </span>
                   <button
-                    onClick={() => addToCart(product)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (product.variants && product.variants.length > 0) {
+                        router.push(`/shop/${product.id}`);
+                      } else {
+                        addToCart(product);
+                      }
+                    }}
                     style={{
                       background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
                       color: '#ffffff',
@@ -383,7 +388,7 @@ export default function ShopPage() {
                       e.currentTarget.style.boxShadow = '0 5px 20px rgba(234, 88, 12, 0.3)';
                     }}
                   >
-                    Add to Cart
+                    {product.variants && product.variants.length > 0 ? 'View Options' : 'Add to Cart'}
                   </button>
                 </div>
               </div>
@@ -392,7 +397,7 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* Cart Sidebar */}
+      {/* Cart Sidebar - Same as before but updated for variants */}
       {isCartOpen && (
         <>
           <div
@@ -514,125 +519,133 @@ export default function ShopPage() {
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {cart.map(item => (
-                    <div
-                      key={item.id}
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        borderRadius: '12px',
-                        padding: '1rem',
-                        display: 'flex',
-                        gap: '1rem'
-                      }}
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.title}
+                  {cart.map(item => {
+                    const itemKey = item.selectedVariant ? `${item.id}-${item.selectedVariant}` : item.id;
+                    return (
+                      <div
+                        key={itemKey}
                         style={{
-                          width: '80px',
-                          height: '80px',
-                          objectFit: 'cover',
-                          borderRadius: '8px',
-                          background: '#1a1a1a'
-                        }}
-                        onError={(e) => {
-                          e.currentTarget.src = 'https://via.placeholder.com/80x80/1a1a1a/ea580c?text=' + encodeURIComponent(item.title.substring(0, 2));
-                        }}
-                      />
-                      <div style={{ flex: 1 }}>
-                        <h4 style={{
-                          color: '#ffffff',
-                          fontSize: '0.95rem',
-                          fontWeight: 700,
-                          margin: '0 0 0.5rem 0',
-                          fontFamily: 'var(--font-clash)'
-                        }}>
-                          {item.title}
-                        </h4>
-                        <div style={{
+                          background: 'rgba(255, 255, 255, 0.03)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: '12px',
+                          padding: '1rem',
                           display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          marginTop: '0.5rem'
-                        }}>
+                          gap: '1rem'
+                        }}
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          style={{
+                            width: '80px',
+                            height: '80px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                            background: '#1a1a1a'
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://via.placeholder.com/80x80/1a1a1a/ea580c?text=' + encodeURIComponent(item.title.substring(0, 2));
+                          }}
+                        />
+                        <div style={{ flex: 1 }}>
+                          <h4 style={{
+                            color: '#ffffff',
+                            fontSize: '0.95rem',
+                            fontWeight: 700,
+                            margin: '0 0 0.5rem 0',
+                            fontFamily: 'var(--font-clash)'
+                          }}>
+                            {item.title}
+                            {item.selectedVariant && (
+                              <span style={{ color: '#9ca3af', fontSize: '0.85rem', display: 'block', marginTop: '0.25rem' }}>
+                                Color: {item.selectedVariant}
+                              </span>
+                            )}
+                          </h4>
                           <div style={{
                             display: 'flex',
+                            justifyContent: 'space-between',
                             alignItems: 'center',
-                            gap: '0.5rem'
+                            marginTop: '0.5rem'
                           }}>
-                            <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                color: '#ffffff',
-                                width: '28px',
-                                height: '28px',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
-                                fontSize: '1.2rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                              }}
-                            >
-                              −
-                            </button>
-                            <span style={{ color: '#ffffff', minWidth: '30px', textAlign: 'center' }}>
-                              {item.quantity}
-                            </span>
-                            <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              style={{
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                color: '#ffffff',
-                                width: '28px',
-                                height: '28px',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
-                                fontSize: '1.2rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                              }}
-                            >
-                              +
-                            </button>
-                          </div>
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-end',
-                            gap: '0.25rem'
-                          }}>
-                            <span style={{
-                              color: '#ea580c',
-                              fontSize: '1rem',
-                              fontWeight: 700,
-                              fontFamily: 'var(--font-clash)'
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.5rem'
                             }}>
-                              ${(item.price * item.quantity).toFixed(2)}
-                            </span>
-                            <button
-                              onClick={() => removeFromCart(item.id)}
-                              style={{
-                                background: 'none',
-                                border: 'none',
-                                color: '#9ca3af',
-                                fontSize: '0.75rem',
-                                cursor: 'pointer',
-                                textDecoration: 'underline'
-                              }}
-                            >
-                              Remove
-                            </button>
+                              <button
+                                onClick={() => updateQuantity(item.id, item.quantity - 1, item.selectedVariant)}
+                                style={{
+                                  background: 'rgba(255, 255, 255, 0.05)',
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                  color: '#ffffff',
+                                  width: '28px',
+                                  height: '28px',
+                                  borderRadius: '6px',
+                                  cursor: 'pointer',
+                                  fontSize: '1.2rem',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center'
+                                }}
+                              >
+                                −
+                              </button>
+                              <span style={{ color: '#ffffff', minWidth: '30px', textAlign: 'center' }}>
+                                {item.quantity}
+                              </span>
+                              <button
+                                onClick={() => updateQuantity(item.id, item.quantity + 1, item.selectedVariant)}
+                                style={{
+                                  background: 'rgba(255, 255, 255, 0.05)',
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                  color: '#ffffff',
+                                  width: '28px',
+                                  height: '28px',
+                                  borderRadius: '6px',
+                                  cursor: 'pointer',
+                                  fontSize: '1.2rem',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center'
+                                }}
+                              >
+                                +
+                              </button>
+                            </div>
+                            <div style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'flex-end',
+                              gap: '0.25rem'
+                            }}>
+                              <span style={{
+                                color: '#ea580c',
+                                fontSize: '1rem',
+                                fontWeight: 700,
+                                fontFamily: 'var(--font-clash)'
+                              }}>
+                                ${(item.price * item.quantity).toFixed(2)}
+                              </span>
+                              <button
+                                onClick={() => removeFromCart(item.id, item.selectedVariant)}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: '#9ca3af',
+                                  fontSize: '0.75rem',
+                                  cursor: 'pointer',
+                                  textDecoration: 'underline'
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -668,7 +681,7 @@ export default function ShopPage() {
                   </span>
                 </div>
                 <a
-                  href={`sms:4144396211?body=Hey Joe! I want to order: ${cart.map(item => `${item.quantity}x ${item.title} ($${item.price})`).join(', ')}. Total: $${getCartTotal().toFixed(2)}`}
+                  href={`sms:4144396211?body=Hey Joe! I want to order: ${cart.map(item => `${item.quantity}x ${item.title}${item.selectedVariant ? ` (${item.selectedVariant})` : ''} ($${item.price})`).join(', ')}. Total: $${getCartTotal().toFixed(2)}`}
                   style={{
                     display: 'block',
                     background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
@@ -779,7 +792,7 @@ export default function ShopPage() {
               ${getCartTotal().toFixed(2)}
             </span>
           </button>
-          {/* Mobile Cart Button - in sticky bar area */}
+          {/* Mobile Cart Button */}
           <button
             className="cart-btn-mobile"
             onClick={() => setIsCartOpen(true)}
