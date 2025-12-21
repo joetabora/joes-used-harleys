@@ -17,88 +17,24 @@ export type Product = {
 
 // Product data
 export const products: Product[] = [
-  // Clothing
-  { 
-    id: '1', 
-    title: 'Skull & Crossbones Tee', 
-    price: 39, 
-    image: 'https://files.catbox.moe/placeholder-clothing-1.jpg', 
-    category: 'clothing',
-    description: 'Badass skull and crossbones design on premium cotton tee. Perfect for riders who want to show their edge. Available in multiple sizes.'
-  },
-  { 
-    id: '2', 
-    title: 'Harley Heritage Hoodie', 
-    price: 79, 
-    image: 'https://files.catbox.moe/placeholder-clothing-2.jpg', 
-    category: 'clothing',
-    description: 'Classic Harley-Davidson heritage design on a comfortable, warm hoodie. Built for long rides and cold weather.'
-  },
-  { 
-    id: '3', 
-    title: 'Biker Denim Jacket', 
-    price: 149, 
-    image: 'https://files.catbox.moe/placeholder-clothing-3.jpg', 
-    category: 'clothing',
-    description: 'Authentic biker-style denim jacket with premium construction. Durable, stylish, and built to last.'
-  },
-  { 
-    id: '4', 
-    title: 'Rider Logo Tee', 
-    price: 29, 
-    image: 'https://files.catbox.moe/placeholder-clothing-4.jpg', 
-    category: 'clothing',
-    description: 'Simple, classic rider logo tee. Comfortable cotton blend perfect for everyday wear.'
-  },
-  { 
-    id: '5', 
-    title: 'Punk Rock Hoodie', 
-    price: 69, 
-    image: 'https://files.catbox.moe/placeholder-clothing-5.jpg', 
-    category: 'clothing',
-    description: 'Punk-inspired design on a premium hoodie. Stand out from the crowd with this bold statement piece.'
-  },
-  
   // Accessories
   { 
-    id: '6', 
-    title: 'Leather Riding Gloves', 
-    price: 49, 
-    image: 'https://files.catbox.moe/placeholder-accessories-1.jpg', 
+    id: '16', 
+    title: 'Wind Breaker Skull Face Mask', 
+    price: 25, 
+    image: 'https://bikerforward.com/cdn/shop/products/O1CN01nwefxt1yYGlW96m66__2211604466590-0-cib_1800x1800.jpg?v=1658810713', 
     category: 'accessories',
-    description: 'Premium leather riding gloves with reinforced palms. Protection and style for every ride.'
-  },
-  { 
-    id: '7', 
-    title: 'Biker Wallet Chain', 
-    price: 35, 
-    image: 'https://files.catbox.moe/placeholder-accessories-2.jpg', 
-    category: 'accessories',
-    description: 'Classic biker wallet chain. Heavy-duty construction with secure attachment. Essential biker accessory.'
-  },
-  { 
-    id: '8', 
-    title: 'Patched Vest', 
-    price: 89, 
-    image: 'https://files.catbox.moe/placeholder-accessories-3.jpg', 
-    category: 'accessories',
-    description: 'Custom patched vest ready for your patches. Show your club, your style, your story.'
-  },
-  { 
-    id: '9', 
-    title: 'Skull Ring Set', 
-    price: 45, 
-    image: 'https://files.catbox.moe/placeholder-accessories-4.jpg', 
-    category: 'accessories',
-    description: 'Set of skull-themed rings. Mix and match to create your perfect biker look.'
-  },
-  { 
-    id: '10', 
-    title: 'Leather Belt Buckle', 
-    price: 39, 
-    image: 'https://files.catbox.moe/placeholder-accessories-5.jpg', 
-    category: 'accessories',
-    description: 'Heavy-duty leather belt with custom buckle. Classic biker style that never goes out of fashion.'
+    description: 'Windproof skull face mask perfect for riding, outdoor sports, and protection from dust and wind. Made with breathable material that keeps you comfortable. Features a badass skull design that shows your style. Available in 8 color variations to match your gear.',
+    variants: [
+      { name: 'Khaki Red Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN01nwefxt1yYGlW96m66__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
+      { name: 'Black Gray Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN014CFzlN1yYGlgYUAct__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
+      { name: 'Green Gray Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN01c7zhjN1yYGlcqfU6y__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
+      { name: 'Black Color Lenses', image: 'https://bikerforward.com/cdn/shop/products/2-1_1800x1800.png?v=1658810701' },
+      { name: 'Green Color Lenses', image: 'https://bikerforward.com/cdn/shop/products/BF60019-GreenRainbow_c1f36dab-76e2-4868-ab19-6b41cea454d5_1800x1800.jpg?v=1658810713' },
+      { name: 'Black Red Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN014EQpek1yYGlkt7chu__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
+      { name: 'Khaki Color Lenses', image: 'https://bikerforward.com/cdn/shop/products/BF60019-BeigeRainbow_b122189d-e38c-46e5-8417-5f456e1010bc_1800x1800.jpg?v=1658810713' },
+      { name: 'Khaki Grey Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN017A5E5L1yYGlgHnxc8__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
+    ]
   },
   { 
     id: '24', 
@@ -128,68 +64,6 @@ export const products: Product[] = [
       { name: 'L', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
       { name: 'XL', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
     ]
-  },
-  
-  // Wind Breaker Skull Face Mask - Combined with color variants
-  { 
-    id: '16', 
-    title: 'Wind Breaker Skull Face Mask', 
-    price: 25, 
-    image: 'https://bikerforward.com/cdn/shop/products/O1CN01nwefxt1yYGlW96m66__2211604466590-0-cib_1800x1800.jpg?v=1658810713', 
-    category: 'accessories',
-    description: 'Windproof skull face mask perfect for riding, outdoor sports, and protection from dust and wind. Made with breathable material that keeps you comfortable. Features a badass skull design that shows your style. Available in 8 color variations to match your gear.',
-    variants: [
-      { name: 'Khaki Red Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN01nwefxt1yYGlW96m66__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
-      { name: 'Black Gray Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN014CFzlN1yYGlgYUAct__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
-      { name: 'Green Gray Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN01c7zhjN1yYGlcqfU6y__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
-      { name: 'Black Color Lenses', image: 'https://bikerforward.com/cdn/shop/products/2-1_1800x1800.png?v=1658810701' },
-      { name: 'Green Color Lenses', image: 'https://bikerforward.com/cdn/shop/products/BF60019-GreenRainbow_c1f36dab-76e2-4868-ab19-6b41cea454d5_1800x1800.jpg?v=1658810713' },
-      { name: 'Black Red Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN014EQpek1yYGlkt7chu__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
-      { name: 'Khaki Color Lenses', image: 'https://bikerforward.com/cdn/shop/products/BF60019-BeigeRainbow_b122189d-e38c-46e5-8417-5f456e1010bc_1800x1800.jpg?v=1658810713' },
-      { name: 'Khaki Grey Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN017A5E5L1yYGlgHnxc8__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
-    ]
-  },
-  
-  // Parts
-  { 
-    id: '11', 
-    title: 'Chrome Handlebar Grips', 
-    price: 59, 
-    image: 'https://files.catbox.moe/placeholder-parts-1.jpg', 
-    category: 'parts',
-    description: 'Premium chrome handlebar grips for better control and style. Easy installation, universal fit.'
-  },
-  { 
-    id: '12', 
-    title: 'Mirror Set - Chrome', 
-    price: 79, 
-    image: 'https://files.catbox.moe/placeholder-parts-2.jpg', 
-    category: 'parts',
-    description: 'Chrome mirror set with wide-angle view. Enhances safety and adds classic chrome style to your ride.'
-  },
-  { 
-    id: '13', 
-    title: 'Exhaust Tips - Black', 
-    price: 89, 
-    image: 'https://files.catbox.moe/placeholder-parts-3.jpg', 
-    category: 'parts',
-    description: 'Black exhaust tips for a meaner look. Easy bolt-on installation, no welding required.'
-  },
-  { 
-    id: '14', 
-    title: 'Foot Pegs - Chrome', 
-    price: 65, 
-    image: 'https://files.catbox.moe/placeholder-parts-4.jpg', 
-    category: 'parts',
-    description: 'Chrome foot pegs for better grip and style. Universal fit, easy installation.'
-  },
-  { 
-    id: '15', 
-    title: 'LED Turn Signals', 
-    price: 49, 
-    image: 'https://files.catbox.moe/placeholder-parts-5.jpg', 
-    category: 'parts',
-    description: 'Bright LED turn signals for improved visibility and safety. Plug-and-play installation.'
   },
 ];
 
