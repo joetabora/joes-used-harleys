@@ -61,7 +61,7 @@ export const products: Product[] = [
     description: 'Badass urban zombie design riding gloves that combine style and functionality. Features reinforced palms for protection, excellent grip, and a unique zombie-themed design that shows your edge. Perfect for riders who want to stand out on the road.',
     variants: [
       { name: 'M', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
-      { name: 'L', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
+      { name: 'L', image: 'https://img.ridewill.it/public/athena/big/404557002_2.webp' },
       { name: 'XL', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
     ]
   },
