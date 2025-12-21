@@ -65,6 +65,26 @@ export const products: Product[] = [
       { name: 'XL', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
     ]
   },
+  { 
+    id: '27', 
+    title: 'Retro Yellow Leather Motorcycle Gloves', 
+    price: 28, 
+    image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_3.jpg?v=1720514291', 
+    category: 'accessories',
+    description: 'Classic retro yellow leather motorcycle gloves that combine vintage style with modern protection. Made from genuine leather for durability and comfort. Features reinforced palms and excellent grip for safe riding. Available in multiple sizes and two styles: solid yellow and yellow perforated for breathability.',
+    variants: [
+      // Yellow variants
+      { name: 'Yellow - M', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_3.jpg?v=1720514291' },
+      { name: 'Yellow - L', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_3.jpg?v=1720514291' },
+      { name: 'Yellow - XL', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_3.jpg?v=1720514291' },
+      { name: 'Yellow - XXL', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_3.jpg?v=1720514291' },
+      // Yellow Perforated variants
+      { name: 'Yellow Perforated - M', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_37.jpg?v=1720513617' },
+      { name: 'Yellow Perforated - L', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_37.jpg?v=1720513617' },
+      { name: 'Yellow Perforated - XL', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_37.jpg?v=1720513617' },
+      { name: 'Yellow Perforated - XXL', image: 'https://shockmoto.com/cdn/shop/files/Vintageleathergloves_37.jpg?v=1720513617' },
+    ]
+  },
   // Clothing
   { 
     id: '26', 
