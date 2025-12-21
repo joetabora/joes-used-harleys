@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Navigation } from '@/components/Navigation';
 import { FloatingActionButtons } from '@/components/FloatingActionButtons';
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -19,10 +19,7 @@ export default function SuccessPage() {
   }, [searchParams]);
 
   return (
-    <>
-      <Navigation />
-      
-      <section style={{
+    <section style={{
         padding: '12rem 2rem 6rem',
         background: 'linear-gradient(135deg, #000000 0%, #0f0f0f 50%, #000000 100%)',
         textAlign: 'center',
@@ -156,7 +153,28 @@ export default function SuccessPage() {
           </div>
         </div>
       </section>
-      
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <>
+      <Navigation />
+      <Suspense fallback={
+        <section style={{
+          padding: '12rem 2rem 6rem',
+          background: 'linear-gradient(135deg, #000000 0%, #0f0f0f 50%, #000000 100%)',
+          textAlign: 'center',
+          minHeight: '70vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{ color: '#ffffff', fontSize: '1.2rem' }}>Loading...</div>
+        </section>
+      }>
+        <SuccessContent />
+      </Suspense>
       <FloatingActionButtons />
     </>
   );
