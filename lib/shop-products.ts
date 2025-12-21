@@ -116,6 +116,19 @@ export const products: Product[] = [
       { name: 'Bandana', image: 'https://litb-cgis.rightinthebox.com/images/640x640/202012/aucnku1606801006548.jpg?fmt=webp&v=1' },
     ]
   },
+  { 
+    id: '25', 
+    title: 'Urban Zombie Riding Gloves', 
+    price: 22, 
+    image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp', 
+    category: 'accessories',
+    description: 'Badass urban zombie design riding gloves that combine style and functionality. Features reinforced palms for protection, excellent grip, and a unique zombie-themed design that shows your edge. Perfect for riders who want to stand out on the road.',
+    variants: [
+      { name: 'M', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
+      { name: 'L', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
+      { name: 'XL', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
+    ]
+  },
   
   // Wind Breaker Skull Face Mask - Combined with color variants
   { 
