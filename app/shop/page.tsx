@@ -116,38 +116,47 @@ export default function ShopPage() {
         return;
       }
 
-      if (!sessionId) {
+      if (!sessionId && !url) {
         alert('Failed to create checkout session. Please try again.');
         setIsProcessing(false);
         return;
       }
 
-      // Get publishable key from environment
-      const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-      
-      if (!publishableKey) {
-        alert('Stripe is not configured. Please contact support.');
-        setIsProcessing(false);
+      // Redirect to Stripe Checkout URL (preferred method)
+      if (url) {
+        window.location.href = url;
         return;
       }
 
-      // Initialize Stripe
-      const stripe = await loadStripe(publishableKey);
-      
-      if (!stripe) {
-        alert('Stripe failed to load. Please refresh the page.');
-        setIsProcessing(false);
-        return;
-      }
+      // Fallback: use Stripe.js redirect with sessionId
+      if (sessionId) {
+        const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+        
+        if (!publishableKey) {
+          alert('Stripe is not configured. Please contact support.');
+          setIsProcessing(false);
+          return;
+        }
 
-      // Redirect to Stripe Checkout
-      const { error: stripeError } = await stripe.redirectToCheckout({
-        sessionId,
-      });
+        // Initialize Stripe and redirect
+        const stripe = await loadStripe(publishableKey);
+        
+        if (!stripe) {
+          alert('Stripe failed to load. Please refresh the page.');
+          setIsProcessing(false);
+          return;
+        }
 
-      if (stripeError) {
-        alert(`Stripe error: ${stripeError.message}`);
-        setIsProcessing(false);
+        // Type assertion for redirectToCheckout
+        const stripeWithRedirect = stripe as any;
+        const { error: stripeError } = await stripeWithRedirect.redirectToCheckout({
+          sessionId,
+        });
+
+        if (stripeError) {
+          alert(`Stripe error: ${stripeError.message}`);
+          setIsProcessing(false);
+        }
       }
     } catch (error: any) {
       console.error('Checkout error:', error);
