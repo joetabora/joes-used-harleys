@@ -65,6 +65,29 @@ export const products: Product[] = [
       { name: 'XL', image: 'https://img.ridewill.it/public/athena/big/404557002_1.webp' },
     ]
   },
+  // Clothing
+  { 
+    id: '26', 
+    title: 'Moto Skull X Bones', 
+    price: 30, 
+    image: 'https://img.fruugo.com/product/7/75/1928888757_max.jpg', 
+    category: 'clothing',
+    description: 'Unleash your inner rebel with the Moto Skull X Bones. This aggressive design is perfect for riders who want to make a statement. Made with durable, comfortable fabric, it\'s ideal for both on and off the road. Available in multiple sizes and electrifying colors to match your dark style.',
+    variants: [
+      // Neon Color variants
+      { name: 'Neon - M', image: 'https://img.fruugo.com/product/7/75/1928888757_max.jpg' },
+      { name: 'Neon - L', image: 'https://img.fruugo.com/product/7/75/1928888757_max.jpg' },
+      { name: 'Neon - XL', image: 'https://img.fruugo.com/product/7/75/1928888757_max.jpg' },
+      // Purple Color variants
+      { name: 'Purple - M', image: 'https://img.fruugo.com/product/0/74/1928888740_max.jpg' },
+      { name: 'Purple - L', image: 'https://img.fruugo.com/product/0/74/1928888740_max.jpg' },
+      { name: 'Purple - XL', image: 'https://img.fruugo.com/product/0/74/1928888740_max.jpg' },
+      // Grey Color variants
+      { name: 'Grey - M', image: 'https://img.fruugo.com/product/2/66/1928888662_max.jpg' },
+      { name: 'Grey - L', image: 'https://img.fruugo.com/product/2/66/1928888662_max.jpg' },
+      { name: 'Grey - XL', image: 'https://img.fruugo.com/product/2/66/1928888662_max.jpg' },
+    ]
+  },
 ];
 
 // Helper function to get product by ID
