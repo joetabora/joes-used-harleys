@@ -122,11 +122,11 @@ export const products: Product[] = [
     id: '16', 
     title: 'Wind Breaker Skull Face Mask', 
     price: 25, 
-    image: 'https://bikerforward.com/cdn/shop/products/BF60019-BeigeRainbow_b122189d-e38c-4868-ab19-6b41cea454d5_1800x1800.jpg?v=1658810713', 
+    image: 'https://bikerforward.com/cdn/shop/products/O1CN01nwefxt1yYGlW96m66__2211604466590-0-cib_1800x1800.jpg?v=1658810713', 
     category: 'accessories',
     description: 'Windproof skull face mask perfect for riding, outdoor sports, and protection from dust and wind. Made with breathable material that keeps you comfortable. Features a badass skull design that shows your style. Available in 8 color variations to match your gear.',
     variants: [
-      { name: 'Khaki Red Lenses', image: 'https://bikerforward.com/cdn/shop/products/BF60019-BeigeRainbow_b122189d-e38c-4868-ab19-6b41cea454d5_1800x1800.jpg?v=1658810713' },
+      { name: 'Khaki Red Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN01nwefxt1yYGlW96m66__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
       { name: 'Black Gray Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN014CFzlN1yYGlgYUAct__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
       { name: 'Green Gray Lenses', image: 'https://bikerforward.com/cdn/shop/products/O1CN01c7zhjN1yYGlcqfU6y__2211604466590-0-cib_1800x1800.jpg?v=1658810713' },
       { name: 'Black Color Lenses', image: 'https://bikerforward.com/cdn/shop/products/2-1_1800x1800.png?v=1658810701' },
