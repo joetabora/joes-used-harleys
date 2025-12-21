@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { loadStripe } from '@stripe/stripe-js';
 import { Navigation } from '@/components/Navigation';
 import { FloatingActionButtons } from '@/components/FloatingActionButtons';
 import { SEO } from '@/components/SEO';
@@ -17,6 +18,7 @@ export default function ShopPage() {
   const [activeCategory, setActiveCategory] = useState<'all' | 'clothing' | 'accessories' | 'parts'>('all');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -89,6 +91,69 @@ export default function ShopPage() {
 
   const getCartItemCount = () => {
     return cart.reduce((count, item) => count + item.quantity, 0);
+  };
+
+  const handleCheckout = async () => {
+    if (cart.length === 0) return;
+    
+    setIsProcessing(true);
+    
+    try {
+      // Create checkout session
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cart }),
+      });
+
+      const { sessionId, url, error } = await response.json();
+
+      if (error) {
+        alert(`Error: ${error}`);
+        setIsProcessing(false);
+        return;
+      }
+
+      if (!sessionId) {
+        alert('Failed to create checkout session. Please try again.');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Get publishable key from environment
+      const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+      
+      if (!publishableKey) {
+        alert('Stripe is not configured. Please contact support.');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Initialize Stripe
+      const stripe = await loadStripe(publishableKey);
+      
+      if (!stripe) {
+        alert('Stripe failed to load. Please refresh the page.');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Redirect to Stripe Checkout
+      const { error: stripeError } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (stripeError) {
+        alert(`Stripe error: ${stripeError.message}`);
+        setIsProcessing(false);
+      }
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      alert(`Failed to process checkout: ${error.message}`);
+      setIsProcessing(false);
+    }
   };
 
   const filteredProducts = activeCategory === 'all'
@@ -680,35 +745,47 @@ export default function ShopPage() {
                     ${getCartTotal().toFixed(2)}
                   </span>
                 </div>
-                <a
-                  href={`sms:4144396211?body=Hey Joe! I want to order: ${cart.map(item => `${item.quantity}x ${item.title}${item.selectedVariant ? ` (${item.selectedVariant})` : ''} ($${item.price})`).join(', ')}. Total: $${getCartTotal().toFixed(2)}`}
+                <button
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
                   style={{
                     display: 'block',
-                    background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+                    width: '100%',
+                    background: isProcessing 
+                      ? 'rgba(234, 88, 12, 0.5)' 
+                      : 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
                     color: '#ffffff',
                     padding: '1.25rem',
                     fontSize: '1rem',
                     fontWeight: 900,
                     textTransform: 'uppercase',
                     letterSpacing: '2px',
-                    textDecoration: 'none',
                     fontFamily: 'var(--font-clash)',
                     borderRadius: '12px',
                     textAlign: 'center',
-                    boxShadow: '0 10px 30px rgba(234, 88, 12, 0.4)',
-                    transition: 'all 0.3s ease'
+                    boxShadow: isProcessing 
+                      ? 'none' 
+                      : '0 10px 30px rgba(234, 88, 12, 0.4)',
+                    transition: 'all 0.3s ease',
+                    border: 'none',
+                    cursor: isProcessing ? 'not-allowed' : 'pointer',
+                    opacity: isProcessing ? 0.7 : 1
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 15px 40px rgba(234, 88, 12, 0.6)';
+                    if (!isProcessing) {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 15px 40px rgba(234, 88, 12, 0.6)';
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(234, 88, 12, 0.4)';
+                    if (!isProcessing) {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 10px 30px rgba(234, 88, 12, 0.4)';
+                    }
                   }}
                 >
-                  💬 TEXT JOE TO ORDER
-                </a>
+                  {isProcessing ? '⏳ Processing...' : '💳 CHECKOUT WITH STRIPE'}
+                </button>
                 <p style={{
                   color: '#9ca3af',
                   fontSize: '0.85rem',
@@ -716,7 +793,7 @@ export default function ShopPage() {
                   marginTop: '1rem',
                   lineHeight: '1.5'
                 }}>
-                  Free shipping on orders over $100. Manual fulfillment via text.
+                  Free shipping on orders over $100. Secure checkout powered by Stripe.
                 </p>
               </div>
             )}

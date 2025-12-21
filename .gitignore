@@ -28,6 +28,9 @@ yarn-error.log*
 .env*.local
 .env
 
+# Stripe keys (never commit!)
+STRIPE_KEYS.md
+
 # vercel
 .vercel
 
