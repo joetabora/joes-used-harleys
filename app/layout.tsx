@@ -106,6 +106,27 @@ export default function RootLayout({
         <meta name="ICBM" content="43.0389, -87.9065" />
       </head>
       <body className={`${inter.variable} ${bebasNeue.variable}`}>
+        <style dangerouslySetInnerHTML={{ __html: `
+          .under-construction-btn {
+            background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            font-family: var(--font-clash);
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(234, 88, 12, 0.4);
+            transition: all 0.3s ease;
+            display: inline-block;
+          }
+          .under-construction-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(234, 88, 12, 0.6);
+          }
+        `}} />
         <div style={{
           minHeight: '100vh',
           display: 'flex',
@@ -151,29 +172,7 @@ export default function RootLayout({
             }}>
               <a
                 href="sms:4144396211?body=Hey Joe!"
-                style={{
-                  background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
-                  color: '#ffffff',
-                  padding: '1rem 2rem',
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '2px',
-                  textDecoration: 'none',
-                  fontFamily: 'var(--font-clash)',
-                  borderRadius: '50px',
-                  boxShadow: '0 10px 40px rgba(234, 88, 12, 0.4)',
-                  transition: 'all 0.3s ease',
-                  display: 'inline-block'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(234, 88, 12, 0.6)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(234, 88, 12, 0.4)';
-                }}
+                className="under-construction-btn"
               >
                 TEXT JOE
               </a>
