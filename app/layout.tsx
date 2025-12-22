@@ -89,13 +89,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/fav.png" sizes="500x500" />
         <link rel="shortcut icon" type="image/png" href="/fav.png" />
         <link rel="apple-touch-icon" href="/fav.png" />
-        {/* Preload critical resources */}
-        <link
-          rel="preload"
-          href="/juh3.png"
-          as="image"
-          type="image/png"
-        />
         {/* Preconnect to Google Fonts for Core Web Vitals */}
         <link
           rel="preconnect"
@@ -106,35 +99,87 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        {/* Preconnect to external image domains */}
-        <link
-          rel="preconnect"
-          href="https://i.imgur.com"
-        />
-        <link
-          rel="preconnect"
-          href="https://videos.pexels.com"
-        />
-        <link
-          rel="dns-prefetch"
-          href="https://videos.pexels.com"
-        />
-        <link
-          rel="dns-prefetch"
-          href="https://i.imgur.com"
-        />
         {/* Geo metadata for local SEO */}
         <meta name="geo.region" content="US-WI" />
         <meta name="geo.placename" content="Milwaukee" />
         <meta name="geo.position" content="43.0389;-87.9065" />
         <meta name="ICBM" content="43.0389, -87.9065" />
-        {/* Keywords meta tag from centralized config */}
-        <meta name="keywords" content={SEO_CONFIG.keywords.join(", ")} />
-        {/* Global JSON-LD schemas: Organization, WebSite (with SearchAction), LocalBusiness */}
-        <SEO type="website" includeOrganization includeWebSite includeLocalBusiness />
       </head>
       <body className={`${inter.variable} ${bebasNeue.variable}`}>
-        {children}
+        <div style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)',
+          padding: '2rem',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            maxWidth: '600px',
+            width: '100%'
+          }}>
+            <h1 style={{
+              fontSize: 'clamp(3rem, 8vw, 6rem)',
+              fontWeight: 900,
+              fontFamily: 'var(--font-clash)',
+              background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              marginBottom: '2rem',
+              letterSpacing: '-2px',
+              lineHeight: '1.1'
+            }}>
+              UNDER CONSTRUCTION
+            </h1>
+            <p style={{
+              fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+              color: '#9ca3af',
+              fontWeight: 500,
+              letterSpacing: '1px',
+              marginBottom: '3rem',
+              lineHeight: '1.6'
+            }}>
+              We're working on something amazing. Check back soon!
+            </p>
+            <div style={{
+              display: 'flex',
+              gap: '1rem',
+              justifyContent: 'center',
+              flexWrap: 'wrap'
+            }}>
+              <a
+                href="sms:4144396211?body=Hey Joe!"
+                style={{
+                  background: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+                  color: '#ffffff',
+                  padding: '1rem 2rem',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textDecoration: 'none',
+                  fontFamily: 'var(--font-clash)',
+                  borderRadius: '50px',
+                  boxShadow: '0 10px 40px rgba(234, 88, 12, 0.4)',
+                  transition: 'all 0.3s ease',
+                  display: 'inline-block'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(234, 88, 12, 0.6)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(234, 88, 12, 0.4)';
+                }}
+              >
+                TEXT JOE
+              </a>
+            </div>
+          </div>
+        </div>
       </body>
     </html>
   );
