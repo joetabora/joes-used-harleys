@@ -21,9 +21,12 @@ const links = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-chrome/50 bg-concrete">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-asphalt/95 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="font-display text-lg leading-none text-ink">
+        <Link
+          href="/"
+          className="font-display text-lg leading-none text-ink transition-colors hover:text-lamp"
+        >
           {siteConfig.name}
         </Link>
 
@@ -32,7 +35,7 @@ export function SiteHeader() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-label text-steel transition-colors hover:text-ink"
+              className="font-label text-steel transition-colors hover:text-lamp"
             >
               {link.label}
             </Link>
@@ -41,7 +44,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           {hasContactPhone() ? (
-            <a href={siteConfig.smsLink} className="joe-btn-asphalt hidden h-9 px-3 sm:inline-flex">
+            <a href={siteConfig.smsLink} className="joe-btn-primary hidden h-9 px-3 sm:inline-flex">
               Text Joe
             </a>
           ) : (
@@ -65,11 +68,17 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-concrete px-4">
               <SheetHeader>
-                <SheetTitle className="font-display text-left">{siteConfig.name}</SheetTitle>
+                <SheetTitle className="font-display text-left text-ink">
+                  {siteConfig.name}
+                </SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-4">
                 {links.map((link) => (
-                  <Link key={link.href} href={link.href} className="font-display text-xl text-ink">
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="font-display text-xl text-ink transition-colors hover:text-lamp"
+                  >
                     {link.label}
                   </Link>
                 ))}

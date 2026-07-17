@@ -25,7 +25,7 @@ export function MediaFrame({
         className,
       )}
     >
-      <p className="font-label text-center text-steel">{label}</p>
+      <p className="font-label text-center text-steel/90">{label}</p>
     </div>
   );
 }

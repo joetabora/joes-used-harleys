@@ -8,15 +8,13 @@ export function HomeCinematicOpen() {
       <div className="joe-hero-atmosphere absolute inset-0" aria-hidden />
       <div className="joe-hero-grain absolute inset-0" aria-hidden />
       <div
-        className="absolute inset-0 bg-gradient-to-t from-asphalt via-asphalt/55 to-asphalt/20"
+        className="absolute inset-0 bg-gradient-to-t from-asphalt via-asphalt/70 to-asphalt/25"
         aria-hidden
       />
 
       <div className="relative mx-auto flex min-h-[min(92svh,48rem)] max-w-6xl flex-col justify-end px-4 pb-10 pt-28 md:pb-14 md:pt-32">
-        <p className="joe-fade-up font-display text-5xl leading-none text-lamp sm:text-6xl md:text-7xl lg:text-8xl">
-          {siteConfig.name}
-        </p>
-        <h1 className="joe-fade-up joe-fade-up-delay-1 mt-8 max-w-xl font-story text-3xl text-[oklch(0.94_0.01_85)] sm:text-4xl md:text-5xl">
+        <p className="joe-fade-up font-poster text-lamp">{siteConfig.name}</p>
+        <h1 className="joe-fade-up joe-fade-up-delay-1 mt-8 max-w-2xl font-story text-3xl text-ink sm:text-4xl md:text-5xl">
           Pull up a stool. Let&apos;s talk motorcycles.
         </h1>
         <div className="joe-fade-up joe-fade-up-delay-2 mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-8">
@@ -25,7 +23,7 @@ export function HomeCinematicOpen() {
           </Link>
           <a
             href="#find-your-fit"
-            className="font-label text-[oklch(0.94_0.01_85_/0.65)] underline-offset-4 transition-colors hover:text-lamp hover:underline"
+            className="font-label text-steel underline-offset-4 transition-colors hover:text-lamp hover:underline"
           >
             Find my Harley ↓
           </a>
@@ -36,7 +34,7 @@ export function HomeCinematicOpen() {
         <MediaFrame
           variant="hero"
           label="[PLACEHOLDER — garage / road atmosphere when Joe provides a photo]"
-          className="border-[oklch(0.94_0.01_85_/0.2)] bg-asphalt/40"
+          className="border-white/15 bg-asphalt/50"
         />
       </div>
     </section>

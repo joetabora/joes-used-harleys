@@ -19,13 +19,13 @@ export function SectionShell({
       id={id}
       className={cn(
         tone === "bay" && "bg-bay",
-        tone === "asphalt" && "joe-asphalt-bay text-primary-foreground",
+        tone === "asphalt" && "joe-asphalt-bay text-ink",
         className,
       )}
     >
       <div
         className={cn(
-          "mx-auto max-w-6xl",
+          "relative z-[1] mx-auto max-w-6xl",
           spread ? "px-4 py-24 md:px-8 md:py-32" : "px-4 py-20 md:py-24",
         )}
       >

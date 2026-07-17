@@ -25,7 +25,7 @@ export function HomeFromTheBench() {
           <li key={guide.slug} className="joe-rule py-8">
             <p className="font-label text-steel">{guide.category}</p>
             <h3 className="mt-3 font-story text-2xl text-ink md:text-3xl">
-              <Link href={`/guides/${guide.slug}`} className="hover:text-leather">
+              <Link href={`/guides/${guide.slug}`} className="hover:text-lamp">
                 {guide.title}
               </Link>
             </h3>
@@ -34,7 +34,7 @@ export function HomeFromTheBench() {
             </p>
             <Link
               href={`/guides/${guide.slug}`}
-              className="mt-4 inline-block font-label text-leather underline-offset-4 hover:underline"
+              className="mt-4 inline-block font-label text-lamp underline-offset-4 hover:underline"
             >
               Read
             </Link>

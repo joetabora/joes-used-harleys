@@ -58,78 +58,78 @@
   --radius-4xl: 0.75rem;
 }
 
-/* Modern motorcycle garage — concrete, asphalt, leather, chrome, lamp */
+/* Dark outlaw — asphalt, bone, ember, oxblood, chrome */
 :root {
-  --concrete: oklch(0.93 0.012 85);
-  --bay: oklch(0.9 0.014 80);
-  --ink: oklch(0.24 0.02 55);
-  --asphalt: oklch(0.2 0.02 50);
-  --leather: oklch(0.42 0.06 55);
+  --asphalt: oklch(0.14 0.015 45);
+  --concrete: oklch(0.17 0.016 48);
+  --bay: oklch(0.21 0.018 50);
+  --ink: oklch(0.93 0.012 85);
+  --steel: oklch(0.62 0.02 70);
   --chrome: oklch(0.72 0.012 240);
-  --steel: oklch(0.5 0.015 70);
-  --lamp: oklch(0.68 0.1 65);
-  --lamp-foreground: oklch(0.2 0.025 50);
+  --leather: oklch(0.42 0.12 25);
+  --lamp: oklch(0.72 0.18 55);
+  --lamp-foreground: oklch(0.16 0.03 45);
 
   --background: var(--concrete);
   --foreground: var(--ink);
-  --card: oklch(0.95 0.01 85);
+  --card: oklch(0.2 0.018 48);
   --card-foreground: var(--ink);
-  --popover: oklch(0.95 0.01 85);
+  --popover: oklch(0.2 0.018 48);
   --popover-foreground: var(--ink);
-  --primary: var(--asphalt);
-  --primary-foreground: oklch(0.94 0.01 85);
+  --primary: var(--lamp);
+  --primary-foreground: var(--lamp-foreground);
   --secondary: var(--bay);
   --secondary-foreground: var(--ink);
-  --muted: var(--bay);
+  --muted: oklch(0.24 0.018 50);
   --muted-foreground: var(--steel);
-  --accent: oklch(0.88 0.02 75);
+  --accent: oklch(0.24 0.02 50);
   --accent-foreground: var(--ink);
-  --destructive: oklch(0.5 0.16 25);
-  --border: color-mix(in oklch, var(--chrome) 55%, var(--steel));
-  --input: color-mix(in oklch, var(--chrome) 45%, var(--concrete));
+  --destructive: oklch(0.62 0.18 25);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
   --ring: var(--lamp);
   --chart-1: var(--lamp);
   --chart-2: var(--leather);
   --chart-3: var(--steel);
-  --chart-4: var(--asphalt);
-  --chart-5: var(--chrome);
+  --chart-4: var(--chrome);
+  --chart-5: var(--asphalt);
   --radius: 0.25rem;
   --sidebar: var(--bay);
   --sidebar-foreground: var(--ink);
-  --sidebar-primary: var(--asphalt);
-  --sidebar-primary-foreground: oklch(0.94 0.01 85);
-  --sidebar-accent: var(--concrete);
+  --sidebar-primary: var(--lamp);
+  --sidebar-primary-foreground: var(--lamp-foreground);
+  --sidebar-accent: oklch(0.24 0.018 50);
   --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: var(--border);
+  --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: var(--lamp);
 }
 
 .dark {
-  --background: var(--asphalt);
-  --foreground: oklch(0.93 0.01 85);
-  --card: oklch(0.24 0.02 50);
-  --card-foreground: oklch(0.93 0.01 85);
-  --popover: oklch(0.24 0.02 50);
-  --popover-foreground: oklch(0.93 0.01 85);
+  --background: var(--concrete);
+  --foreground: var(--ink);
+  --card: oklch(0.2 0.018 48);
+  --card-foreground: var(--ink);
+  --popover: oklch(0.2 0.018 48);
+  --popover-foreground: var(--ink);
   --primary: var(--lamp);
   --primary-foreground: var(--lamp-foreground);
-  --secondary: oklch(0.28 0.02 50);
-  --secondary-foreground: oklch(0.93 0.01 85);
-  --muted: oklch(0.28 0.02 50);
-  --muted-foreground: var(--chrome);
-  --accent: oklch(0.28 0.02 50);
-  --accent-foreground: oklch(0.93 0.01 85);
-  --destructive: oklch(0.62 0.16 25);
-  --border: oklch(1 0 0 / 14%);
+  --secondary: var(--bay);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.24 0.018 50);
+  --muted-foreground: var(--steel);
+  --accent: oklch(0.24 0.02 50);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.62 0.18 25);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 14%);
   --ring: var(--lamp);
-  --sidebar: oklch(0.24 0.02 50);
-  --sidebar-foreground: oklch(0.93 0.01 85);
+  --sidebar: var(--bay);
+  --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--lamp);
   --sidebar-primary-foreground: var(--lamp-foreground);
-  --sidebar-accent: oklch(0.28 0.02 50);
-  --sidebar-accent-foreground: oklch(0.93 0.01 85);
-  --sidebar-border: oklch(1 0 0 / 14%);
+  --sidebar-accent: oklch(0.24 0.018 50);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: var(--lamp);
 }
 
@@ -151,8 +151,18 @@
 @layer utilities {
   .font-display {
     font-family: var(--font-display);
-    letter-spacing: 0.04em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
+  }
+
+  .font-poster {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    font-size: clamp(2.75rem, 8vw, 6.5rem);
   }
 
   .font-story {
@@ -165,7 +175,7 @@
 
   .font-label {
     font-family: var(--font-display);
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     font-size: 0.7rem;
     font-weight: 600;
@@ -182,33 +192,49 @@
     font-weight: 500;
     line-height: 1.4;
     color: var(--ink);
-    border-left: 2px solid var(--leather);
+    border-left: 2px solid var(--lamp);
     padding-left: 1.25rem;
   }
 
   .joe-rule {
-    border-top: 1px solid color-mix(in oklch, var(--chrome) 60%, transparent);
+    border-top: 1px solid oklch(1 0 0 / 12%);
   }
 
   .joe-frame {
-    border: 1px solid color-mix(in oklch, var(--chrome) 70%, var(--steel));
-    background: color-mix(in oklch, var(--concrete) 88%, var(--bay));
+    border: 1px solid oklch(1 0 0 / 14%);
+    background: color-mix(in oklch, var(--bay) 70%, var(--asphalt));
   }
 
   .joe-clipboard {
-    border-left: 3px solid var(--leather);
+    border-left: 3px solid var(--lamp);
     border-top: none;
     border-right: none;
     border-bottom: none;
-    background: color-mix(in oklch, var(--bay) 70%, var(--concrete));
+    background: color-mix(in oklch, var(--bay) 85%, var(--asphalt));
     padding: 1rem 1.25rem;
+  }
+
+  .joe-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid color-mix(in oklch, var(--lamp) 70%, transparent);
+    border-radius: 0.125rem;
+    background: color-mix(in oklch, var(--asphalt) 80%, transparent);
+    color: var(--lamp);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
   }
 
   .joe-asphalt-bay {
     background-color: var(--asphalt);
     background-image: radial-gradient(
       ellipse 70% 55% at 50% 0%,
-      oklch(0.38 0.05 60 / 0.35),
+      oklch(0.42 0.12 55 / 0.28),
       transparent 60%
     );
   }
@@ -216,17 +242,33 @@
   .joe-hero-atmosphere {
     background-color: var(--asphalt);
     background-image:
-      radial-gradient(ellipse 55% 45% at 65% 25%, oklch(0.42 0.06 60 / 0.4), transparent 58%),
-      radial-gradient(ellipse 40% 35% at 15% 75%, oklch(0.28 0.03 45 / 0.45), transparent 55%),
-      linear-gradient(168deg, oklch(0.26 0.025 50) 0%, oklch(0.17 0.02 48) 55%, oklch(0.22 0.03 55) 100%);
+      radial-gradient(ellipse 55% 45% at 65% 25%, oklch(0.48 0.16 55 / 0.35), transparent 58%),
+      radial-gradient(ellipse 40% 35% at 15% 75%, oklch(0.28 0.08 30 / 0.4), transparent 55%),
+      linear-gradient(168deg, oklch(0.2 0.02 48) 0%, oklch(0.12 0.015 45) 55%, oklch(0.16 0.025 40) 100%);
     background-size: 130% 130%, 110% 110%, 100% 100%;
     animation: joe-atmosphere-drift 22s ease-in-out infinite alternate;
   }
 
   .joe-hero-grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-    opacity: 0.1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    opacity: 0.18;
     mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .joe-grain {
+    position: relative;
+  }
+
+  .joe-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .joe-fade-up {
@@ -245,7 +287,7 @@
     animation-delay: 0.45s;
   }
 
-  /* Workshop label CTAs */
+  /* Outlaw CTAs */
   .joe-btn-primary {
     display: inline-flex;
     align-items: center;
@@ -253,12 +295,12 @@
     height: 3rem;
     padding-inline: 1.25rem;
     border-radius: 0.125rem;
-    border: 1px solid color-mix(in oklch, var(--lamp) 80%, var(--ink));
+    border: 1px solid color-mix(in oklch, var(--lamp) 85%, white);
     background: var(--lamp);
     color: var(--lamp-foreground);
     font-family: var(--font-display);
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
@@ -269,7 +311,7 @@
   }
 
   .joe-btn-primary:hover {
-    filter: brightness(1.06);
+    filter: brightness(1.08);
     transform: translateY(-1px);
   }
 
@@ -284,12 +326,12 @@
     height: 3rem;
     padding-inline: 1.25rem;
     border-radius: 0.125rem;
-    border: 1px solid color-mix(in oklch, var(--chrome) 75%, transparent);
+    border: 1px solid color-mix(in oklch, var(--chrome) 70%, transparent);
     background: transparent;
-    color: oklch(0.94 0.01 85);
+    color: var(--ink);
     font-family: var(--font-display);
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
@@ -312,23 +354,26 @@
     height: 3rem;
     padding-inline: 1.25rem;
     border-radius: 0.125rem;
-    border: 1px solid color-mix(in oklch, var(--chrome) 65%, var(--steel));
+    border: 1px solid color-mix(in oklch, var(--chrome) 55%, transparent);
     background: transparent;
     color: var(--ink);
     font-family: var(--font-display);
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
     transition:
       transform 0.2s ease,
       background-color 0.2s ease,
-      border-color 0.2s ease;
+      border-color 0.2s ease,
+      color 0.2s ease;
   }
 
   .joe-btn-secondary:hover {
-    background: color-mix(in oklch, var(--bay) 80%, transparent);
+    background: oklch(1 0 0 / 5%);
+    border-color: var(--lamp);
+    color: var(--lamp);
     transform: translateY(-1px);
   }
 
@@ -339,22 +384,24 @@
     height: 3rem;
     padding-inline: 1.25rem;
     border-radius: 0.125rem;
-    border: 1px solid var(--asphalt);
+    border: 1px solid oklch(1 0 0 / 18%);
     background: var(--asphalt);
-    color: oklch(0.94 0.01 85);
+    color: var(--ink);
     font-family: var(--font-display);
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
     transition:
       transform 0.2s ease,
+      border-color 0.2s ease,
       filter 0.2s ease;
   }
 
   .joe-btn-asphalt:hover {
-    filter: brightness(1.12);
+    border-color: var(--lamp);
+    filter: brightness(1.15);
     transform: translateY(-1px);
   }
 }
