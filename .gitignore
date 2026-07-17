@@ -30,7 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files — keep example committed
+# env files — keep example committed; never track real secrets
 .env
 .env.*
 !.env.example
@@ -42,4 +42,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Prisma generated client (created by `prisma generate` / postinstall)
 /src/generated/prisma
