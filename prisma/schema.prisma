@@ -1,6 +1,5 @@
-// Prisma schema for Joe's Used Harleys
-// Target database: Supabase PostgreSQL (free tier)
-// Connection strings live in prisma.config.ts / .env — see .env.example
+// Core CRM schema for Joe's Used Harleys.
+// Capture and manage buyers — Lead, Bike, Interaction only.
 
 generator client {
   provider = "prisma-client"
@@ -11,142 +10,65 @@ datasource db {
   provider = "postgresql"
 }
 
-enum BikeStatus {
-  AVAILABLE
-  PENDING
-  SOLD
-}
-
-enum LeadType {
-  CONTACT
-  PREAPPROVAL
-  FACETIME
-  ALERT
-  AI_HANDOFF
-}
-
 enum LeadStatus {
   NEW
   CONTACTED
   CLOSED
 }
 
-model Bike {
-  id          String       @id @default(cuid())
-  vin         String?
-  title       String
-  model       String
-  year        Int
-  mileage     Int?
-  price       Int?
-  status      BikeStatus   @default(AVAILABLE)
-  description String?
-  slug        String       @unique
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  photos      BikePhoto[]
-  leads       Lead[]
-
-  @@index([status])
-  @@index([model])
+enum BikeStatus {
+  AVAILABLE
+  PENDING
+  SOLD
 }
 
-model BikePhoto {
-  id        String   @id @default(cuid())
-  bikeId    String
-  bike      Bike     @relation(fields: [bikeId], references: [id], onDelete: Cascade)
-  url       String
-  alt       String?
-  sortOrder Int      @default(0)
-  createdAt DateTime @default(now())
-
-  @@index([bikeId])
+enum InteractionType {
+  PHONE_CALL
+  TEXT
+  VISIT
+  EMAIL
+  TEST_RIDE
 }
 
 model Lead {
-  id         String     @id @default(cuid())
-  name       String
-  email      String?
-  phone      String?
-  message    String?
-  sourcePage String?
-  type       LeadType   @default(CONTACT)
-  status     LeadStatus @default(NEW)
-  bikeId     String?
-  bike       Bike?      @relation(fields: [bikeId], references: [id], onDelete: SetNull)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id           String        @id @default(cuid())
+  name         String
+  email        String?
+  phone        String?
+  source       String?
+  status       LeadStatus    @default(NEW)
+  notes        String?
+  createdAt    DateTime      @default(now())
+  interactions Interaction[]
 
   @@index([status])
-  @@index([type])
   @@index([createdAt])
 }
 
-model AlertSubscription {
-  id        String   @id @default(cuid())
-  email     String
-  model     String   @default("")
-  maxPrice  Int      @default(0)
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Bike {
+  id          String     @id @default(cuid())
+  year        Int
+  make        String
+  model       String
+  price       Int?
+  mileage     Int?
+  description String?
+  status      BikeStatus @default(AVAILABLE)
+  photos      String[]   @default([])
+  createdAt   DateTime   @default(now())
 
-  @@unique([email, model, maxPrice])
-  @@index([active])
+  @@index([status])
+  @@index([make, model])
 }
 
-model Testimonial {
-  id        String   @id @default(cuid())
-  author    String
-  text      String
-  source    String?
-  approved  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Interaction {
+  id        String          @id @default(cuid())
+  leadId    String
+  lead      Lead            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type      InteractionType
+  note      String?
+  createdAt DateTime        @default(now())
 
-  @@index([approved])
-}
-
-model Post {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  excerpt     String?
-  body        String
-  category    String?
-  published   Boolean  @default(false)
-  publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([published])
-  @@index([category])
-}
-
-model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model Conversation {
-  id        String    @id @default(cuid())
-  sessionId String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  messages  Message[]
-}
-
-model Message {
-  id             String       @id @default(cuid())
-  conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  role           String
-  content        String
-  createdAt      DateTime     @default(now())
-
-  @@index([conversationId])
+  @@index([leadId])
+  @@index([createdAt])
 }

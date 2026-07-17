@@ -1,6 +1,5 @@
 "use server";
 
-import { LeadType } from "@/generated/prisma/client";
 import { getAssistantKnowledgeBase } from "@/lib/guides";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { chatMessageSchema } from "@/lib/validators";
@@ -15,21 +14,20 @@ function isAiConfigured(): boolean {
   return Boolean(key && !key.includes("PLACEHOLDER"));
 }
 
-export async function askBuyingAssistant(
-  raw: unknown,
-): Promise<ChatResult> {
+/** Lightweight Q&A over guides + live bikes. No conversation persistence. */
+export async function askBuyingAssistant(raw: unknown): Promise<ChatResult> {
   const parsed = chatMessageSchema.safeParse(raw);
   if (!parsed.success) {
     return { ok: false, reply: "Please type a short question." };
   }
 
-  const { message, sessionId } = parsed.data;
+  const { message } = parsed.data;
 
   if (!isAiConfigured()) {
     return {
       ok: true,
       reply:
-        "[PLACEHOLDER — AI not configured] The buying assistant needs an OPENAI_API_KEY (or another LLM provider) in env. Until then, browse the Guides or contact Joe directly. Your question was received locally only and was not sent to any model.",
+        "[PLACEHOLDER — AI not configured] The buying assistant needs an OPENAI_API_KEY. Until then, browse the Guides or contact Joe directly.",
     };
   }
 
@@ -39,9 +37,16 @@ export async function askBuyingAssistant(
   if (isDatabaseConfigured() && prisma) {
     const bikes = await prisma.bike.findMany({
       where: { status: "AVAILABLE" },
-      select: { year: true, model: true, title: true, price: true, mileage: true, slug: true },
+      select: {
+        id: true,
+        year: true,
+        make: true,
+        model: true,
+        price: true,
+        mileage: true,
+      },
       take: 25,
-      orderBy: { updatedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     });
     inventorySummary =
       bikes.length === 0
@@ -49,7 +54,7 @@ export async function askBuyingAssistant(
         : bikes
             .map(
               (b) =>
-                `${b.year} ${b.model} — ${b.title}${b.price != null ? ` — $${b.price}` : ""} (/inventory/${b.slug})`,
+                `${b.year} ${b.make} ${b.model}${b.price != null ? ` — $${b.price}` : ""} (/inventory/${b.id})`,
             )
             .join("\n");
   }
@@ -60,7 +65,6 @@ Rules:
 - Never invent bikes, prices, reviews, dealership names, or availability.
 - If you don't know, say so and offer to connect the buyer with Joe.
 - Keep answers concise and practical.
-- End with a soft CTA to contact Joe when appropriate.
 
 KNOWLEDGE BASE:
 ${knowledge}
@@ -100,33 +104,6 @@ ${inventorySummary}`;
   const reply =
     json.choices?.[0]?.message?.content?.trim() ||
     "I couldn't generate a reply. Contact Joe and he'll help.";
-
-  if (isDatabaseConfigured() && prisma) {
-    const conversation = await prisma.conversation.upsert({
-      where: { sessionId },
-      create: { sessionId },
-      update: {},
-    });
-
-    await prisma.message.createMany({
-      data: [
-        { conversationId: conversation.id, role: "user", content: message },
-        { conversationId: conversation.id, role: "assistant", content: reply },
-      ],
-    });
-
-    // Soft handoff signal when user asks to talk to a human
-    if (/talk to joe|call me|text me|human/i.test(message)) {
-      await prisma.lead.create({
-        data: {
-          name: "AI handoff",
-          message: `User asked for Joe. Session ${sessionId}. Last message: ${message}`,
-          type: LeadType.AI_HANDOFF,
-          sourcePage: "/assistant",
-        },
-      });
-    }
-  }
 
   return { ok: true, reply };
 }

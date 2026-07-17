@@ -39,7 +39,7 @@ export default function ContactPage() {
           <CardTitle>Send a message</CardTitle>
         </CardHeader>
         <CardContent>
-          <LeadForm sourcePage="/contact" />
+          <LeadForm source="/contact" />
         </CardContent>
       </Card>
     </div>

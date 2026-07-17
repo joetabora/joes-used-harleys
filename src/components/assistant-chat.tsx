@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { askBuyingAssistant } from "@/actions/assistant";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,22 +8,14 @@ import { Textarea } from "@/components/ui/textarea";
 
 type ChatItem = { role: "user" | "assistant"; content: string };
 
-function createSessionId() {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
-  }
-  return `session-${Date.now()}`;
-}
-
 export function AssistantChat() {
-  const sessionId = useMemo(() => createSessionId(), []);
   const [pending, startTransition] = useTransition();
   const [input, setInput] = useState("");
   const [items, setItems] = useState<ChatItem[]>([
     {
       role: "assistant",
       content:
-        "Ask about model differences, buying tips, or what to look for on a used Harley. I only answer from our guides and live inventory — I will not invent bikes or prices.",
+        "Ask about model differences or buying tips. I only answer from our guides and live inventory — I will not invent bikes or prices.",
     },
   ]);
 
@@ -33,11 +25,8 @@ export function AssistantChat() {
     setInput("");
     setItems((prev) => [...prev, { role: "user", content: message }]);
     startTransition(async () => {
-      const result = await askBuyingAssistant({ message, sessionId });
-      setItems((prev) => [
-        ...prev,
-        { role: "assistant", content: result.reply },
-      ]);
+      const result = await askBuyingAssistant({ message });
+      setItems((prev) => [...prev, { role: "assistant", content: result.reply }]);
     });
   }
 

@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { requireAdminOrRedirect } from "@/lib/auth";
-import { formatPrice } from "@/lib/format";
+import { bikeLabel, formatPrice } from "@/lib/format";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { createMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -36,7 +36,7 @@ export default async function AdminBikesPage() {
     );
   }
 
-  const bikes = await prisma.bike.findMany({ orderBy: { updatedAt: "desc" } });
+  const bikes = await prisma.bike.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
     <div className="space-y-8">
@@ -55,7 +55,7 @@ export default async function AdminBikesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
+              <TableHead>Bike</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Price</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -65,10 +65,7 @@ export default async function AdminBikesPage() {
             {bikes.map((bike) => (
               <TableRow key={bike.id}>
                 <TableCell>
-                  <div className="font-medium">{bike.title}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {bike.year} {bike.model}
-                  </div>
+                  <div className="font-medium">{bikeLabel(bike)}</div>
                 </TableCell>
                 <TableCell>{bike.status}</TableCell>
                 <TableCell>{formatPrice(bike.price)}</TableCell>

@@ -1,22 +1,38 @@
-export function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 160);
+export function bikeLabel(bike: {
+  year: number;
+  make: string;
+  model: string;
+}): string {
+  return `${bike.year} ${bike.make} ${bike.model}`;
 }
 
-export function formatPrice(centsOrDollars: number | null | undefined): string {
-  if (centsOrDollars == null) return "Ask for price";
+export function formatPrice(dollars: number | null | undefined): string {
+  if (dollars == null) return "Ask for price";
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
-  }).format(centsOrDollars);
+  }).format(dollars);
 }
 
 export function formatMiles(miles: number | null | undefined): string {
   if (miles == null) return "Mileage on request";
   return `${new Intl.NumberFormat("en-US").format(miles)} mi`;
+}
+
+export function interactionTypeLabel(type: string): string {
+  switch (type) {
+    case "PHONE_CALL":
+      return "Phone call";
+    case "TEXT":
+      return "Text";
+    case "VISIT":
+      return "Visit";
+    case "EMAIL":
+      return "Email";
+    case "TEST_RIDE":
+      return "Test ride";
+    default:
+      return type;
+  }
 }

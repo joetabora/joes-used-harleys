@@ -2,21 +2,32 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { BikeStatus } from "@/generated/prisma/client";
+import { BikeStatus, InteractionType, LeadStatus } from "@/generated/prisma/client";
 import {
   createAdminSession,
   destroyAdminSession,
   requireAdmin,
   verifyAdminCredentials,
 } from "@/lib/auth";
-import { slugify } from "@/lib/format";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
-import { adminLoginSchema, bikeFormSchema } from "@/lib/validators";
+import {
+  adminLoginSchema,
+  bikeFormSchema,
+  interactionFormSchema,
+} from "@/lib/validators";
 
 export type AdminActionResult = {
   ok: boolean;
   message: string;
 };
+
+function parsePhotoLines(raw: string | undefined): string[] {
+  if (!raw) return [];
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+}
 
 export async function adminLogin(raw: unknown): Promise<AdminActionResult> {
   const parsed = adminLoginSchema.safeParse(raw);
@@ -63,26 +74,27 @@ export async function upsertBike(
       : null;
 
   const payload = {
-    title: data.title,
-    model: data.model,
     year: data.year,
+    make: data.make,
+    model: data.model,
     mileage,
     price,
-    vin: data.vin || null,
     description: data.description || null,
     status: data.status as BikeStatus,
-    slug: data.slug || slugify(`${data.year}-${data.model}-${data.title}`),
+    photos: parsePhotoLines(data.photos),
   };
 
+  let bikeId = id;
   if (id) {
     await prisma.bike.update({ where: { id }, data: payload });
   } else {
-    await prisma.bike.create({ data: payload });
+    const created = await prisma.bike.create({ data: payload });
+    bikeId = created.id;
   }
 
   revalidatePath("/inventory");
   revalidatePath("/admin/bikes");
-  revalidatePath(`/inventory/${payload.slug}`);
+  if (bikeId) revalidatePath(`/inventory/${bikeId}`);
 
   return { ok: true, message: id ? "Bike updated." : "Bike created." };
 }
@@ -101,7 +113,7 @@ export async function deleteBike(id: string): Promise<AdminActionResult> {
 
 export async function updateLeadStatus(
   id: string,
-  status: "NEW" | "CONTACTED" | "CLOSED",
+  status: LeadStatus,
 ): Promise<AdminActionResult> {
   await requireAdmin();
   if (!isDatabaseConfigured() || !prisma) {
@@ -110,38 +122,42 @@ export async function updateLeadStatus(
 
   await prisma.lead.update({ where: { id }, data: { status } });
   revalidatePath("/admin/leads");
+  revalidatePath(`/admin/leads/${id}`);
   return { ok: true, message: "Lead updated." };
 }
 
-export async function addBikePhoto(input: {
-  bikeId: string;
-  url: string;
-  alt?: string;
-}): Promise<AdminActionResult> {
+export async function createInteraction(raw: unknown): Promise<AdminActionResult> {
   await requireAdmin();
   if (!isDatabaseConfigured() || !prisma) {
     return { ok: false, message: "Database not configured." };
   }
 
-  if (!input.url.startsWith("http")) {
+  const parsed = interactionFormSchema.safeParse(raw);
+  if (!parsed.success) {
     return {
       ok: false,
-      message:
-        "Photo URL must be a full https URL (upload to Supabase Storage, then paste the public URL).",
+      message: parsed.error.issues[0]?.message ?? "Invalid interaction",
     };
   }
 
-  const count = await prisma.bikePhoto.count({ where: { bikeId: input.bikeId } });
-  await prisma.bikePhoto.create({
+  await prisma.interaction.create({
     data: {
-      bikeId: input.bikeId,
-      url: input.url,
-      alt: input.alt || null,
-      sortOrder: count,
+      leadId: parsed.data.leadId,
+      type: parsed.data.type as InteractionType,
+      note: parsed.data.note || null,
     },
   });
 
-  revalidatePath("/inventory");
-  revalidatePath("/admin/bikes");
-  return { ok: true, message: "Photo added." };
+  // Logging an interaction implies Joe has engaged — move NEW → CONTACTED
+  const lead = await prisma.lead.findUnique({ where: { id: parsed.data.leadId } });
+  if (lead?.status === "NEW") {
+    await prisma.lead.update({
+      where: { id: parsed.data.leadId },
+      data: { status: "CONTACTED" },
+    });
+  }
+
+  revalidatePath("/admin/leads");
+  revalidatePath(`/admin/leads/${parsed.data.leadId}`);
+  return { ok: true, message: "Interaction logged." };
 }

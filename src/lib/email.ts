@@ -5,9 +5,8 @@ export type LeadNotifyPayload = {
   name: string;
   email?: string | null;
   phone?: string | null;
-  message?: string | null;
-  type: string;
-  sourcePage?: string | null;
+  notes?: string | null;
+  source?: string | null;
 };
 
 export function isEmailConfigured(): boolean {
@@ -33,15 +32,15 @@ export async function notifyJoeOfLead(
   await resend.emails.send({
     from,
     to,
-    subject: `[${siteConfig.name}] New ${payload.type} lead — ${payload.name}`,
+    subject: `[${siteConfig.name}] New lead — ${payload.name}`,
     text: [
-      `New lead (${payload.type})`,
+      `New lead`,
       `Name: ${payload.name}`,
       `Email: ${payload.email || "—"}`,
       `Phone: ${payload.phone || "—"}`,
-      `Source: ${payload.sourcePage || "—"}`,
+      `Source: ${payload.source || "—"}`,
       "",
-      payload.message || "(no message)",
+      payload.notes || "(no notes)",
     ].join("\n"),
   });
 

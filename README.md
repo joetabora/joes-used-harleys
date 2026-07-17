@@ -98,6 +98,16 @@ Without these, leads still save to the database when Supabase is configured.
 
 **Note:** Vercel Hobby ToS may restrict commercial sites. Acknowledge before public launch.
 
+## Database (core only)
+
+Three tables — capture and manage buyers:
+
+- **Lead** — name, email, phone, source, status, notes, createdAt
+- **Bike** — year, make, model, price, mileage, description, status, photos[], createdAt
+- **Interaction** — leadId, type (phone / text / visit / email / test ride), note, createdAt
+
+Admin logs interactions on `/admin/leads/[id]`.
+
 ## Folder map
 
 ```

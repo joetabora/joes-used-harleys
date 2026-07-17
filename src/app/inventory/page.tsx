@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { AlertSignupForm } from "@/components/alert-signup-form";
 import { BikeCard } from "@/components/bike-card";
+import { LeadForm } from "@/components/lead-form";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
@@ -20,28 +20,23 @@ export default async function InventoryPage() {
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-12">
         <h1 className="text-3xl font-semibold">Inventory</h1>
         <PlaceholderNotice title="Database not connected">
-          Connect Supabase (DATABASE_URL) to show live bikes. We will not invent inventory. You can
-          still set an alert interest below once the database is live — or contact Joe now.
+          Connect Supabase (DATABASE_URL) to show live bikes. We will not invent inventory.
         </PlaceholderNotice>
         <Card>
           <CardHeader>
-            <CardTitle>Want a bike alert?</CardTitle>
+            <CardTitle>Looking for something?</CardTitle>
           </CardHeader>
           <CardContent>
-            <AlertSignupForm />
+            <LeadForm source="/inventory" />
           </CardContent>
         </Card>
-        <p className="text-sm text-muted-foreground">
-          Or <Link className="underline" href="/contact">contact Joe</Link> directly.
-        </p>
       </div>
     );
   }
 
   const bikes = await prisma.bike.findMany({
     where: { status: { in: ["AVAILABLE", "PENDING"] } },
-    include: { photos: { orderBy: { sortOrder: "asc" }, take: 1 } },
-    orderBy: { updatedAt: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 
   return (
@@ -49,13 +44,13 @@ export default async function InventoryPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold">Inventory</h1>
         <p className="text-muted-foreground">
-          Listings Joe maintains. If it&apos;s not here, ask — or set an alert.
+          Listings Joe maintains. Don&apos;t see it? Tell him what you want.
         </p>
       </div>
 
       {bikes.length === 0 ? (
         <PlaceholderNotice title="No bikes listed yet">
-          Inventory is empty. Joe can add bikes from the admin area. No sample/fake bikes are shown.
+          Inventory is empty. Joe can add bikes from the admin area. No sample bikes are shown.
         </PlaceholderNotice>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -63,14 +58,14 @@ export default async function InventoryPage() {
             <BikeCard
               key={bike.id}
               bike={{
-                slug: bike.slug,
-                title: bike.title,
-                model: bike.model,
+                id: bike.id,
                 year: bike.year,
+                make: bike.make,
+                model: bike.model,
                 mileage: bike.mileage,
                 price: bike.price,
                 status: bike.status,
-                photoUrl: bike.photos[0]?.url,
+                photoUrl: bike.photos[0] ?? null,
               }}
             />
           ))}
@@ -79,12 +74,15 @@ export default async function InventoryPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Don&apos;t see it? Get an alert</CardTitle>
+          <CardTitle>Tell Joe what you&apos;re looking for</CardTitle>
         </CardHeader>
         <CardContent>
-          <AlertSignupForm />
+          <LeadForm source="/inventory" />
         </CardContent>
       </Card>
+      <p className="text-sm text-muted-foreground">
+        Or <Link className="underline" href="/contact">contact Joe</Link> directly.
+      </p>
     </div>
   );
 }

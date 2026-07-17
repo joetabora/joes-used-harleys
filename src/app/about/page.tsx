@@ -68,7 +68,7 @@ export default function AboutPage() {
               Email: PLACEHOLDER — set NEXT_PUBLIC_JOE_EMAIL
             </p>
           )}
-          <LeadForm sourcePage="/about" />
+          <LeadForm source="/about" />
         </CardContent>
       </Card>
     </div>

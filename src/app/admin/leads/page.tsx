@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LeadStatusButtons } from "@/components/lead-status-buttons";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
 import { Badge } from "@/components/ui/badge";
@@ -28,7 +29,7 @@ export default async function AdminLeadsPage() {
 
   const leads = await prisma.lead.findMany({
     orderBy: { createdAt: "desc" },
-    include: { bike: { select: { title: true, slug: true } } },
+    include: { _count: { select: { interactions: true } } },
     take: 100,
   });
 
@@ -37,7 +38,7 @@ export default async function AdminLeadsPage() {
       <h1 className="text-2xl font-semibold">Leads</h1>
       {leads.length === 0 ? (
         <PlaceholderNotice title="No leads yet">
-          Contact form, pre-approval, and alert submissions will appear here.
+          Contact form submissions will appear here.
         </PlaceholderNotice>
       ) : (
         <div className="space-y-4">
@@ -45,10 +46,9 @@ export default async function AdminLeadsPage() {
             <Card key={lead.id}>
               <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 space-y-0">
                 <CardTitle className="text-base">
-                  {lead.name}{" "}
-                  <Badge variant="secondary" className="ml-2">
-                    {lead.type}
-                  </Badge>
+                  <Link href={`/admin/leads/${lead.id}`} className="hover:underline">
+                    {lead.name}
+                  </Link>
                 </CardTitle>
                 <Badge>{lead.status}</Badge>
               </CardHeader>
@@ -56,10 +56,10 @@ export default async function AdminLeadsPage() {
                 <p>
                   {lead.email || "—"} · {lead.phone || "—"}
                 </p>
-                <p>Source: {lead.sourcePage || "—"}</p>
-                {lead.bike ? <p>Bike: {lead.bike.title}</p> : null}
-                {lead.message ? (
-                  <p className="whitespace-pre-wrap text-foreground">{lead.message}</p>
+                <p>Source: {lead.source || "—"}</p>
+                <p>{lead._count.interactions} interaction(s)</p>
+                {lead.notes ? (
+                  <p className="whitespace-pre-wrap text-foreground">{lead.notes}</p>
                 ) : null}
                 <p className="text-xs">{lead.createdAt.toISOString()}</p>
                 <LeadStatusButtons id={lead.id} />

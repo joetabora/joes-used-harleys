@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { addBikePhoto, deleteBike, upsertBike } from "@/actions/admin";
+import { deleteBike, upsertBike } from "@/actions/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,15 +10,14 @@ import { Textarea } from "@/components/ui/textarea";
 
 type BikeValues = {
   id?: string;
-  title?: string;
-  model?: string;
   year?: number;
+  make?: string;
+  model?: string;
   mileage?: number | null;
   price?: number | null;
-  vin?: string | null;
   description?: string | null;
   status?: "AVAILABLE" | "PENDING" | "SOLD";
-  slug?: string;
+  photos?: string[];
 };
 
 export function BikeEditorForm({ bike }: { bike?: BikeValues }) {
@@ -34,15 +33,14 @@ export function BikeEditorForm({ bike }: { bike?: BikeValues }) {
       try {
         const result = await upsertBike(
           {
-            title: String(formData.get("title") ?? ""),
-            model: String(formData.get("model") ?? ""),
             year: String(formData.get("year") ?? ""),
+            make: String(formData.get("make") ?? ""),
+            model: String(formData.get("model") ?? ""),
             mileage: String(formData.get("mileage") ?? ""),
             price: String(formData.get("price") ?? ""),
-            vin: String(formData.get("vin") ?? ""),
             description: String(formData.get("description") ?? ""),
             status: String(formData.get("status") ?? "AVAILABLE"),
-            slug: String(formData.get("slug") ?? ""),
+            photos: String(formData.get("photos") ?? ""),
           },
           bike?.id,
         );
@@ -63,14 +61,6 @@ export function BikeEditorForm({ bike }: { bike?: BikeValues }) {
   return (
     <form action={onSubmit} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="title">Title</Label>
-          <Input id="title" name="title" required defaultValue={bike?.title} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="model">Model</Label>
-          <Input id="model" name="model" required defaultValue={bike?.model} />
-        </div>
         <div className="space-y-2">
           <Label htmlFor="year">Year</Label>
           <Input
@@ -82,21 +72,12 @@ export function BikeEditorForm({ bike }: { bike?: BikeValues }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="mileage">Mileage</Label>
-          <Input
-            id="mileage"
-            name="mileage"
-            type="number"
-            defaultValue={bike?.mileage ?? undefined}
-          />
+          <Label htmlFor="make">Make</Label>
+          <Input id="make" name="make" required defaultValue={bike?.make ?? "Harley-Davidson"} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="price">Price (USD whole dollars)</Label>
-          <Input id="price" name="price" type="number" defaultValue={bike?.price ?? undefined} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="vin">VIN (optional)</Label>
-          <Input id="vin" name="vin" defaultValue={bike?.vin ?? undefined} />
+          <Label htmlFor="model">Model</Label>
+          <Input id="model" name="model" required defaultValue={bike?.model} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="status">Status</Label>
@@ -111,71 +92,41 @@ export function BikeEditorForm({ bike }: { bike?: BikeValues }) {
             <option value="SOLD">Sold</option>
           </select>
         </div>
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="slug">Slug</Label>
+        <div className="space-y-2">
+          <Label htmlFor="mileage">Mileage</Label>
           <Input
-            id="slug"
-            name="slug"
-            required
-            placeholder="2021-street-glide-milwaukee"
-            defaultValue={bike?.slug}
+            id="mileage"
+            name="mileage"
+            type="number"
+            defaultValue={bike?.mileage ?? undefined}
           />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="price">Price (USD)</Label>
+          <Input id="price" name="price" type="number" defaultValue={bike?.price ?? undefined} />
         </div>
         <div className="space-y-2 sm:col-span-2">
           <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"
             name="description"
-            rows={6}
+            rows={5}
             defaultValue={bike?.description ?? undefined}
+          />
+        </div>
+        <div className="space-y-2 sm:col-span-2">
+          <Label htmlFor="photos">Photo URLs (one per line)</Label>
+          <Textarea
+            id="photos"
+            name="photos"
+            rows={4}
+            placeholder="https://..."
+            defaultValue={bike?.photos?.join("\n") ?? ""}
           />
         </div>
       </div>
       <Button type="submit" disabled={pending}>
         {pending ? "Saving…" : bike?.id ? "Update bike" : "Create bike"}
-      </Button>
-      {message ? <p className="text-sm text-green-700">{message}</p> : null}
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
-    </form>
-  );
-}
-
-export function BikePhotoForm({ bikeId }: { bikeId: string }) {
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  function onSubmit(formData: FormData) {
-    setMessage(null);
-    setError(null);
-    startTransition(async () => {
-      const result = await addBikePhoto({
-        bikeId,
-        url: String(formData.get("url") ?? ""),
-        alt: String(formData.get("alt") ?? ""),
-      });
-      if (result.ok) {
-        setMessage(result.message);
-        router.refresh();
-      } else {
-        setError(result.message);
-      }
-    });
-  }
-
-  return (
-    <form action={onSubmit} className="space-y-3">
-      <div className="space-y-2">
-        <Label htmlFor="url">Photo public URL (Supabase Storage)</Label>
-        <Input id="url" name="url" required placeholder="https://..." />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="alt">Alt text</Label>
-        <Input id="alt" name="alt" />
-      </div>
-      <Button type="submit" disabled={pending} variant="secondary">
-        {pending ? "Adding…" : "Add photo URL"}
       </Button>
       {message ? <p className="text-sm text-green-700">{message}</p> : null}
       {error ? <p className="text-sm text-destructive">{error}</p> : null}

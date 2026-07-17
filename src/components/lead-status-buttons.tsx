@@ -4,12 +4,13 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateLeadStatus } from "@/actions/admin";
 import { Button } from "@/components/ui/button";
+import type { LeadStatus } from "@/generated/prisma/client";
 
 export function LeadStatusButtons({ id }: { id: string }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
-  function setStatus(status: "NEW" | "CONTACTED" | "CLOSED") {
+  function setStatus(status: LeadStatus) {
     startTransition(async () => {
       await updateLeadStatus(id, status);
       router.refresh();

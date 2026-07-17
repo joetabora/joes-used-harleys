@@ -1,23 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { createContactLead, createPreapprovalLead } from "@/actions/leads";
+import { createContactLead } from "@/actions/leads";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-type Mode = "contact" | "preapproval";
-
-export function LeadForm({
-  mode = "contact",
-  sourcePage,
-  bikeId,
-}: {
-  mode?: Mode;
-  sourcePage?: string;
-  bikeId?: string;
-}) {
+export function LeadForm({ source }: { source?: string }) {
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -30,22 +20,14 @@ export function LeadForm({
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),
       phone: String(formData.get("phone") ?? ""),
-      message: String(formData.get("message") ?? ""),
-      sourcePage,
-      bikeId,
+      notes: String(formData.get("notes") ?? ""),
+      source,
     };
 
     startTransition(async () => {
-      const result =
-        mode === "preapproval"
-          ? await createPreapprovalLead(payload)
-          : await createContactLead(payload);
-
-      if (result.ok) {
-        setMessage(result.message);
-      } else {
-        setError(result.message);
-      }
+      const result = await createContactLead(payload);
+      if (result.ok) setMessage(result.message);
+      else setError(result.message);
     });
   }
 
@@ -66,24 +48,11 @@ export function LeadForm({
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="message">
-          {mode === "preapproval"
-            ? "What are you looking for / monthly budget?"
-            : "How can Joe help?"}
-        </Label>
-        <Textarea
-          id="message"
-          name="message"
-          rows={5}
-          required={mode === "preapproval"}
-        />
+        <Label htmlFor="notes">How can Joe help?</Label>
+        <Textarea id="notes" name="notes" rows={5} />
       </div>
       <Button type="submit" disabled={pending} className="w-full sm:w-auto">
-        {pending
-          ? "Sending…"
-          : mode === "preapproval"
-            ? "Request pre-approval help"
-            : "Send message"}
+        {pending ? "Sending…" : "Send message"}
       </Button>
       {message ? <p className="text-sm text-green-700">{message}</p> : null}
       {error ? <p className="text-sm text-destructive">{error}</p> : null}

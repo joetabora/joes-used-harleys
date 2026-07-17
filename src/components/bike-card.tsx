@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatMiles, formatPrice } from "@/lib/format";
+import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 
 export type BikeCardData = {
-  slug: string;
-  title: string;
-  model: string;
+  id: string;
   year: number;
+  make: string;
+  model: string;
   mileage: number | null;
   price: number | null;
   status: string;
@@ -15,16 +15,13 @@ export type BikeCardData = {
 };
 
 export function BikeCard({ bike }: { bike: BikeCardData }) {
+  const label = bikeLabel(bike);
   return (
     <Card className="overflow-hidden">
       <div className="aspect-[4/3] bg-muted">
         {bike.photoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={bike.photoUrl}
-            alt={bike.title}
-            className="h-full w-full object-cover"
-          />
+          <img src={bike.photoUrl} alt={label} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
             No photo yet
@@ -37,13 +34,13 @@ export function BikeCard({ bike }: { bike: BikeCardData }) {
           <span className="text-sm text-muted-foreground">{bike.year}</span>
         </div>
         <CardTitle className="text-lg">
-          <Link href={`/inventory/${bike.slug}`} className="hover:underline">
-            {bike.title}
+          <Link href={`/inventory/${bike.id}`} className="hover:underline">
+            {label}
           </Link>
         </CardTitle>
       </CardHeader>
       <CardContent className="text-sm text-muted-foreground">
-        {bike.model} · {formatMiles(bike.mileage)}
+        {formatMiles(bike.mileage)}
       </CardContent>
       <CardFooter className="font-semibold">{formatPrice(bike.price)}</CardFooter>
     </Card>

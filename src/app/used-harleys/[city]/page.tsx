@@ -70,7 +70,7 @@ export default async function CityLandingPage({ params }: Props) {
           <CardTitle>Talk to Joe about a {city.name} purchase</CardTitle>
         </CardHeader>
         <CardContent>
-          <LeadForm sourcePage={`/used-harleys/${city.slug}`} />
+          <LeadForm source={`/used-harleys/${city.slug}`} />
         </CardContent>
       </Card>
     </div>
