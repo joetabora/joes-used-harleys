@@ -1,33 +1,37 @@
 import Link from "next/link";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
 import { SectionShell } from "@/components/home/section-shell";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export function HomeAbout() {
   return (
     <SectionShell>
-      <div className="grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-start">
-        <div>
-          <p className="text-sm font-medium uppercase tracking-wider text-steel">About Joe</p>
-          <h2 className="mt-2 font-display text-4xl text-foreground md:text-5xl">
-            A person you can text—not a ticket number.
-          </h2>
+      <div className="grid gap-12 md:grid-cols-[minmax(0,14rem)_1fr] md:gap-16">
+        <div className="joe-frame flex aspect-[3/4] max-w-xs items-center justify-center p-6 md:max-w-none">
+          <p className="text-center font-label text-steel">
+            [PLACEHOLDER — Joe photo]
+          </p>
         </div>
-        <div className="space-y-6 text-muted-foreground">
-          <p>
+
+        <div className="max-w-xl space-y-6">
+          <div>
+            <p className="font-label text-steel">About Joe</p>
+            <h2 className="joe-rule mt-4 pt-4 font-display text-4xl leading-none text-ink md:text-5xl">
+              A person you can text—not a ticket number.
+            </h2>
+          </div>
+          <p className="text-ink/80">
             Joe helps people buy used Harley-Davidson motorcycles with clear explanations and
             follow-through. This site is his personal sales engine—built for trust first, inventory
             second.
           </p>
           <PlaceholderNotice title="[PLACEHOLDER — Joe to provide]">
-            Photo of Joe, short bio, years in the business, and any dealership affiliation he is
-            allowed to publish. Do not invent awards, titles, or numbers.
+            Short bio, years in the business, and any dealership affiliation he is allowed to
+            publish. Do not invent awards, titles, or numbers.
           </PlaceholderNotice>
           <PlaceholderNotice title="[PLACEHOLDER — Joe to provide]">
-            Experience highlights (events, marketing, floor experience) in Joe&apos;s own words.
+            Experience highlights in Joe&apos;s own words (from docs/joe-profile.md when filled).
           </PlaceholderNotice>
-          <Link href="/about" className={cn(buttonVariants({ variant: "outline" }), "joe-cta-hover")}>
+          <Link href="/about" className="joe-btn-secondary">
             More about Joe
           </Link>
         </div>

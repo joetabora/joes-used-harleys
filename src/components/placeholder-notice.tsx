@@ -1,5 +1,3 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
 export function PlaceholderNotice({
   title = "Placeholder",
   children,
@@ -8,9 +6,9 @@ export function PlaceholderNotice({
   children: React.ReactNode;
 }) {
   return (
-    <Alert className="border-dashed">
-      <AlertTitle>{title}</AlertTitle>
-      <AlertDescription>{children}</AlertDescription>
-    </Alert>
+    <aside className="joe-clipboard text-sm leading-[1.65] text-ink/80">
+      <p className="font-label text-leather">{title}</p>
+      <div className="mt-2">{children}</div>
+    </aside>
   );
 }

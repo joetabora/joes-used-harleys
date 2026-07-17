@@ -9,18 +9,18 @@ export function SectionShell({
   children: React.ReactNode;
   className?: string;
   id?: string;
-  tone?: "default" | "muted" | "asphalt";
+  tone?: "default" | "bay" | "asphalt";
 }) {
   return (
     <section
       id={id}
       className={cn(
-        tone === "muted" && "bg-muted/50",
-        tone === "asphalt" && "bg-asphalt text-primary-foreground",
+        tone === "bay" && "bg-bay",
+        tone === "asphalt" && "joe-asphalt-bay text-primary-foreground",
         className,
       )}
     >
-      <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">{children}</div>
+      <div className="mx-auto max-w-6xl px-4 py-20 md:py-24">{children}</div>
     </section>
   );
 }

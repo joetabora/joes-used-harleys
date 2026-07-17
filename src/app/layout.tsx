@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, DM_Sans } from "next/font/google";
+import { Oswald, Source_Serif_4 } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -7,15 +7,15 @@ import { localBusinessJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
-const bebas = Bebas_Neue({
-  weight: "400",
-  variable: "--font-bebas",
+const oswald = Oswald({
+  variable: "--font-oswald",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
   display: "swap",
 });
@@ -46,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebas.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${oswald.variable} ${sourceSerif.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
         <script

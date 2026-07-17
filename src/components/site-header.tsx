@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,7 +9,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { hasContactPhone, siteConfig } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/inventory", label: "Inventory" },
@@ -23,18 +21,18 @@ const links = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="font-display text-xl tracking-[0.06em] text-foreground">
+    <header className="sticky top-0 z-40 border-b border-chrome/50 bg-concrete">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
+        <Link href="/" className="font-display text-lg leading-none text-ink">
           {siteConfig.name}
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="font-label text-steel transition-colors hover:text-ink"
             >
               {link.label}
             </Link>
@@ -43,20 +41,11 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           {hasContactPhone() ? (
-            <a
-              href={siteConfig.smsLink}
-              className={cn(buttonVariants({ size: "sm" }), "hidden sm:inline-flex")}
-            >
+            <a href={siteConfig.smsLink} className="joe-btn-asphalt hidden h-9 px-3 sm:inline-flex">
               Text Joe
             </a>
           ) : (
-            <Link
-              href="/contact"
-              className={cn(
-                buttonVariants({ size: "sm", variant: "secondary" }),
-                "hidden sm:inline-flex",
-              )}
-            >
+            <Link href="/contact" className="joe-btn-secondary hidden h-9 px-3 sm:inline-flex">
               Contact
             </Link>
           )}
@@ -74,13 +63,13 @@ export function SiteHeader() {
             >
               <Menu className="size-4" />
             </SheetTrigger>
-            <SheetContent side="right" className="px-4">
+            <SheetContent side="right" className="bg-concrete px-4">
               <SheetHeader>
-                <SheetTitle>{siteConfig.name}</SheetTitle>
+                <SheetTitle className="font-display text-left">{siteConfig.name}</SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-4">
                 {links.map((link) => (
-                  <Link key={link.href} href={link.href} className="text-lg">
+                  <Link key={link.href} href={link.href} className="font-display text-xl text-ink">
                     {link.label}
                   </Link>
                 ))}

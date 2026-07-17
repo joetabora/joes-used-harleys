@@ -17,18 +17,18 @@ const points = [
 
 export function HomeWhyJoe() {
   return (
-    <SectionShell tone="muted">
+    <SectionShell tone="bay">
       <div className="max-w-2xl">
-        <p className="text-sm font-medium uppercase tracking-wider text-steel">Why work with Joe</p>
-        <h2 className="mt-2 font-display text-4xl text-foreground md:text-5xl">
+        <p className="font-label text-steel">Why work with Joe</p>
+        <h2 className="joe-rule mt-4 pt-4 font-display text-4xl leading-none text-ink md:text-5xl">
           Built for riders who want a human in the deal.
         </h2>
       </div>
-      <ul className="mt-12 grid gap-10 md:grid-cols-3">
+      <ul className="mt-14 grid gap-12 md:grid-cols-3 md:gap-10">
         {points.map((point) => (
-          <li key={point.title} className="space-y-3 border-t border-border pt-6">
-            <h3 className="font-display text-2xl tracking-wide text-foreground">{point.title}</h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">{point.body}</p>
+          <li key={point.title} className="joe-rule pt-5">
+            <h3 className="font-display text-2xl leading-none text-ink">{point.title}</h3>
+            <p className="mt-4 text-[0.95rem] leading-[1.65] text-ink/75">{point.body}</p>
           </li>
         ))}
       </ul>
