@@ -155,12 +155,35 @@
     text-transform: uppercase;
   }
 
+  .font-story {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-transform: none;
+    line-height: 1.15;
+  }
+
   .font-label {
     font-family: var(--font-display);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-size: 0.7rem;
     font-weight: 600;
+  }
+
+  .joe-measure {
+    max-width: 34rem;
+  }
+
+  .joe-pull-quote {
+    font-family: var(--font-sans);
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 2px solid var(--leather);
+    padding-left: 1.25rem;
   }
 
   .joe-rule {

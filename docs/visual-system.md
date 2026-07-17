@@ -1,61 +1,66 @@
-# Visual system — Modern motorcycle garage
+# Visual system — Modern motorcycle garage (editorial)
 
 Source of truth for look and feel on joesusedharleys.com.  
-Feeling: invite someone into Joe’s garage to talk motorcycles—not a SaaS landing page.
+Feeling: **Meet Joe and talk motorcycles**—magazine + garage—not a SaaS platform.
 
 ## Do / don’t
 
-**Do:** warm concrete, asphalt, leather, chrome, craftsmanship, authenticity.  
-**Don’t:** glass cards, startup gradients, corporate dealership gloss, fake biker stereotypes, fake photos/testimonials.
+**Do:** warm concrete, asphalt, leather, chrome, craftsmanship, editorial storytelling, immersive spacing.  
+**Don’t:** glass cards, feature grids, startup CTA bands, dual equal hero CTAs, fake photos/testimonials, invented Joe voice.
+
+## Homepage narrative (01–08)
+
+1. Cinematic open  
+2. Opening letter  
+3. Meet Joe  
+4. How we talk bikes (vertical chapters)  
+5. On the floor  
+6. From the bench  
+7. Find your fit  
+8. Come talk  
 
 ## Typography
 
-| Role | Font | Notes |
-|------|------|--------|
-| Brand / titles | Oswald | Uppercase via `.font-display` |
-| Body / UI | Source Serif 4 | Warm “sit and talk” reading |
-| Labels | Oswald | `.font-label` — wide tracking, steel |
+| Role | Font | Class / notes |
+|------|------|----------------|
+| Brand wordmark | Oswald | `.font-display` — uppercase, largest hero signal |
+| Story headlines | Source Serif 4 | `.font-story` — **not** all-caps; magazine energy |
+| Body | Source Serif 4 | ~18–20px, ~1.7 leading, `.joe-measure` (~34rem) |
+| Labels / chapters | Oswald | `.font-label` — steel, wide tracking |
+| CTAs | Oswald | Workshop labels via `.joe-btn-*` |
+
+**Hierarchy:** Brand ≥ serif invitation; chapter titles quieter than brand; body never competes with brand.
 
 ## Color tokens
-
-Defined in `src/app/globals.css`:
 
 | Token | Use |
 |-------|-----|
 | `--concrete` | Page background |
-| `--bay` | Alternate section field |
-| `--asphalt` | Hero / Match / contact bands |
-| `--ink` | Body text on concrete |
-| `--leather` | Accent links / clipboard rule |
+| `--bay` | Alternate editorial field |
+| `--asphalt` | Cinematic open atmosphere |
+| `--ink` | Body text |
+| `--leather` | Accent / pull-quote rule |
 | `--chrome` | Borders / rules |
 | `--steel` | Meta labels |
-| `--lamp` | Primary CTA only (not large washes) |
+| `--lamp` | Primary CTA + brand accent only |
 
-Tailwind color aliases: `concrete`, `bay`, `asphalt`, `ink`, `leather`, `chrome`, `steel`, `lamp`.
+## Editorial primitives
 
-## Components / utilities
+| Component | Purpose |
+|-----------|---------|
+| `editorial-measure.tsx` | Narrow reading column |
+| `chapter-block.tsx` | Numbered vertical chapter |
+| `media-frame.tsx` | Labeled empty portrait / bay / hero frames |
+| `pull-quote.tsx` | Renders **only** when real quote text is passed |
 
-| Class | Purpose |
-|-------|---------|
-| `.joe-btn-primary` | Lamp workshop CTA |
-| `.joe-btn-secondary` | Chrome outline on concrete |
-| `.joe-btn-secondary-dark` | Chrome outline on asphalt |
-| `.joe-btn-asphalt` | Solid asphalt CTA |
-| `.joe-rule` | Hairline chrome section rule |
-| `.joe-frame` | Media / empty bay frame |
-| `.joe-clipboard` | Placeholder notes |
-| `.joe-hero-atmosphere` | Warm lamp pools on asphalt |
-| `.joe-asphalt-bay` | Band with overhead lamp radial |
+## Utilities
+
+`.joe-rule`, `.joe-frame`, `.joe-clipboard`, `.joe-measure`, `.joe-pull-quote`, `.joe-btn-primary`, `.joe-btn-secondary`, `.joe-btn-secondary-dark`, `.joe-btn-asphalt`, `.joe-hero-atmosphere`, `.joe-asphalt-bay`
 
 ## Imagery
 
-Empty labeled frames only until Joe supplies real assets:
-
-- Portrait: `aspect-[3/4]` — `[PLACEHOLDER — Joe photo]`
-- Bike bay: `aspect-[16/9]` — `[PLACEHOLDER — bike photo when listed]`
-
-No stock photography. No invented inventory.
+Empty labeled frames until Joe supplies assets. No stock Harleys. Wire story copy to `docs/joe-profile.md` when filled.
 
 ## Motion
 
-CSS only: hero fade-up, subtle atmosphere drift, 1px CTA lift. Respect `prefers-reduced-motion`.
+Slow hero fade-up; ambient lamp drift; 1px CTA lift. Respect `prefers-reduced-motion`.

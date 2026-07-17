@@ -1,10 +1,11 @@
-import { HomeAbout } from "@/components/home/home-about";
-import { HomeContactCta } from "@/components/home/home-contact-cta";
-import { HomeEducation } from "@/components/home/home-education";
-import { HomeFeaturedInventory } from "@/components/home/home-featured-inventory";
-import { HomeHarleyMatchCta } from "@/components/home/home-harley-match-cta";
-import { HomeHero } from "@/components/home/home-hero";
-import { HomeWhyJoe } from "@/components/home/home-why-joe";
+import { HomeCinematicOpen } from "@/components/home/home-cinematic-open";
+import { HomeComeTalk } from "@/components/home/home-come-talk";
+import { HomeFindYourFit } from "@/components/home/home-find-your-fit";
+import { HomeFromTheBench } from "@/components/home/home-from-the-bench";
+import { HomeHowWeTalkBikes } from "@/components/home/home-how-we-talk";
+import { HomeMeetJoe } from "@/components/home/home-meet-joe";
+import { HomeOnTheFloor } from "@/components/home/home-on-the-floor";
+import { HomeOpeningLetter } from "@/components/home/home-opening-letter";
 import { createMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 
@@ -17,13 +18,14 @@ export const metadata = createMetadata({
 export default function HomePage() {
   return (
     <>
-      <HomeHero />
-      <HomeAbout />
-      <HomeWhyJoe />
-      <HomeHarleyMatchCta />
-      <HomeFeaturedInventory />
-      <HomeEducation />
-      <HomeContactCta />
+      <HomeCinematicOpen />
+      <HomeOpeningLetter />
+      <HomeMeetJoe />
+      <HomeHowWeTalkBikes />
+      <HomeOnTheFloor />
+      <HomeFromTheBench />
+      <HomeFindYourFit />
+      <HomeComeTalk />
     </>
   );
 }

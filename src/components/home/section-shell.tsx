@@ -5,11 +5,14 @@ export function SectionShell({
   className,
   id,
   tone = "default",
+  spread = false,
 }: {
   children: React.ReactNode;
   className?: string;
   id?: string;
   tone?: "default" | "bay" | "asphalt";
+  /** Wider horizontal padding rhythm for cinematic spreads */
+  spread?: boolean;
 }) {
   return (
     <section
@@ -20,7 +23,14 @@ export function SectionShell({
         className,
       )}
     >
-      <div className="mx-auto max-w-6xl px-4 py-20 md:py-24">{children}</div>
+      <div
+        className={cn(
+          "mx-auto max-w-6xl",
+          spread ? "px-4 py-24 md:px-8 md:py-32" : "px-4 py-20 md:py-24",
+        )}
+      >
+        {children}
+      </div>
     </section>
   );
 }
