@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
 
-type FrameVariant = "portrait" | "bay" | "hero";
+type FrameVariant = "portrait" | "bay" | "hero" | "tall";
 
 const aspect: Record<FrameVariant, string> = {
   portrait: "aspect-[3/4]",
   bay: "aspect-[16/9]",
   hero: "aspect-[21/9] min-h-[12rem] md:min-h-[16rem]",
+  tall: "aspect-[4/5] min-h-[18rem]",
 };
 
 export function MediaFrame({

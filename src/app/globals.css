@@ -181,6 +181,30 @@
     font-weight: 600;
   }
 
+  .joe-headline-xl {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-transform: none;
+    line-height: 1.05;
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    color: var(--ink);
+  }
+
+  .joe-index {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 0.9;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    color: color-mix(in oklch, var(--steel) 35%, transparent);
+  }
+
+  .joe-hairline {
+    border-color: oklch(1 0 0 / 12%);
+  }
+
   .joe-measure {
     max-width: 34rem;
   }

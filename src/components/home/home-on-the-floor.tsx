@@ -2,35 +2,32 @@ import Link from "next/link";
 import { MediaFrame } from "@/components/home/media-frame";
 import { SectionShell } from "@/components/home/section-shell";
 
+/**
+ * Garage/showroom invitation — not a SaaS empty state.
+ * Real inventory lives on /inventory; we never invent bikes here.
+ */
 export function HomeOnTheFloor() {
   return (
-    <SectionShell tone="bay">
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <div className="max-w-xl">
+    <SectionShell tone="bay" width="full">
+      <div className="relative mx-auto grid max-w-7xl items-end gap-10 md:grid-cols-12 md:gap-0">
+        <div className="relative z-10 md:col-span-5 md:pr-8 lg:pr-12">
           <p className="font-label text-steel">05 — On the floor</p>
-          <h2 className="mt-4 font-story text-3xl text-ink md:text-4xl">
-            What&apos;s here when it&apos;s real.
-          </h2>
-          <p className="mt-4 text-[1.0625rem] leading-[1.7] text-ink/80">
-            An empty bay means honesty. When Joe lists a motorcycle, it will show up here—with real
-            photos, not samples.
+          <h2 className="joe-headline-xl mt-6">The floor</h2>
+          <p className="mt-6 max-w-sm text-[1.0625rem] leading-[1.7] text-ink/75">
+            Step into the garage. When Joe lists a motorcycle, it shows up with real photos—not
+            samples. Ask him what&apos;s on the floor today.
           </p>
-        </div>
-        <Link href="/inventory" className="joe-btn-secondary w-fit">
-          View inventory
-        </Link>
-      </div>
-
-      <div className="mt-12">
-        <MediaFrame variant="bay" label="[PLACEHOLDER — bike photo when listed]" />
-        <div className="joe-frame border-t-0 px-6 py-12 text-center md:px-10">
-          <p className="font-story text-2xl text-ink">No bikes listed yet</p>
-          <p className="mx-auto mt-4 max-w-md text-[1.0625rem] leading-[1.7] text-ink/75">
-            Ask Joe what&apos;s available or what he&apos;s watching for. We never invent inventory.
-          </p>
-          <Link href="/contact" className="joe-btn-primary mt-8 inline-flex">
-            Ask Joe what&apos;s available
+          <Link href="/inventory" className="joe-btn-secondary mt-10 inline-flex">
+            See the garage
           </Link>
+        </div>
+
+        <div className="relative md:col-span-7 md:-ml-8 md:mt-8 lg:-ml-16">
+          <MediaFrame
+            variant="tall"
+            label="[PLACEHOLDER — garage / showroom when Joe provides a photo]"
+            className="w-full border-white/10 md:min-h-[28rem]"
+          />
         </div>
       </div>
     </SectionShell>
