@@ -25,7 +25,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="font-semibold tracking-tight">
+        <Link href="/" className="font-display text-xl tracking-[0.06em] text-foreground">
           {siteConfig.name}
         </Link>
 
