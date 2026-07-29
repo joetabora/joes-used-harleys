@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inventory>
+  <item>
+    <id>1001</id>
+    <year>2021</year>
+    <make>Harley-Davidson</make>
+    <category>Motorcycles</category>
+    <model>Street Glide</model>
+    <title>2021 Harley-Davidson Street Glide</title>
+    <price>18999.00</price>
+    <location_id>1595</location_id>
+    <location>Milwaukee Harley-Davidson</location>
+    <city>Milwaukee</city>
+    <state>WI</state>
+    <zipcode>53225</zipcode>
+    <telephone>(414) 461-4444</telephone>
+    <email></email>
+    <condition>used</condition>
+    <url>https://milwaukeeharley.com/inventory/1001/test</url>
+    <vrm></vrm>
+    <color>Black</color>
+    <stocknumber>UG1001MKE</stocknumber>
+    <vin>1HD1KBC11MB600001</vin>
+    <miles>12000</miles>
+    <list></list>
+    <transmission>manual</transmission>
+    <description>Test used Harley</description>
+    <certified>no</certified>
+    <image1>https://cdn.room58.com/test/a.jpg</image1>
+    <image2>https://cdn.room58.com/test/b.jpg</image2>
+  </item>
+  <item>
+    <id>1002</id>
+    <year>2024</year>
+    <make>Harley-Davidson</make>
+    <category>Motorcycles</category>
+    <model>Softail</model>
+    <title>2024 Softail New</title>
+    <price>20000.00</price>
+    <location_id>1595</location_id>
+    <location>Milwaukee Harley-Davidson</location>
+    <city>Milwaukee</city>
+    <state>WI</state>
+    <zipcode>53225</zipcode>
+    <telephone></telephone>
+    <email></email>
+    <condition>new</condition>
+    <url>https://milwaukeeharley.com/inventory/1002/test</url>
+    <vrm></vrm>
+    <color>Red</color>
+    <stocknumber>N1002MKE</stocknumber>
+    <vin>1HD1BVJ12RB000002</vin>
+    <miles>10</miles>
+    <list></list>
+    <transmission>manual</transmission>
+    <description>New bike should be skipped</description>
+    <certified>no</certified>
+    <image1>https://cdn.room58.com/test/c.jpg</image1>
+  </item>
+  <item>
+    <id>1003</id>
+    <year>2020</year>
+    <make>BMW Motorrad</make>
+    <category>Motorcycles</category>
+    <model>R 1250</model>
+    <title>2020 BMW</title>
+    <price>15000.00</price>
+    <location_id>1595</location_id>
+    <location>Milwaukee Harley-Davidson</location>
+    <city>Milwaukee</city>
+    <state>WI</state>
+    <zipcode>53225</zipcode>
+    <telephone></telephone>
+    <email></email>
+    <condition>used</condition>
+    <url>https://milwaukeeharley.com/inventory/1003/test</url>
+    <vrm></vrm>
+    <color>Blue</color>
+    <stocknumber>UG1003MKE</stocknumber>
+    <vin>WB10E4301P6000003</vin>
+    <miles>5000</miles>
+    <list></list>
+    <transmission>other</transmission>
+    <description>Used non-Harley should be skipped</description>
+    <certified>no</certified>
+    <image1>https://cdn.room58.com/test/d.jpg</image1>
+  </item>
+</inventory>

@@ -3,12 +3,13 @@ import { BikeCard } from "@/components/bike-card";
 import { LeadForm } from "@/components/lead-form";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { publicBikeOrderBy, publicBikeWhere } from "@/lib/inventory-public";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
   title: "Inventory",
-  description: "Used Harleys Joe can help you buy — only real listings, never invented stock.",
+  description: "Used Harleys Joe can help you buy — mirrored from real dealership stock.",
   path: "/inventory",
 });
 
@@ -35,8 +36,8 @@ export default async function InventoryPage() {
   }
 
   const bikes = await prisma.bike.findMany({
-    where: { status: { in: ["AVAILABLE", "PENDING"] } },
-    orderBy: { createdAt: "desc" },
+    where: publicBikeWhere,
+    orderBy: publicBikeOrderBy,
   });
 
   return (
@@ -44,13 +45,14 @@ export default async function InventoryPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold">Inventory</h1>
         <p className="text-muted-foreground">
-          Listings Joe maintains. Don&apos;t see it? Tell him what you want.
+          Used Harleys from Milwaukee Harley-Davidson, curated by Joe. Don&apos;t see it? Tell
+          him what you want.
         </p>
       </div>
 
       {bikes.length === 0 ? (
-        <PlaceholderNotice title="No bikes listed yet">
-          Inventory is empty. Joe can add bikes from the admin area. No sample bikes are shown.
+        <PlaceholderNotice title="Nothing on the floor right now">
+          Ask Joe what&apos;s available or what he&apos;s watching for. We never invent inventory.
         </PlaceholderNotice>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -65,7 +67,7 @@ export default async function InventoryPage() {
                 mileage: bike.mileage,
                 price: bike.price,
                 status: bike.status,
-                photoUrl: bike.photos[0] ?? null,
+                photoUrl: bike.personalHeroImageUrl || bike.photos[0] || null,
               }}
             />
           ))}
@@ -81,7 +83,11 @@ export default async function InventoryPage() {
         </CardContent>
       </Card>
       <p className="text-sm text-muted-foreground">
-        Or <Link className="underline" href="/contact">contact Joe</Link> directly.
+        Or{" "}
+        <Link className="underline" href="/contact">
+          contact Joe
+        </Link>{" "}
+        directly.
       </p>
     </div>
   );

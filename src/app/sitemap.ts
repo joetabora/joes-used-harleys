@@ -32,12 +32,12 @@ export default async function sitemap() {
   let bikeRoutes: { url: string; lastModified: Date }[] = [];
   if (isDatabaseConfigured() && prisma) {
     const bikes = await prisma.bike.findMany({
-      where: { status: { in: ["AVAILABLE", "PENDING"] } },
-      select: { id: true, createdAt: true },
+      where: { status: { in: ["AVAILABLE", "PENDING"] }, hidden: false },
+      select: { id: true, createdAt: true, updatedAt: true },
     });
     bikeRoutes = bikes.map((bike) => ({
       url: `${base}/inventory/${bike.id}`,
-      lastModified: bike.createdAt,
+      lastModified: bike.updatedAt ?? bike.createdAt,
     }));
   }
 

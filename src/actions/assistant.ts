@@ -36,7 +36,7 @@ export async function askBuyingAssistant(raw: unknown): Promise<ChatResult> {
 
   if (isDatabaseConfigured() && prisma) {
     const bikes = await prisma.bike.findMany({
-      where: { status: "AVAILABLE" },
+      where: { status: "AVAILABLE", hidden: false },
       select: {
         id: true,
         year: true,
@@ -46,7 +46,7 @@ export async function askBuyingAssistant(raw: unknown): Promise<ChatResult> {
         mileage: true,
       },
       take: 25,
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ featuredRank: "desc" }, { firstSeenAt: "desc" }],
     });
     inventorySummary =
       bikes.length === 0

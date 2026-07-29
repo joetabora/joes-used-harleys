@@ -12,8 +12,8 @@ import {
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import {
   adminLoginSchema,
-  bikeFormSchema,
   interactionFormSchema,
+  joeBikeFieldsSchema,
 } from "@/lib/validators";
 
 export type AdminActionResult = {
@@ -48,9 +48,12 @@ export async function adminLogout(): Promise<void> {
   redirect("/admin/login");
 }
 
-export async function upsertBike(
+/**
+ * Update Joe-owned fields only. Dealership fields come from JoeOS sync.
+ */
+export async function updateJoeBikeFields(
+  id: string,
   raw: unknown,
-  id?: string,
 ): Promise<AdminActionResult> {
   await requireAdmin();
 
@@ -58,51 +61,68 @@ export async function upsertBike(
     return { ok: false, message: "Database not configured." };
   }
 
-  const parsed = bikeFormSchema.safeParse(raw);
+  const existing = await prisma.bike.findUnique({ where: { id } });
+  if (!existing) {
+    return { ok: false, message: "Bike not found." };
+  }
+
+  const parsed = joeBikeFieldsSchema.safeParse(raw);
   if (!parsed.success) {
-    return { ok: false, message: parsed.error.issues[0]?.message ?? "Invalid bike" };
+    return { ok: false, message: parsed.error.issues[0]?.message ?? "Invalid fields" };
   }
 
   const data = parsed.data;
-  const mileage =
-    typeof data.mileage === "number" && !Number.isNaN(data.mileage)
-      ? data.mileage
-      : null;
-  const price =
-    typeof data.price === "number" && !Number.isNaN(data.price)
-      ? data.price
+  const joeRating =
+    typeof data.joeRating === "number" && !Number.isNaN(data.joeRating)
+      ? data.joeRating
       : null;
 
-  const payload = {
-    year: data.year,
-    make: data.make,
-    model: data.model,
-    mileage,
-    price,
-    description: data.description || null,
-    status: data.status as BikeStatus,
-    photos: parsePhotoLines(data.photos),
-  };
-
-  let bikeId = id;
-  if (id) {
-    await prisma.bike.update({ where: { id }, data: payload });
-  } else {
-    const created = await prisma.bike.create({ data: payload });
-    bikeId = created.id;
-  }
+  await prisma.bike.update({
+    where: { id },
+    data: {
+      featuredRank: data.featuredRank,
+      status: data.status as BikeStatus,
+      hidden: data.hidden,
+      joeRating,
+      perfectFor: data.perfectFor || null,
+      favoriteFeature: data.favoriteFeature || null,
+      idealRider: data.idealRider || null,
+      thingsToMention: data.thingsToMention || null,
+      thingsToCheck: data.thingsToCheck || null,
+      whyIDLikeIt: data.whyIDLikeIt || null,
+      whoShouldSkipIt: data.whoShouldSkipIt || null,
+      conversationStarter: data.conversationStarter || null,
+      walkaroundVideoUrl: data.walkaroundVideoUrl || null,
+      buyingTips: data.buyingTips || null,
+      seoHeadline: data.seoHeadline || null,
+      seoDescription: data.seoDescription || null,
+      personalPhotos: parsePhotoLines(data.personalPhotos),
+      personalHeroImageUrl: data.personalHeroImageUrl || null,
+      internalNotes: data.internalNotes || null,
+    },
+  });
 
   revalidatePath("/inventory");
   revalidatePath("/admin/bikes");
-  if (bikeId) revalidatePath(`/inventory/${bikeId}`);
+  revalidatePath(`/inventory/${id}`);
+  revalidatePath(`/admin/bikes/${id}`);
 
-  return { ok: true, message: id ? "Bike updated." : "Bike created." };
+  return { ok: true, message: "Joe content saved." };
 }
 
 export async function deleteBike(id: string): Promise<AdminActionResult> {
   await requireAdmin();
   if (!isDatabaseConfigured() || !prisma) {
     return { ok: false, message: "Database not configured." };
+  }
+
+  const bike = await prisma.bike.findUnique({ where: { id } });
+  if (!bike) return { ok: false, message: "Bike not found." };
+  if (bike.source === "FEED") {
+    return {
+      ok: false,
+      message: "FEED bikes cannot be deleted. Hide them or wait for sync to mark sold.",
+    };
   }
 
   await prisma.bike.delete({ where: { id } });
@@ -148,7 +168,6 @@ export async function createInteraction(raw: unknown): Promise<AdminActionResult
     },
   });
 
-  // Logging an interaction implies Joe has engaged — move NEW → CONTACTED
   const lead = await prisma.lead.findUnique({ where: { id: parsed.data.leadId } });
   if (lead?.status === "NEW") {
     await prisma.lead.update({

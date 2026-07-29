@@ -1,5 +1,5 @@
-// Core CRM schema for Joe's Used Harleys.
-// Capture and manage buyers — Lead, Bike, Interaction only.
+// JoeOS core schema — Lead CRM + inventory mirror of dealership feed.
+// Public brand: Joe's Used Harleys. Internal platform: JoeOS.
 
 generator client {
   provider = "prisma-client"
@@ -22,12 +22,29 @@ enum BikeStatus {
   SOLD
 }
 
+enum BikeSource {
+  FEED
+  MANUAL
+}
+
 enum InteractionType {
   PHONE_CALL
   TEXT
   VISIT
   EMAIL
   TEST_RIDE
+}
+
+enum SyncTrigger {
+  CRON
+  MANUAL
+  DRY_RUN
+}
+
+enum SyncStatus {
+  SUCCESS
+  PARTIAL
+  FAILED
 }
 
 model Lead {
@@ -46,19 +63,137 @@ model Lead {
 }
 
 model Bike {
-  id          String     @id @default(cuid())
-  year        Int
-  make        String
-  model       String
-  price       Int?
-  mileage     Int?
-  description String?
-  status      BikeStatus @default(AVAILABLE)
-  photos      String[]   @default([])
-  createdAt   DateTime   @default(now())
+  id String @id @default(cuid())
 
-  @@index([status])
+  // --- Dealership-owned (JoeOS sync may write) ---
+  source         BikeSource @default(MANUAL)
+  feedId         String?
+  vin            String?    @unique
+  stockNumber    String?
+  year           Int
+  make           String
+  model          String
+  title          String?
+  price          Int?
+  mileage        Int?
+  color          String?
+  description    String?
+  condition      String?
+  category       String?
+  transmission   String?
+  certified      String?
+  vrm            String?
+  listPriceRaw   String?
+  inventoryUrl   String?
+  locationId     String?
+  locationName   String?
+  city           String?
+  state          String?
+  zipcode        String?
+  dealerPhone    String?
+  dealerEmail    String?
+  photos         String[]   @default([])
+  dealerHash     String?
+  status         BikeStatus @default(AVAILABLE)
+  firstSeenAt    DateTime   @default(now())
+  lastSeenAt     DateTime   @default(now())
+  soldAt         DateTime?
+  syncedAt       DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  // --- Joe-owned (sync never writes) ---
+  featuredRank         Int      @default(0)
+  hidden               Boolean  @default(false)
+  joeRating            Int?
+  perfectFor           String?
+  favoriteFeature      String?
+  idealRider           String?
+  thingsToMention      String?
+  thingsToCheck        String?
+  whyIDLikeIt          String?
+  whoShouldSkipIt      String?
+  conversationStarter  String?
+  walkaroundVideoUrl   String?
+  faq                  Json?
+  buyingTips           String?
+  seoHeadline          String?
+  seoDescription       String?
+  personalPhotos       String[] @default([])
+  personalHeroImageUrl String?
+  internalNotes        String?
+
+  priceHistory BikePriceHistory[]
+  analytics    BikeAnalytics?
+
+  @@index([stockNumber])
+  @@index([status, hidden])
   @@index([make, model])
+  @@index([lastSeenAt])
+  @@index([featuredRank, status])
+  @@index([firstSeenAt])
+  @@index([soldAt])
+  @@index([source])
+}
+
+model BikePriceHistory {
+  id            String   @id @default(cuid())
+  bikeId        String
+  bike          Bike     @relation(fields: [bikeId], references: [id], onDelete: Restrict)
+  vin           String?
+  previousPrice Int?
+  newPrice      Int?
+  changedAt     DateTime @default(now())
+  syncLogId     String?
+  syncLog       SyncLog? @relation(fields: [syncLogId], references: [id], onDelete: SetNull)
+
+  @@index([bikeId, changedAt])
+  @@index([vin, changedAt])
+  @@index([changedAt])
+}
+
+model SyncLog {
+  id               String      @id @default(cuid())
+  startedAt        DateTime
+  finishedAt       DateTime?
+  durationMs       Int?
+  trigger          SyncTrigger
+  status           SyncStatus
+  feedUrl          String
+  feedVersion      String?
+  fetchedBytes     Int?
+  parsedCount      Int?
+  usedHarleyCount  Int?
+  createdCount     Int         @default(0)
+  updatedCount     Int         @default(0)
+  soldCount        Int         @default(0)
+  unchangedCount   Int         @default(0)
+  priceChangeCount Int         @default(0)
+  errorCount       Int         @default(0)
+  errors           Json?
+  dryRun           Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+
+  priceHistory BikePriceHistory[]
+
+  @@index([startedAt])
+  @@index([status])
+}
+
+model BikeAnalytics {
+  id                  String    @id @default(cuid())
+  bikeId              String    @unique
+  bike                Bike      @relation(fields: [bikeId], references: [id], onDelete: Cascade)
+  views               Int       @default(0)
+  favorites           Int       @default(0)
+  emails              Int       @default(0)
+  texts               Int       @default(0)
+  calls               Int       @default(0)
+  shares              Int       @default(0)
+  walkaroundRequests  Int       @default(0)
+  testRideRequests    Int       @default(0)
+  lastViewedAt        DateTime?
+  updatedAt           DateTime  @updatedAt
 }
 
 model Interaction {

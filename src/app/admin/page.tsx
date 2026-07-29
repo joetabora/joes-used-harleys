@@ -25,7 +25,7 @@ export default async function AdminHomePage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
+      <h1 className="text-2xl font-semibold">JoeOS Dashboard</h1>
       {!isAdminEnvConfigured() ? (
         <PlaceholderNotice title="Admin env incomplete">
           Set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET in .env.local.
@@ -36,7 +36,18 @@ export default async function AdminHomePage() {
           Set DATABASE_URL / DIRECT_URL to manage bikes and leads.
         </PlaceholderNotice>
       ) : null}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Inventory sync</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="text-sm text-muted-foreground">Mirror dealership used Harleys</p>
+            <Link href="/admin/sync" className="text-sm underline">
+              Open sync dashboard
+            </Link>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle>Bikes</CardTitle>
@@ -44,7 +55,7 @@ export default async function AdminHomePage() {
           <CardContent className="space-y-2">
             <p className="text-3xl font-semibold">{bikeCount}</p>
             <Link href="/admin/bikes" className="text-sm underline">
-              Manage inventory
+              Manage Joe content
             </Link>
           </CardContent>
         </Card>

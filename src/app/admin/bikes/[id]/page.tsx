@@ -7,7 +7,7 @@ import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
   title: "Edit bike",
-  description: "Edit inventory listing",
+  description: "Edit Joe content for inventory listing",
   path: "/admin/bikes",
   noIndex: true,
 });
@@ -27,20 +27,8 @@ export default async function EditBikePage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-2xl font-semibold">Edit {bikeLabel(bike)}</h1>
-      <BikeEditorForm
-        bike={{
-          id: bike.id,
-          year: bike.year,
-          make: bike.make,
-          model: bike.model,
-          mileage: bike.mileage,
-          price: bike.price,
-          description: bike.description,
-          status: bike.status,
-          photos: bike.photos,
-        }}
-      />
+      <h1 className="text-2xl font-semibold">Joe content — {bikeLabel(bike)}</h1>
+      <BikeEditorForm bike={bike} />
     </div>
   );
 }

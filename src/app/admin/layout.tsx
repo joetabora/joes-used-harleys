@@ -15,7 +15,10 @@ export default async function AdminLayout({
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
         <div className="flex flex-wrap items-center gap-4 text-sm">
           <Link href="/admin" className="font-semibold">
-            Admin
+            JoeOS
+          </Link>
+          <Link href="/admin/sync" className="text-muted-foreground hover:text-foreground">
+            Sync
           </Link>
           <Link href="/admin/bikes" className="text-muted-foreground hover:text-foreground">
             Bikes
