@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { LeadStatusButtons } from "@/components/lead-status-buttons";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireAdminOrRedirect } from "@/lib/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Admin leads",
+  title: "JoeOS Leads",
   description: "Review inbound leads",
   path: "/admin/leads",
   noIndex: true,
@@ -21,9 +19,11 @@ export default async function AdminLeadsPage() {
 
   if (!isDatabaseConfigured() || !prisma) {
     return (
-      <PlaceholderNotice title="Database not connected">
-        Connect Supabase before viewing leads.
-      </PlaceholderNotice>
+      <div className="joeos-panel p-4">
+        <PlaceholderNotice title="Database not connected">
+          Connect Supabase before viewing leads.
+        </PlaceholderNotice>
+      </div>
     );
   }
 
@@ -34,39 +34,60 @@ export default async function AdminLeadsPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Leads</h1>
+    <div className="joeos-fade-in space-y-6">
+      <div>
+        <p className="joeos-label text-[var(--joeos-orange)]">Leads</p>
+        <h1 className="joeos-heading mt-1 text-3xl">Contact queue</h1>
+        <p className="joeos-body mt-2 text-sm">Follow up fast — every inquiry is a shot at a sale.</p>
+      </div>
+
       {leads.length === 0 ? (
-        <PlaceholderNotice title="No leads yet">
-          Contact form submissions will appear here.
-        </PlaceholderNotice>
+        <div className="joeos-panel p-4">
+          <PlaceholderNotice title="No leads yet">
+            Contact form submissions will appear here.
+          </PlaceholderNotice>
+        </div>
       ) : (
-        <div className="space-y-4">
+        <ul className="space-y-2">
           {leads.map((lead) => (
-            <Card key={lead.id}>
-              <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 space-y-0">
-                <CardTitle className="text-base">
-                  <Link href={`/admin/leads/${lead.id}`} className="hover:underline">
+            <li key={lead.id} className="joeos-panel p-4">
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <Link
+                    href={`/admin/leads/${lead.id}`}
+                    className="joeos-heading text-base hover:text-[var(--joeos-orange)]"
+                  >
                     {lead.name}
                   </Link>
-                </CardTitle>
-                <Badge>{lead.status}</Badge>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  {lead.email || "—"} · {lead.phone || "—"}
-                </p>
-                <p>Source: {lead.source || "—"}</p>
-                <p>{lead._count.interactions} interaction(s)</p>
-                {lead.notes ? (
-                  <p className="whitespace-pre-wrap text-foreground">{lead.notes}</p>
-                ) : null}
-                <p className="text-xs">{lead.createdAt.toISOString()}</p>
+                  <p className="joeos-data mt-1">
+                    {lead.email || "—"} · {lead.phone || "—"} · {lead.source || "—"}
+                  </p>
+                </div>
+                <span
+                  className={
+                    lead.status === "NEW"
+                      ? "joeos-pill joeos-pill-hot"
+                      : lead.status === "CONTACTED"
+                        ? "joeos-pill joeos-pill-watch"
+                        : "joeos-pill joeos-pill-muted"
+                  }
+                >
+                  {lead.status}
+                </span>
+              </div>
+              <p className="joeos-data mt-2">
+                {lead._count.interactions} interaction(s) ·{" "}
+                {lead.createdAt.toLocaleDateString("en-US")}
+              </p>
+              {lead.notes ? (
+                <p className="joeos-body mt-2 text-sm whitespace-pre-wrap">{lead.notes}</p>
+              ) : null}
+              <div className="mt-3">
                 <LeadStatusButtons id={lead.id} />
-              </CardContent>
-            </Card>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

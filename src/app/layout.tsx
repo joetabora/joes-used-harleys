@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Oswald, Source_Serif_4 } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { SiteChrome } from "@/components/site-chrome";
 import { localBusinessJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -53,9 +52,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <SiteChrome>{children}</SiteChrome>
         <Toaster />
       </body>
     </html>

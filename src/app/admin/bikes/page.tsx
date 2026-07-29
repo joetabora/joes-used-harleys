@@ -1,23 +1,14 @@
 import Link from "next/link";
 import { DeleteBikeButton } from "@/components/bike-editor-form";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
-import { buttonVariants } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { requireAdminOrRedirect } from "@/lib/auth";
 import { bikeLabel, formatPrice } from "@/lib/format";
+import { daysBetween, bikeSeverity } from "@/lib/joeos/briefing";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { createMetadata } from "@/lib/seo";
-import { cn } from "@/lib/utils";
 
 export const metadata = createMetadata({
-  title: "Admin bikes",
+  title: "JoeOS Inventory",
   description: "Manage inventory",
   path: "/admin/bikes",
   noIndex: true,
@@ -30,72 +21,98 @@ export default async function AdminBikesPage() {
 
   if (!isDatabaseConfigured() || !prisma) {
     return (
-      <PlaceholderNotice title="Database not connected">
-        Connect Supabase before managing bikes.
-      </PlaceholderNotice>
+      <div className="joeos-panel p-4">
+        <PlaceholderNotice title="Database not connected">
+          Connect Supabase before managing bikes.
+        </PlaceholderNotice>
+      </div>
     );
   }
 
   const bikes = await prisma.bike.findMany({
     orderBy: [{ featuredRank: "desc" }, { lastSeenAt: "desc" }],
   });
+  const now = new Date();
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="joeos-fade-in space-y-6">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Bikes</h1>
-          <p className="text-sm text-muted-foreground">
-            Inventory comes from JoeOS sync. Edit Joe content per bike — do not invent listings.
+          <p className="joeos-label text-[var(--joeos-orange)]">Inventory</p>
+          <h1 className="joeos-heading mt-1 text-3xl">Floor stock</h1>
+          <p className="joeos-body mt-2 max-w-xl text-sm">
+            Synced from the dealership feed. Edit Joe content per bike — never invent listings.
           </p>
         </div>
-        <Link href="/admin/sync" className={cn(buttonVariants({ variant: "outline" }))}>
-          Sync dashboard
+        <Link href="/admin/sync" className="joeos-btn joeos-btn-ghost">
+          Sync
         </Link>
       </div>
 
       {bikes.length === 0 ? (
-        <PlaceholderNotice title="No bikes yet">
-          Run a Manual Sync from the Sync dashboard. Inventory is never invented.
-        </PlaceholderNotice>
+        <div className="joeos-panel p-4">
+          <PlaceholderNotice title="No bikes yet">
+            Run a Manual Sync from the Sync dashboard.
+          </PlaceholderNotice>
+        </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Bike</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Rank</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {bikes.map((bike) => (
-              <TableRow key={bike.id} className={bike.hidden ? "opacity-60" : undefined}>
-                <TableCell>
-                  <div className="font-medium">{bikeLabel(bike)}</div>
-                  {bike.hidden ? (
-                    <div className="text-xs text-muted-foreground">Hidden</div>
-                  ) : null}
-                </TableCell>
-                <TableCell>{bike.source}</TableCell>
-                <TableCell>{bike.status}</TableCell>
-                <TableCell>{bike.featuredRank}</TableCell>
-                <TableCell>{formatPrice(bike.price)}</TableCell>
-                <TableCell className="space-x-2 text-right">
-                  <Link
-                    href={`/admin/bikes/${bike.id}`}
-                    className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
-                  >
-                    Edit Joe content
-                  </Link>
-                  <DeleteBikeButton id={bike.id} source={bike.source} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <div className="joeos-panel overflow-x-auto">
+          <table className="joeos-table">
+            <thead>
+              <tr>
+                <th>Bike</th>
+                <th>Age</th>
+                <th>Status</th>
+                <th>Source</th>
+                <th>Price</th>
+                <th className="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bikes.map((bike) => {
+                const days = daysBetween(bike.firstSeenAt, now);
+                const severity = bikeSeverity(days);
+                return (
+                  <tr key={bike.id} className={bike.hidden ? "opacity-50" : undefined}>
+                    <td>
+                      <div className="font-medium text-[var(--joeos-bone)]">
+                        {bikeLabel(bike)}
+                      </div>
+                      {bike.hidden ? (
+                        <div className="joeos-data">Hidden</div>
+                      ) : null}
+                    </td>
+                    <td>
+                      <span
+                        className={
+                          severity === "hot"
+                            ? "joeos-pill joeos-pill-hot"
+                            : severity === "watch"
+                              ? "joeos-pill joeos-pill-watch"
+                              : "joeos-pill joeos-pill-muted"
+                        }
+                      >
+                        {days}d
+                      </span>
+                    </td>
+                    <td className="joeos-data">{bike.status}</td>
+                    <td className="joeos-data">{bike.source}</td>
+                    <td>{formatPrice(bike.price)}</td>
+                    <td className="space-x-2 text-right">
+                      <Link
+                        href={`/admin/bikes/${bike.id}`}
+                        className="joeos-btn joeos-btn-ghost"
+                      >
+                        Edit
+                      </Link>
+                      <DeleteBikeButton id={bike.id} source={bike.source} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

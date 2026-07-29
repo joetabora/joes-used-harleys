@@ -1,9 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export function AdminLoginForm() {
   const [pending, startTransition] = useTransition();
@@ -46,23 +43,35 @@ export function AdminLoginForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" name="email" type="email" required autoComplete="username" />
+        <label htmlFor="email" className="joeos-label">
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoComplete="username"
+          className="w-full border border-[var(--joeos-border)] bg-[var(--joeos-pit)] px-3 py-2.5 text-[var(--joeos-bone)] outline-none focus:border-[var(--joeos-orange)]"
+        />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input
+        <label htmlFor="password" className="joeos-label">
+          Password
+        </label>
+        <input
           id="password"
           name="password"
           type="password"
           required
           autoComplete="current-password"
+          className="w-full border border-[var(--joeos-border)] bg-[var(--joeos-pit)] px-3 py-2.5 text-[var(--joeos-bone)] outline-none focus:border-[var(--joeos-orange)]"
         />
       </div>
-      <Button type="submit" disabled={pending} className="w-full">
+      <button type="submit" disabled={pending} className="joeos-btn joeos-btn-primary w-full">
         {pending ? "Signing in…" : "Sign in"}
-      </Button>
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      </button>
+      {error ? <p className="text-sm text-[var(--joeos-danger)]">{error}</p> : null}
     </form>
   );
 }

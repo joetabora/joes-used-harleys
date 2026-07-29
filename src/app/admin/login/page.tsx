@@ -1,13 +1,11 @@
 import { AdminLoginForm } from "@/components/admin-login-form";
-import { PlaceholderNotice } from "@/components/placeholder-notice";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAdminEnvStatus, getAdminSession } from "@/lib/auth";
 import { createMetadata } from "@/lib/seo";
 import { redirect } from "next/navigation";
 
 export const metadata = createMetadata({
-  title: "Admin login",
-  description: "Admin sign-in",
+  title: "JoeOS Login",
+  description: "JoeOS sign-in",
   path: "/admin/login",
   noIndex: true,
 });
@@ -21,37 +19,33 @@ export default async function AdminLoginPage() {
   const env = getAdminEnvStatus();
 
   return (
-    <div className="mx-auto max-w-md space-y-4">
-      <h1 className="text-2xl font-semibold">Admin sign in</h1>
+    <div className="mx-auto max-w-md space-y-6 joeos-fade-in">
+      <div>
+        <p className="joeos-label text-[var(--joeos-orange)]">Joe OS</p>
+        <h1 className="joeos-heading mt-2 text-3xl">Sign in</h1>
+        <p className="joeos-body mt-2">Sales command center — authorized access only.</p>
+      </div>
 
       {!env.configured ? (
-        <PlaceholderNotice title="Admin env incomplete on this deployment">
-          <ul className="mt-2 list-disc space-y-1 pl-4">
+        <div className="joeos-panel p-4 space-y-2">
+          <p className="joeos-label text-[var(--joeos-warn)]">Env incomplete</p>
+          <ul className="joeos-body list-disc space-y-1 pl-4 text-sm">
             {env.issues.map((issue) => (
               <li key={issue}>{issue}</li>
             ))}
           </ul>
-          <p className="mt-3">
-            In Vercel → Settings → Environment Variables, set these for{" "}
-            <strong>Production</strong>, then <strong>Redeploy</strong> (env changes do not
-            apply to an already-running deployment).
+          <p className="joeos-body text-sm">
+            Set Production env vars on Vercel, then redeploy.
           </p>
-        </PlaceholderNotice>
+        </div>
       ) : (
-        <p className="text-sm text-muted-foreground">
-          Admin env looks configured on this deployment (email / password / session secret
-          present).
-        </p>
+        <p className="joeos-data">Credentials configured on this deployment.</p>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Credentials</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AdminLoginForm />
-        </CardContent>
-      </Card>
+      <div className="joeos-panel p-5">
+        <p className="joeos-label mb-4">Credentials</p>
+        <AdminLoginForm />
+      </div>
     </div>
   );
 }

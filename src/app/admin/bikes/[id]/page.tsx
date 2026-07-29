@@ -26,8 +26,9 @@ export default async function EditBikePage({ params }: Props) {
   if (!bike) notFound();
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-2xl font-semibold">Joe content — {bikeLabel(bike)}</h1>
+    <div className="joeos-fade-in mx-auto max-w-2xl space-y-4">
+      <p className="joeos-label text-[var(--joeos-orange)]">Inventory · Edit</p>
+      <h1 className="joeos-heading text-2xl">Joe content — {bikeLabel(bike)}</h1>
       <BikeEditorForm bike={bike} />
     </div>
   );

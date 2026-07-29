@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { runInventorySync } from "@/actions/sync";
-import { Button } from "@/components/ui/button";
 
 export function SyncControls() {
   const router = useRouter();
@@ -33,15 +32,25 @@ export function SyncControls() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-3">
-        <Button type="button" disabled={pending} onClick={() => run(false)}>
+        <button
+          type="button"
+          className="joeos-btn joeos-btn-primary"
+          disabled={pending}
+          onClick={() => run(false)}
+        >
           {pending ? "Running…" : "Manual Sync"}
-        </Button>
-        <Button type="button" variant="outline" disabled={pending} onClick={() => run(true)}>
+        </button>
+        <button
+          type="button"
+          className="joeos-btn joeos-btn-ghost"
+          disabled={pending}
+          onClick={() => run(true)}
+        >
           Dry Run
-        </Button>
+        </button>
       </div>
-      {message ? <p className="text-sm text-green-600">{message}</p> : null}
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {message ? <p className="joeos-data text-[var(--joeos-success)]">{message}</p> : null}
+      {error ? <p className="joeos-data text-[var(--joeos-danger)]">{error}</p> : null}
     </div>
   );
 }
