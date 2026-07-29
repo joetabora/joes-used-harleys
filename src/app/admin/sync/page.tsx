@@ -51,7 +51,7 @@ export default async function AdminSyncPage() {
   ]);
 
   const nextScheduled = lastSuccessCron
-    ? new Date(lastSuccessCron.startedAt.getTime() + 60 * 60 * 1000)
+    ? new Date(lastSuccessCron.startedAt.getTime() + 24 * 60 * 60 * 1000)
     : null;
 
   const errors =
@@ -93,7 +93,7 @@ export default async function AdminSyncPage() {
           </CardHeader>
           <CardContent className="text-sm">
             <p>{formatWhen(nextScheduled)}</p>
-            <p className="text-muted-foreground">Hourly Vercel Cron — best effort</p>
+            <p className="text-muted-foreground">Daily Vercel Cron (Hobby) — 14:00 UTC · best effort</p>
           </CardContent>
         </Card>
         <Card>

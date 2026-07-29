@@ -5,8 +5,8 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 /**
- * JoeOS hourly inventory sync (Vercel Cron).
- * Authorization: Bearer ${CRON_SECRET}
+ * JoeOS daily inventory sync (Vercel Cron).
+ * Hobby plan: once per day. Manual Sync / Dry Run reuse the same engine.
  */
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;

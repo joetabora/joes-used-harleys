@@ -65,4 +65,6 @@ Internal JoeOS service mirrors Milwaukee Harley-Davidson **used Harley** invento
 
 ## Cron
 
-Hourly: `GET /api/cron/inventory-sync` with `Authorization: Bearer $CRON_SECRET`
+Daily (Hobby-compatible): `0 14 * * *` → `GET /api/cron/inventory-sync` with `Authorization: Bearer $CRON_SECRET`.
+
+Manual Sync / Dry Run from `/admin/sync` reuse the same engine anytime. On Pro, schedule can be tightened to hourly.
