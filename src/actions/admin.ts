@@ -31,6 +31,8 @@ function parsePhotoLines(raw: string | undefined): string[] {
 }
 
 export async function adminLogin(raw: unknown): Promise<AdminActionResult> {
+  // Prefer POST /api/admin/login from the browser — Route Handler Set-Cookie is reliable on Vercel.
+  // Kept for compatibility; mirrors the same checks.
   const parsed = adminLoginSchema.safeParse(raw);
   if (!parsed.success) {
     return { ok: false, message: "Enter a valid email and password." };
@@ -48,8 +50,6 @@ export async function adminLogin(raw: unknown): Promise<AdminActionResult> {
     return { ok: false, message: "Invalid email or password." };
   }
 
-  // Set cookie and return — do not redirect() here. Redirect after Set-Cookie in a
-  // server action often drops the session cookie on Vercel, bouncing back to login.
   await createAdminSession(parsed.data.email.trim().toLowerCase());
   revalidatePath("/admin");
   return { ok: true, message: "Signed in." };

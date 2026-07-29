@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { adminLogin } from "@/actions/admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,31 +11,43 @@ export function AdminLoginForm() {
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  function onSubmit(formData: FormData) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setError(null);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
     startTransition(async () => {
       try {
-        const result = await adminLogin({
-          email: String(formData.get("email") ?? ""),
-          password: String(formData.get("password") ?? ""),
+        const res = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({
+            email: String(formData.get("email") ?? ""),
+            password: String(formData.get("password") ?? ""),
+          }),
         });
-        if (!result.ok) {
-          setError(result.message);
+
+        const data = (await res.json().catch(() => null)) as {
+          ok?: boolean;
+          message?: string;
+        } | null;
+
+        if (!res.ok || !data?.ok) {
+          setError(data?.message ?? `Login failed (${res.status}).`);
           return;
         }
-        router.replace("/admin");
-        router.refresh();
-      } catch (err) {
-        if (err && typeof err === "object" && "digest" in err) {
-          throw err;
-        }
-        setError("Login failed. Check admin env vars and try again.");
+
+        window.location.assign("/admin");
+      } catch {
+        setError("Network error during login. Try again.");
       }
     });
   }
 
   return (
-    <form action={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" required autoComplete="username" />
@@ -55,6 +66,10 @@ export function AdminLoginForm() {
         {pending ? "Signing in…" : "Sign in"}
       </Button>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {!error && pending ? null : null}
+      <p className="text-xs text-muted-foreground">
+        Uses /api/admin/login · cookie auth · after success you should land on /admin
+      </p>
     </form>
   );
 }

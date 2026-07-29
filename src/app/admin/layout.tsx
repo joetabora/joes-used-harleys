@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { adminLogout } from "@/actions/admin";
 import { buttonVariants } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
 import { getAdminSession } from "@/lib/auth";
@@ -48,12 +47,7 @@ async function AdminSessionControls() {
   }
 
   return (
-    <form
-      action={async () => {
-        "use server";
-        await adminLogout();
-      }}
-    >
+    <form action="/api/admin/logout" method="POST">
       <Button type="submit" size="sm" variant="outline">
         Sign out ({session.email})
       </Button>
