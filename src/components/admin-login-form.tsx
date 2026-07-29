@@ -1,21 +1,18 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function AdminLoginForm() {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(e.currentTarget);
 
     startTransition(async () => {
       try {
@@ -66,10 +63,6 @@ export function AdminLoginForm() {
         {pending ? "Signing in…" : "Sign in"}
       </Button>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
-      {!error && pending ? null : null}
-      <p className="text-xs text-muted-foreground">
-        Uses /api/admin/login · cookie auth · after success you should land on /admin
-      </p>
     </form>
   );
 }
