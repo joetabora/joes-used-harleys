@@ -24,13 +24,13 @@ export function AdminLoginForm() {
           setError(result.message);
           return;
         }
+        router.replace("/admin");
         router.refresh();
       } catch (err) {
-        // redirect() throws; ignore NEXT_REDIRECT
         if (err && typeof err === "object" && "digest" in err) {
           throw err;
         }
-        setError("Login failed.");
+        setError("Login failed. Check admin env vars and try again.");
       }
     });
   }

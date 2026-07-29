@@ -42,9 +42,12 @@ export async function createAdminSession(email: string): Promise<void> {
   const payload = `${email}:${Date.now()}`;
   const token = `${payload}.${sign(payload, secret)}`;
   const jar = await cookies();
+  const secure =
+    process.env.NODE_ENV === "production" || Boolean(process.env.VERCEL);
+
   jar.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure,
     sameSite: "lax",
     path: "/",
     maxAge: MAX_AGE_SECONDS,

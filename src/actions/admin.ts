@@ -6,6 +6,7 @@ import { BikeStatus, InteractionType, LeadStatus } from "@/generated/prisma/clie
 import {
   createAdminSession,
   destroyAdminSession,
+  isAdminEnvConfigured,
   requireAdmin,
   verifyAdminCredentials,
 } from "@/lib/auth";
@@ -35,12 +36,23 @@ export async function adminLogin(raw: unknown): Promise<AdminActionResult> {
     return { ok: false, message: "Enter a valid email and password." };
   }
 
-  if (!verifyAdminCredentials(parsed.data.email, parsed.data.password)) {
-    return { ok: false, message: "Invalid credentials or admin env not configured." };
+  if (!isAdminEnvConfigured()) {
+    return {
+      ok: false,
+      message:
+        "Admin env not configured on this deployment. Set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET (16+ chars), then Redeploy.",
+    };
   }
 
-  await createAdminSession(parsed.data.email);
-  redirect("/admin");
+  if (!verifyAdminCredentials(parsed.data.email, parsed.data.password)) {
+    return { ok: false, message: "Invalid email or password." };
+  }
+
+  // Set cookie and return — do not redirect() here. Redirect after Set-Cookie in a
+  // server action often drops the session cookie on Vercel, bouncing back to login.
+  await createAdminSession(parsed.data.email.trim().toLowerCase());
+  revalidatePath("/admin");
+  return { ok: true, message: "Signed in." };
 }
 
 export async function adminLogout(): Promise<void> {
