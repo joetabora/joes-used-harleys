@@ -30,9 +30,9 @@ export function isAdminEnvConfigured(): boolean {
 
 export function verifyAdminCredentials(email: string, password: string): boolean {
   if (!isAdminEnvConfigured()) return false;
-  const expectedEmail = process.env.ADMIN_EMAIL!;
+  const expectedEmail = process.env.ADMIN_EMAIL!.trim().toLowerCase();
   const expectedPassword = process.env.ADMIN_PASSWORD!;
-  return email === expectedEmail && password === expectedPassword;
+  return email.trim().toLowerCase() === expectedEmail && password === expectedPassword;
 }
 
 export async function createAdminSession(email: string): Promise<void> {

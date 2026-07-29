@@ -16,10 +16,14 @@ export function AdminLoginForm() {
     setError(null);
     startTransition(async () => {
       try {
-        await adminLogin({
+        const result = await adminLogin({
           email: String(formData.get("email") ?? ""),
           password: String(formData.get("password") ?? ""),
         });
+        if (!result.ok) {
+          setError(result.message);
+          return;
+        }
         router.refresh();
       } catch (err) {
         // redirect() throws; ignore NEXT_REDIRECT

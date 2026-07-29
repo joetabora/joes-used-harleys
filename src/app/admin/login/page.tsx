@@ -21,7 +21,9 @@ export default async function AdminLoginPage() {
       <h1 className="text-2xl font-semibold">Admin sign in</h1>
       {!isAdminEnvConfigured() ? (
         <PlaceholderNotice title="Configure admin env first">
-          Set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET (16+ chars) in .env.local.
+          Set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET (16+ chars, no
+          &quot;PLACEHOLDER&quot;) in Vercel → Environment Variables for Production, then
+          Redeploy. Env changes do not apply until a new deployment.
         </PlaceholderNotice>
       ) : null}
       <Card>
