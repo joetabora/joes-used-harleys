@@ -1,13 +1,12 @@
 import { SyncControls } from "@/components/admin/sync-controls";
-import { PlaceholderNotice } from "@/components/placeholder-notice";
 import { requireAdminOrRedirect } from "@/lib/auth";
 import { bikeLabel, formatPrice } from "@/lib/format";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "JoeOS Sync",
-  description: "Inventory sync dashboard",
+  title: "JoeOS Feed",
+  description: "Inventory feed bay",
   path: "/admin/sync",
   noIndex: true,
 });
@@ -24,10 +23,9 @@ export default async function AdminSyncPage() {
 
   if (!isDatabaseConfigured() || !prisma) {
     return (
-      <div className="joeos-panel p-4">
-        <PlaceholderNotice title="Database not connected">
-          Connect Supabase before running JoeOS inventory sync.
-        </PlaceholderNotice>
+      <div className="jos-panel p-4">
+        <p className="jos-label text-[var(--jos-warn)]">Database offline</p>
+        <p className="jos-body mt-2">Connect Supabase before arming inventory sync.</p>
       </div>
     );
   }
@@ -71,7 +69,7 @@ export default async function AdminSyncPage() {
     {
       label: "Next scheduled",
       value: formatWhen(nextScheduled),
-      detail: "Daily cron · 14:00 UTC · best effort",
+      detail: "Daily cron · 14:00 UTC",
     },
     {
       label: "Live used bikes",
@@ -79,15 +77,14 @@ export default async function AdminSyncPage() {
       detail: "FEED · AVAILABLE/PENDING",
     },
     {
-      label: "Feed bytes",
-      value:
-        lastLog?.fetchedBytes != null ? String(lastLog.fetchedBytes) : "—",
-      detail: lastLog?.feedVersion ? lastLog.feedVersion.slice(0, 16) : "—",
-    },
-    {
       label: "Duration",
       value: lastLog?.durationMs != null ? `${lastLog.durationMs} ms` : "—",
       detail: "Last run",
+    },
+    {
+      label: "Feed bytes",
+      value: lastLog?.fetchedBytes != null ? String(lastLog.fetchedBytes) : "—",
+      detail: lastLog?.feedVersion?.slice(0, 16) ?? "—",
     },
     {
       label: "Newest bike",
@@ -99,30 +96,33 @@ export default async function AdminSyncPage() {
   ];
 
   return (
-    <div className="joeos-fade-in space-y-8">
-      <div>
-        <p className="joeos-label text-[var(--joeos-orange)]">Sync</p>
-        <h1 className="joeos-heading mt-1 text-3xl">Inventory feed</h1>
-        <p className="joeos-body mt-2 max-w-xl text-sm">
+    <div className="space-y-8">
+      <header>
+        <p className="jos-section">Feed bay</p>
+        <h1 className="jos-heading mt-1 text-3xl">Inventory feed</h1>
+        <p className="jos-body mt-2 max-w-xl text-sm">
           Mirrors Milwaukee Harley-Davidson used Harley inventory. Never invents bikes.
         </p>
-      </div>
+      </header>
 
-      <SyncControls />
+      <div className="jos-panel p-4">
+        <p className="jos-label mb-3">Arming switches</p>
+        <SyncControls />
+      </div>
 
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {telemetry.map((item) => (
-          <div key={item.label} className="joeos-kpi-block">
-            <p className="joeos-label">{item.label}</p>
-            <p className="joeos-heading mt-2 text-lg break-words">{item.value}</p>
-            <p className="joeos-data mt-2 break-all">{item.detail}</p>
+          <div key={item.label} className="jos-kpi-gauge">
+            <p className="jos-label">{item.label}</p>
+            <p className="jos-heading mt-2 text-lg break-words">{item.value}</p>
+            <p className="jos-data mt-2 break-all">{item.detail}</p>
           </div>
         ))}
       </div>
 
       {lastLog ? (
-        <div className="joeos-panel p-4">
-          <p className="joeos-label mb-3">Last run counts</p>
+        <div className="jos-panel p-4">
+          <p className="jos-section mb-3">Last run counts</p>
           <div className="grid gap-2 text-sm sm:grid-cols-3">
             <p>Created: {lastLog.createdCount}</p>
             <p>Updated: {lastLog.updatedCount}</p>
@@ -135,8 +135,8 @@ export default async function AdminSyncPage() {
       ) : null}
 
       {errors.length > 0 ? (
-        <div className="joeos-panel p-4">
-          <p className="joeos-label text-[var(--joeos-danger)]">Errors</p>
+        <div className="jos-panel p-4">
+          <p className="jos-label text-[var(--jos-danger)]">Errors</p>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
             {errors.map((e, i) => (
               <li key={i}>{e.message ?? JSON.stringify(e)}</li>

@@ -1,42 +1,38 @@
-# JoeOS design system — sales cockpit
+# JoeOS design system v2 — Command Center
 
-Visual and UX contract for the private sales OS (`/admin`). Customers never see this.
+Visual + UX contract for the private sales OS (`/admin`). Customers never see this name.
 
-Public site keeps Dark outlaw editorial styling. JoeOS is scoped under `.joeos`.
+## Product language
+
+Harley performance garage + racing telemetry density + tactical command layout.  
+Not CRM. Not Stripe. Not Notion.
 
 ## Do / don’t
 
-**Do:** near-black void, gunmetal panels, Harley orange accents, condensed uppercase Oswald labels, dense Hot Actions, Morning Briefing first, sharp 0–2px corners, honest empty states.
+**Do:** void black (`#080808`), gunmetal panels, Harley orange, Oswald uppercase section brands, photo-first machine assets, dense Hot Queue, honest rule-based intelligence.
 
-**Don’t:** SaaS metric-card trios, pastel/purple/blue accents, floating rounded cards, decorative gradients, invented appointments/market comps/AI predictions.
+**Don’t:** SaaS metric-card trios, blue/purple gradients, soft rounded cards, invented market comps, appointments (no schema), LLM fluff.
 
 ## Tokens
 
-Typed source: [`src/design-system/`](../src/design-system/)
+Typed: [`src/design-system/`](../src/design-system/)  
+Runtime: [`src/app/joeos.css`](../src/app/joeos.css) under `.jos`
 
-| File | Role |
-|------|------|
-| `colors.ts` | void / pit / panel / orange / danger / success / warn |
-| `typography.ts` | brand, label, heading, kpi, body, data |
-| `spacing.ts` | density + aging thresholds (45 watch / 70 hot) |
-| `components.ts` | CSS recipe names + nav IA |
+## IA
 
-Runtime CSS: [`src/app/joeos.css`](../src/app/joeos.css)
+| Route | Role |
+|-------|------|
+| `/admin` | COMMAND CENTER |
+| `/admin/bikes` | FLOOR showroom |
+| `/admin/bikes/[id]` | ASSET detail |
+| `/admin/leads` | PIPELINE |
+| `/admin/leads/[id]` | Customer file |
+| `/admin/sync` | FEED bay |
+| `/admin/login` | Vault lock |
 
-## Morning Briefing rules
+## Intelligence rules (no inventions)
 
-Computed in [`src/lib/joeos/briefing.ts`](../src/lib/joeos/briefing.ts) from real `Bike` / `Lead` / `Interaction` / `SyncLog` only:
-
-- **Aging bikes:** days since `firstSeenAt`; watch ≥45, hot ≥70
-- **Potential revenue:** sum of `price` on aging bikes (at-risk inventory $)
-- **Stale leads:** `NEW`/`CONTACTED` with no interaction in ≥3 days (or never contacted)
-- **Inventory radar:** family buckets from model/category string rules
-- **Command brief:** template sentences from those counts — not an LLM
-
-No Appointment model yet — calendar items are out of scope until schema exists.
-
-## Shell
-
-- Desktop: left rail (Briefing / Inventory / Leads / Sync / Site / Sign out)
-- Mobile: bottom nav + compact sign-out chip
-- Public header/footer hidden on `/admin/*` via `SiteChrome`
+- Urgency score: days on lot + bonuses for recent price drop / PENDING
+- Mission chips: aging bikes, stale leads (≥3 days), $ sum of aging prices
+- Sales Intelligence: template from priority bike + lead counts + real price history only
+- Forbidden: “below competitors,” “high demand,” fake sold comps, fake appointments

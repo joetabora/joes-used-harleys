@@ -1,5 +1,5 @@
 /**
- * JoeOS spacing — dense sales cockpit, sharp edges.
+ * JoeOS spacing + operational thresholds.
  */
 
 export const spacing = {
@@ -18,11 +18,9 @@ export const radius = {
 } as const;
 
 export const layout = {
-  sidebarWidth: "13.5rem",
-  contentMax: "87.5rem",
-  mobileNavHeight: "3.75rem",
-  pagePadX: "1rem",
-  pagePadY: "1.25rem",
+  railWidth: "4.5rem",
+  contentMax: "90rem",
+  mobileNavHeight: "4rem",
 } as const;
 
 /** Days-on-lot thresholds for inventory severity. */

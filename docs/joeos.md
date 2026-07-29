@@ -11,15 +11,19 @@ Customers never see this name.
 
 ## Surfaces
 
-- **Morning Briefing** (`/admin`) — mission checklist, Hot Actions, Inventory Radar, Command Brief ([design](./joeos-design.md))
-- Inventory, Leads, Sync — dense cockpit pages under the same shell
+- **COMMAND** (`/admin`) — Today’s Mission, Hot Queue, Inventory Radar, Sales Intelligence
+- **FLOOR** (`/admin/bikes`) — photo-first machine assets
+- **PIPELINE** (`/admin/leads`) — follow-up queue
+- **FEED** (`/admin/sync`) — inventory sync bay
+
+Design contract: [joeos-design.md](./joeos-design.md)
 
 ## Long-term capabilities
 
 - Inventory sync (v1 — shipped)
-- Morning briefing (v1 — rule-based from live data)
+- Morning / command briefing (v1 — rule-based from live data)
 - CRM / lead follow-up
-- Analytics
+- Analytics event wiring (`BikeAnalytics`)
 - AI sales coach (LLM — not yet)
 - Appointments calendar (needs schema)
 - Harley Match

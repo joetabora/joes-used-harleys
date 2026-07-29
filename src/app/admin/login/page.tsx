@@ -4,7 +4,7 @@ import { createMetadata } from "@/lib/seo";
 import { redirect } from "next/navigation";
 
 export const metadata = createMetadata({
-  title: "JoeOS Login",
+  title: "JoeOS Vault",
   description: "JoeOS sign-in",
   path: "/admin/login",
   noIndex: true,
@@ -19,31 +19,27 @@ export default async function AdminLoginPage() {
   const env = getAdminEnvStatus();
 
   return (
-    <div className="mx-auto max-w-md space-y-6 joeos-fade-in">
-      <div>
-        <p className="joeos-label text-[var(--joeos-orange)]">Joe OS</p>
-        <h1 className="joeos-heading mt-2 text-3xl">Sign in</h1>
-        <p className="joeos-body mt-2">Sales command center — authorized access only.</p>
-      </div>
-
-      {!env.configured ? (
-        <div className="joeos-panel p-4 space-y-2">
-          <p className="joeos-label text-[var(--joeos-warn)]">Env incomplete</p>
-          <ul className="joeos-body list-disc space-y-1 pl-4 text-sm">
-            {env.issues.map((issue) => (
-              <li key={issue}>{issue}</li>
-            ))}
-          </ul>
-          <p className="joeos-body text-sm">
-            Set Production env vars on Vercel, then redeploy.
-          </p>
+    <div className="jos-vault">
+      <div className="jos-vault-panel jos-fade space-y-5">
+        <div>
+          <p className="jos-brand text-sm">Joe OS</p>
+          <h1 className="jos-heading mt-2 text-3xl">Vault lock</h1>
+          <p className="jos-body mt-2 text-sm">Authorized access only.</p>
         </div>
-      ) : (
-        <p className="joeos-data">Credentials configured on this deployment.</p>
-      )}
 
-      <div className="joeos-panel p-5">
-        <p className="joeos-label mb-4">Credentials</p>
+        {!env.configured ? (
+          <div className="space-y-2">
+            <p className="jos-label text-[var(--jos-warn)]">Env incomplete</p>
+            <ul className="jos-body list-disc space-y-1 pl-4 text-sm">
+              {env.issues.map((issue) => (
+                <li key={issue}>{issue}</li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p className="jos-data">Credentials configured on this deployment.</p>
+        )}
+
         <AdminLoginForm />
       </div>
     </div>

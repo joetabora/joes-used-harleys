@@ -1,18 +1,19 @@
 /**
- * JoeOS cockpit color system — dark garage / Harley factory.
- * Scoped at runtime under `.joeos` CSS variables. No blue/purple.
+ * JoeOS design system v2 — motorcycle sales command center.
+ * No blue primary. Harley orange + void / gunmetal.
  */
 
 export const colors = {
-  void: "#090909",
-  pit: "#111111",
-  panel: "#181818",
-  panelRaised: "#222222",
-  steel: "#8A8F98",
-  aluminum: "#C5C9CE",
-  bone: "#F2F2F0",
+  void: "#080808",
+  voidDeep: "#0D0D0D",
+  panel: "#151515",
+  panelRaised: "#202020",
   orange: "#F4511E",
+  orangeHot: "#FF6A00",
   orangeDim: "#B33A14",
+  steel: "#8A8F98",
+  silver: "#C5C9CE",
+  bone: "#F5F5F3",
   danger: "#E53935",
   success: "#4F7A5A",
   warn: "#E6A23C",
@@ -20,22 +21,6 @@ export const colors = {
 
 export type JoeOsColor = keyof typeof colors;
 
-export const colorRoles = {
-  background: "void",
-  shell: "pit",
-  surface: "panel",
-  surfaceRaised: "panelRaised",
-  text: "bone",
-  textMuted: "steel",
-  border: "aluminum",
-  accent: "orange",
-  accentPressed: "orangeDim",
-  hot: "orange",
-  watch: "warn",
-  aging: "danger",
-  ok: "success",
-} as const satisfies Record<string, JoeOsColor>;
-
 export function cssVar(token: JoeOsColor): string {
-  return `var(--joeos-${token})`;
+  return `var(--jos-${token})`;
 }

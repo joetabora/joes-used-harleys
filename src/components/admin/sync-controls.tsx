@@ -34,7 +34,7 @@ export function SyncControls() {
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
-          className="joeos-btn joeos-btn-primary"
+          className="jos-btn jos-btn-primary"
           disabled={pending}
           onClick={() => run(false)}
         >
@@ -42,15 +42,15 @@ export function SyncControls() {
         </button>
         <button
           type="button"
-          className="joeos-btn joeos-btn-ghost"
+          className="jos-btn jos-btn-ghost"
           disabled={pending}
           onClick={() => run(true)}
         >
           Dry Run
         </button>
       </div>
-      {message ? <p className="joeos-data text-[var(--joeos-success)]">{message}</p> : null}
-      {error ? <p className="joeos-data text-[var(--joeos-danger)]">{error}</p> : null}
+      {message ? <p className="jos-data text-[var(--jos-success)]">{message}</p> : null}
+      {error ? <p className="jos-data text-[var(--jos-danger)]">{error}</p> : null}
     </div>
   );
 }

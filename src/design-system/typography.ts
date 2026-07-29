@@ -1,46 +1,33 @@
 /**
- * JoeOS typography — instrument panel + racing data sheet.
+ * JoeOS typography v2 — instrument panel + command headings.
  */
 
 export const typography = {
   brand: {
-    family: "Oswald",
-    className: "joeos-brand",
-    weight: 700,
+    className: "jos-brand",
+    face: "Oswald",
     transform: "uppercase" as const,
-    tracking: "0.08em",
+  },
+  section: {
+    className: "jos-section",
+    face: "Oswald",
+    transform: "uppercase" as const,
   },
   label: {
-    family: "Oswald",
-    className: "joeos-label",
-    weight: 600,
+    className: "jos-label",
+    face: "Oswald",
     transform: "uppercase" as const,
-    tracking: "0.14em",
-    size: "0.7rem",
-  },
-  heading: {
-    family: "Oswald",
-    className: "joeos-heading",
-    weight: 700,
-    transform: "uppercase" as const,
-    tracking: "0.04em",
   },
   kpi: {
-    family: "Oswald",
-    className: "joeos-kpi",
-    weight: 700,
-    tracking: "-0.02em",
+    className: "jos-kpi",
+    face: "Oswald",
   },
   body: {
-    family: "Source Serif 4",
-    className: "joeos-body",
-    weight: 400,
-    size: "0.95rem",
-    leading: 1.55,
+    className: "jos-body",
+    face: "Source Serif 4",
   },
   data: {
-    family: "ui-monospace",
-    className: "joeos-data",
-    size: "0.8rem",
+    className: "jos-data",
+    face: "ui-monospace",
   },
 } as const;

@@ -3,7 +3,6 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateLeadStatus } from "@/actions/admin";
-import { Button } from "@/components/ui/button";
 import type { LeadStatus } from "@/generated/prisma/client";
 
 export function LeadStatusButtons({ id }: { id: string }) {
@@ -19,20 +18,30 @@ export function LeadStatusButtons({ id }: { id: string }) {
 
   return (
     <div className="flex flex-wrap gap-2">
-      <Button size="sm" variant="outline" disabled={pending} onClick={() => setStatus("NEW")}>
+      <button
+        type="button"
+        className="jos-btn jos-btn-ghost"
+        disabled={pending}
+        onClick={() => setStatus("NEW")}
+      >
         New
-      </Button>
-      <Button
-        size="sm"
-        variant="outline"
+      </button>
+      <button
+        type="button"
+        className="jos-btn jos-btn-ghost"
         disabled={pending}
         onClick={() => setStatus("CONTACTED")}
       >
         Contacted
-      </Button>
-      <Button size="sm" variant="outline" disabled={pending} onClick={() => setStatus("CLOSED")}>
+      </button>
+      <button
+        type="button"
+        className="jos-btn jos-btn-ghost"
+        disabled={pending}
+        onClick={() => setStatus("CLOSED")}
+      >
         Closed
-      </Button>
+      </button>
     </div>
   );
 }

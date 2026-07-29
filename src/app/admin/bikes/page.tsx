@@ -1,15 +1,12 @@
-import Link from "next/link";
-import { DeleteBikeButton } from "@/components/bike-editor-form";
-import { PlaceholderNotice } from "@/components/placeholder-notice";
+import { FloorShowroom } from "@/components/joeos/floor-showroom";
 import { requireAdminOrRedirect } from "@/lib/auth";
-import { bikeLabel, formatPrice } from "@/lib/format";
-import { daysBetween, bikeSeverity } from "@/lib/joeos/briefing";
-import { isDatabaseConfigured, prisma } from "@/lib/prisma";
+import { loadFloorInventory } from "@/lib/joeos/load-briefing";
 import { createMetadata } from "@/lib/seo";
+import Link from "next/link";
 
 export const metadata = createMetadata({
-  title: "JoeOS Inventory",
-  description: "Manage inventory",
+  title: "JoeOS Floor",
+  description: "Motorcycle floor showroom",
   path: "/admin/bikes",
   noIndex: true,
 });
@@ -18,101 +15,38 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminBikesPage() {
   await requireAdminOrRedirect();
-
-  if (!isDatabaseConfigured() || !prisma) {
-    return (
-      <div className="joeos-panel p-4">
-        <PlaceholderNotice title="Database not connected">
-          Connect Supabase before managing bikes.
-        </PlaceholderNotice>
-      </div>
-    );
-  }
-
-  const bikes = await prisma.bike.findMany({
-    orderBy: [{ featuredRank: "desc" }, { lastSeenAt: "desc" }],
-  });
-  const now = new Date();
+  const { ready, bikes } = await loadFloorInventory();
 
   return (
-    <div className="joeos-fade-in space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
+    <div className="space-y-4">
+      <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="joeos-label text-[var(--joeos-orange)]">Inventory</p>
-          <h1 className="joeos-heading mt-1 text-3xl">Floor stock</h1>
-          <p className="joeos-body mt-2 max-w-xl text-sm">
-            Synced from the dealership feed. Edit Joe content per bike — never invent listings.
+          <p className="jos-section">Floor</p>
+          <h1 className="jos-heading mt-1 text-3xl">Machine assets</h1>
+          <p className="jos-body mt-2 max-w-xl text-sm">
+            Photo-first showroom of live stock. Synced from the dealership feed — never invented.
           </p>
         </div>
-        <Link href="/admin/sync" className="joeos-btn joeos-btn-ghost">
-          Sync
+        <Link href="/admin/sync" className="jos-btn jos-btn-ghost">
+          Feed
         </Link>
-      </div>
+      </header>
 
-      {bikes.length === 0 ? (
-        <div className="joeos-panel p-4">
-          <PlaceholderNotice title="No bikes yet">
-            Run a Manual Sync from the Sync dashboard.
-          </PlaceholderNotice>
+      {!ready ? (
+        <div className="jos-panel p-4">
+          <p className="jos-label text-[var(--jos-warn)]">Database offline</p>
+          <p className="jos-body mt-2">Connect Supabase before loading the floor.</p>
+        </div>
+      ) : bikes.length === 0 ? (
+        <div className="jos-panel p-4">
+          <p className="jos-heading text-lg">Floor empty</p>
+          <p className="jos-body mt-2">Run a Manual Sync from FEED to mirror inventory.</p>
+          <Link href="/admin/sync" className="jos-btn jos-btn-primary mt-4">
+            Open feed
+          </Link>
         </div>
       ) : (
-        <div className="joeos-panel overflow-x-auto">
-          <table className="joeos-table">
-            <thead>
-              <tr>
-                <th>Bike</th>
-                <th>Age</th>
-                <th>Status</th>
-                <th>Source</th>
-                <th>Price</th>
-                <th className="text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bikes.map((bike) => {
-                const days = daysBetween(bike.firstSeenAt, now);
-                const severity = bikeSeverity(days);
-                return (
-                  <tr key={bike.id} className={bike.hidden ? "opacity-50" : undefined}>
-                    <td>
-                      <div className="font-medium text-[var(--joeos-bone)]">
-                        {bikeLabel(bike)}
-                      </div>
-                      {bike.hidden ? (
-                        <div className="joeos-data">Hidden</div>
-                      ) : null}
-                    </td>
-                    <td>
-                      <span
-                        className={
-                          severity === "hot"
-                            ? "joeos-pill joeos-pill-hot"
-                            : severity === "watch"
-                              ? "joeos-pill joeos-pill-watch"
-                              : "joeos-pill joeos-pill-muted"
-                        }
-                      >
-                        {days}d
-                      </span>
-                    </td>
-                    <td className="joeos-data">{bike.status}</td>
-                    <td className="joeos-data">{bike.source}</td>
-                    <td>{formatPrice(bike.price)}</td>
-                    <td className="space-x-2 text-right">
-                      <Link
-                        href={`/admin/bikes/${bike.id}`}
-                        className="joeos-btn joeos-btn-ghost"
-                      >
-                        Edit
-                      </Link>
-                      <DeleteBikeButton id={bike.id} source={bike.source} />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <FloorShowroom bikes={bikes} />
       )}
     </div>
   );

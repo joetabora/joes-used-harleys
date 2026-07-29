@@ -43,7 +43,7 @@ export function AdminLoginForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="space-y-2">
-        <label htmlFor="email" className="joeos-label">
+        <label htmlFor="email" className="jos-label">
           Email
         </label>
         <input
@@ -52,11 +52,11 @@ export function AdminLoginForm() {
           type="email"
           required
           autoComplete="username"
-          className="w-full border border-[var(--joeos-border)] bg-[var(--joeos-pit)] px-3 py-2.5 text-[var(--joeos-bone)] outline-none focus:border-[var(--joeos-orange)]"
+          className="jos-field"
         />
       </div>
       <div className="space-y-2">
-        <label htmlFor="password" className="joeos-label">
+        <label htmlFor="password" className="jos-label">
           Password
         </label>
         <input
@@ -65,13 +65,13 @@ export function AdminLoginForm() {
           type="password"
           required
           autoComplete="current-password"
-          className="w-full border border-[var(--joeos-border)] bg-[var(--joeos-pit)] px-3 py-2.5 text-[var(--joeos-bone)] outline-none focus:border-[var(--joeos-orange)]"
+          className="jos-field"
         />
       </div>
-      <button type="submit" disabled={pending} className="joeos-btn joeos-btn-primary w-full">
-        {pending ? "Signing in…" : "Sign in"}
+      <button type="submit" disabled={pending} className="jos-btn jos-btn-primary w-full">
+        {pending ? "Signing in…" : "Unlock"}
       </button>
-      {error ? <p className="text-sm text-[var(--joeos-danger)]">{error}</p> : null}
+      {error ? <p className="text-sm text-[var(--jos-danger)]">{error}</p> : null}
     </form>
   );
 }

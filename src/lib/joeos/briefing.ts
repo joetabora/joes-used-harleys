@@ -20,6 +20,28 @@ export type BriefingBike = {
   price: number | null;
   firstSeenAt: Date;
   category: string | null;
+  mileage?: number | null;
+  status?: string;
+  photoUrl?: string | null;
+  hasRecentPriceDrop?: boolean;
+  previousPrice?: number | null;
+  priceChangedAt?: Date | null;
+};
+
+export type FloorBike = BriefingBike & {
+  mileage: number | null;
+  status: string;
+  photoUrl: string | null;
+  daysOnLot: number;
+  severity: Severity;
+  urgency: number;
+};
+
+export type SalesIntelligence = {
+  headline: string;
+  reasons: string[];
+  href: string | null;
+  bikeLabel: string | null;
 };
 
 export type BriefingLead = {
@@ -89,6 +111,7 @@ export type MorningBriefing = {
   liveBikeCount: number;
   staleLeadCount: number;
   agingBikeCount: number;
+  salesIntelligence: SalesIntelligence;
 };
 
 export function daysBetween(from: Date, to: Date): number {
@@ -100,6 +123,99 @@ export function bikeSeverity(daysOnLot: number): Severity {
   if (daysOnLot >= agingThresholds.hotDays) return "hot";
   if (daysOnLot >= agingThresholds.watchDays) return "watch";
   return "ok";
+}
+
+/** Honest 0–100 score from days on lot + real signals only. */
+export function urgencyScore(input: {
+  daysOnLot: number;
+  hasRecentPriceDrop?: boolean;
+  status?: string;
+}): number {
+  let score = input.daysOnLot;
+  if (input.hasRecentPriceDrop) score += 10;
+  if (input.status === "PENDING") score += 5;
+  return Math.min(100, Math.max(0, score));
+}
+
+export function severityLabel(severity: Severity): string {
+  if (severity === "hot") return "HOT";
+  if (severity === "watch") return "WATCH";
+  return "CLEAR";
+}
+
+export function toFloorBike(bike: BriefingBike, now: Date): FloorBike {
+  const daysOnLot = daysBetween(bike.firstSeenAt, now);
+  const severity = bikeSeverity(daysOnLot);
+  return {
+    ...bike,
+    mileage: bike.mileage ?? null,
+    status: bike.status ?? "AVAILABLE",
+    photoUrl: bike.photoUrl ?? null,
+    daysOnLot,
+    severity,
+    urgency: urgencyScore({
+      daysOnLot,
+      hasRecentPriceDrop: bike.hasRecentPriceDrop,
+      status: bike.status,
+    }),
+  };
+}
+
+export function buildSalesIntelligence(input: {
+  priorityBike: MorningBriefing["priorityBike"];
+  staleLeadCount: number;
+  agingBikeCount: number;
+  priceDropNote?: string | null;
+}): SalesIntelligence {
+  const reasons: string[] = [];
+  if (input.priorityBike) {
+    reasons.push(
+      `${input.priorityBike.daysOnLot} days on lot — review pricing and placement.`,
+    );
+  }
+  if (input.priceDropNote) {
+    reasons.push(input.priceDropNote);
+  }
+  if (input.staleLeadCount > 0) {
+    reasons.push(
+      `${input.staleLeadCount} customer${input.staleLeadCount === 1 ? "" : "s"} waiting ≥${leadStaleDays} days without contact.`,
+    );
+  }
+  if (input.agingBikeCount > 1 && input.priorityBike) {
+    reasons.push(
+      `${input.agingBikeCount} bikes total past watch threshold on the floor.`,
+    );
+  }
+
+  if (!input.priorityBike && input.staleLeadCount === 0) {
+    return {
+      headline: "No urgent queue — engine clear",
+      reasons: [
+        "No aging inventory or stale leads right now. Keep the feed healthy and stay ready for the next inquiry.",
+      ],
+      href: "/admin/bikes",
+      bikeLabel: null,
+    };
+  }
+
+  if (input.priorityBike) {
+    return {
+      headline: `Highest attention: ${input.priorityBike.label}`,
+      reasons:
+        reasons.length > 0
+          ? reasons
+          : [`${input.priorityBike.reason} — review pricing.`],
+      href: input.priorityBike.href,
+      bikeLabel: input.priorityBike.label,
+    };
+  }
+
+  return {
+    headline: "Follow-up queue needs attention",
+    reasons,
+    href: "/admin/leads",
+    bikeLabel: null,
+  };
 }
 
 export function classifyFamily(bike: {
@@ -316,7 +432,7 @@ export function assembleBriefing(input: {
   }).length;
 
   const priority =
-    aging.sort((a, b) => {
+    [...aging].sort((a, b) => {
       if (b.daysOnLot !== a.daysOnLot) return b.daysOnLot - a.daysOnLot;
       return (b.bike.price ?? 0) - (a.bike.price ?? 0);
     })[0] ?? null;
@@ -338,35 +454,44 @@ export function assembleBriefing(input: {
     now,
   });
 
+  // Today's Mission — 3 chips max (bikes / leads / $). No appointments.
   const missions: MorningBriefing["missions"] = [];
   if (agingBikeCount > 0) {
     missions.push({
-      label: "Move aging inventory",
+      label: "Bikes need attention",
       count: agingBikeCount,
-      detail: `${agingBikeCount} bike${agingBikeCount === 1 ? "" : "s"} need attention`,
-    });
-  }
-  if (potentialRevenue > 0) {
-    missions.push({
-      label: "Revenue at risk",
-      count: potentialRevenue,
-      detail: "Aging inventory dollar value",
+      detail: `${agingBikeCount} motorcycle${agingBikeCount === 1 ? "" : "s"} past watch`,
     });
   }
   if (staleLeadCount > 0) {
     missions.push({
-      label: "Follow up",
+      label: "Customers require follow up",
       count: staleLeadCount,
-      detail: `${staleLeadCount} customer${staleLeadCount === 1 ? "" : "s"} waiting`,
+      detail: `${staleLeadCount} waiting in pipeline`,
     });
   }
-  if (priorityBike) {
+  if (potentialRevenue > 0) {
     missions.push({
-      label: "Priority bike",
-      count: 1,
-      detail: `${priorityBike.label} — ${priorityBike.reason}`,
+      label: "Potential pipeline",
+      count: potentialRevenue,
+      detail: "Aging inventory dollar value",
     });
   }
+
+  let priceDropNote: string | null = null;
+  if (priority?.bike.hasRecentPriceDrop && priority.bike.previousPrice != null) {
+    const when = priority.bike.priceChangedAt
+      ? priority.bike.priceChangedAt.toLocaleDateString("en-US")
+      : "recently";
+    priceDropNote = `Price reduced ${when} from $${priority.bike.previousPrice.toLocaleString("en-US")} to $${(priority.bike.price ?? 0).toLocaleString("en-US")}.`;
+  }
+
+  const salesIntelligence = buildSalesIntelligence({
+    priorityBike,
+    staleLeadCount,
+    agingBikeCount,
+    priceDropNote,
+  });
 
   return {
     generatedAt: now,
@@ -391,5 +516,6 @@ export function assembleBriefing(input: {
     liveBikeCount: input.bikes.length,
     staleLeadCount,
     agingBikeCount,
+    salesIntelligence,
   };
 }
