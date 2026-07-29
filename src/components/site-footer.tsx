@@ -27,11 +27,6 @@ export function SiteFooter() {
                 How it works
               </Link>
             </li>
-            <li>
-              <Link href="/assistant" className="transition-colors hover:text-lamp">
-                Buying assistant
-              </Link>
-            </li>
           </ul>
         </div>
         <div className="text-sm leading-[1.65] text-ink/65">

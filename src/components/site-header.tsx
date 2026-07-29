@@ -15,7 +15,6 @@ const links = [
   { href: "/guides", label: "Guides" },
   { href: "/how-it-works", label: "How it works" },
   { href: "/about", label: "About Joe" },
-  { href: "/assistant", label: "Ask AI" },
   { href: "/contact", label: "Contact" },
 ];
 

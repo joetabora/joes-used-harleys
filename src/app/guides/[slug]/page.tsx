@@ -66,10 +66,6 @@ export default async function GuidePage({ params }: Props) {
         Ready to talk bikes?{" "}
         <Link href="/contact" className="font-medium underline">
           Contact Joe
-        </Link>{" "}
-        or{" "}
-        <Link href="/assistant" className="font-medium underline">
-          ask the buying assistant
         </Link>
         .
       </p>
