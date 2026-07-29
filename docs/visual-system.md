@@ -3,12 +3,14 @@
 Source of truth for look and feel on joesusedharleys.com.  
 Feeling: **Dark outlaw biker vibe meets Harley dealership**—fun, high-contrast, authentic. Not SaaS.
 
+Palette is **aligned with JoeOS** ([`docs/joeos-design.md`](./joeos-design.md)): void / gunmetal / Harley orange. Public site stays editorial storytelling; JoeOS stays the sales cockpit.
+
 Inspired by Crooked Clubhouse and Highway Heathens: near-black canvas, hot accent, condensed display type, grit.
 
 ## Do / don’t
 
-**Do:** asphalt black, bone text, ember accent, oxblood secondary, chrome hairlines, poster headlines, grain texture, badge moments, asymmetric editorial layouts.  
-**Don’t:** light concrete SaaS layouts, glass cards, feature grids, dual equal hero CTAs, centered CTA bands, blog/resource feeds, empty-state cards, fake photos/testimonials, invented Joe voice.
+**Do:** asphalt void black, bone text, Harley orange accent, chrome hairlines, poster headlines, grain texture, badge moments, asymmetric editorial layouts, sharp 0–2px corners.  
+**Don’t:** light concrete SaaS layouts, glass cards, feature grids, dual equal hero CTAs, centered CTA bands, blog/resource feeds, empty-state cards, fake photos/testimonials, invented Joe voice, blue/purple gradients.
 
 ## Homepage narrative (01–08)
 
@@ -38,20 +40,21 @@ Inspired by Crooked Clubhouse and Highway Heathens: near-black canvas, hot accen
 
 ## Color tokens (dark by default)
 
-Token **names** are stable; values are dark-first so the whole site flips together.
+Token **names** are stable; values match JoeOS hex ([`src/design-system/colors.ts`](../src/design-system/colors.ts)).
 
-| Token | Role |
-|-------|------|
-| `--asphalt` | Deepest black — hero, header, footer |
-| `--concrete` | Page background (dark charcoal) |
-| `--bay` | Lifted alternate panel |
-| `--ink` | Bone / off-white body + headings |
-| `--steel` | Muted labels / secondary text |
-| `--chrome` | Cool light-grey for outlines |
-| `--leather` | Oxblood secondary accent (quotes / rare links) |
-| `--lamp` | Hot ember — primary CTA, brand accent, hovers |
+| Token | Value | Role |
+|-------|-------|------|
+| `--asphalt` | `#090909` | Void — hero, header, footer |
+| `--concrete` | `#111111` | Page background (pit) |
+| `--bay` | `#181818` | Panel surface |
+| `--ink` | `#F2F2F0` | Bone / primary text |
+| `--steel` | `#8A8F98` | Muted labels |
+| `--chrome` | `#C5C9CE` | Aluminum outlines |
+| `--leather` | `#E53935` | Danger / rare accent |
+| `--lamp` | `#F4511E` | Harley orange — CTA, brand accent, hovers |
+| `--lamp-foreground` | `#090909` | Text on orange CTAs |
 
-Semantic shadcn tokens (`--background`, `--foreground`, `--card`, `--border`, `--primary`, etc.) map onto the dark set. Borders are low-opacity light hairlines.
+Semantic shadcn tokens (`--background`, `--foreground`, `--card`, `--border`, `--primary`, etc.) map onto this set. Radius is 0–2px.
 
 ## Editorial rhythm
 
@@ -75,7 +78,7 @@ Break the repeated label → headline → paragraph → CTA template with:
 
 ## Utilities
 
-`.font-poster`, `.joe-headline-xl`, `.joe-index`, `.joe-hairline`, `.joe-badge`, `.joe-grain`, `.joe-rule`, `.joe-frame`, `.joe-clipboard`, `.joe-measure`, `.joe-pull-quote`, `.joe-btn-primary`, `.joe-btn-secondary`, `.joe-btn-secondary-dark`, `.joe-btn-asphalt`, `.joe-hero-atmosphere`, `.joe-hero-grain`, `.joe-asphalt-bay`
+`.font-poster`, `.joe-headline-xl`, `.joe-index`, `.joe-hairline`, `.joe-badge`, `.joe-grain`, `.joe-rule`, `.joe-frame`, `.joe-clipboard`, `.joe-measure`, `.joe-pull-quote`, `.joe-panel`, `.joe-btn-primary`, `.joe-btn-secondary`, `.joe-btn-secondary-dark`, `.joe-btn-asphalt`, `.joe-hero-atmosphere`, `.joe-hero-grain`, `.joe-asphalt-bay`
 
 ## Imagery
 
@@ -83,4 +86,4 @@ Empty labeled frames until Joe supplies assets. No stock Harleys. Wire story cop
 
 ## Motion
 
-Slow hero fade-up; ambient ember drift in hero atmosphere; 1px CTA lift. Respect `prefers-reduced-motion`.
+Slow hero fade-up; ambient orange drift in hero atmosphere; 1px CTA lift. Respect `prefers-reduced-motion`.

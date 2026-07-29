@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/lead-form";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 import { hasRecentPriceDrop, isNewArrival } from "@/lib/inventory-public";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
@@ -86,25 +84,31 @@ export default async function BikeDetailPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-12">
-      <div className="space-y-2">
-        <Link href="/inventory" className="text-sm text-muted-foreground underline">
+      <div className="space-y-3">
+        <Link
+          href="/inventory"
+          className="font-label text-steel transition-colors hover:text-lamp"
+        >
           ← Back to inventory
         </Link>
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-3xl font-semibold tracking-tight">{displayTitle}</h1>
-          <Badge variant="secondary">{bike.status.toLowerCase()}</Badge>
-          {newArrival ? <Badge>Just arrived</Badge> : null}
-          {priceDrop ? <Badge>Price reduced</Badge> : null}
+          <h1 className="font-display text-3xl tracking-[0.04em] md:text-4xl">{displayTitle}</h1>
+          <span className="joe-badge">{bike.status.toLowerCase()}</span>
+          {newArrival ? <span className="joe-badge">Just arrived</span> : null}
+          {priceDrop ? <span className="joe-badge">Price reduced</span> : null}
         </div>
-        <p className="text-muted-foreground">
-          {formatMiles(bike.mileage)} · {formatPrice(bike.price)}
+        <p className="font-display text-xl tracking-wide text-lamp">
+          {formatPrice(bike.price)}
+        </p>
+        <p className="text-steel">
+          {formatMiles(bike.mileage)}
           {bike.color ? ` · ${bike.color}` : ""}
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         {photos.length === 0 ? (
-          <div className="flex aspect-[4/3] items-center justify-center rounded-xl bg-muted text-sm text-muted-foreground">
+          <div className="joe-panel flex aspect-[4/3] items-center justify-center font-label text-steel">
             No photos yet
           </div>
         ) : (
@@ -114,56 +118,61 @@ export default async function BikeDetailPage({ params }: Props) {
               key={url}
               src={url}
               alt={label}
-              className="aspect-[4/3] w-full rounded-xl object-cover"
+              className="aspect-[4/3] w-full border border-chrome/20 object-cover"
             />
           ))
         )}
       </div>
 
       {bike.description ? (
-        <p className="whitespace-pre-wrap text-muted-foreground">{bike.description}</p>
+        <p className="whitespace-pre-wrap text-ink/75">{bike.description}</p>
       ) : null}
 
       {insights.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>From Joe</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm">
+        <div className="joe-panel p-5">
+          <p className="font-label mb-4 text-lamp">From Joe</p>
+          <div className="space-y-4 text-sm">
             {insights.map((row) => (
               <div key={row.label}>
-                <p className="font-medium">{row.label}</p>
-                <p className="mt-1 whitespace-pre-wrap text-muted-foreground">{row.value}</p>
+                <p className="font-label text-steel">{row.label}</p>
+                <p className="mt-1 whitespace-pre-wrap text-ink/75">{row.value}</p>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ) : null}
 
       {bike.walkaroundVideoUrl ? (
         <p className="text-sm">
-          <a className="underline" href={bike.walkaroundVideoUrl} target="_blank" rel="noreferrer">
+          <a
+            className="font-label text-lamp underline-offset-4 hover:underline"
+            href={bike.walkaroundVideoUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             Watch Joe&apos;s walkaround
           </a>
         </p>
       ) : null}
 
       {bike.inventoryUrl ? (
-        <p className="text-sm text-muted-foreground">
-          <a className="underline" href={bike.inventoryUrl} target="_blank" rel="noreferrer">
+        <p className="text-sm text-steel">
+          <a
+            className="underline-offset-4 hover:text-lamp hover:underline"
+            href={bike.inventoryUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             View on dealership site
           </a>
         </p>
       ) : null}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Ask about this bike</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <LeadForm source={`/inventory/${bike.id}`} />
-        </CardContent>
-      </Card>
+      <div className="joe-panel p-5">
+        <p className="font-label mb-1 text-lamp">Inquire</p>
+        <h2 className="font-display mb-4 text-xl tracking-[0.04em]">Ask about this bike</h2>
+        <LeadForm source={`/inventory/${bike.id}`} />
+      </div>
     </div>
   );
 }

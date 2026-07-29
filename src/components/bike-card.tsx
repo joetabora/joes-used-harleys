@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 
 export type BikeCardData = {
@@ -17,32 +15,37 @@ export type BikeCardData = {
 export function BikeCard({ bike }: { bike: BikeCardData }) {
   const label = bikeLabel(bike);
   return (
-    <Card className="overflow-hidden">
-      <div className="aspect-[4/3] bg-muted">
+    <Link
+      href={`/inventory/${bike.id}`}
+      className="joe-panel group flex flex-col overflow-hidden transition-colors hover:border-lamp/40"
+    >
+      <div className="aspect-[4/3] bg-asphalt">
         {bike.photoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={bike.photoUrl} alt={label} className="h-full w-full object-cover" />
+          <img
+            src={bike.photoUrl}
+            alt={label}
+            className="h-full w-full object-cover transition-opacity group-hover:opacity-95"
+          />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+          <div className="flex h-full items-center justify-center font-label text-steel">
             No photo yet
           </div>
         )}
       </div>
-      <CardHeader className="space-y-2">
+      <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex items-center justify-between gap-2">
-          <Badge variant="secondary">{bike.status.toLowerCase()}</Badge>
-          <span className="text-sm text-muted-foreground">{bike.year}</span>
+          <span className="joe-badge">{bike.status.toLowerCase()}</span>
+          <span className="font-label text-steel">{bike.year}</span>
         </div>
-        <CardTitle className="text-lg">
-          <Link href={`/inventory/${bike.id}`} className="hover:underline">
-            {label}
-          </Link>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="text-sm text-muted-foreground">
-        {formatMiles(bike.mileage)}
-      </CardContent>
-      <CardFooter className="font-semibold">{formatPrice(bike.price)}</CardFooter>
-    </Card>
+        <h2 className="font-display text-lg leading-tight tracking-[0.04em] text-ink group-hover:text-lamp">
+          {label}
+        </h2>
+        <p className="text-sm text-steel">{formatMiles(bike.mileage)}</p>
+        <p className="mt-auto font-display text-xl tracking-wide text-lamp">
+          {formatPrice(bike.price)}
+        </p>
+      </div>
+    </Link>
   );
 }

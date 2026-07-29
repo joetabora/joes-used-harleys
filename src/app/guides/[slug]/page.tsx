@@ -47,24 +47,27 @@ export default async function GuidePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="space-y-3">
-        <Link href="/guides" className="text-sm text-muted-foreground underline">
+        <Link
+          href="/guides"
+          className="font-label text-steel transition-colors hover:text-lamp"
+        >
           ← All guides
         </Link>
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">{guide.category}</p>
-        <h1 className="text-3xl font-semibold tracking-tight">{guide.title}</h1>
-        <p className="text-muted-foreground">{guide.excerpt}</p>
+        <p className="font-label text-lamp">{guide.category}</p>
+        <h1 className="font-display text-3xl tracking-[0.04em] md:text-4xl">{guide.title}</h1>
+        <p className="text-steel">{guide.excerpt}</p>
       </div>
       <div className="space-y-8">
         {guide.sections.map((section) => (
           <section key={section.heading} className="space-y-2">
-            <h2 className="text-xl font-semibold">{section.heading}</h2>
-            <p className="leading-relaxed text-muted-foreground">{section.body}</p>
+            <h2 className="font-display text-xl tracking-[0.04em]">{section.heading}</h2>
+            <p className="leading-relaxed text-ink/75">{section.body}</p>
           </section>
         ))}
       </div>
-      <p className="rounded-lg border bg-muted/40 p-4 text-sm">
+      <p className="joe-panel p-4 text-sm text-ink/80">
         Ready to talk bikes?{" "}
-        <Link href="/contact" className="font-medium underline">
+        <Link href="/contact" className="font-label text-lamp underline-offset-4 hover:underline">
           Contact Joe
         </Link>
         .

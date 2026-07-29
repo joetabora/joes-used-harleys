@@ -20,21 +20,21 @@ const links = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-asphalt/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-chrome/20 bg-asphalt/95 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
         <Link
           href="/"
-          className="font-display text-lg leading-none text-ink transition-colors hover:text-lamp"
+          className="font-display text-lg leading-none tracking-[0.08em] text-lamp transition-colors hover:text-ink"
         >
           {siteConfig.name}
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-label text-steel transition-colors hover:text-lamp"
+              className="font-label text-steel transition-colors hover:text-ink"
             >
               {link.label}
             </Link>
@@ -58,29 +58,44 @@ export function SiteHeader() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="md:hidden"
+                  className="rounded-none border-chrome/25 bg-transparent md:hidden"
                   aria-label="Open menu"
                 />
               }
             >
               <Menu className="size-4" />
             </SheetTrigger>
-            <SheetContent side="right" className="bg-concrete px-4">
+            <SheetContent
+              side="right"
+              className="rounded-none border-l border-chrome/20 bg-concrete px-4"
+            >
               <SheetHeader>
-                <SheetTitle className="font-display text-left text-ink">
+                <SheetTitle className="font-display text-left tracking-[0.08em] text-lamp">
                   {siteConfig.name}
                 </SheetTitle>
               </SheetHeader>
-              <div className="mt-6 flex flex-col gap-4">
+              <div className="mt-6 flex flex-col gap-1">
                 {links.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="font-display text-xl text-ink transition-colors hover:text-lamp"
+                    className="border-l-2 border-transparent px-3 py-3 font-label text-steel transition-colors hover:border-lamp hover:bg-bay hover:text-ink"
                   >
                     {link.label}
                   </Link>
                 ))}
+                {hasContactPhone() ? (
+                  <a
+                    href={siteConfig.smsLink}
+                    className="joe-btn-primary mt-4 w-full"
+                  >
+                    Text Joe
+                  </a>
+                ) : (
+                  <Link href="/contact" className="joe-btn-primary mt-4 w-full">
+                    Contact
+                  </Link>
+                )}
               </div>
             </SheetContent>
           </Sheet>

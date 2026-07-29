@@ -40,7 +40,7 @@ export function HomeFromTheBench() {
           </Link>
         </article>
 
-        <aside className="md:col-span-5 md:border-l md:border-white/12 md:pl-10 lg:pl-12">
+        <aside className="md:col-span-5 md:border-l md:border-chrome/20 md:pl-10 lg:pl-12">
           <p className="font-label text-steel">Contents</p>
           <ol className="mt-8 space-y-10">
             {rest.map((guide, index) => (

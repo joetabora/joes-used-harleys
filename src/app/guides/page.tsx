@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { guides } from "@/lib/guides";
 import { createMetadata } from "@/lib/seo";
 
@@ -14,26 +13,25 @@ export default function GuidesIndexPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-12">
       <div className="space-y-2">
-        <h1 className="text-3xl font-semibold">Guides</h1>
-        <p className="text-muted-foreground">
+        <p className="font-label text-lamp">Education</p>
+        <h1 className="font-display text-3xl tracking-[0.06em] md:text-4xl">Guides</h1>
+        <p className="text-steel">
           Educational content only. No fake inventory, prices, or dealership claims.
         </p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 md:grid-cols-2">
         {guides.map((guide) => (
-          <Card key={guide.slug}>
-            <CardHeader>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                {guide.category}
-              </p>
-              <CardTitle className="text-xl">
-                <Link href={`/guides/${guide.slug}`} className="hover:underline">
-                  {guide.title}
-                </Link>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">{guide.excerpt}</CardContent>
-          </Card>
+          <Link
+            key={guide.slug}
+            href={`/guides/${guide.slug}`}
+            className="joe-panel block p-5 transition-colors hover:border-lamp/40"
+          >
+            <p className="font-label text-steel">{guide.category}</p>
+            <h2 className="mt-2 font-display text-xl tracking-[0.04em] text-ink hover:text-lamp">
+              {guide.title}
+            </h2>
+            <p className="mt-3 text-sm text-ink/70">{guide.excerpt}</p>
+          </Link>
         ))}
       </div>
     </div>

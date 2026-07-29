@@ -1,6 +1,5 @@
 import { LeadForm } from "@/components/lead-form";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createMetadata } from "@/lib/seo";
 import { hasContactPhone, siteConfig } from "@/lib/site";
 
@@ -14,15 +13,16 @@ export default function ContactPage() {
   return (
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-12 md:grid-cols-2">
       <div className="space-y-4">
-        <h1 className="text-3xl font-semibold tracking-tight">Contact Joe</h1>
-        <p className="text-muted-foreground">
+        <p className="font-label text-lamp">Reach out</p>
+        <h1 className="font-display text-3xl tracking-[0.06em] md:text-4xl">Contact Joe</h1>
+        <p className="text-steel">
           Prefer text? Use the number below when it&apos;s configured. Prefer a form? Send it here
           and it lands in Joe&apos;s lead inbox when the database is connected.
         </p>
         {hasContactPhone() ? (
-          <p>
+          <p className="font-label text-ink">
             Text / call:{" "}
-            <a className="font-medium underline" href={siteConfig.smsLink}>
+            <a className="text-lamp underline-offset-4 hover:underline" href={siteConfig.smsLink}>
               {siteConfig.phone}
             </a>
           </p>
@@ -34,14 +34,10 @@ export default function ContactPage() {
         )}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Send a message</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <LeadForm source="/contact" />
-        </CardContent>
-      </Card>
+      <div className="joe-panel p-5">
+        <p className="font-label mb-4 text-lamp">Send a message</p>
+        <LeadForm source="/contact" />
+      </div>
     </div>
   );
 }

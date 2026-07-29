@@ -1,6 +1,5 @@
 import { PlaceholderNotice } from "@/components/placeholder-notice";
 import { LeadForm } from "@/components/lead-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createMetadata } from "@/lib/seo";
 import { hasContactEmail, hasContactPhone, siteConfig } from "@/lib/site";
 
@@ -15,8 +14,9 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
       <div className="space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tight">About Joe</h1>
-        <p className="text-muted-foreground">
+        <p className="font-label text-lamp">The person behind the site</p>
+        <h1 className="font-display text-3xl tracking-[0.06em] md:text-4xl">About Joe</h1>
+        <p className="text-steel">
           This site is a personal sales engine for a Harley-Davidson salesperson — not a corporate
           dealership brochure. The advantage is human relationship selling plus modern tools.
         </p>
@@ -27,50 +27,43 @@ export default function AboutPage() {
         will be added only with Joe&apos;s real content. Do not invent them.
       </PlaceholderNotice>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>What Joe brings</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm text-muted-foreground">
-          <p>Marketing and events experience</p>
-          <p>Social media and web development skills</p>
-          <p>Dealership operations knowledge</p>
-          <p>Comfort with AI tools — used carefully, never to invent inventory or reviews</p>
-        </CardContent>
-      </Card>
+      <div className="joe-panel p-5">
+        <p className="font-label mb-4 text-lamp">What Joe brings</p>
+        <ul className="space-y-2 text-sm text-ink/75">
+          <li>Marketing and events experience</li>
+          <li>Social media and web development skills</li>
+          <li>Dealership operations knowledge</li>
+          <li>Comfort with AI tools — used carefully, never to invent inventory or reviews</li>
+        </ul>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Reach Joe</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-sm">
-          {hasContactPhone() ? (
-            <p>
-              Phone / text:{" "}
-              <a className="underline" href={siteConfig.smsLink}>
-                {siteConfig.phone}
-              </a>
-            </p>
-          ) : (
-            <p className="text-muted-foreground">
-              Phone: PLACEHOLDER — set NEXT_PUBLIC_JOE_PHONE
-            </p>
-          )}
-          {hasContactEmail() ? (
-            <p>
-              Email:{" "}
-              <a className="underline" href={`mailto:${siteConfig.email}`}>
-                {siteConfig.email}
-              </a>
-            </p>
-          ) : (
-            <p className="text-muted-foreground">
-              Email: PLACEHOLDER — set NEXT_PUBLIC_JOE_EMAIL
-            </p>
-          )}
-          <LeadForm source="/about" />
-        </CardContent>
-      </Card>
+      <div className="joe-panel p-5 space-y-4">
+        <p className="font-label text-lamp">Reach Joe</p>
+        {hasContactPhone() ? (
+          <p className="text-sm">
+            Phone / text:{" "}
+            <a className="text-lamp underline-offset-4 hover:underline" href={siteConfig.smsLink}>
+              {siteConfig.phone}
+            </a>
+          </p>
+        ) : (
+          <p className="text-sm text-steel">Phone: PLACEHOLDER — set NEXT_PUBLIC_JOE_PHONE</p>
+        )}
+        {hasContactEmail() ? (
+          <p className="text-sm">
+            Email:{" "}
+            <a
+              className="text-lamp underline-offset-4 hover:underline"
+              href={`mailto:${siteConfig.email}`}
+            >
+              {siteConfig.email}
+            </a>
+          </p>
+        ) : (
+          <p className="text-sm text-steel">Email: PLACEHOLDER — set NEXT_PUBLIC_JOE_EMAIL</p>
+        )}
+        <LeadForm source="/about" />
+      </div>
     </div>
   );
 }

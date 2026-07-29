@@ -1,8 +1,5 @@
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createMetadata } from "@/lib/seo";
-import { cn } from "@/lib/utils";
 
 export const metadata = createMetadata({
   title: "How buying from Joe works",
@@ -38,29 +35,30 @@ export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
       <div className="space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tight">How buying from Joe works</h1>
-        <p className="text-muted-foreground">
+        <p className="font-label text-lamp">Process</p>
+        <h1 className="font-display text-3xl tracking-[0.06em] md:text-4xl">
+          How buying from Joe works
+        </h1>
+        <p className="text-steel">
           A transparent process designed for trust. Exact dealership policies and fees are never
           invented here — Joe will confirm those with you directly.
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {steps.map((step) => (
-          <Card key={step.title}>
-            <CardHeader>
-              <CardTitle className="text-lg">{step.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">{step.body}</CardContent>
-          </Card>
+          <div key={step.title} className="joe-panel p-5">
+            <h2 className="font-display text-lg tracking-[0.04em]">{step.title}</h2>
+            <p className="mt-2 text-sm text-ink/70">{step.body}</p>
+          </div>
         ))}
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Link href="/contact" className={cn(buttonVariants())}>
+        <Link href="/contact" className="joe-btn-primary">
           Start a conversation
         </Link>
-        <Link href="/inventory" className={cn(buttonVariants({ variant: "outline" }))}>
+        <Link href="/inventory" className="joe-btn-secondary">
           See inventory
         </Link>
       </div>

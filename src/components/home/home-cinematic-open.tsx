@@ -34,7 +34,7 @@ export function HomeCinematicOpen() {
         <MediaFrame
           variant="hero"
           label="[PLACEHOLDER — garage / road atmosphere when Joe provides a photo]"
-          className="border-white/15 bg-asphalt/50"
+          className="border-chrome/25 bg-asphalt/50"
         />
       </div>
     </section>
