@@ -1,6 +1,6 @@
 import type { SeoLink, SeoPageDocument } from "@/lib/seo/types";
 import { getPublishedGuides } from "@/lib/content/guides";
-import { getModel, listModels } from "@/lib/content/taxonomy";
+import { getComparison, getModel, listModels } from "@/lib/content/taxonomy";
 
 export function relatedGuidesFor(opts: {
   modelSlugs?: string[];
@@ -41,6 +41,42 @@ export function relatedModelsFor(slug: string, limit = 4): SeoLink[] {
     }));
 }
 
+export function comparisonLinksFor(comparisonIds: string[]): SeoLink[] {
+  return comparisonIds
+    .map((id) => getComparison(id))
+    .filter(Boolean)
+    .map((c) => ({
+      href: `/compare/${c!.slug}`,
+      title: c!.title,
+      excerpt: c!.excerpt,
+    }));
+}
+
+/** Prefer topic hubs and evergreen resources for model authority pages. */
+export function hubTopicalLinks(topics: string[]): SeoLink[] {
+  const topicHubs: SeoLink[] = topics.slice(0, 4).map((t) => ({
+    href: `/guides/${t}`,
+    title: `${t.replace(/-/g, " ")} guides`,
+  }));
+  const evergreen: SeoLink[] = [
+    { href: "/guides/buying", title: "Buying guides" },
+    { href: "/guides/maintenance", title: "Maintenance guides" },
+    { href: "/guides/financing", title: "Financing resources" },
+    { href: "/guides/insurance", title: "Insurance guides" },
+    { href: "/compare", title: "Harley comparisons" },
+    { href: "/routes", title: "Southeast Wisconsin routes" },
+  ];
+  const seen = new Set<string>();
+  const out: SeoLink[] = [];
+  for (const link of [...topicHubs, ...evergreen]) {
+    if (seen.has(link.href)) continue;
+    seen.add(link.href);
+    out.push(link);
+    if (out.length >= 6) break;
+  }
+  return out;
+}
+
 export function ensureMinLinks(doc: SeoPageDocument, extras: SeoLink[]): SeoPageDocument {
   const seen = new Set(doc.relatedLinks.map((l) => l.href));
   const merged = [...doc.relatedLinks];
@@ -48,7 +84,7 @@ export function ensureMinLinks(doc: SeoPageDocument, extras: SeoLink[]): SeoPage
     if (seen.has(link.href)) continue;
     seen.add(link.href);
     merged.push(link);
-    if (merged.length >= 8) break;
+    if (merged.length >= 12) break;
   }
   const hubs: SeoLink[] = [
     { href: "/guides", title: "Harley buying guides" },

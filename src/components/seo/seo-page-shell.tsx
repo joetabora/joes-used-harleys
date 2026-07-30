@@ -55,7 +55,11 @@ export function SeoPageShell({
 
       <div className="space-y-8">
         {doc.sections.map((s) => (
-          <section key={s.heading} className="space-y-3">
+          <section
+            key={s.id ?? s.heading}
+            id={s.id}
+            className="space-y-3 scroll-mt-24"
+          >
             <h2 className="font-display text-2xl tracking-[0.04em]">{s.heading}</h2>
             <p className="leading-relaxed text-ink/85 whitespace-pre-wrap">{s.body}</p>
           </section>

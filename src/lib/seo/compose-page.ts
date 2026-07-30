@@ -14,16 +14,15 @@ export function composeSeoDocument(
     breadcrumbs: partial.breadcrumbs ?? [],
   };
 
+  const modelSlug =
+    partial.modelSlug ?? partial.relatedInventoryHint?.modelSlug;
+
   doc = ensureMinLinks(doc, [
     ...relatedGuidesFor({
-      modelSlugs: partial.relatedInventoryHint?.model
-        ? [partial.relatedInventoryHint.model]
-        : undefined,
+      modelSlugs: modelSlug ? [modelSlug] : undefined,
       limit: 4,
     }),
-    ...(partial.relatedInventoryHint?.model
-      ? relatedModelsFor(partial.relatedInventoryHint.model)
-      : []),
+    ...(modelSlug ? relatedModelsFor(modelSlug) : []),
   ]);
 
   const { score } = scoreSeoPage(doc);

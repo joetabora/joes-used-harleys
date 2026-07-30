@@ -2,12 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BikeDetailAnalytics } from "@/components/analytics/bike-detail-analytics";
 import { AssetScorecardView } from "@/components/assets/asset-scorecard";
+import { ModelHubBridge } from "@/components/content/model-hub-bridge";
 import { LeadForm } from "@/components/lead-form";
 import { JsonLd } from "@/components/seo/json-ld";
 import { RelatedInventory } from "@/components/seo/related-inventory";
 import { SeoBreadcrumbs } from "@/components/seo/seo-breadcrumbs";
 import { SeoFaq } from "@/components/seo/seo-faq";
 import { loadScorecardForBike } from "@/lib/assets/load-scorecard";
+import { matchBikeToPackSlug } from "@/lib/content/match-bike-to-pack";
 import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 import { hasRecentPriceDrop, isNewArrival } from "@/lib/inventory-public";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
@@ -126,6 +128,11 @@ export default async function BikeDetailPage({ params }: Props) {
     take: 6,
   });
   const scorecard = await loadScorecardForBike(bike.id);
+  const packSlug = matchBikeToPackSlug({
+    model: bike.model,
+    title: bike.title,
+    category: bike.category,
+  });
 
   const insights = [
     { label: "Perfect for", value: bike.perfectFor },
@@ -215,6 +222,8 @@ export default async function BikeDetailPage({ params }: Props) {
           </div>
         </div>
       ) : null}
+
+      {packSlug ? <ModelHubBridge packSlug={packSlug} /> : null}
 
       {bike.walkaroundVideoUrl ? (
         <p className="text-sm">

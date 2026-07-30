@@ -1,3 +1,4 @@
+import { composeModelHub } from "@/lib/content/compose-model-hub";
 import { composeSeoDocument, defaultFaqs, section } from "@/lib/seo/compose-page";
 import {
   FAMILIES,
@@ -11,41 +12,7 @@ import {
 import { getEventGuide, getGuide, getRouteGuide } from "@/lib/content/guides";
 
 export function buildModelPage(slug: string) {
-  const m = getModel(slug);
-  if (!m) return null;
-  const years = m.yearsInProduction.slice(-12);
-  return composeSeoDocument({
-    path: `/harleys/${m.slug}`,
-    title: `Used ${m.displayName} Harley buying guide`,
-    description: m.summary,
-    h1: `Used ${m.displayName}`,
-    type: "model",
-    sections: [
-      section("Overview", m.summary),
-      section("Who it's for", m.whoItsFor),
-      section(
-        "Years to know",
-        `Years covered in this guide: ${years.join(", ")}. Confirm options and condition on any live unit.`,
-      ),
-      section(
-        "Related models",
-        m.relatedModels.length
-          ? `Also consider: ${m.relatedModels.map((s) => getModel(s)?.displayName ?? s).join(", ")}.`
-          : "Browse the full model index for more options.",
-      ),
-    ],
-    faqs: defaultFaqs("model", m.displayName),
-    breadcrumbs: [
-      { name: "Home", path: "/" },
-      { name: "Harleys", path: "/harleys" },
-      { name: m.displayName, path: `/harleys/${m.slug}` },
-    ],
-    relatedLinks: years.slice(-5).map((y) => ({
-      href: `/harleys/${m.slug}/${y}`,
-      title: `${y} ${m.displayName}`,
-    })),
-    relatedInventoryHint: { model: m.displayName, family: m.family },
-  });
+  return composeModelHub(slug);
 }
 
 export function buildModelYearPage(slug: string, year: number) {
@@ -54,16 +21,21 @@ export function buildModelYearPage(slug: string, year: number) {
   return composeSeoDocument({
     path: `/harleys/${m.slug}/${year}`,
     title: `${year} ${m.displayName} used buying notes`,
-    description: `What to check on a ${year} ${m.displayName} — educational notes plus live inventory when available.`,
+    description: `What to check on a ${year} ${m.displayName} — educational notes plus live inventory when available. See the full ${m.displayName} guide for ownership depth.`,
     h1: `${year} ${m.displayName}`,
     type: "model",
+    modelSlug: m.slug,
     sections: [
       section(
         "Year focus",
-        `You're looking at ${year} ${m.displayName} examples. Specs and options vary — verify on the VIN.`,
+        `You're looking at ${year} ${m.displayName} examples. Specs and options vary — verify on the VIN. For the full buying, ownership, and maintenance guide, use the canonical ${m.displayName} hub.`,
       ),
       section("Who it's for", m.whoItsFor),
       section("Overview", m.summary),
+      section(
+        "Canonical model guide",
+        `Read the full used ${m.displayName} authority page for pros, cons, suitability, upgrades, and FAQs — this year page stays focused on ${year} inventory context.`,
+      ),
     ],
     faqs: defaultFaqs("year", `${year} ${m.displayName}`),
     breadcrumbs: [
@@ -72,8 +44,14 @@ export function buildModelYearPage(slug: string, year: number) {
       { name: m.displayName, path: `/harleys/${m.slug}` },
       { name: String(year), path: `/harleys/${m.slug}/${year}` },
     ],
-    relatedLinks: [],
-    relatedInventoryHint: { model: m.displayName, year },
+    relatedLinks: [
+      {
+        href: `/harleys/${m.slug}`,
+        title: `Used ${m.displayName} buying guide`,
+        excerpt: "Canonical model hub",
+      },
+    ],
+    relatedInventoryHint: { model: m.displayName, year, modelSlug: m.slug },
   });
 }
 

@@ -4,7 +4,7 @@ export type BreadcrumbItem = { name: string; path: string };
 
 export type SeoLink = { href: string; title: string; excerpt?: string };
 
-export type SeoSection = { heading: string; body: string };
+export type SeoSection = { heading: string; body: string; id?: string };
 
 export type SeoPageDocument = {
   path: string;
@@ -30,11 +30,15 @@ export type SeoPageDocument = {
   /** Word-count body source for scoring */
   bodyText?: string;
   schemaExtra?: Record<string, unknown>[];
+  /** Taxonomy model slug for knowledge-pack hubs / linking. */
+  modelSlug?: string;
   relatedInventoryHint?: {
     model?: string;
     year?: number;
     family?: string;
     color?: string;
+    /** Prefer this over display-name for guide matching. */
+    modelSlug?: string;
   };
 };
 
