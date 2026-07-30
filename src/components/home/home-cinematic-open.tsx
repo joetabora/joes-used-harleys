@@ -12,12 +12,12 @@ export function HomeCinematicOpen() {
         aria-hidden
       />
 
-      <div className="relative mx-auto flex min-h-[min(92svh,48rem)] max-w-6xl flex-col justify-end px-4 pb-10 pt-28 md:pb-14 md:pt-32">
+      <div className="relative mx-auto flex max-w-6xl flex-col justify-start px-4 pb-8 pt-10 md:pb-10 md:pt-14">
         <p className="joe-fade-up font-poster text-lamp">{siteConfig.name}</p>
-        <h1 className="joe-fade-up joe-fade-up-delay-1 mt-8 max-w-2xl font-story text-3xl text-ink sm:text-4xl md:text-5xl">
+        <h1 className="joe-fade-up joe-fade-up-delay-1 mt-5 max-w-2xl font-story text-3xl text-ink sm:text-4xl md:mt-6 md:text-5xl">
           Pull up a stool. Let&apos;s talk motorcycles.
         </h1>
-        <div className="joe-fade-up joe-fade-up-delay-2 mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-8">
+        <div className="joe-fade-up joe-fade-up-delay-2 mt-7 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-8 md:mt-8">
           <Link href="/contact" className="joe-btn-primary">
             Talk to Joe
           </Link>
@@ -30,7 +30,7 @@ export function HomeCinematicOpen() {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-4 pb-12 md:pb-16">
+      <div className="relative mx-auto max-w-6xl px-4 pb-10 md:pb-14">
         <MediaFrame
           variant="hero"
           label="Garage / road atmosphere"
