@@ -9,10 +9,11 @@ export function HomeMeetJoe() {
       <p className="font-label text-steel">03 — Meet Joe</p>
       <div className="mt-8 grid gap-12 md:grid-cols-[minmax(0,16rem)_1fr] md:items-start md:gap-16">
         <MediaFrame
-          variant="portrait"
+          variant="square"
           label="Joe"
           src="/me.jpg"
           alt="Joe"
+          fit="contain"
         />
 
         <div className="max-w-xl space-y-6">

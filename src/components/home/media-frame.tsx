@@ -1,13 +1,14 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-type FrameVariant = "portrait" | "bay" | "hero" | "tall";
+type FrameVariant = "portrait" | "bay" | "hero" | "tall" | "square";
 
 const aspect: Record<FrameVariant, string> = {
   portrait: "aspect-[3/4]",
   bay: "aspect-[16/9]",
   hero: "aspect-[21/9] min-h-[12rem] md:min-h-[16rem]",
   tall: "aspect-[4/5] min-h-[18rem]",
+  square: "aspect-square",
 };
 
 export function MediaFrame({
@@ -16,6 +17,7 @@ export function MediaFrame({
   className,
   src,
   alt,
+  fit = "cover",
 }: {
   label: string;
   variant?: FrameVariant;
@@ -23,6 +25,7 @@ export function MediaFrame({
   /** Public path e.g. `/me.jpg` — when set, shows the photo instead of placeholder text */
   src?: string;
   alt?: string;
+  fit?: "cover" | "contain";
 }) {
   return (
     <div
@@ -38,7 +41,7 @@ export function MediaFrame({
           src={src}
           alt={alt ?? label}
           fill
-          className="object-cover"
+          className={fit === "contain" ? "object-contain" : "object-cover"}
           sizes="(max-width: 768px) 100vw, 70vw"
           priority={variant === "hero"}
         />
