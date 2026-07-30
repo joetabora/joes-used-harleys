@@ -19,19 +19,44 @@ export function isKnowledgeDbReady(): boolean {
   return isDatabaseConfigured() && Boolean(prisma);
 }
 
+/** Migration not applied yet (e.g. Vercel build before migrate) — fall back to files. */
+function isMissingKnowledgeSchema(err: unknown): boolean {
+  if (!err || typeof err !== "object") return false;
+  const code = (err as { code?: string }).code;
+  if (code === "P2021") return true;
+  const message = String((err as { message?: string }).message ?? "");
+  return /KnowledgeEntity|KnowledgeRelation|does not exist/i.test(message);
+}
+
+async function withKnowledgeFallback<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn();
+  } catch (err) {
+    if (isMissingKnowledgeSchema(err)) return fallback;
+    throw err;
+  }
+}
+
 export async function getPublishedEntity(
   type: KnowledgeEntityType,
   slug: string,
 ): Promise<KnowledgeEntity | null> {
   if (!prisma) return null;
-  return prisma.knowledgeEntity.findFirst({
-    where: { type, slug, status: "PUBLISHED" },
-  });
+  return withKnowledgeFallback(
+    () =>
+      prisma!.knowledgeEntity.findFirst({
+        where: { type, slug, status: "PUBLISHED" },
+      }),
+    null,
+  );
 }
 
 export async function getEntityById(id: string): Promise<KnowledgeEntity | null> {
   if (!prisma) return null;
-  return prisma.knowledgeEntity.findUnique({ where: { id } });
+  return withKnowledgeFallback(
+    () => prisma!.knowledgeEntity.findUnique({ where: { id } }),
+    null,
+  );
 }
 
 export async function listEntities(opts?: {
@@ -42,22 +67,26 @@ export async function listEntities(opts?: {
 }): Promise<KnowledgeEntity[]> {
   if (!prisma) return [];
   const q = opts?.q?.trim();
-  return prisma.knowledgeEntity.findMany({
-    where: {
-      ...(opts?.type ? { type: opts.type } : {}),
-      ...(opts?.status ? { status: opts.status } : {}),
-      ...(q
-        ? {
-            OR: [
-              { title: { contains: q, mode: "insensitive" } },
-              { slug: { contains: q, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
-    orderBy: [{ type: "asc" }, { title: "asc" }],
-    take: opts?.take ?? 200,
-  });
+  return withKnowledgeFallback(
+    () =>
+      prisma!.knowledgeEntity.findMany({
+        where: {
+          ...(opts?.type ? { type: opts.type } : {}),
+          ...(opts?.status ? { status: opts.status } : {}),
+          ...(q
+            ? {
+                OR: [
+                  { title: { contains: q, mode: "insensitive" } },
+                  { slug: { contains: q, mode: "insensitive" } },
+                ],
+              }
+            : {}),
+        },
+        orderBy: [{ type: "asc" }, { title: "asc" }],
+        take: opts?.take ?? 200,
+      }),
+    [],
+  );
 }
 
 export async function neighbors(
@@ -74,35 +103,37 @@ export async function neighbors(
 > {
   if (!prisma) return [];
   const kindFilter = opts?.kinds?.length ? { kind: { in: opts.kinds } } : {};
-  const [out, inn] = await Promise.all([
-    prisma.knowledgeRelation.findMany({
-      where: { fromId: entityId, ...kindFilter },
-      include: { to: true },
-      take: opts?.limit ?? 24,
-    }),
-    prisma.knowledgeRelation.findMany({
-      where: { toId: entityId, ...kindFilter },
-      include: { from: true },
-      take: opts?.limit ?? 24,
-    }),
-  ]);
-  const rows = [
-    ...out.map((r) => ({
-      id: r.id,
-      kind: r.kind,
-      label: r.label,
-      entity: r.to,
-      direction: "out" as const,
-    })),
-    ...inn.map((r) => ({
-      id: r.id,
-      kind: r.kind,
-      label: r.label,
-      entity: r.from,
-      direction: "in" as const,
-    })),
-  ];
-  return rows.slice(0, opts?.limit ?? 24);
+  return withKnowledgeFallback(async () => {
+    const [out, inn] = await Promise.all([
+      prisma!.knowledgeRelation.findMany({
+        where: { fromId: entityId, ...kindFilter },
+        include: { to: true },
+        take: opts?.limit ?? 24,
+      }),
+      prisma!.knowledgeRelation.findMany({
+        where: { toId: entityId, ...kindFilter },
+        include: { from: true },
+        take: opts?.limit ?? 24,
+      }),
+    ]);
+    const rows = [
+      ...out.map((r) => ({
+        id: r.id,
+        kind: r.kind,
+        label: r.label,
+        entity: r.to,
+        direction: "out" as const,
+      })),
+      ...inn.map((r) => ({
+        id: r.id,
+        kind: r.kind,
+        label: r.label,
+        entity: r.from,
+        direction: "in" as const,
+      })),
+    ];
+    return rows.slice(0, opts?.limit ?? 24);
+  }, []);
 }
 
 export function suggestLinksFromNeighbors(
