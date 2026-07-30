@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   assertSafeSiteUrl,
+  CANONICAL_SITE_URL,
   isLocalhostSiteUrl,
 } from "../src/lib/site";
 
@@ -29,5 +30,7 @@ assert.equal(
   assertSafeSiteUrl("http://localhost:3000", { requirePublic: false }),
   "http://localhost:3000",
 );
+
+assert.equal(CANONICAL_SITE_URL, "https://www.joesusedharleys.com");
 
 console.log("site-url.test.ts: ok");

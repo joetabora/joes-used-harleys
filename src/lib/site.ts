@@ -2,15 +2,19 @@
  * Public site config.
  * Values come from env. PLACEHOLDER_* means "not configured yet" — do not invent real numbers.
  *
- * Canonical public URL: NEXT_PUBLIC_SITE_URL only.
- * Production / Vercel builds must not use localhost.
+ * Canonical public URL source: NEXT_PUBLIC_SITE_URL → siteConfig.url.
+ * Build-time gate: `npm run assert:site-url` (fails on localhost).
+ * Runtime never throws on import — a bad env must not take the site down.
  */
+
+/** Documented production origin (sitemap / robots / metadata fallback). */
+export const CANONICAL_SITE_URL = "https://www.joesusedharleys.com";
 
 function env(name: string, fallback = ""): string {
   return process.env[name] ?? fallback;
 }
 
-/** True when builds or deploys must use a public HTTPS site URL. */
+/** True when builds or deploys should prefer a public HTTPS site URL. */
 export function mustUsePublicSiteUrl(): boolean {
   return (
     process.env.NODE_ENV === "production" ||
@@ -25,23 +29,31 @@ export function isLocalhostSiteUrl(url: string): boolean {
   if (!raw) return true;
   try {
     const host = new URL(raw).hostname;
-    return host === "localhost" || host === "127.0.0.1" || host === "::1" || host.endsWith(".local");
+    return (
+      host === "localhost" ||
+      host === "127.0.0.1" ||
+      host === "::1" ||
+      host.endsWith(".local")
+    );
   } catch {
     return /localhost|127\.0\.0\.1/.test(raw);
   }
 }
 
 /**
- * Validate and normalize the canonical site origin.
- * @throws if production/Vercel context and URL is missing, localhost, or non-https
+ * Validate and normalize a site origin.
+ * @throws when requirePublic and URL is missing / localhost / non-https
  */
-export function assertSafeSiteUrl(url: string, opts?: { requirePublic?: boolean }): string {
+export function assertSafeSiteUrl(
+  url: string,
+  opts?: { requirePublic?: boolean },
+): string {
   const requirePublic = opts?.requirePublic ?? mustUsePublicSiteUrl();
   const trimmed = url.trim().replace(/\/+$/, "");
 
   if (!trimmed) {
     throw new Error(
-      "NEXT_PUBLIC_SITE_URL is required. Example: https://www.joesusedharleys.com",
+      `NEXT_PUBLIC_SITE_URL is required. Example: ${CANONICAL_SITE_URL}`,
     );
   }
 
@@ -55,7 +67,7 @@ export function assertSafeSiteUrl(url: string, opts?: { requirePublic?: boolean 
   if (requirePublic) {
     if (isLocalhostSiteUrl(trimmed)) {
       throw new Error(
-        `NEXT_PUBLIC_SITE_URL must not be localhost in production (got "${trimmed}"). Set https://www.joesusedharleys.com on Vercel.`,
+        `NEXT_PUBLIC_SITE_URL must not be localhost in production (got "${trimmed}"). Set ${CANONICAL_SITE_URL} on Vercel.`,
       );
     }
     if (parsed.protocol !== "https:") {
@@ -68,16 +80,31 @@ export function assertSafeSiteUrl(url: string, opts?: { requirePublic?: boolean 
   return trimmed;
 }
 
+/**
+ * Resolve the public site origin for runtime use.
+ * Never throws — production misconfig falls back to CANONICAL_SITE_URL.
+ */
 export function resolveSiteUrl(): string {
   const fromEnv = env("NEXT_PUBLIC_SITE_URL").trim();
 
   if (mustUsePublicSiteUrl()) {
-    return assertSafeSiteUrl(fromEnv, { requirePublic: true });
+    try {
+      return assertSafeSiteUrl(fromEnv, { requirePublic: true });
+    } catch (err) {
+      console.error(
+        "[site] Invalid NEXT_PUBLIC_SITE_URL in production; using canonical fallback.",
+        err instanceof Error ? err.message : err,
+      );
+      return CANONICAL_SITE_URL;
+    }
   }
 
-  // Local `next dev` only — never used as a production sitemap base.
   if (!fromEnv) return "http://localhost:3000";
-  return assertSafeSiteUrl(fromEnv, { requirePublic: false });
+  try {
+    return assertSafeSiteUrl(fromEnv, { requirePublic: false });
+  } catch {
+    return "http://localhost:3000";
+  }
 }
 
 export const siteConfig = {

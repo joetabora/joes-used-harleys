@@ -1,13 +1,11 @@
 import { SITEMAP_SHARDS } from "@/lib/seo/sitemap-data";
-import { assertSafeSiteUrl, siteConfig } from "@/lib/site";
+import { siteConfig } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
-/** Sitemap index XML at /sitemap.xml — always uses NEXT_PUBLIC_SITE_URL (never invent host). */
+/** Sitemap index XML at /sitemap.xml — host from NEXT_PUBLIC_SITE_URL / siteConfig. */
 export async function GET() {
-  const base = assertSafeSiteUrl(siteConfig.url, {
-    requirePublic: process.env.NODE_ENV === "production" || Boolean(process.env.VERCEL),
-  });
+  const base = siteConfig.url.replace(/\/+$/, "");
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${SITEMAP_SHARDS.map(

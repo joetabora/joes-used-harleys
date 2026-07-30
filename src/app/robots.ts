@@ -1,10 +1,8 @@
 import type { MetadataRoute } from "next";
-import { assertSafeSiteUrl, siteConfig } from "@/lib/site";
+import { siteConfig } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
-  const base = assertSafeSiteUrl(siteConfig.url, {
-    requirePublic: process.env.NODE_ENV === "production" || Boolean(process.env.VERCEL),
-  });
+  const base = siteConfig.url.replace(/\/+$/, "");
   return {
     rules: [
       {
