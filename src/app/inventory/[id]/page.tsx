@@ -1,19 +1,61 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/lead-form";
+import { JsonLd } from "@/components/seo/json-ld";
+import { RelatedInventory } from "@/components/seo/related-inventory";
+import { SeoBreadcrumbs } from "@/components/seo/seo-breadcrumbs";
+import { SeoFaq } from "@/components/seo/seo-faq";
 import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 import { hasRecentPriceDrop, isNewArrival } from "@/lib/inventory-public";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
-import { createMetadata } from "@/lib/seo";
+import { fetchRelatedInventory } from "@/lib/seo/inventory-related";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+import {
+  breadcrumbJsonLd,
+  buildJsonLdGraph,
+  faqJsonLd,
+  productJsonLd,
+} from "@/lib/seo/schema";
+import type { FaqItem } from "@/lib/seo/types";
 
 export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ id: string }> };
 
+function bikeFaqs(bike: {
+  year: number;
+  model: string;
+  faq: unknown;
+}): FaqItem[] {
+  if (Array.isArray(bike.faq)) {
+    return bike.faq
+      .map((row) => {
+        const r = row as { question?: string; q?: string; answer?: string; a?: string };
+        const question = r.question ?? r.q;
+        const answer = r.answer ?? r.a;
+        if (!question || !answer) return null;
+        return { question, answer };
+      })
+      .filter(Boolean) as FaqItem[];
+  }
+  return [
+    {
+      question: `Is this ${bike.year} ${bike.model} still available?`,
+      answer:
+        "Status on this page reflects the mirrored feed when the database is connected. Contact Joe to confirm before you travel.",
+    },
+    {
+      question: "Can Joe help with payments or trade-ins?",
+      answer:
+        "Yes — ask about your monthly comfort zone and trade questions. He won't invent approvals or values.",
+    },
+  ];
+}
+
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   if (!isDatabaseConfigured() || !prisma) {
-    return createMetadata({
+    return buildPageMetadata({
       title: "Bike",
       description: "Bike detail",
       path: `/inventory/${id}`,
@@ -23,7 +65,7 @@ export async function generateMetadata({ params }: Props) {
 
   const bike = await prisma.bike.findUnique({ where: { id } });
   if (!bike || bike.hidden) {
-    return createMetadata({
+    return buildPageMetadata({
       title: "Bike not found",
       description: "This listing is unavailable.",
       path: `/inventory/${id}`,
@@ -32,10 +74,9 @@ export async function generateMetadata({ params }: Props) {
   }
 
   const label = bike.seoHeadline || bikeLabel(bike);
-  return createMetadata({
+  return buildPageMetadata({
     title: label,
-    description:
-      bike.seoDescription || bike.description?.slice(0, 155) || label,
+    description: bike.seoDescription || bike.description?.slice(0, 155) || label,
     path: `/inventory/${bike.id}`,
   });
 }
@@ -69,6 +110,18 @@ export default async function BikeDetailPage({ params }: Props) {
 
   const newArrival = isNewArrival(bike.firstSeenAt);
   const priceDrop = hasRecentPriceDrop(bike.priceHistory);
+  const faqs = bikeFaqs(bike);
+  const breadcrumbs = [
+    { name: "Home", path: "/" },
+    { name: "Inventory", path: "/inventory" },
+    { name: label, path: `/inventory/${bike.id}` },
+  ];
+  const hero = bike.personalHeroImageUrl || photos[0] || null;
+  const related = await fetchRelatedInventory({
+    model: bike.model,
+    excludeId: bike.id,
+    take: 6,
+  });
 
   const insights = [
     { label: "Perfect for", value: bike.perfectFor },
@@ -82,8 +135,24 @@ export default async function BikeDetailPage({ params }: Props) {
     { label: "Buying tips", value: bike.buyingTips },
   ].filter((row) => row.value);
 
+  const graph = buildJsonLdGraph([
+    productJsonLd({
+      name: label,
+      description: bike.seoDescription || bike.description || label,
+      path: `/inventory/${bike.id}`,
+      image: hero,
+      price: bike.price,
+      status: bike.status,
+    }),
+    breadcrumbJsonLd(breadcrumbs),
+    faqJsonLd(faqs),
+  ]);
+
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-12">
+      <JsonLd data={graph} />
+      <SeoBreadcrumbs items={breadcrumbs} />
+
       <div className="space-y-3">
         <Link
           href="/inventory"
@@ -167,6 +236,9 @@ export default async function BikeDetailPage({ params }: Props) {
           </a>
         </p>
       ) : null}
+
+      <SeoFaq faqs={faqs} />
+      <RelatedInventory bikes={related} />
 
       <div className="joe-panel p-5">
         <p className="font-label mb-1 text-lamp">Inquire</p>

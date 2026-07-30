@@ -18,6 +18,8 @@ Customers never see this name.
 
 Design contract: [joeos-design.md](./joeos-design.md) (v3)
 
+Public SEO architecture: [seo-architecture.md](./seo-architecture.md)
+
 ## Long-term capabilities
 
 - Inventory sync (v1 — shipped)

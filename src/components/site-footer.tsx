@@ -18,8 +18,28 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link href="/harleys" className="font-label text-[0.65rem] transition-colors hover:text-lamp">
+                Models
+              </Link>
+            </li>
+            <li>
               <Link href="/guides" className="font-label text-[0.65rem] transition-colors hover:text-lamp">
                 Guides
+              </Link>
+            </li>
+            <li>
+              <Link href="/used-harleys" className="font-label text-[0.65rem] transition-colors hover:text-lamp">
+                Local
+              </Link>
+            </li>
+            <li>
+              <Link href="/compare" className="font-label text-[0.65rem] transition-colors hover:text-lamp">
+                Compare
+              </Link>
+            </li>
+            <li>
+              <Link href="/routes" className="font-label text-[0.65rem] transition-colors hover:text-lamp">
+                Routes
               </Link>
             </li>
             <li>

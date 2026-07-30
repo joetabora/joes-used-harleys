@@ -1,0 +1,87 @@
+[
+  {
+    "slug": "buying",
+    "label": "Buying guides",
+    "description": "How to buy a used Harley without pressure — inspections, paperwork, and working with Joe."
+  },
+  {
+    "slug": "comparisons",
+    "label": "Comparisons",
+    "description": "Model-vs-model explainers. Editorial only — no fake market rankings."
+  },
+  {
+    "slug": "models",
+    "label": "Model tips",
+    "description": "Buying tips for specific Harley models and generations."
+  },
+  {
+    "slug": "maintenance",
+    "label": "Maintenance",
+    "description": "What to check and ask about on used Harleys — educational, not DIY shop manuals."
+  },
+  {
+    "slug": "trade-in",
+    "label": "Trade-in",
+    "description": "How trade-ins work in plain English — get numbers in writing."
+  },
+  {
+    "slug": "financing",
+    "label": "Financing",
+    "description": "Payment comfort, questions to ask, and how to shop with a budget."
+  },
+  {
+    "slug": "insurance",
+    "label": "Insurance",
+    "description": "Questions to ask your insurer before you fall in love with a unit."
+  },
+  {
+    "slug": "beginner",
+    "label": "Beginner",
+    "description": "First-time Harley guidance — fit, confidence, and realistic expectations."
+  },
+  {
+    "slug": "passenger",
+    "label": "Passenger",
+    "description": "Two-up comfort, communication, and what to look for on used bikes."
+  },
+  {
+    "slug": "womens",
+    "label": "Women's riding",
+    "description": "Fit, confidence, and buying guidance for women riders — no stereotypes as product claims."
+  },
+  {
+    "slug": "tall",
+    "label": "Tall riders",
+    "description": "Ergonomics and model families that often fit taller riders better — always sit first."
+  },
+  {
+    "slug": "short",
+    "label": "Short riders",
+    "description": "Reach, seat height, and confidence tips for shorter riders."
+  },
+  {
+    "slug": "storage",
+    "label": "Storage",
+    "description": "Bags, trunks, and real-world carrying capacity questions."
+  },
+  {
+    "slug": "winter",
+    "label": "Winter riding",
+    "description": "Midwest winter storage, battery care questions, and spring checkout ideas."
+  },
+  {
+    "slug": "dealer",
+    "label": "Dealer questions",
+    "description": "What to ask any dealer or salesperson — process guides, not rankings."
+  },
+  {
+    "slug": "color",
+    "label": "Color",
+    "description": "Paint and finish considerations when shopping used."
+  },
+  {
+    "slug": "engine",
+    "label": "Engines",
+    "description": "Public-facing engine family explainers — confirm specs on the actual bike."
+  }
+]

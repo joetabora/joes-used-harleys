@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { SectionShell } from "@/components/home/section-shell";
-import { guides } from "@/lib/guides";
+import { getPublishedGuides } from "@/lib/content/guides";
 
 /**
  * Magazine contents layout — one lead feature + numbered index.
  * Not a blog/resource feed.
  */
 export function HomeFromTheBench() {
+  const guides = getPublishedGuides();
   const [lead, ...rest] = guides;
+  if (!lead) return null;
+
+  const hrefFor = (topic: string, slug: string) => `/guides/${topic}/${slug}`;
 
   return (
     <SectionShell width="wide">
@@ -25,7 +29,10 @@ export function HomeFromTheBench() {
         <article className="md:col-span-7">
           <p className="font-label text-lamp">Feature</p>
           <h3 className="joe-headline-xl mt-4">
-            <Link href={`/guides/${lead.slug}`} className="transition-colors hover:text-lamp">
+            <Link
+              href={hrefFor(lead.topic, lead.slug)}
+              className="transition-colors hover:text-lamp"
+            >
               {lead.title}
             </Link>
           </h3>
@@ -33,7 +40,7 @@ export function HomeFromTheBench() {
             {lead.excerpt}
           </p>
           <Link
-            href={`/guides/${lead.slug}`}
+            href={hrefFor(lead.topic, lead.slug)}
             className="mt-6 inline-block font-label text-lamp underline-offset-4 hover:underline"
           >
             Read →
@@ -43,15 +50,15 @@ export function HomeFromTheBench() {
         <aside className="md:col-span-5 md:border-l md:border-chrome/20 md:pl-10 lg:pl-12">
           <p className="font-label text-steel">Contents</p>
           <ol className="mt-8 space-y-10">
-            {rest.map((guide, index) => (
-              <li key={guide.slug} className="group">
+            {rest.slice(0, 5).map((guide, index) => (
+              <li key={`${guide.topic}-${guide.slug}`} className="group">
                 <div className="flex gap-4">
                   <span className="joe-index shrink-0 text-[clamp(2rem,4vw,3rem)] leading-none">
                     {String(index + 2).padStart(2, "0")}
                   </span>
                   <div className="pt-1">
                     <Link
-                      href={`/guides/${guide.slug}`}
+                      href={hrefFor(guide.topic, guide.slug)}
                       className="font-story text-xl text-ink transition-colors group-hover:text-lamp md:text-2xl"
                     >
                       {guide.title}

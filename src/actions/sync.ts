@@ -29,6 +29,20 @@ export async function runInventorySync(dryRun = false): Promise<SyncActionResult
     revalidatePath("/admin/bikes");
     revalidatePath("/admin/sync");
     revalidatePath("/");
+    try {
+      const { syncInventorySeoUrls } = await import("@/lib/seo/sync-inventory-seo");
+      const { pingIndexNow } = await import("@/lib/seo/indexnow");
+      const recent = await prisma.bike.findMany({
+        where: { status: { in: ["AVAILABLE", "PENDING"] }, hidden: false },
+        select: { id: true },
+        orderBy: { updatedAt: "desc" },
+        take: 50,
+      });
+      await syncInventorySeoUrls(recent.map((b) => b.id));
+      await pingIndexNow(["/inventory", "/sitemap.xml"]);
+    } catch {
+      /* SEO indexing is best-effort */
+    }
   } else {
     revalidatePath("/admin/sync");
   }

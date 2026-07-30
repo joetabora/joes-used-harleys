@@ -1,0 +1,10 @@
+[
+  { "slug": "vivid-black", "name": "Vivid Black", "eras": ["common"] },
+  { "slug": "billiard-gray", "name": "Billiard Gray", "eras": ["modern"] },
+  { "slug": "bright-billiard-blue", "name": "Bright Billiard Blue", "eras": ["modern"] },
+  { "slug": "crimson-red", "name": "Crimson Red / red variants", "eras": ["common"] },
+  { "slug": "white", "name": "White / Pearl White variants", "eras": ["common"] },
+  { "slug": "orange", "name": "Orange / Scorched Orange variants", "eras": ["common"] },
+  { "slug": "silver", "name": "Silver / Gray metallics", "eras": ["common"] },
+  { "slug": "two-tone", "name": "Two-tone / special paint", "eras": ["common"] }
+]

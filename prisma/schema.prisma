@@ -207,3 +207,56 @@ model Interaction {
   @@index([leadId])
   @@index([createdAt])
 }
+
+enum SeoUrlType {
+  STATIC
+  GUIDE
+  MODEL
+  MODEL_YEAR
+  FAMILY
+  COLOR
+  ENGINE
+  COMPARE
+  CITY
+  CITY_MODEL
+  CITY_MODEL_YEAR
+  ROUTE
+  EVENT
+  INVENTORY
+  HUB
+}
+
+enum SeoStatus {
+  DRAFT
+  NOINDEX
+  INDEX
+}
+
+model SeoUrl {
+  id            String     @id @default(cuid())
+  path          String     @unique
+  type          SeoUrlType
+  status        SeoStatus  @default(DRAFT)
+  score         Int        @default(0)
+  scoreDetail   Json?
+  lastModified  DateTime   @updatedAt
+  lastIndexedAt DateTime?
+  indexNowAt    DateTime?
+  payload       Json?
+  createdAt     DateTime   @default(now())
+
+  @@index([status, type])
+  @@index([type])
+}
+
+model SeoIndexPing {
+  id        String   @id @default(cuid())
+  path      String
+  provider  String
+  ok        Boolean
+  response  String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+}

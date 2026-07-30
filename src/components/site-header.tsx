@@ -12,7 +12,9 @@ import { hasContactPhone, siteConfig } from "@/lib/site";
 
 const links = [
   { href: "/inventory", label: "Inventory" },
+  { href: "/harleys", label: "Models" },
   { href: "/guides", label: "Guides" },
+  { href: "/used-harleys", label: "Local" },
   { href: "/how-it-works", label: "How it works" },
   { href: "/about", label: "About Joe" },
   { href: "/contact", label: "Contact" },

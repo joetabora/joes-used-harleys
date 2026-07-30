@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "milwaukee-eight",
+    "name": "Milwaukee-Eight",
+    "era": "2017–present (varies by platform)",
+    "notes": "Modern Harley big-twin family used across many Softail and Touring models. Confirm exact displacement and tune by year and VIN — do not assume one map fits all."
+  },
+  {
+    "slug": "twin-cam",
+    "name": "Twin Cam",
+    "era": "1999–2017 (approx.)",
+    "notes": "Previous-generation big twin found on many used Touring and Softail bikes. Service history and cam-related maintenance matter on higher-mile examples."
+  },
+  {
+    "slug": "evolution-sportster",
+    "name": "Evolution Sportster",
+    "era": "Classic Sportster era through early 2020s air-cooled models",
+    "notes": "Air-cooled Sportster motors on Iron 883, Forty-Eight, and related models. Simpler mechanical story than liquid-cooled platforms."
+  },
+  {
+    "slug": "revolution-max",
+    "name": "Revolution Max",
+    "era": "2021–present",
+    "notes": "Liquid-cooled platform powering Sportster S, Nightster, and Pan America. Different service and feel than traditional air-cooled Harleys."
+  }
+]

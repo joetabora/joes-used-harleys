@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "street-glide-vs-road-glide",
+    "a": "street-glide",
+    "b": "road-glide",
+    "title": "Street Glide vs Road Glide",
+    "excerpt": "Batwing vs sharknose — how fork-mounted and frame-mounted fairings change the bagger experience.",
+    "sections": [
+      {
+        "heading": "The short version",
+        "body": "Both are Harley Touring baggers with saddlebags and similar powertrains across generations. The big difference is the fairing: Road Glide mounts the fairing to the frame (sharknose); Street Glide mounts it to the forks (batwing). That changes how the bike feels in crosswinds and how the handlebars respond."
+      },
+      {
+        "heading": "Road Glide — frame-mounted fairing",
+        "body": "Riders often describe Road Glides as calmer at highway speed and more planted in wind. The frame-mounted fairing keeps mass off the forks. Great if you do long interstate miles or ride in open Midwestern weather."
+      },
+      {
+        "heading": "Street Glide — fork-mounted fairing",
+        "body": "Street Glides tend to feel more traditional and connected through the bars. Many riders prefer the batwing look. If you want the classic bagger silhouette and a slightly more lively front end, this is usually the starting point."
+      },
+      {
+        "heading": "How to decide",
+        "body": "Sit on both. Take a short test ride if you can. Ask about year, mileage, service history, and mods — those matter more than the badge on the fairing. When you're ready, talk to Joe about what's actually available."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Is one better for Wisconsin highway wind?",
+        "answer": "Many riders prefer Road Glide manners in open wind, but preference is personal. Sit on both and ride if you can — Joe can help you compare real units on the floor."
+      },
+      {
+        "question": "Do they cost the same used?",
+        "answer": "Price depends on year, mileage, options, and condition — not the fairing alone. Look at live inventory and ask Joe for a clear number on the bike you want."
+      }
+    ]
+  },
+  {
+    "slug": "softail-vs-sportster",
+    "a": "softail-standard",
+    "b": "iron-883",
+    "title": "Softail vs Sportster",
+    "excerpt": "Chassis intent, size, and who each family usually fits — without inventing which one 'sells better.'",
+    "sections": [
+      {
+        "heading": "Different jobs",
+        "body": "Sportsters are typically lighter and simpler entry points. Softails use a different chassis feel with more cruiser/Touring-adjacent comfort depending on the model. Start with how far you ride and whether you need passenger room."
+      },
+      {
+        "heading": "Fit and confidence",
+        "body": "Seat height, reach, and weight matter more than badges. A short or new rider may prefer a manageable Sportster; a taller rider or two-up tourist may lean Softail or Touring. Try before you buy."
+      },
+      {
+        "heading": "Used buying notes",
+        "body": "Confirm year, motor family, service records, and mods. Modern Sportster S / Nightster platforms differ from classic air-cooled Sportsters — compare apples to apples."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Which is better for a first Harley?",
+        "answer": "Many first-timers start on Sportsters, but the right bike is the one you can ride confidently. Talk through distance, passenger needs, and budget with Joe."
+      },
+      {
+        "question": "Can I grow out of a Sportster?",
+        "answer": "Some riders keep a Sportster forever; others move to Softail or Touring later. Buy for how you'll ride for the next few years, not a hypothetical forever bike."
+      }
+    ]
+  }
+]
