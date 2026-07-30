@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FloorShowroom } from "@/components/joeos/floor-showroom";
 import { EmptyState, JosBody, JosSectionHeader } from "@/components/joeos/ui";
 import { requireAdminOrRedirect } from "@/lib/auth";
+import { loadFloorScorecards, pillsFromScorecard } from "@/lib/assets/load-scorecard";
 import { loadFloorInventory } from "@/lib/joeos/load-briefing";
 import { createMetadata } from "@/lib/seo";
 
@@ -16,7 +17,14 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminBikesPage() {
   await requireAdminOrRedirect();
-  const { ready, bikes } = await loadFloorInventory();
+  const [{ ready, bikes }, scorecards] = await Promise.all([
+    loadFloorInventory(),
+    loadFloorScorecards(),
+  ]);
+
+  const pills = Object.fromEntries(
+    [...scorecards.entries()].map(([id, card]) => [id, pillsFromScorecard(card)]),
+  );
 
   return (
     <div className="jos-stack-section">
@@ -49,7 +57,7 @@ export default async function AdminBikesPage() {
           Run a Manual Sync from FEED to mirror inventory.
         </EmptyState>
       ) : (
-        <FloorShowroom bikes={bikes} />
+        <FloorShowroom bikes={bikes} scorePills={pills} />
       )}
     </div>
   );

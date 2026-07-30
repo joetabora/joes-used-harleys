@@ -1,11 +1,20 @@
 import Link from "next/link";
+import type { FloorScorePills } from "@/lib/assets/load-scorecard";
 import type { FloorBike } from "@/lib/joeos/briefing";
 import { severityLabel } from "@/lib/joeos/briefing";
 import { formatMiles, formatPrice } from "@/lib/format";
+import { ScorePill } from "@/components/assets/asset-scorecard";
 import { Gauge, JosData, JosItem, JosKpi, SeverityPill } from "@/components/joeos/ui";
 
-export function BikeAssetTile({ bike }: { bike: FloorBike }) {
+export function BikeAssetTile({
+  bike,
+  pills,
+}: {
+  bike: FloorBike;
+  pills?: FloorScorePills;
+}) {
   const label = `${bike.year} ${bike.make} ${bike.model}`;
+  const opportunity = pills?.opportunity ?? bike.urgency;
   return (
     <Link href={`/admin/bikes/${bike.id}`} className="jos-asset-tile">
       <div className="aspect-[4/3] bg-[var(--jos-void-deep)]">
@@ -19,8 +28,14 @@ export function BikeAssetTile({ bike }: { bike: FloorBike }) {
       <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <SeverityPill severity={bike.severity}>{severityLabel(bike.severity)}</SeverityPill>
-          <JosData>URG {bike.urgency}</JosData>
+          <JosData>OPP {opportunity}</JosData>
         </div>
+        {pills ? (
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            <ScorePill label="DEM" value={pills.demand} />
+            <ScorePill label="AGE" value={pills.aging} />
+          </div>
+        ) : null}
         <JosData>{bike.year}</JosData>
         <JosItem className="text-base leading-tight">{bike.model}</JosItem>
         <JosData>{formatMiles(bike.mileage)}</JosData>
@@ -28,7 +43,7 @@ export function BikeAssetTile({ bike }: { bike: FloorBike }) {
           <JosKpi className="text-xl text-[var(--jos-orange)]">{formatPrice(bike.price)}</JosKpi>
           <JosData>{bike.daysOnLot}d</JosData>
         </div>
-        <Gauge percent={bike.urgency} severity={bike.severity} />
+        <Gauge percent={opportunity} severity={bike.severity} />
       </div>
     </Link>
   );

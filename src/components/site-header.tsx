@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { AnalyticsContactLink } from "@/components/analytics/analytics-contact-link";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -45,13 +46,20 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           {hasContactPhone() ? (
-            <a href={siteConfig.smsLink} className="joe-btn-primary hidden h-9 px-3 sm:inline-flex">
+            <a
+              href={siteConfig.smsLink}
+              data-analytics="contact"
+              className="joe-btn-primary hidden h-9 px-3 sm:inline-flex"
+            >
               Text Joe
             </a>
           ) : (
-            <Link href="/contact" className="joe-btn-secondary hidden h-9 px-3 sm:inline-flex">
+            <AnalyticsContactLink
+              href="/contact"
+              className="joe-btn-secondary hidden h-9 px-3 sm:inline-flex"
+            >
               Contact
-            </Link>
+            </AnalyticsContactLink>
           )}
 
           <Sheet>
@@ -89,14 +97,15 @@ export function SiteHeader() {
                 {hasContactPhone() ? (
                   <a
                     href={siteConfig.smsLink}
+                    data-analytics="contact"
                     className="joe-btn-primary mt-4 w-full"
                   >
                     Text Joe
                   </a>
                 ) : (
-                  <Link href="/contact" className="joe-btn-primary mt-4 w-full">
+                  <AnalyticsContactLink href="/contact" className="joe-btn-primary mt-4 w-full">
                     Contact
-                  </Link>
+                  </AnalyticsContactLink>
                 )}
               </div>
             </SheetContent>

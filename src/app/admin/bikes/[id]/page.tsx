@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AssetScorecardView } from "@/components/assets/asset-scorecard";
 import { BikeEditorForm } from "@/components/bike-editor-form";
 import { ContextBar } from "@/components/joeos/context-bar";
 import {
@@ -9,6 +10,7 @@ import {
   JosPanel,
 } from "@/components/joeos/ui";
 import { requireAdminOrRedirect } from "@/lib/auth";
+import { loadScorecardForBike } from "@/lib/assets/load-scorecard";
 import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 import {
   bikeSeverity,
@@ -63,6 +65,7 @@ export default async function EditBikePage({ params }: Props) {
   });
   const hero =
     bike.personalHeroImageUrl || bike.personalPhotos[0] || bike.photos[0] || null;
+  const scorecard = await loadScorecardForBike(bike.id);
 
   return (
     <div className="jos-stack-screen">
@@ -138,6 +141,12 @@ export default async function EditBikePage({ params }: Props) {
           )}
         </div>
       </div>
+
+      {scorecard ? (
+        <JosPanel>
+          <AssetScorecardView scorecard={scorecard} variant="jos" honestyBlurb />
+        </JosPanel>
+      ) : null}
 
       {/* FocusZone: enrichment editor */}
       <JosPanel hero>

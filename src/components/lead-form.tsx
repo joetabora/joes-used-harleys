@@ -1,16 +1,32 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { createContactLead } from "@/actions/leads";
+import { trackContactClick } from "@/lib/analytics/client";
+
+function bikeIdFromSource(source?: string): string | undefined {
+  if (!source) return undefined;
+  const m = source.match(/\/inventory\/([a-zA-Z0-9_-]+)/);
+  return m?.[1];
+}
 
 export function LeadForm({ source }: { source?: string }) {
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const bikeId = bikeIdFromSource(source);
+  const trackedFocus = useRef(false);
+
+  function onFocusCapture() {
+    if (trackedFocus.current) return;
+    trackedFocus.current = true;
+    trackContactClick(bikeId);
+  }
 
   function onSubmit(formData: FormData) {
     setMessage(null);
     setError(null);
+    trackContactClick(bikeId);
 
     const payload = {
       name: String(formData.get("name") ?? ""),
@@ -31,7 +47,7 @@ export function LeadForm({ source }: { source?: string }) {
     "w-full border border-chrome/25 bg-asphalt px-3 py-2.5 text-ink outline-none transition-colors placeholder:text-steel/60 focus:border-lamp";
 
   return (
-    <form action={onSubmit} className="space-y-4">
+    <form action={onSubmit} className="space-y-4" onFocusCapture={onFocusCapture}>
       <div className="space-y-2">
         <label htmlFor="name" className="font-label text-steel">
           Name

@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BikeDetailAnalytics } from "@/components/analytics/bike-detail-analytics";
+import { AssetScorecardView } from "@/components/assets/asset-scorecard";
 import { LeadForm } from "@/components/lead-form";
 import { JsonLd } from "@/components/seo/json-ld";
 import { RelatedInventory } from "@/components/seo/related-inventory";
 import { SeoBreadcrumbs } from "@/components/seo/seo-breadcrumbs";
 import { SeoFaq } from "@/components/seo/seo-faq";
+import { loadScorecardForBike } from "@/lib/assets/load-scorecard";
 import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 import { hasRecentPriceDrop, isNewArrival } from "@/lib/inventory-public";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
@@ -122,6 +125,7 @@ export default async function BikeDetailPage({ params }: Props) {
     excludeId: bike.id,
     take: 6,
   });
+  const scorecard = await loadScorecardForBike(bike.id);
 
   const insights = [
     { label: "Perfect for", value: bike.perfectFor },
@@ -150,6 +154,7 @@ export default async function BikeDetailPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-12">
+      <BikeDetailAnalytics bikeId={bike.id} />
       <JsonLd data={graph} />
       <SeoBreadcrumbs items={breadcrumbs} />
 
@@ -239,6 +244,12 @@ export default async function BikeDetailPage({ params }: Props) {
 
       <SeoFaq faqs={faqs} />
       <RelatedInventory bikes={related} />
+
+      {scorecard ? (
+        <div className="joe-panel p-5">
+          <AssetScorecardView scorecard={scorecard} variant="joe" honestyBlurb />
+        </div>
+      ) : null}
 
       <div className="joe-panel p-5">
         <p className="font-label mb-1 text-lamp">Inquire</p>

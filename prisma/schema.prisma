@@ -192,8 +192,46 @@ model BikeAnalytics {
   shares              Int       @default(0)
   walkaroundRequests  Int       @default(0)
   testRideRequests    Int       @default(0)
+  uniqueVisitors      Int       @default(0)
+  impressions         Int       @default(0)
+  contactClicks       Int       @default(0)
+  financingOpens      Int       @default(0)
+  searchHits          Int       @default(0)
+  avgTimeOnPageMs     Int       @default(0)
+  timeOnPageSamples   Int       @default(0)
   lastViewedAt        DateTime?
+  lastDetailViewAt    DateTime?
   updatedAt           DateTime  @updatedAt
+}
+
+enum AnalyticsEventType {
+  PAGE_VIEW
+  BIKE_DETAIL_VIEW
+  INVENTORY_IMPRESSION
+  SEARCH_QUERY
+  FILTER_USAGE
+  TIME_ON_PAGE
+  CONTACT_CLICK
+  FINANCING_OPEN
+  FAVORITE
+  SHARE_CLICK
+  APPOINTMENT_REQUEST
+}
+
+model AnalyticsEvent {
+  id        String             @id @default(cuid())
+  type      AnalyticsEventType
+  bikeId    String?
+  sessionId String
+  path      String?
+  query     String?
+  filters   Json?
+  meta      Json?
+  createdAt DateTime           @default(now())
+
+  @@index([type, createdAt])
+  @@index([bikeId, type, createdAt])
+  @@index([sessionId, createdAt])
 }
 
 model Interaction {

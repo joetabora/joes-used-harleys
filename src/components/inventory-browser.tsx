@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { ImpressionTracker } from "@/components/analytics/impression-tracker";
 import { BikeCard, type BikeCardData } from "@/components/bike-card";
+import { track } from "@/lib/analytics/client";
 import {
   defaultFilters,
   filterBikes,
@@ -47,10 +49,38 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
   const [filters, setFilters] = useState<InventoryFilters>(() =>
     parseFiltersFromSearchParams(searchParams),
   );
+  const analyticsReady = useRef(false);
 
   useEffect(() => {
     setFilters(parseFiltersFromSearchParams(searchParams));
   }, [searchParams]);
+
+  useEffect(() => {
+    if (!analyticsReady.current) {
+      analyticsReady.current = true;
+      return;
+    }
+    const t = window.setTimeout(() => {
+      const q = filters.q.trim();
+      if (q.length >= 2) {
+        track({
+          type: "SEARCH_QUERY",
+          query: q,
+          path: pathname,
+          filters: { ...filters },
+        });
+      }
+      if (filtersAreActive(filters)) {
+        track({
+          type: "FILTER_USAGE",
+          path: pathname,
+          query: q || null,
+          filters: { ...filters },
+        });
+      }
+    }, 600);
+    return () => window.clearTimeout(t);
+  }, [filters, pathname]);
 
   const bounds = useMemo(() => inventoryBounds(bikes), [bikes]);
 
@@ -266,19 +296,20 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((bike) => (
-            <BikeCard
-              key={bike.id}
-              bike={{
-                id: bike.id,
-                year: bike.year,
-                make: bike.make,
-                model: bike.model,
-                mileage: bike.mileage,
-                price: bike.price,
-                status: bike.status,
-                photoUrl: bike.photoUrl,
-              }}
-            />
+            <ImpressionTracker key={bike.id} bikeId={bike.id}>
+              <BikeCard
+                bike={{
+                  id: bike.id,
+                  year: bike.year,
+                  make: bike.make,
+                  model: bike.model,
+                  mileage: bike.mileage,
+                  price: bike.price,
+                  status: bike.status,
+                  photoUrl: bike.photoUrl,
+                }}
+              />
+            </ImpressionTracker>
           ))}
         </div>
       )}

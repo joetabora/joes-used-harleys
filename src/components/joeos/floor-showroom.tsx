@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { BikeAssetTile } from "@/components/joeos/bike-asset-tile";
 import { EmptyState } from "@/components/joeos/ui";
+import type { FloorScorePills } from "@/lib/assets/load-scorecard";
 import type { FloorBike, Severity } from "@/lib/joeos/briefing";
 
 const filters: { id: "all" | Severity; label: string }[] = [
@@ -12,7 +13,13 @@ const filters: { id: "all" | Severity; label: string }[] = [
   { id: "ok", label: "Clear" },
 ];
 
-export function FloorShowroom({ bikes }: { bikes: FloorBike[] }) {
+export function FloorShowroom({
+  bikes,
+  scorePills = {},
+}: {
+  bikes: FloorBike[];
+  scorePills?: Record<string, FloorScorePills>;
+}) {
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<"all" | Severity>("all");
 
@@ -24,8 +31,12 @@ export function FloorShowroom({ bikes }: { bikes: FloorBike[] }) {
         if (!query) return true;
         return `${b.year} ${b.make} ${b.model}`.toLowerCase().includes(query);
       })
-      .sort((a, b) => b.urgency - a.urgency);
-  }, [bikes, filter, q]);
+      .sort((a, b) => {
+        const oa = scorePills[a.id]?.opportunity ?? a.urgency;
+        const ob = scorePills[b.id]?.opportunity ?? b.urgency;
+        return ob - oa;
+      });
+  }, [bikes, filter, q, scorePills]);
 
   return (
     <div>
@@ -58,7 +69,11 @@ export function FloorShowroom({ bikes }: { bikes: FloorBike[] }) {
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {visible.map((bike) => (
-            <BikeAssetTile key={bike.id} bike={bike} />
+            <BikeAssetTile
+              key={bike.id}
+              bike={bike}
+              pills={scorePills[bike.id]}
+            />
           ))}
         </div>
       )}
