@@ -25,6 +25,14 @@ npm test                 # includes seo-scoring + knowledge-pack + knowledge-gra
 
 Set `INDEXNOW_KEY` and host `public/{key}.txt`. Inventory sync pings IndexNow best-effort.
 
+## Canonical site URL
+
+Single source: `NEXT_PUBLIC_SITE_URL` → `siteConfig.url` (`src/lib/site.ts`).
+
+- Sitemap index + shards and `robots.txt` all derive from this value.
+- Production / Vercel builds **fail** if the URL is missing, `http://`, or localhost (`npm run assert:site-url` runs in `npm run build`).
+- Canonical production value: `https://www.joesusedharleys.com`
+
 ## Honesty
 
 Never invent inventory, prices, comps, or dealer rankings. Empty related inventory is OK.
