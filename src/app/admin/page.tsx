@@ -1,4 +1,5 @@
 import { CommandCenter } from "@/components/joeos/command-center";
+import { EmptyState } from "@/components/joeos/ui";
 import { isAdminEnvConfigured, getAdminSession, requireAdminOrRedirect } from "@/lib/auth";
 import { loadMorningBriefing } from "@/lib/joeos/load-briefing";
 import { createMetadata } from "@/lib/seo";
@@ -18,14 +19,11 @@ export default async function AdminHomePage() {
   const { ready, briefing } = await loadMorningBriefing(session?.email);
 
   return (
-    <div className="space-y-4">
+    <div className="jos-stack-dense">
       {!isAdminEnvConfigured() ? (
-        <div className="jos-panel p-4">
-          <p className="jos-label text-[var(--jos-warn)]">Admin env incomplete</p>
-          <p className="jos-body mt-2 text-sm">
-            Set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET.
-          </p>
-        </div>
+        <EmptyState label="Admin env incomplete" warn>
+          Set ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_SESSION_SECRET.
+        </EmptyState>
       ) : null}
       <CommandCenter briefing={briefing} dbReady={ready} />
     </div>

@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateLeadStatus } from "@/actions/admin";
 import type { LeadStatus } from "@/generated/prisma/client";
+import { JosButton } from "@/components/joeos/ui";
 
 export function LeadStatusButtons({ id }: { id: string }) {
   const router = useRouter();
@@ -18,30 +19,15 @@ export function LeadStatusButtons({ id }: { id: string }) {
 
   return (
     <div className="flex flex-wrap gap-2">
-      <button
-        type="button"
-        className="jos-btn jos-btn-ghost"
-        disabled={pending}
-        onClick={() => setStatus("NEW")}
-      >
+      <JosButton variant="ghost" disabled={pending} onClick={() => setStatus("NEW")}>
         New
-      </button>
-      <button
-        type="button"
-        className="jos-btn jos-btn-ghost"
-        disabled={pending}
-        onClick={() => setStatus("CONTACTED")}
-      >
+      </JosButton>
+      <JosButton variant="ghost" disabled={pending} onClick={() => setStatus("CONTACTED")}>
         Contacted
-      </button>
-      <button
-        type="button"
-        className="jos-btn jos-btn-ghost"
-        disabled={pending}
-        onClick={() => setStatus("CLOSED")}
-      >
+      </JosButton>
+      <JosButton variant="ghost" disabled={pending} onClick={() => setStatus("CLOSED")}>
         Closed
-      </button>
+      </JosButton>
     </div>
   );
 }

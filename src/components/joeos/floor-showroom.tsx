@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { BikeAssetTile } from "@/components/joeos/bike-asset-tile";
+import { EmptyState } from "@/components/joeos/ui";
 import type { FloorBike, Severity } from "@/lib/joeos/briefing";
 
 const filters: { id: "all" | Severity; label: string }[] = [
@@ -28,7 +29,7 @@ export function FloorShowroom({ bikes }: { bikes: FloorBike[] }) {
 
   return (
     <div>
-      <div className="jos-search-bar space-y-3">
+      <div className="jos-search-bar jos-stack-dense">
         <input
           type="search"
           value={q}
@@ -37,14 +38,13 @@ export function FloorShowroom({ bikes }: { bikes: FloorBike[] }) {
           className="jos-field"
           aria-label="Search floor inventory"
         />
-        <div className="flex flex-wrap gap-2">
+        <div className="jos-chip-row" role="group" aria-label="Severity filter">
           {filters.map((f) => (
             <button
               key={f.id}
               type="button"
-              className={
-                filter === f.id ? "jos-btn jos-btn-primary" : "jos-btn jos-btn-ghost"
-              }
+              className="jos-chip"
+              data-active={filter === f.id}
               onClick={() => setFilter(f.id)}
             >
               {f.label}
@@ -54,11 +54,9 @@ export function FloorShowroom({ bikes }: { bikes: FloorBike[] }) {
       </div>
 
       {visible.length === 0 ? (
-        <div className="jos-panel p-4">
-          <p className="jos-body">No machines match this filter.</p>
-        </div>
+        <EmptyState label="No match">No machines match this filter.</EmptyState>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {visible.map((bike) => (
             <BikeAssetTile key={bike.id} bike={bike} />
           ))}

@@ -16,7 +16,7 @@ Customers never see this name.
 - **PIPELINE** (`/admin/leads`) — follow-up queue
 - **FEED** (`/admin/sync`) — inventory sync bay
 
-Design contract: [joeos-design.md](./joeos-design.md)
+Design contract: [joeos-design.md](./joeos-design.md) (v3)
 
 ## Long-term capabilities
 

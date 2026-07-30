@@ -1,4 +1,12 @@
 import { SyncControls } from "@/components/admin/sync-controls";
+import {
+  EmptyState,
+  JosBody,
+  JosData,
+  JosLabel,
+  JosPanel,
+  JosSectionHeader,
+} from "@/components/joeos/ui";
 import { requireAdminOrRedirect } from "@/lib/auth";
 import { bikeLabel, formatPrice } from "@/lib/format";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
@@ -23,10 +31,9 @@ export default async function AdminSyncPage() {
 
   if (!isDatabaseConfigured() || !prisma) {
     return (
-      <div className="jos-panel p-4">
-        <p className="jos-label text-[var(--jos-warn)]">Database offline</p>
-        <p className="jos-body mt-2">Connect Supabase before arming inventory sync.</p>
-      </div>
+      <EmptyState label="Database offline" warn>
+        Connect Supabase before arming inventory sync.
+      </EmptyState>
     );
   }
 
@@ -96,53 +103,63 @@ export default async function AdminSyncPage() {
   ];
 
   return (
-    <div className="space-y-8">
-      <header>
-        <p className="jos-section">Feed bay</p>
-        <h1 className="jos-heading mt-1 text-3xl">Inventory feed</h1>
-        <p className="jos-body mt-2 max-w-xl text-sm">
+    <div className="jos-stack-screen">
+      <header className="jos-stack-dense">
+        <JosSectionHeader section="Feed bay" title="Inventory feed" />
+        <JosBody className="max-w-xl text-sm">
           Mirrors Milwaukee Harley-Davidson used Harley inventory. Never invents bikes.
-        </p>
+        </JosBody>
       </header>
 
-      <div className="jos-panel p-4">
-        <p className="jos-label mb-3">Arming switches</p>
-        <SyncControls />
-      </div>
-
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {telemetry.map((item) => (
-          <div key={item.label} className="jos-kpi-gauge">
-            <p className="jos-label">{item.label}</p>
-            <p className="jos-heading mt-2 text-lg break-words">{item.value}</p>
-            <p className="jos-data mt-2 break-all">{item.detail}</p>
-          </div>
-        ))}
+      {/* FocusZone: sync actions */}
+      <div className="jos-feed-actions">
+        <JosPanel>
+          <JosLabel className="mb-3">Arming switches</JosLabel>
+          <SyncControls />
+        </JosPanel>
       </div>
 
       {lastLog ? (
-        <div className="jos-panel p-4">
+        <JosPanel>
           <p className="jos-section mb-3">Last run counts</p>
-          <div className="grid gap-2 text-sm sm:grid-cols-3">
-            <p>Created: {lastLog.createdCount}</p>
-            <p>Updated: {lastLog.updatedCount}</p>
-            <p>Unchanged: {lastLog.unchangedCount}</p>
-            <p>Sold (off feed): {lastLog.soldCount}</p>
-            <p>Price changes: {lastLog.priceChangeCount}</p>
-            <p>Errors: {lastLog.errorCount}</p>
+          <div className="grid gap-2 sm:grid-cols-3">
+            <JosData>Created: {lastLog.createdCount}</JosData>
+            <JosData>Updated: {lastLog.updatedCount}</JosData>
+            <JosData>Unchanged: {lastLog.unchangedCount}</JosData>
+            <JosData>Sold (off feed): {lastLog.soldCount}</JosData>
+            <JosData>Price changes: {lastLog.priceChangeCount}</JosData>
+            <JosData>Errors: {lastLog.errorCount}</JosData>
           </div>
-        </div>
+        </JosPanel>
       ) : null}
 
+      {/* Secondary: telemetry as data list */}
+      <section className="jos-stack-dense jos-secondary">
+        <h2 className="jos-section">Telemetry</h2>
+        <ul className="divide-y divide-[var(--jos-border)] border border-[var(--jos-border)]">
+          {telemetry.map((item) => (
+            <li key={item.label} className="jos-pad flex flex-col gap-1 sm:flex-row sm:justify-between">
+              <JosLabel>{item.label}</JosLabel>
+              <div className="sm:text-right">
+                <p className="jos-data break-words text-[var(--jos-bone)]">{item.value}</p>
+                <JosData className="break-all">{item.detail}</JosData>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       {errors.length > 0 ? (
-        <div className="jos-panel p-4">
+        <JosPanel>
           <p className="jos-label text-[var(--jos-danger)]">Errors</p>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+          <ul className="mt-2 list-disc space-y-1 pl-5">
             {errors.map((e, i) => (
-              <li key={i}>{e.message ?? JSON.stringify(e)}</li>
+              <li key={i} className="jos-body text-sm">
+                {e.message ?? JSON.stringify(e)}
+              </li>
             ))}
           </ul>
-        </div>
+        </JosPanel>
       ) : null}
     </div>
   );

@@ -1,6 +1,6 @@
 /**
- * JoeOS design system v2 — motorcycle sales command center.
- * No blue primary. Harley orange + void / gunmetal.
+ * JoeOS design system v3 — motorcycle sales command center.
+ * Runtime CSS under .jos is source of truth; this mirrors tokens for TS.
  */
 
 export const colors = {
@@ -21,6 +21,23 @@ export const colors = {
 
 export type JoeOsColor = keyof typeof colors;
 
+/** Map JS keys to CSS custom property names (camelCase → kebab where needed). */
+const cssName: Record<JoeOsColor, string> = {
+  void: "void",
+  voidDeep: "void-deep",
+  panel: "panel",
+  panelRaised: "panel-raised",
+  orange: "orange",
+  orangeHot: "orange-hot",
+  orangeDim: "orange-dim",
+  steel: "steel",
+  silver: "silver",
+  bone: "bone",
+  danger: "danger",
+  success: "success",
+  warn: "warn",
+};
+
 export function cssVar(token: JoeOsColor): string {
-  return `var(--jos-${token})`;
+  return `var(--jos-${cssName[token]})`;
 }

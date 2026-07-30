@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   Crosshair,
   Bike,
@@ -10,8 +11,10 @@ import {
   ExternalLink,
   LogOut,
   LogIn,
+  MoreHorizontal,
 } from "lucide-react";
 import { navItems } from "@/design-system/components";
+import { JosIcon } from "@/components/joeos/ui/jos-icon";
 
 const icons = {
   command: Crosshair,
@@ -34,6 +37,13 @@ export function CommandShell({
 }) {
   const pathname = usePathname() ?? "";
   const isLogin = pathname === "/admin/login";
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [pathForMore, setPathForMore] = useState(pathname);
+
+  if (pathname !== pathForMore) {
+    setPathForMore(pathname);
+    setMoreOpen(false);
+  }
 
   if (isLogin) {
     return (
@@ -62,26 +72,26 @@ export function CommandShell({
                 data-active={isActive(pathname, item.href)}
                 title={item.label}
               >
-                <Icon className="size-4" aria-hidden />
+                <JosIcon icon={Icon} size={16} />
                 {item.short}
               </Link>
             );
           })}
           <div className="jos-rail-footer">
             <Link href="/" className="jos-rail-link" target="_blank" title="Public site">
-              <ExternalLink className="size-3.5" aria-hidden />
+              <JosIcon icon={ExternalLink} size={16} />
               SITE
             </Link>
             {email ? (
               <form action="/api/admin/logout" method="POST" className="w-full">
                 <button type="submit" className="jos-rail-link w-full" title="Sign out">
-                  <LogOut className="size-3.5" aria-hidden />
+                  <JosIcon icon={LogOut} size={16} />
                   OUT
                 </button>
               </form>
             ) : (
               <Link href="/admin/login" className="jos-rail-link" title="Sign in">
-                <LogIn className="size-3.5" aria-hidden />
+                <JosIcon icon={LogIn} size={16} />
                 IN
               </Link>
             )}
@@ -101,12 +111,71 @@ export function CommandShell({
                 href={item.href}
                 data-active={isActive(pathname, item.href)}
               >
-                <Icon className="size-4" aria-hidden />
+                <JosIcon icon={Icon} size={16} />
                 {item.short}
               </Link>
             );
           })}
+          <button
+            type="button"
+            data-active={moreOpen}
+            aria-expanded={moreOpen}
+            aria-label="More"
+            onClick={() => setMoreOpen((o) => !o)}
+          >
+            <JosIcon icon={MoreHorizontal} size={16} />
+            MORE
+          </button>
         </nav>
+
+        {moreOpen ? (
+          <div
+            className="jos-more-sheet"
+            role="dialog"
+            aria-label="More"
+            onClick={() => setMoreOpen(false)}
+          >
+            <div
+              className="jos-more-panel"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="jos-section mb-1">Utilities</p>
+              <Link
+                href="/"
+                target="_blank"
+                className="jos-btn jos-btn-ghost w-full"
+                onClick={() => setMoreOpen(false)}
+              >
+                <JosIcon icon={ExternalLink} size={16} />
+                Public site
+              </Link>
+              {email ? (
+                <form action="/api/admin/logout" method="POST">
+                  <button type="submit" className="jos-btn jos-btn-ghost w-full">
+                    <JosIcon icon={LogOut} size={16} />
+                    Sign out
+                  </button>
+                </form>
+              ) : (
+                <Link
+                  href="/admin/login"
+                  className="jos-btn jos-btn-ghost w-full"
+                  onClick={() => setMoreOpen(false)}
+                >
+                  <JosIcon icon={LogIn} size={16} />
+                  Sign in
+                </Link>
+              )}
+              <button
+                type="button"
+                className="jos-btn jos-btn-primary w-full"
+                onClick={() => setMoreOpen(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

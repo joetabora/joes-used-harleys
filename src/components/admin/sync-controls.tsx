@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { runInventorySync } from "@/actions/sync";
+import { JosButton } from "@/components/joeos/ui";
 
 export function SyncControls() {
   const router = useRouter();
@@ -30,27 +31,17 @@ export function SyncControls() {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="jos-stack-dense">
       <div className="flex flex-wrap gap-3">
-        <button
-          type="button"
-          className="jos-btn jos-btn-primary"
-          disabled={pending}
-          onClick={() => run(false)}
-        >
+        <JosButton disabled={pending} onClick={() => run(false)}>
           {pending ? "Running…" : "Manual Sync"}
-        </button>
-        <button
-          type="button"
-          className="jos-btn jos-btn-ghost"
-          disabled={pending}
-          onClick={() => run(true)}
-        >
+        </JosButton>
+        <JosButton variant="ghost" disabled={pending} onClick={() => run(true)}>
           Dry Run
-        </button>
+        </JosButton>
       </div>
-      {message ? <p className="jos-data text-[var(--jos-success)]">{message}</p> : null}
-      {error ? <p className="jos-data text-[var(--jos-danger)]">{error}</p> : null}
+      {message ? <p className="jos-status-ok jos-data">{message}</p> : null}
+      {error ? <p className="jos-status-err jos-data">{error}</p> : null}
     </div>
   );
 }

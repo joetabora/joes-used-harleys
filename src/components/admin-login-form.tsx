@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { JosButton, JosField, JosInput } from "@/components/joeos/ui";
 
 export function AdminLoginForm() {
   const [pending, startTransition] = useTransition();
@@ -41,37 +42,29 @@ export function AdminLoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <label htmlFor="email" className="jos-label">
-          Email
-        </label>
-        <input
+    <form onSubmit={onSubmit} className="jos-stack-dense">
+      <JosField label="Email" htmlFor="email">
+        <JosInput
           id="email"
           name="email"
           type="email"
           required
           autoComplete="username"
-          className="jos-field"
         />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="password" className="jos-label">
-          Password
-        </label>
-        <input
+      </JosField>
+      <JosField label="Password" htmlFor="password">
+        <JosInput
           id="password"
           name="password"
           type="password"
           required
           autoComplete="current-password"
-          className="jos-field"
         />
-      </div>
-      <button type="submit" disabled={pending} className="jos-btn jos-btn-primary w-full">
+      </JosField>
+      <JosButton type="submit" disabled={pending} className="w-full">
         {pending ? "Signing in…" : "Unlock"}
-      </button>
-      {error ? <p className="text-sm text-[var(--jos-danger)]">{error}</p> : null}
+      </JosButton>
+      {error ? <p className="jos-status-err">{error}</p> : null}
     </form>
   );
 }

@@ -2,12 +2,7 @@ import Link from "next/link";
 import type { FloorBike } from "@/lib/joeos/briefing";
 import { severityLabel } from "@/lib/joeos/briefing";
 import { formatMiles, formatPrice } from "@/lib/format";
-
-function pillClass(severity: FloorBike["severity"]) {
-  if (severity === "hot") return "jos-pill jos-pill-hot";
-  if (severity === "watch") return "jos-pill jos-pill-watch";
-  return "jos-pill jos-pill-ok";
-}
+import { Gauge, JosData, JosItem, JosKpi, SeverityPill } from "@/components/joeos/ui";
 
 export function BikeAssetTile({ bike }: { bike: FloorBike }) {
   const label = `${bike.year} ${bike.make} ${bike.model}`;
@@ -23,23 +18,17 @@ export function BikeAssetTile({ bike }: { bike: FloorBike }) {
       </div>
       <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className={pillClass(bike.severity)}>{severityLabel(bike.severity)}</span>
-          <span className="jos-data">URG {bike.urgency}</span>
+          <SeverityPill severity={bike.severity}>{severityLabel(bike.severity)}</SeverityPill>
+          <JosData>URG {bike.urgency}</JosData>
         </div>
-        <p className="jos-label text-[var(--jos-steel)]">{bike.year}</p>
-        <h2 className="jos-heading text-base leading-tight">{bike.model}</h2>
-        <p className="jos-data">{formatMiles(bike.mileage)}</p>
+        <JosData>{bike.year}</JosData>
+        <JosItem className="text-base leading-tight">{bike.model}</JosItem>
+        <JosData>{formatMiles(bike.mileage)}</JosData>
         <div className="mt-auto flex items-end justify-between gap-2 pt-1">
-          <p className="jos-kpi text-xl text-[var(--jos-orange)]">{formatPrice(bike.price)}</p>
-          <p className="jos-data">{bike.daysOnLot}d</p>
+          <JosKpi className="text-xl text-[var(--jos-orange)]">{formatPrice(bike.price)}</JosKpi>
+          <JosData>{bike.daysOnLot}d</JosData>
         </div>
-        <div className="jos-gauge-track">
-          <div
-            className="jos-gauge-fill"
-            data-severity={bike.severity}
-            style={{ width: `${bike.urgency}%` }}
-          />
-        </div>
+        <Gauge percent={bike.urgency} severity={bike.severity} />
       </div>
     </Link>
   );

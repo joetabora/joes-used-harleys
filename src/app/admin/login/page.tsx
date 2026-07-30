@@ -23,7 +23,7 @@ export default async function AdminLoginPage() {
       <div className="jos-vault-panel jos-fade space-y-5">
         <div>
           <p className="jos-brand text-sm">Joe OS</p>
-          <h1 className="jos-heading mt-2 text-3xl">Vault lock</h1>
+          <h1 className="jos-title mt-2 text-3xl">Vault lock</h1>
           <p className="jos-body mt-2 text-sm">Authorized access only.</p>
         </div>
 

@@ -3,10 +3,15 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteBike, updateJoeBikeFields } from "@/actions/admin";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import {
+  JosButton,
+  JosCheckbox,
+  JosField,
+  JosInput,
+  JosPanel,
+  JosSelect,
+  JosTextarea,
+} from "@/components/joeos/ui";
 import { formatMiles, formatPrice } from "@/lib/format";
 
 type BikeValues = {
@@ -91,23 +96,23 @@ export function BikeEditorForm({ bike }: { bike: BikeValues }) {
   }
 
   return (
-    <div className="space-y-8">
-      <aside className="rounded-lg border border-white/10 bg-muted/30 p-4 text-sm">
-        <p className="font-medium">Dealership snapshot (read-only)</p>
-        <p className="mt-2 text-muted-foreground">
+    <div className="jos-stack-section">
+      <JosPanel className="jos-secondary">
+        <p className="jos-label">Dealership snapshot</p>
+        <p className="jos-body mt-2">
           {bike.year} {bike.make} {bike.model}
           {bike.title ? ` — ${bike.title}` : ""}
         </p>
-        <ul className="mt-3 space-y-1 text-muted-foreground">
-          <li>Source: {bike.source ?? "—"}</li>
-          <li>VIN: {bike.vin ?? "—"}</li>
-          <li>Stock: {bike.stockNumber ?? "—"}</li>
-          <li>Price: {formatPrice(bike.price ?? null)}</li>
-          <li>Miles: {formatMiles(bike.mileage ?? null)}</li>
-          <li>Color: {bike.color ?? "—"}</li>
-          <li>Dealer photos: {bike.photos?.length ?? 0}</li>
+        <ul className="mt-3 space-y-1">
+          <li className="jos-data">Source: {bike.source ?? "—"}</li>
+          <li className="jos-data">VIN: {bike.vin ?? "—"}</li>
+          <li className="jos-data">Stock: {bike.stockNumber ?? "—"}</li>
+          <li className="jos-data">Price: {formatPrice(bike.price ?? null)}</li>
+          <li className="jos-data">Miles: {formatMiles(bike.mileage ?? null)}</li>
+          <li className="jos-data">Color: {bike.color ?? "—"}</li>
+          <li className="jos-data">Dealer photos: {bike.photos?.length ?? 0}</li>
           {bike.inventoryUrl ? (
-            <li>
+            <li className="jos-data">
               <a className="underline" href={bike.inventoryUrl} target="_blank" rel="noreferrer">
                 Dealership listing
               </a>
@@ -115,51 +120,42 @@ export function BikeEditorForm({ bike }: { bike: BikeValues }) {
           ) : null}
         </ul>
         {bike.description ? (
-          <p className="mt-3 max-h-40 overflow-y-auto whitespace-pre-wrap text-muted-foreground">
+          <p className="jos-body mt-3 max-h-40 overflow-y-auto whitespace-pre-wrap text-sm">
             {bike.description}
           </p>
         ) : null}
-      </aside>
+      </JosPanel>
 
-      <form action={onSubmit} className="space-y-4">
-        <p className="font-medium">Joe content (JoeOS — never overwritten by sync)</p>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="featuredRank">Featured rank (0 = off)</Label>
-            <Input
+      <form action={onSubmit} className="jos-stack-dense">
+        <p className="jos-section">Joe content</p>
+        <p className="jos-data">Never overwritten by sync</p>
+        <div className="mt-2 grid gap-4 sm:grid-cols-2">
+          <JosField label="Featured rank (0 = off)" htmlFor="featuredRank">
+            <JosInput
               id="featuredRank"
               name="featuredRank"
               type="number"
               min={0}
               defaultValue={bike.featuredRank ?? 0}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <select
-              id="status"
-              name="status"
-              defaultValue={bike.status}
-              className="h-8 w-full rounded-lg border border-input bg-transparent px-2 text-sm"
-            >
+          </JosField>
+          <JosField label="Status" htmlFor="status">
+            <JosSelect id="status" name="status" defaultValue={bike.status}>
               <option value="AVAILABLE">Available</option>
               <option value="PENDING">Pending</option>
               <option value="SOLD">Sold</option>
-            </select>
-          </div>
-          <div className="flex items-center gap-2 sm:col-span-2">
-            <input
+            </JosSelect>
+          </JosField>
+          <div className="sm:col-span-2">
+            <JosCheckbox
               id="hidden"
               name="hidden"
-              type="checkbox"
+              label="Hidden from public inventory"
               defaultChecked={bike.hidden ?? false}
-              className="size-4"
             />
-            <Label htmlFor="hidden">Hidden from public inventory</Label>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="joeRating">Joe rating (1–10)</Label>
-            <Input
+          <JosField label="Joe rating (1–10)" htmlFor="joeRating">
+            <JosInput
               id="joeRating"
               name="joeRating"
               type="number"
@@ -167,128 +163,129 @@ export function BikeEditorForm({ bike }: { bike: BikeValues }) {
               max={10}
               defaultValue={bike.joeRating ?? undefined}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="perfectFor">Perfect for</Label>
-            <Input id="perfectFor" name="perfectFor" defaultValue={bike.perfectFor ?? ""} />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="favoriteFeature">Favorite feature</Label>
-            <Input
+          </JosField>
+          <JosField label="Perfect for" htmlFor="perfectFor">
+            <JosInput id="perfectFor" name="perfectFor" defaultValue={bike.perfectFor ?? ""} />
+          </JosField>
+          <JosField label="Favorite feature" htmlFor="favoriteFeature" className="sm:col-span-2">
+            <JosInput
               id="favoriteFeature"
               name="favoriteFeature"
               defaultValue={bike.favoriteFeature ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="idealRider">Ideal rider</Label>
-            <Input id="idealRider" name="idealRider" defaultValue={bike.idealRider ?? ""} />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="thingsToMention">Things to mention</Label>
-            <Textarea
+          </JosField>
+          <JosField label="Ideal rider" htmlFor="idealRider" className="sm:col-span-2">
+            <JosInput id="idealRider" name="idealRider" defaultValue={bike.idealRider ?? ""} />
+          </JosField>
+          <JosField label="Things to mention" htmlFor="thingsToMention" className="sm:col-span-2">
+            <JosTextarea
               id="thingsToMention"
               name="thingsToMention"
               rows={3}
               defaultValue={bike.thingsToMention ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="thingsToCheck">Things to check</Label>
-            <Textarea
+          </JosField>
+          <JosField label="Things to check" htmlFor="thingsToCheck" className="sm:col-span-2">
+            <JosTextarea
               id="thingsToCheck"
               name="thingsToCheck"
               rows={3}
               defaultValue={bike.thingsToCheck ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="whyIDLikeIt">Why I&apos;d like it</Label>
-            <Textarea
+          </JosField>
+          <JosField label="Why I'd like it" htmlFor="whyIDLikeIt" className="sm:col-span-2">
+            <JosTextarea
               id="whyIDLikeIt"
               name="whyIDLikeIt"
               rows={3}
               defaultValue={bike.whyIDLikeIt ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="whoShouldSkipIt">Who should skip it</Label>
-            <Textarea
+          </JosField>
+          <JosField label="Who should skip it" htmlFor="whoShouldSkipIt" className="sm:col-span-2">
+            <JosTextarea
               id="whoShouldSkipIt"
               name="whoShouldSkipIt"
               rows={3}
               defaultValue={bike.whoShouldSkipIt ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="conversationStarter">Conversation starter</Label>
-            <Input
+          </JosField>
+          <JosField
+            label="Conversation starter"
+            htmlFor="conversationStarter"
+            className="sm:col-span-2"
+          >
+            <JosInput
               id="conversationStarter"
               name="conversationStarter"
               defaultValue={bike.conversationStarter ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="buyingTips">Buying tips</Label>
-            <Textarea
+          </JosField>
+          <JosField label="Buying tips" htmlFor="buyingTips" className="sm:col-span-2">
+            <JosTextarea
               id="buyingTips"
               name="buyingTips"
               rows={3}
               defaultValue={bike.buyingTips ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="walkaroundVideoUrl">Walkaround video URL</Label>
-            <Input
+          </JosField>
+          <JosField
+            label="Walkaround video URL"
+            htmlFor="walkaroundVideoUrl"
+            className="sm:col-span-2"
+          >
+            <JosInput
               id="walkaroundVideoUrl"
               name="walkaroundVideoUrl"
               defaultValue={bike.walkaroundVideoUrl ?? ""}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="seoHeadline">SEO headline</Label>
-            <Input id="seoHeadline" name="seoHeadline" defaultValue={bike.seoHeadline ?? ""} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="seoDescription">SEO description</Label>
-            <Input
+          </JosField>
+          <JosField label="SEO headline" htmlFor="seoHeadline">
+            <JosInput id="seoHeadline" name="seoHeadline" defaultValue={bike.seoHeadline ?? ""} />
+          </JosField>
+          <JosField label="SEO description" htmlFor="seoDescription">
+            <JosInput
               id="seoDescription"
               name="seoDescription"
               defaultValue={bike.seoDescription ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="personalHeroImageUrl">Personal hero image URL</Label>
-            <Input
+          </JosField>
+          <JosField
+            label="Personal hero image URL"
+            htmlFor="personalHeroImageUrl"
+            className="sm:col-span-2"
+          >
+            <JosInput
               id="personalHeroImageUrl"
               name="personalHeroImageUrl"
               defaultValue={bike.personalHeroImageUrl ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="personalPhotos">Personal photo URLs (one per line)</Label>
-            <Textarea
+          </JosField>
+          <JosField
+            label="Personal photo URLs (one per line)"
+            htmlFor="personalPhotos"
+            className="sm:col-span-2"
+          >
+            <JosTextarea
               id="personalPhotos"
               name="personalPhotos"
               rows={3}
               defaultValue={bike.personalPhotos?.join("\n") ?? ""}
             />
-          </div>
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="internalNotes">Internal notes (private)</Label>
-            <Textarea
+          </JosField>
+          <JosField label="Internal notes (private)" htmlFor="internalNotes" className="sm:col-span-2">
+            <JosTextarea
               id="internalNotes"
               name="internalNotes"
               rows={3}
               defaultValue={bike.internalNotes ?? ""}
             />
-          </div>
+          </JosField>
         </div>
-        <Button type="submit" disabled={pending}>
+        <JosButton type="submit" disabled={pending} className="mt-2">
           {pending ? "Saving…" : "Save Joe content"}
-        </Button>
-        {message ? <p className="text-sm text-green-600">{message}</p> : null}
-        {error ? <p className="text-sm text-destructive">{error}</p> : null}
+        </JosButton>
+        {message ? <p className="jos-status-ok">{message}</p> : null}
+        {error ? <p className="jos-status-err">{error}</p> : null}
       </form>
     </div>
   );
@@ -301,8 +298,8 @@ export function DeleteBikeButton({ id, source }: { id: string; source?: string }
   if (source === "FEED") return null;
 
   return (
-    <Button
-      variant="destructive"
+    <JosButton
+      variant="danger"
       disabled={pending}
       onClick={() => {
         if (!confirm("Delete this bike?")) return;
@@ -313,6 +310,6 @@ export function DeleteBikeButton({ id, source }: { id: string; source?: string }
       }}
     >
       {pending ? "Deleting…" : "Delete"}
-    </Button>
+    </JosButton>
   );
 }

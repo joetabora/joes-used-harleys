@@ -3,9 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createInteraction } from "@/actions/admin";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { JosButton, JosField, JosSelect, JosTextarea } from "@/components/joeos/ui";
 
 export function InteractionForm({ leadId }: { leadId: string }) {
   const router = useRouter();
@@ -32,32 +30,24 @@ export function InteractionForm({ leadId }: { leadId: string }) {
   }
 
   return (
-    <form action={onSubmit} className="space-y-3">
-      <div className="space-y-2">
-        <Label htmlFor="type">Type</Label>
-        <select
-          id="type"
-          name="type"
-          required
-          className="h-8 w-full rounded-lg border border-input bg-transparent px-2 text-sm"
-          defaultValue="PHONE_CALL"
-        >
+    <form action={onSubmit} className="jos-stack-dense">
+      <JosField label="Type" htmlFor="type">
+        <JosSelect id="type" name="type" required defaultValue="PHONE_CALL">
           <option value="PHONE_CALL">Phone call</option>
           <option value="TEXT">Text</option>
           <option value="VISIT">Visit</option>
           <option value="EMAIL">Email</option>
           <option value="TEST_RIDE">Test ride</option>
-        </select>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="note">Note</Label>
-        <Textarea id="note" name="note" rows={3} placeholder="What happened?" />
-      </div>
-      <Button type="submit" disabled={pending}>
+        </JosSelect>
+      </JosField>
+      <JosField label="Note" htmlFor="note">
+        <JosTextarea id="note" name="note" rows={3} placeholder="What happened?" />
+      </JosField>
+      <JosButton type="submit" disabled={pending}>
         {pending ? "Saving…" : "Log interaction"}
-      </Button>
-      {message ? <p className="text-sm text-green-700">{message}</p> : null}
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      </JosButton>
+      {message ? <p className="jos-status-ok">{message}</p> : null}
+      {error ? <p className="jos-status-err">{error}</p> : null}
     </form>
   );
 }

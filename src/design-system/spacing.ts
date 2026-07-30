@@ -1,14 +1,17 @@
 /**
- * JoeOS spacing + operational thresholds.
+ * JoeOS spacing + operational thresholds (v3).
+ * CSS vars --jos-space-1 … --jos-space-8 are the runtime scale.
  */
 
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  "2xl": 32,
+  1: 4,
+  2: 8,
+  3: 12,
+  4: 16,
+  5: 20,
+  6: 24,
+  7: 32,
+  8: 48,
 } as const;
 
 export const radius = {
@@ -21,6 +24,7 @@ export const layout = {
   railWidth: "4.5rem",
   contentMax: "90rem",
   mobileNavHeight: "4rem",
+  touchMin: "2.75rem",
 } as const;
 
 /** Days-on-lot thresholds for inventory severity. */

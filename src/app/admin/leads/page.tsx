@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { LeadStatusButtons } from "@/components/lead-status-buttons";
+import {
+  EmptyState,
+  JosBody,
+  JosData,
+  JosItem,
+  JosSectionHeader,
+  SeverityPill,
+} from "@/components/joeos/ui";
 import { requireAdminOrRedirect } from "@/lib/auth";
 import { daysBetween } from "@/lib/joeos/briefing";
 import { leadStaleDays } from "@/design-system/spacing";
@@ -20,10 +28,9 @@ export default async function AdminLeadsPage() {
 
   if (!isDatabaseConfigured() || !prisma) {
     return (
-      <div className="jos-panel p-4">
-        <p className="jos-label text-[var(--jos-warn)]">Database offline</p>
-        <p className="jos-body mt-2">Connect Supabase before viewing the pipeline.</p>
-      </div>
+      <EmptyState label="Database offline" warn>
+        Connect Supabase before viewing the pipeline.
+      </EmptyState>
     );
   }
 
@@ -43,20 +50,29 @@ export default async function AdminLeadsPage() {
     return daysBetween(bAnchor, now) - daysBetween(aAnchor, now);
   });
 
+  const staleCount = ranked.filter((lead) => {
+    const anchor = lead.interactions[0]?.createdAt ?? lead.createdAt;
+    const days = daysBetween(anchor, now);
+    return (
+      lead.status !== "CLOSED" &&
+      ((!lead.interactions[0] && lead.status === "NEW") || days >= leadStaleDays)
+    );
+  }).length;
+
   return (
-    <div className="space-y-6">
-      <header>
-        <p className="jos-section">Pipeline</p>
-        <h1 className="jos-heading mt-1 text-3xl">Customer queue</h1>
-        <p className="jos-body mt-2 text-sm">
+    <div className="jos-stack-section">
+      <header className="jos-stack-dense">
+        <JosSectionHeader section="Pipeline" title="Customer queue" />
+        <JosBody className="text-sm">
           Follow up fast — every inquiry is a shot at a sale.
-        </p>
+        </JosBody>
+        {staleCount > 0 ? (
+          <SeverityPill severity="watch">{staleCount} stale</SeverityPill>
+        ) : null}
       </header>
 
       {ranked.length === 0 ? (
-        <div className="jos-panel p-4">
-          <p className="jos-body">No leads yet. Contact form submissions land here.</p>
-        </div>
+        <EmptyState label="No leads">Contact form submissions land here.</EmptyState>
       ) : (
         <ul className="space-y-2">
           {ranked.map((lead) => {
@@ -66,41 +82,37 @@ export default async function AdminLeadsPage() {
               lead.status !== "CLOSED" &&
               ((!lead.interactions[0] && lead.status === "NEW") || days >= leadStaleDays);
             const hot = stale && days >= 7;
+            const severity = hot
+              ? "hot"
+              : stale
+                ? "watch"
+                : lead.status === "CLOSED"
+                  ? "muted"
+                  : "ok";
             return (
-              <li key={lead.id} className="jos-panel p-4">
+              <li key={lead.id} className="jos-queue-row !block">
                 <div className="flex flex-wrap items-start justify-between gap-2">
-                  <div>
-                    <Link
-                      href={`/admin/leads/${lead.id}`}
-                      className="jos-heading text-base hover:text-[var(--jos-orange)]"
-                    >
-                      {lead.name}
+                  <div className="min-w-0">
+                    <Link href={`/admin/leads/${lead.id}`}>
+                      <JosItem className="text-base hover:text-[var(--jos-orange)]">
+                        {lead.name}
+                      </JosItem>
                     </Link>
-                    <p className="jos-data mt-1">
+                    <JosData className="mt-1">
                       {lead.email || "—"} · {lead.phone || "—"} · {lead.source || "—"}
-                    </p>
+                    </JosData>
                   </div>
-                  <span
-                    className={
-                      hot
-                        ? "jos-pill jos-pill-hot"
-                        : stale
-                          ? "jos-pill jos-pill-watch"
-                          : lead.status === "CLOSED"
-                            ? "jos-pill jos-pill-muted"
-                            : "jos-pill jos-pill-ok"
-                    }
-                  >
+                  <SeverityPill severity={severity}>
                     {lead.status}
                     {stale ? ` · ${days}d` : ""}
-                  </span>
+                  </SeverityPill>
                 </div>
-                <p className="jos-data mt-2">
+                <JosData className="mt-2">
                   {lead._count.interactions} interaction(s) ·{" "}
                   {lead.createdAt.toLocaleDateString("en-US")}
-                </p>
+                </JosData>
                 {lead.notes ? (
-                  <p className="jos-body mt-2 text-sm whitespace-pre-wrap">{lead.notes}</p>
+                  <JosBody className="mt-2 text-sm whitespace-pre-wrap">{lead.notes}</JosBody>
                 ) : null}
                 <div className="mt-3">
                   <LeadStatusButtons id={lead.id} />
