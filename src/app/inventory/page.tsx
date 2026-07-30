@@ -1,5 +1,6 @@
+import { Suspense } from "react";
 import Link from "next/link";
-import { BikeCard } from "@/components/bike-card";
+import { InventoryBrowser } from "@/components/inventory-browser";
 import { LeadForm } from "@/components/lead-form";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
 import { publicBikeOrderBy, publicBikeWhere } from "@/lib/inventory-public";
@@ -36,6 +37,21 @@ export default async function InventoryPage() {
     orderBy: publicBikeOrderBy,
   });
 
+  const browserBikes = bikes.map((bike) => ({
+    id: bike.id,
+    year: bike.year,
+    make: bike.make,
+    model: bike.model,
+    title: bike.title,
+    category: bike.category,
+    mileage: bike.mileage,
+    price: bike.price,
+    status: bike.status,
+    photoUrl: bike.personalHeroImageUrl || bike.photos[0] || null,
+    featuredRank: bike.featuredRank,
+    firstSeenAt: bike.firstSeenAt.toISOString(),
+  }));
+
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-4 py-12">
       <div className="space-y-2">
@@ -52,23 +68,13 @@ export default async function InventoryPage() {
           Ask Joe what&apos;s available or what he&apos;s watching for. We never invent inventory.
         </PlaceholderNotice>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {bikes.map((bike) => (
-            <BikeCard
-              key={bike.id}
-              bike={{
-                id: bike.id,
-                year: bike.year,
-                make: bike.make,
-                model: bike.model,
-                mileage: bike.mileage,
-                price: bike.price,
-                status: bike.status,
-                photoUrl: bike.personalHeroImageUrl || bike.photos[0] || null,
-              }}
-            />
-          ))}
-        </div>
+        <Suspense
+          fallback={
+            <p className="font-label text-steel">Loading filters…</p>
+          }
+        >
+          <InventoryBrowser bikes={browserBikes} />
+        </Suspense>
       )}
 
       <div className="joe-panel p-5">
