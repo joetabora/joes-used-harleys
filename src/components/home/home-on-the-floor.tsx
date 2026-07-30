@@ -25,7 +25,9 @@ export function HomeOnTheFloor() {
         <div className="relative md:col-span-7 md:-ml-8 md:mt-8 lg:-ml-16">
           <MediaFrame
             variant="tall"
-            label="[PLACEHOLDER — garage / showroom when Joe provides a photo]"
+            label="The floor"
+            src="/floor.jpg"
+            alt="The floor — garage showroom"
             className="w-full border-chrome/20 md:min-h-[28rem]"
           />
         </div>

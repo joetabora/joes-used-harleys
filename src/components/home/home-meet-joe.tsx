@@ -8,7 +8,12 @@ export function HomeMeetJoe() {
     <SectionShell tone="bay">
       <p className="font-label text-steel">03 — Meet Joe</p>
       <div className="mt-8 grid gap-12 md:grid-cols-[minmax(0,16rem)_1fr] md:items-start md:gap-16">
-        <MediaFrame variant="portrait" label="[PLACEHOLDER — Joe photo]" />
+        <MediaFrame
+          variant="portrait"
+          label="Joe"
+          src="/me.jpg"
+          alt="Joe"
+        />
 
         <div className="max-w-xl space-y-6">
           <h2 className="font-story text-3xl text-ink md:text-4xl">

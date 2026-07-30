@@ -33,7 +33,9 @@ export function HomeCinematicOpen() {
       <div className="relative mx-auto max-w-6xl px-4 pb-12 md:pb-16">
         <MediaFrame
           variant="hero"
-          label="[PLACEHOLDER — garage / road atmosphere when Joe provides a photo]"
+          label="Garage / road atmosphere"
+          src="/top.png"
+          alt="Garage and road atmosphere"
           className="border-chrome/25 bg-asphalt/50"
         />
       </div>

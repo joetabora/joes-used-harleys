@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 type FrameVariant = "portrait" | "bay" | "hero" | "tall";
@@ -13,20 +14,37 @@ export function MediaFrame({
   label,
   variant = "bay",
   className,
+  src,
+  alt,
 }: {
   label: string;
   variant?: FrameVariant;
   className?: string;
+  /** Public path e.g. `/me.jpg` — when set, shows the photo instead of placeholder text */
+  src?: string;
+  alt?: string;
 }) {
   return (
     <div
       className={cn(
-        "joe-frame flex items-center justify-center px-6",
+        "joe-frame relative overflow-hidden",
+        src ? "" : "flex items-center justify-center px-6",
         aspect[variant],
         className,
       )}
     >
-      <p className="font-label text-center text-steel/90">{label}</p>
+      {src ? (
+        <Image
+          src={src}
+          alt={alt ?? label}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 70vw"
+          priority={variant === "hero"}
+        />
+      ) : (
+        <p className="font-label text-center text-steel/90">{label}</p>
+      )}
     </div>
   );
 }
