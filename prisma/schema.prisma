@@ -298,3 +298,95 @@ model SeoIndexPing {
   @@index([createdAt])
   @@index([path])
 }
+
+enum KnowledgeEntityType {
+  MODEL
+  FAMILY
+  GENERATION
+  ENGINE
+  TRIM
+  COLOR
+  RIDING_STYLE
+  BUYER_PERSONA
+  BUYING_TOPIC
+  OWNERSHIP_TOPIC
+  MAINTENANCE_TOPIC
+  UPGRADE_TOPIC
+  COMPARISON
+  FINANCING_TOPIC
+  INSURANCE_TOPIC
+  ROUTE
+  CITY
+  EVENT
+}
+
+enum KnowledgeStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum KnowledgeRelationKind {
+  IN_FAMILY
+  USES_ENGINE
+  HAS_GENERATION
+  HAS_TRIM
+  SUITS_PERSONA
+  SUITS_STYLE
+  TOPIC_OF
+  COMPARES
+  NEAR_CITY
+  RELATED_GUIDE
+  SHOWS_INVENTORY_HINT
+  RELATED_TO
+}
+
+model KnowledgeEntity {
+  id             String              @id @default(cuid())
+  type           KnowledgeEntityType
+  slug           String
+  title          String
+  status         KnowledgeStatus     @default(DRAFT)
+  summary        String              @default("")
+  facts          Json                @default("{}")
+  seoTitle       String?
+  seoDescription String?
+  publishedAt    DateTime?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  relationsFrom  KnowledgeRelation[] @relation("RelationFrom")
+  relationsTo    KnowledgeRelation[] @relation("RelationTo")
+  revisions      KnowledgeRevision[]
+
+  @@unique([type, slug])
+  @@index([type, status])
+  @@index([status])
+}
+
+model KnowledgeRelation {
+  id     String                @id @default(cuid())
+  fromId String
+  toId   String
+  from   KnowledgeEntity       @relation("RelationFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to     KnowledgeEntity       @relation("RelationTo", fields: [toId], references: [id], onDelete: Cascade)
+  kind   KnowledgeRelationKind
+  label  String?
+  weight Int                   @default(0)
+
+  @@unique([fromId, toId, kind])
+  @@index([fromId, kind])
+  @@index([toId, kind])
+}
+
+model KnowledgeRevision {
+  id        String          @id @default(cuid())
+  entityId  String
+  entity    KnowledgeEntity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  snapshot  Json
+  note      String?
+  actorId   String?
+  createdAt DateTime        @default(now())
+
+  @@index([entityId, createdAt])
+}

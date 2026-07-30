@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { color } = await params;
-  const doc = buildColorPage(color);
+  const doc = await buildColorPage(color);
   if (!doc) return buildPageMetadata({ title: "Color", description: "", path: "/harleys/colors", noIndex: true });
   return buildPageMetadata({
     title: doc.title,
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ColorPage({ params }: Props) {
   const { color } = await params;
-  const doc = buildColorPage(color);
+  const doc = await buildColorPage(color);
   if (!doc) notFound();
   const bikes = await fetchRelatedInventory(doc.relatedInventoryHint);
   return <SeoPageShell doc={doc} bikes={bikes} />;

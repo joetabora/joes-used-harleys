@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getKnowledgePack } from "@/content/knowledge-packs";
 import { HUB_SECTION_ANCHORS } from "@/lib/content/knowledge-pack-types";
 import { hubPathForPack, packDisplayName } from "@/lib/content/match-bike-to-pack";
-import { relatedGuidesFor, relatedModelsFor } from "@/lib/seo/linking";
+import { relatedGuidesFor, relatedModelsForAsync } from "@/lib/seo/linking";
 import { RelatedArticles } from "@/components/seo/related-articles";
 
 function levelLabel(level: string): string {
@@ -11,16 +11,17 @@ function levelLabel(level: string): string {
 
 /**
  * Thin bridge from a live inventory unit to its canonical model hub.
- * Does not duplicate ownership/maintenance essays.
+ * Resolves related links via knowledge graph neighbors when available.
  */
-export function ModelHubBridge({ packSlug }: { packSlug: string }) {
+export async function ModelHubBridge({ packSlug }: { packSlug: string }) {
   const pack = getKnowledgePack(packSlug);
   if (!pack) return null;
 
   const name = packDisplayName(packSlug);
   const blurb = pack.overview[0] ?? null;
+  const graphRelated = await relatedModelsForAsync(packSlug, 3);
   const related = [
-    ...relatedModelsFor(packSlug, 3),
+    ...graphRelated,
     ...relatedGuidesFor({
       modelSlugs: [packSlug],
       topics: pack.relatedGuideTopics,
@@ -58,9 +59,12 @@ export function ModelHubBridge({ packSlug }: { packSlug: string }) {
         ).map(([key, level]) => (
           <Link
             key={key}
-            href={hubPathForPack(packSlug, HUB_SECTION_ANCHORS[
-              key === "road-trip" ? "roadTrip" : key === "beginner" ? "beginner" : "passenger"
-            ])}
+            href={hubPathForPack(
+              packSlug,
+              HUB_SECTION_ANCHORS[
+                key === "road-trip" ? "roadTrip" : key === "beginner" ? "beginner" : "passenger"
+              ],
+            )}
             className="joe-badge"
           >
             {key}: {levelLabel(level)}

@@ -16,7 +16,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { topic, slug } = await params;
-  const doc = buildGuidePage(topic, slug);
+  const doc = await buildGuidePage(topic, slug);
   if (!doc) {
     return buildPageMetadata({ title: "Guide", description: "", path: "/guides", noIndex: true });
   }
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function GuideDetailPage({ params }: Props) {
   const { topic, slug } = await params;
-  const doc = buildGuidePage(topic, slug);
+  const doc = await buildGuidePage(topic, slug);
   if (!doc) notFound();
   const bikes = await fetchRelatedInventory(doc.relatedInventoryHint);
   return <SeoPageShell doc={doc} bikes={bikes} />;

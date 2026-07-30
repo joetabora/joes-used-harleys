@@ -8,7 +8,7 @@ import topicsJson from "@/content/taxonomy/topics.json";
 export type HarleyModel = {
   slug: string;
   displayName: string;
-  family: "Touring" | "Softail" | "Sportster" | "Trike" | "Other";
+  family: "Touring" | "Softail" | "Sportster" | "Trike" | "Dyna" | "CVO" | "Other";
   aliases: string[];
   yearsInProduction: number[];
   engineIds: string[];
@@ -101,4 +101,12 @@ export function getTopic(slug: string) {
   return topics.find((t) => t.slug === slug);
 }
 
-export const FAMILIES = ["Touring", "Softail", "Sportster", "Trike", "Other"] as const;
+export const FAMILIES = [
+  "Touring",
+  "Softail",
+  "Sportster",
+  "Dyna",
+  "CVO",
+  "Trike",
+  "Other",
+] as const;

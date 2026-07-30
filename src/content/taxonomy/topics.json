@@ -83,5 +83,20 @@
     "slug": "engine",
     "label": "Engines",
     "description": "Public-facing engine family explainers — confirm specs on the actual bike."
+  },
+  {
+    "slug": "upgrade",
+    "label": "Upgrade guides",
+    "description": "Stage-style and accessory thinking for used Harleys — no invented dyno numbers."
+  },
+  {
+    "slug": "ownership",
+    "label": "Ownership guides",
+    "description": "Living with a used Harley — storage, expectations, and honest next steps."
+  },
+  {
+    "slug": "riding",
+    "label": "Riding guides",
+    "description": "Southeast Wisconsin riding context — planning notes, not GPS products."
   }
 ]

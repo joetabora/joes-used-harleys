@@ -12,7 +12,6 @@ import {
   missingPackSlugs,
 } from "../src/content/knowledge-packs";
 import type { KnowledgePack } from "../src/lib/content/knowledge-pack-types";
-import { buildModelPage } from "../src/lib/seo/page-builders";
 
 assert.deepEqual(missingPackSlugs(), [], "every taxonomy model needs a pack");
 assert.equal(listKnowledgePacks().length, 18);
@@ -49,7 +48,7 @@ assert.ok(hub.score >= 70, `hub should be indexable-quality, score=${hub.score}`
 assert.equal(hub.status, "INDEX");
 assert.ok(!hub.sections.some((s) => /guaranteed approval|#\s*1 dealer/i.test(s.body)));
 
-assert.equal(buildModelPage("street-glide")?.path, "/harleys/street-glide");
+assert.equal(composeModelHub("street-glide")?.path, "/harleys/street-glide");
 
 const keysWithoutFinance = availableSectionKeys({
   ...getKnowledgePack("street-glide")!,

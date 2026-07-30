@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getGuideBySlug, getGuidesByTopic } from "@/lib/content/guides";
+import { listPublishedGuideLinks } from "@/lib/knowledge/compose-from-entity";
 import { getTopic, listTopics } from "@/lib/content/taxonomy";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -10,7 +11,6 @@ type Props = { params: Promise<{ topic: string }> };
 
 export function generateStaticParams() {
   const topics = listTopics().map((t) => ({ topic: t.slug }));
-  // Also emit legacy guide slugs so old URLs resolve via redirect
   return topics;
 }
 
@@ -45,7 +45,18 @@ export default async function GuideTopicHubPage({ params }: Props) {
 
   const t = getTopic(topic);
   if (!t) notFound();
-  const guides = getGuidesByTopic(topic);
+  const fileGuides = getGuidesByTopic(topic);
+  const graphGuides = await listPublishedGuideLinks(topic);
+  const seen = new Set(fileGuides.map((g) => `/guides/${g.topic}/${g.slug}`));
+  const merged = [
+    ...fileGuides.map((g) => ({
+      href: `/guides/${g.topic}/${g.slug}`,
+      title: g.title,
+      excerpt: g.excerpt,
+    })),
+    ...graphGuides.filter((g) => !seen.has(g.href)),
+  ];
+
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-4 py-12">
       <p className="font-label text-lamp">
@@ -56,19 +67,16 @@ export default async function GuideTopicHubPage({ params }: Props) {
       <h1 className="font-display text-3xl tracking-[0.06em]">{t.label}</h1>
       <p className="text-steel">{t.description}</p>
       <ul className="space-y-3">
-        {guides.map((g) => (
-          <li key={g.slug}>
-            <Link
-              href={`/guides/${g.topic}/${g.slug}`}
-              className="joe-panel block p-4 hover:border-lamp/40"
-            >
+        {merged.map((g) => (
+          <li key={g.href}>
+            <Link href={g.href} className="joe-panel block p-4 hover:border-lamp/40">
               <p className="font-display text-lg">{g.title}</p>
               <p className="mt-2 text-sm text-steel">{g.excerpt}</p>
             </Link>
           </li>
         ))}
       </ul>
-      {guides.length === 0 ? (
+      {merged.length === 0 ? (
         <p className="text-sm text-steel">More guides coming in this topic.</p>
       ) : null}
     </div>

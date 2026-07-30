@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { family } = await params;
-  const doc = buildFamilyPage(family);
+  const doc = await buildFamilyPage(family);
   if (!doc) return buildPageMetadata({ title: "Family", description: "", path: "/harleys", noIndex: true });
   return buildPageMetadata({
     title: doc.title,
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function FamilyPage({ params }: Props) {
   const { family } = await params;
-  const doc = buildFamilyPage(family);
+  const doc = await buildFamilyPage(family);
   if (!doc) notFound();
   const bikes = await fetchRelatedInventory(doc.relatedInventoryHint);
   return <SeoPageShell doc={doc} bikes={bikes} />;

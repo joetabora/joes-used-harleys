@@ -42,6 +42,29 @@ export function relatedModelsFor(slug: string, limit = 4): SeoLink[] {
     }));
 }
 
+/** Prefer graph neighbors when available; fall back to taxonomy relatedModels. */
+export async function relatedModelsForAsync(
+  slug: string,
+  limit = 4,
+): Promise<SeoLink[]> {
+  try {
+    const { getPublishedEntity, neighbors, suggestLinksFromNeighbors } =
+      await import("@/lib/knowledge/graph");
+    const entity = await getPublishedEntity("MODEL", slug);
+    if (entity) {
+      const rows = await neighbors(entity.id, {
+        kinds: ["RELATED_TO", "COMPARES", "IN_FAMILY", "HAS_TRIM", "USES_ENGINE"],
+        limit,
+      });
+      const links = suggestLinksFromNeighbors(rows).slice(0, limit);
+      if (links.length) return links;
+    }
+  } catch {
+    /* DB optional */
+  }
+  return relatedModelsFor(slug, limit);
+}
+
 export function comparisonLinksFor(comparisonIds: string[]): SeoLink[] {
   return comparisonIds
     .map((id) => getComparison(id))

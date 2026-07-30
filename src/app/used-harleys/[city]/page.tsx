@@ -16,7 +16,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { city } = await params;
-  const doc = buildCityPage(city);
+  const doc = await buildCityPage(city);
   if (!doc) {
     return buildPageMetadata({
       title: "City",
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function CityPage({ params }: Props) {
   const { city } = await params;
-  const doc = buildCityPage(city);
+  const doc = await buildCityPage(city);
   if (!doc) notFound();
   const bikes = await fetchRelatedInventory(doc.relatedInventoryHint);
   return <SeoPageShell doc={doc} bikes={bikes} />;

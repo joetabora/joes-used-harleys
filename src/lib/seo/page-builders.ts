@@ -1,3 +1,7 @@
+import {
+  resolvePublishedDocument,
+  resolvePublishedGuide,
+} from "@/lib/knowledge/compose-from-entity";
 import { composeModelHub } from "@/lib/content/compose-model-hub";
 import {
   composeLocationHub,
@@ -16,8 +20,10 @@ import {
 import { getEventGuide, getGuide, getRouteGuide } from "@/lib/content/guides";
 import { cityTopicLinks } from "@/lib/seo/linking";
 
-export function buildModelPage(slug: string) {
-  return composeModelHub(slug);
+export async function buildModelPage(slug: string) {
+  return (
+    (await resolvePublishedDocument("MODEL", slug)) ?? composeModelHub(slug)
+  );
 }
 
 export function buildModelYearPage(slug: string, year: number) {
@@ -60,7 +66,7 @@ export function buildModelYearPage(slug: string, year: number) {
   });
 }
 
-export function buildFamilyPage(familyRaw: string) {
+function fileFamilyPage(familyRaw: string) {
   const family = FAMILIES.find((f) => f.toLowerCase() === familyRaw.toLowerCase());
   if (!family) return null;
   const models = listModels().filter((m) => m.family === family);
@@ -73,11 +79,16 @@ export function buildFamilyPage(familyRaw: string) {
     sections: [
       section(
         "Family overview",
-        `${family} is a practical way to narrow used Harley shopping. Sit on multiple models before you decide.`,
+        `${family} is a practical way to narrow used Harley shopping. Sit on multiple models before you decide. Specs and options vary by year — confirm on the VIN. Related inventory is mirrored from the live feed when connected and never invented.`,
       ),
       section(
         "Models in this family",
-        models.map((m) => m.displayName).join(", ") || "See the model index.",
+        models.map((m) => m.displayName).join(", ") ||
+          "See the model index — curated models will appear as they are published.",
+      ),
+      section(
+        "Next step",
+        "Browse live inventory or open a model guide. Ask Joe clear questions about fit, paperwork, and availability.",
       ),
     ],
     faqs: defaultFaqs("family", family),
@@ -95,7 +106,22 @@ export function buildFamilyPage(familyRaw: string) {
   });
 }
 
-export function buildColorPage(slug: string) {
+export async function buildFamilyPage(familyRaw: string) {
+  const slug = familyRaw.toLowerCase();
+  return (await resolvePublishedDocument("FAMILY", slug)) ?? fileFamilyPage(slug);
+}
+
+export async function buildGenerationPage(slug: string) {
+  return resolvePublishedDocument("GENERATION", slug);
+}
+
+export async function buildTrimPage(slug: string) {
+  return resolvePublishedDocument("TRIM", slug);
+}
+
+export async function buildColorPage(slug: string) {
+  const fromGraph = await resolvePublishedDocument("COLOR", slug);
+  if (fromGraph) return fromGraph;
   const c = getColor(slug);
   if (!c) return null;
   return composeSeoDocument({
@@ -123,7 +149,9 @@ export function buildColorPage(slug: string) {
   });
 }
 
-export function buildEnginePage(slug: string) {
+export async function buildEnginePage(slug: string) {
+  const fromGraph = await resolvePublishedDocument("ENGINE", slug);
+  if (fromGraph) return fromGraph;
   const e = getEngine(slug);
   if (!e) return null;
   return composeSeoDocument({
@@ -152,7 +180,9 @@ export function buildEnginePage(slug: string) {
   });
 }
 
-export function buildComparePage(slug: string) {
+export async function buildComparePage(slug: string) {
+  const fromGraph = await resolvePublishedDocument("COMPARISON", slug);
+  if (fromGraph) return fromGraph;
   const cmp = getComparison(slug);
   if (!cmp) return null;
   const a = getModel(cmp.a);
@@ -177,8 +207,8 @@ export function buildComparePage(slug: string) {
   });
 }
 
-export function buildCityPage(slug: string) {
-  return composeLocationHub(slug);
+export async function buildCityPage(slug: string) {
+  return (await resolvePublishedDocument("CITY", slug)) ?? composeLocationHub(slug);
 }
 
 export function buildCityTopicPage(
@@ -254,7 +284,9 @@ export function buildCityModelYearPage(
   });
 }
 
-export function buildGuidePage(topic: string, slug: string) {
+export async function buildGuidePage(topic: string, slug: string) {
+  const fromGraph = await resolvePublishedGuide(topic, slug);
+  if (fromGraph) return fromGraph;
   const g = getGuide(topic, slug);
   if (!g) return null;
   return composeSeoDocument({
@@ -273,11 +305,15 @@ export function buildGuidePage(topic: string, slug: string) {
       { name: g.title, path: `/guides/${g.topic}/${g.slug}` },
     ],
     relatedLinks: [],
-    relatedInventoryHint: g.models?.[0] ? { model: getModel(g.models[0])?.displayName ?? g.models[0] } : {},
+    relatedInventoryHint: g.models?.[0]
+      ? { model: getModel(g.models[0])?.displayName ?? g.models[0] }
+      : {},
   });
 }
 
-export function buildRoutePage(slug: string) {
+export async function buildRoutePage(slug: string) {
+  const fromGraph = await resolvePublishedDocument("ROUTE", slug);
+  if (fromGraph) return fromGraph;
   const r = getRouteGuide(slug);
   if (!r) return null;
   return composeSeoDocument({
@@ -299,7 +335,9 @@ export function buildRoutePage(slug: string) {
   });
 }
 
-export function buildEventPage(slug: string) {
+export async function buildEventPage(slug: string) {
+  const fromGraph = await resolvePublishedDocument("EVENT", slug);
+  if (fromGraph) return fromGraph;
   const e = getEventGuide(slug);
   if (!e) return null;
   return composeSeoDocument({

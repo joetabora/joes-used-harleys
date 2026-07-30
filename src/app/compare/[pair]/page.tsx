@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { pair } = await params;
-  const doc = buildComparePage(pair);
+  const doc = await buildComparePage(pair);
   if (!doc) return buildPageMetadata({ title: "Compare", description: "", path: "/compare", noIndex: true });
   return buildPageMetadata({
     title: doc.title,
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ComparePage({ params }: Props) {
   const { pair } = await params;
-  const doc = buildComparePage(pair);
+  const doc = await buildComparePage(pair);
   if (!doc) notFound();
   const bikes = await fetchRelatedInventory(doc.relatedInventoryHint);
   return <SeoPageShell doc={doc} bikes={bikes} />;

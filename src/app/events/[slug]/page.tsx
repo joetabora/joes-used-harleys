@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const doc = buildEventPage(slug);
+  const doc = await buildEventPage(slug);
   if (!doc) return buildPageMetadata({ title: "Event", description: "", path: "/events", noIndex: true });
   return buildPageMetadata({
     title: doc.title,
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function EventPage({ params }: Props) {
   const { slug } = await params;
-  const doc = buildEventPage(slug);
+  const doc = await buildEventPage(slug);
   if (!doc) notFound();
   const bikes = await fetchRelatedInventory(doc.relatedInventoryHint);
   return <SeoPageShell doc={doc} bikes={bikes} />;

@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const { engine } = await params;
-  const doc = buildEnginePage(engine);
+  const doc = await buildEnginePage(engine);
   if (!doc) return buildPageMetadata({ title: "Engine", description: "", path: "/harleys/engines", noIndex: true });
   return buildPageMetadata({
     title: doc.title,
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function EnginePage({ params }: Props) {
   const { engine } = await params;
-  const doc = buildEnginePage(engine);
+  const doc = await buildEnginePage(engine);
   if (!doc) notFound();
   const bikes = await fetchRelatedInventory(doc.relatedInventoryHint);
   return <SeoPageShell doc={doc} bikes={bikes} />;
