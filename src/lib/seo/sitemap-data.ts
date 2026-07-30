@@ -62,8 +62,24 @@ export function buildTaxonomySitemapEntries(): SitemapEntry[] {
   for (const c of listComparisons()) entries.push(u(`/compare/${c.slug}`, "compare"));
 
   const allModels = listModels();
+  const topics = [
+    "inventory",
+    "buying",
+    "trade-in",
+    "financing",
+    "events",
+    "service",
+    "routes",
+    "faq",
+  ] as const;
+
   for (const city of listGeo()) {
     entries.push(u(`/used-harleys/${city.slug}`, "local"));
+    if (city.region === "southeast-wi" && city.tier === "primary") {
+      for (const topic of topics) {
+        entries.push(u(`/used-harleys/${city.slug}/${topic}`, "local"));
+      }
+    }
     for (const m of allModels) {
       entries.push(u(`/used-harleys/${city.slug}/${m.slug}`, "local"));
       if (city.tier === "primary") {

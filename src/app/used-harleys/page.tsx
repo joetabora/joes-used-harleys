@@ -20,7 +20,9 @@ export default function UsedHarleysIndexPage() {
           Used Harleys — Southeast Wisconsin & nearby
         </h1>
         <p className="max-w-2xl text-steel">
-          City pages help you find Joe. They do not invent local stock counts.
+          Each Southeast Wisconsin city hub is written for local buyers — travel corridors,
+          riding context, buying and trade-in guidance, and mirrored inventory. City pages are
+          service-area guides, not fake branch storefronts.
         </p>
       </header>
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Oswald, Source_Serif_4 } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { SiteChrome } from "@/components/site-chrome";
-import { websiteJsonLd, personJsonLd } from "@/lib/seo";
+import { websiteJsonLd, personJsonLd, localBusinessJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -40,7 +40,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = [websiteJsonLd(), personJsonLd()];
+  const jsonLd = [websiteJsonLd(), personJsonLd(), localBusinessJsonLd()].filter(
+    Boolean,
+  );
 
   return (
     <html

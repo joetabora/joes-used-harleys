@@ -1,6 +1,7 @@
 import type { SeoLink, SeoPageDocument } from "@/lib/seo/types";
 import { getPublishedGuides } from "@/lib/content/guides";
-import { getComparison, getModel, listModels } from "@/lib/content/taxonomy";
+import { getComparison, getGeo, getModel, listModels } from "@/lib/content/taxonomy";
+import { LOCATION_TOPICS, TOPIC_PATH } from "@/lib/content/location-pack-types";
 
 export function relatedGuidesFor(opts: {
   modelSlugs?: string[];
@@ -52,7 +53,6 @@ export function comparisonLinksFor(comparisonIds: string[]): SeoLink[] {
     }));
 }
 
-/** Prefer topic hubs and evergreen resources for model authority pages. */
 export function hubTopicalLinks(topics: string[]): SeoLink[] {
   const topicHubs: SeoLink[] = topics.slice(0, 4).map((t) => ({
     href: `/guides/${t}`,
@@ -75,6 +75,38 @@ export function hubTopicalLinks(topics: string[]): SeoLink[] {
     if (out.length >= 6) break;
   }
   return out;
+}
+
+const TOPIC_LABELS: Record<(typeof LOCATION_TOPICS)[number], string> = {
+  inventory: "Inventory notes",
+  buying: "Buying guide",
+  "trade-in": "Trade-in guidance",
+  financing: "Financing",
+  events: "Events",
+  service: "Service information",
+  routes: "Riding routes",
+  faq: "FAQ",
+};
+
+export function cityTopicLinks(citySlug: string): SeoLink[] {
+  const city = getGeo(citySlug);
+  const name = city?.name ?? citySlug;
+  return LOCATION_TOPICS.map((topic) => ({
+    href: `/used-harleys/${citySlug}/${TOPIC_PATH[topic]}`,
+    title: `${name}: ${TOPIC_LABELS[topic]}`,
+  }));
+}
+
+export function cityNeighborLinks(slugs: string[]): SeoLink[] {
+  return slugs
+    .map((s) => getGeo(s))
+    .filter(Boolean)
+    .slice(0, 4)
+    .map((c) => ({
+      href: `/used-harleys/${c!.slug}`,
+      title: `${c!.name} Harley buyers`,
+      excerpt: c!.intro.slice(0, 100),
+    }));
 }
 
 export function ensureMinLinks(doc: SeoPageDocument, extras: SeoLink[]): SeoPageDocument {

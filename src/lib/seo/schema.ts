@@ -1,6 +1,14 @@
 import { absoluteUrl } from "@/lib/seo/canonical";
 import type { BreadcrumbItem, FaqItem } from "@/lib/seo/types";
-import { siteConfig } from "@/lib/site";
+import { listGeo } from "@/lib/content/taxonomy";
+import {
+  businessSameAs,
+  hasBusinessGeo,
+  hasBusinessNap,
+  hasContactEmail,
+  hasContactPhone,
+  siteConfig,
+} from "@/lib/site";
 
 export function personJsonLd() {
   const data: Record<string, unknown> = {
@@ -11,8 +19,8 @@ export function personJsonLd() {
     description: siteConfig.description,
     jobTitle: "Harley-Davidson salesperson",
   };
-  if (!siteConfig.phone.includes("PLACEHOLDER")) data.telephone = siteConfig.phone;
-  if (!siteConfig.email.includes("PLACEHOLDER")) data.email = siteConfig.email;
+  if (hasContactPhone()) data.telephone = siteConfig.phone;
+  if (hasContactEmail()) data.email = siteConfig.email;
   return data;
 }
 
@@ -24,6 +32,54 @@ export function websiteJsonLd() {
     url: siteConfig.url,
     description: siteConfig.description,
   };
+}
+
+/**
+ * Single real NAP LocalBusiness + areaServed SE WI cities.
+ * Returns null when NAP is not configured — never invent an address.
+ */
+export function localBusinessJsonLd(): Record<string, unknown> | null {
+  if (!hasBusinessNap()) return null;
+
+  const b = siteConfig.business;
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    description: siteConfig.description,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: b.streetAddress,
+      addressLocality: b.addressLocality,
+      addressRegion: b.addressRegion,
+      postalCode: b.postalCode,
+      addressCountry: b.addressCountry,
+    },
+    areaServed: listGeo()
+      .filter((c) => c.region === "southeast-wi" && c.tier === "primary")
+      .map((c) => ({
+        "@type": "City",
+        name: c.name,
+        url: absoluteUrl(`/used-harleys/${c.slug}`),
+      })),
+  };
+
+  if (hasContactPhone()) data.telephone = siteConfig.phone;
+  if (hasContactEmail()) data.email = siteConfig.email;
+
+  if (hasBusinessGeo()) {
+    data.geo = {
+      "@type": "GeoCoordinates",
+      latitude: Number(b.latitude),
+      longitude: Number(b.longitude),
+    };
+  }
+
+  const sameAs = businessSameAs();
+  if (sameAs.length) data.sameAs = sameAs;
+
+  return data;
 }
 
 export function breadcrumbJsonLd(items: BreadcrumbItem[]) {
@@ -121,9 +177,4 @@ export function buildJsonLdGraph(
   nodes: Array<Record<string, unknown> | null | undefined>,
 ): Record<string, unknown>[] {
   return nodes.filter(Boolean) as Record<string, unknown>[];
-}
-
-/** @deprecated use personJsonLd — kept for layout import compat */
-export function localBusinessJsonLd() {
-  return personJsonLd();
 }

@@ -6,6 +6,7 @@ Hybrid curated + programmatic SEO for Joe's Used Harleys (Southeast Wisconsin fo
 
 - Taxonomy: `src/content/taxonomy/*.json`
 - **Knowledge Packs (model hubs):** `src/content/knowledge-packs/**` — see [harley-content-engine.md](./harley-content-engine.md)
+- **Location Packs (SE WI city hubs):** `src/content/location-packs/**` — see [location-architecture.md](./location-architecture.md)
 - Guides (MDX-shaped TS modules): `src/content/guides/**`
 - SEO shell: `src/lib/seo/**`
 - Ops tables: `SeoUrl`, `SeoIndexPing` (Prisma)

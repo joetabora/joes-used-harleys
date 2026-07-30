@@ -1,4 +1,8 @@
 import { composeModelHub } from "@/lib/content/compose-model-hub";
+import {
+  composeLocationHub,
+  composeLocationTopic,
+} from "@/lib/content/compose-location";
 import { composeSeoDocument, defaultFaqs, section } from "@/lib/seo/compose-page";
 import {
   FAMILIES,
@@ -10,6 +14,7 @@ import {
   listModels,
 } from "@/lib/content/taxonomy";
 import { getEventGuide, getGuide, getRouteGuide } from "@/lib/content/guides";
+import { cityTopicLinks } from "@/lib/seo/linking";
 
 export function buildModelPage(slug: string) {
   return composeModelHub(slug);
@@ -173,35 +178,14 @@ export function buildComparePage(slug: string) {
 }
 
 export function buildCityPage(slug: string) {
-  const city = getGeo(slug);
-  if (!city) return null;
-  return composeSeoDocument({
-    path: `/used-harleys/${city.slug}`,
-    title: city.headline,
-    description: city.intro,
-    h1: city.headline,
-    type: "local",
-    sections: [
-      section("Buying with Joe", city.intro),
-      section(
-        "Inventory honesty",
-        "We never invent local stock counts. Related inventory below is mirrored from the live feed when connected.",
-      ),
-    ],
-    faqs: defaultFaqs("city", city.name),
-    breadcrumbs: [
-      { name: "Home", path: "/" },
-      { name: "Local", path: "/used-harleys" },
-      { name: city.name, path: `/used-harleys/${city.slug}` },
-    ],
-    relatedLinks: listModels()
-      .slice(0, 6)
-      .map((m) => ({
-        href: `/used-harleys/${city.slug}/${m.slug}`,
-        title: `${m.displayName} in ${city.name}`,
-      })),
-    relatedInventoryHint: {},
-  });
+  return composeLocationHub(slug);
+}
+
+export function buildCityTopicPage(
+  citySlug: string,
+  topic: Exclude<import("@/lib/content/location-pack-types").LocationTopic, "hub">,
+) {
+  return composeLocationTopic(citySlug, topic);
 }
 
 export function buildCityModelPage(citySlug: string, modelSlug: string) {
@@ -226,8 +210,13 @@ export function buildCityModelPage(citySlug: string, modelSlug: string) {
       { name: city.name, path: `/used-harleys/${city.slug}` },
       { name: m.displayName, path: `/used-harleys/${city.slug}/${m.slug}` },
     ],
-    relatedLinks: [],
-    relatedInventoryHint: { model: m.displayName, family: m.family },
+    relatedLinks: [
+      { href: `/used-harleys/${city.slug}`, title: `${city.name} Harley hub` },
+      ...cityTopicLinks(city.slug).slice(0, 4),
+      { href: `/harleys/${m.slug}`, title: `Used ${m.displayName} guide` },
+    ],
+    relatedInventoryHint: { model: m.displayName, family: m.family, modelSlug: m.slug },
+    modelSlug: m.slug,
   });
 }
 

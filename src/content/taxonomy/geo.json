@@ -180,6 +180,51 @@
     "intro": "Sheboygan-area buyers can work with Joe on used Harley questions, alerts, and realistic availability."
   },
   {
+    "slug": "muskego",
+    "name": "Muskego",
+    "state": "WI",
+    "tier": "primary",
+    "region": "southeast-wi",
+    "headline": "Used Harleys for Muskego riders",
+    "intro": "Muskego buyers who want a straight talk about used Harleys can work with Joe — education first, mirrored inventory only, no invented local stock counts."
+  },
+  {
+    "slug": "delafield",
+    "name": "Delafield",
+    "state": "WI",
+    "tier": "primary",
+    "region": "southeast-wi",
+    "headline": "Delafield used Harley buying help",
+    "intro": "Delafield and lake-country riders comparing used Harleys can talk with Joe about fit, payments, and what's actually available on the floor."
+  },
+  {
+    "slug": "oconomowoc",
+    "name": "Oconomowoc",
+    "state": "WI",
+    "tier": "primary",
+    "region": "southeast-wi",
+    "headline": "Oconomowoc Harley shopping with Joe",
+    "intro": "Oconomowoc buyers who want human-paced used Harley guidance get education, alerts, and honest next steps — never fake branch inventory."
+  },
+  {
+    "slug": "germantown",
+    "name": "Germantown",
+    "state": "WI",
+    "tier": "primary",
+    "region": "southeast-wi",
+    "headline": "Germantown used Harley guidance",
+    "intro": "Germantown riders shopping a used Harley can work with Joe on model fit and paperwork questions without pressure tactics."
+  },
+  {
+    "slug": "hartford",
+    "name": "Hartford",
+    "state": "WI",
+    "tier": "primary",
+    "region": "southeast-wi",
+    "headline": "Hartford WI used Harley help",
+    "intro": "Hartford-area buyers can reach Joe for used Harley education and realistic availability — mirrored dealership stock only."
+  },
+  {
     "slug": "janesville",
     "name": "Janesville",
     "state": "WI",
