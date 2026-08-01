@@ -1,20 +1,20 @@
 import type { VehiclePageViewModel } from "@/lib/vehicle/compose-vehicle-page";
 import { formatVehiclePrice } from "@/lib/vehicle/compose-vehicle-page";
 import { VehicleAnalytics } from "./vehicle-analytics";
-import { VehicleEngagementTools } from "./vehicle-engagement-tools";
 import { VehicleGallery } from "./vehicle-gallery";
-import { VehicleLeadForm } from "./vehicle-lead-form";
 import { VehicleShareButton } from "./vehicle-share-button";
 import { VehicleVideo } from "./vehicle-video";
 
 type Props = {
   view: VehiclePageViewModel;
+  /** Opaque associate token from QR (`?assoc=`); tracked in analytics only. */
   assoc?: string | null;
   /** Optional feed-owned video URL (not Joe personal walkaround). */
   videoUrl?: string | null;
 };
 
-export function VehiclePage({ view, assoc, videoUrl }: Props) {
+/** Informational window sticker — no scheduling, leads, or estimators for now. */
+export function VehiclePage({ view, videoUrl }: Props) {
   const price = formatVehiclePrice(view.price);
 
   return (
@@ -37,27 +37,9 @@ export function VehiclePage({ view, assoc, videoUrl }: Props) {
             .join(" · ")}
         </p>
 
-        {!view.soldBanner ? (
+        {view.canonicalUrl && !view.soldBanner ? (
           <div className="sb-cta-row">
-            <VehicleLeadForm
-              bikeId={view.bikeId}
-              vin={view.vin}
-              stockNumber={view.stockNumber}
-              title={view.title}
-              kind="test_ride"
-              assoc={assoc}
-            />
-            <VehicleLeadForm
-              bikeId={view.bikeId}
-              vin={view.vin}
-              stockNumber={view.stockNumber}
-              title={view.title}
-              kind="ask_associate"
-              assoc={assoc}
-            />
-            {view.canonicalUrl ? (
-              <VehicleShareButton url={view.canonicalUrl} title={view.title} />
-            ) : null}
+            <VehicleShareButton url={view.canonicalUrl} title={view.title} />
           </div>
         ) : null}
 
@@ -85,10 +67,6 @@ export function VehiclePage({ view, assoc, videoUrl }: Props) {
             <h2>Video</h2>
             <VehicleVideo bikeId={view.bikeId} src={videoUrl} />
           </section>
-        ) : null}
-
-        {!view.soldBanner ? (
-          <VehicleEngagementTools bikeId={view.bikeId} title={view.title} />
         ) : null}
       </div>
     </article>

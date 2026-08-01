@@ -4,7 +4,7 @@
 
 - Audience: anyone beside a bike (digital window sticker via QR).
 - Copy/UI must never mention Joe, JoeOS, or personal salesperson branding.
-- CTAs are generic: Ask a sales associate, Schedule a test ride, Share.
+- Current surface: informational only (photos, specs, description, share). Scheduling, leads, and estimators are deferred.
 
 ## Shared with JoeOS only
 
