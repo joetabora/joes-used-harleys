@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { ChevronDown } from "lucide-react";
 import { ImpressionTracker } from "@/components/analytics/impression-tracker";
 import { BikeCard, type BikeCardData } from "@/components/bike-card";
 import { track } from "@/lib/analytics/client";
@@ -49,6 +50,8 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
   const [filters, setFilters] = useState<InventoryFilters>(() =>
     parseFiltersFromSearchParams(searchParams),
   );
+  /** Collapsed by default on small screens so sticky filters don't cover the list. */
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const analyticsReady = useRef(false);
 
   useEffect(() => {
@@ -120,25 +123,46 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
   return (
     <div className="space-y-5">
       <div className="joe-panel sticky top-0 z-20 space-y-4 border-chrome/30 bg-void/95 p-4 backdrop-blur-md md:p-5">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
             <p className="font-label text-lamp">Filter floor</p>
             <p className="mt-1 text-sm text-steel">
               {visible.length} of {bikes.length} bike{bikes.length === 1 ? "" : "s"}
+              {active ? " · filters on" : ""}
             </p>
           </div>
-          {active ? (
+          <div className="flex flex-wrap items-center gap-3">
+            {active ? (
+              <button
+                type="button"
+                onClick={clear}
+                className="font-label text-lamp underline-offset-4 hover:underline"
+              >
+                Clear
+              </button>
+            ) : null}
             <button
               type="button"
-              onClick={clear}
-              className="font-label text-lamp underline-offset-4 hover:underline"
+              className="joe-btn-secondary inline-flex items-center gap-2 md:hidden"
+              aria-expanded={filtersOpen}
+              aria-controls="inventory-filter-fields"
+              onClick={() => setFiltersOpen((o) => !o)}
             >
-              Clear filters
+              {filtersOpen ? "Hide filters" : "Filters"}
+              <ChevronDown
+                className={`size-4 transition-transform ${filtersOpen ? "rotate-180" : ""}`}
+                aria-hidden
+              />
             </button>
-          ) : null}
+          </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8">
+        <div
+          id="inventory-filter-fields"
+          className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 ${
+            filtersOpen ? "grid" : "hidden md:grid"
+          }`}
+        >
           <div className="sm:col-span-2 xl:col-span-2">
             <label htmlFor="inv-q" className={labelClass}>
               Search
