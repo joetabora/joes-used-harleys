@@ -36,7 +36,33 @@ export type FloorBike = BriefingBike & {
   daysOnLot: number;
   severity: Severity;
   urgency: number;
+  condition: string | null;
+  vin: string | null;
+  scanVisibility: string | null;
+  /** VIN or stock present — QR can be generated. */
+  hasQrIdentity: boolean;
+  inventoryClass: FloorInventoryClass;
 };
+
+export type FloorInventoryClass = "used_harley" | "new_harley" | "non_harley";
+
+export function floorInventoryClass(input: {
+  make: string;
+  condition: string | null;
+}): FloorInventoryClass {
+  const make = input.make.trim().toLowerCase();
+  const condition = (input.condition ?? "").trim().toLowerCase();
+  const isHarley = make === "harley-davidson";
+  if (isHarley && condition === "used") return "used_harley";
+  if (isHarley) return "new_harley";
+  return "non_harley";
+}
+
+export function floorInventoryClassLabel(c: FloorInventoryClass): string {
+  if (c === "used_harley") return "Used HD";
+  if (c === "new_harley") return "New HD";
+  return "Other";
+}
 
 export type SalesIntelligence = {
   headline: string;
@@ -144,9 +170,19 @@ export function severityLabel(severity: Severity): string {
   return "CLEAR";
 }
 
-export function toFloorBike(bike: BriefingBike, now: Date): FloorBike {
+export function toFloorBike(
+  bike: BriefingBike & {
+    condition?: string | null;
+    vin?: string | null;
+    scanVisibility?: string | null;
+  },
+  now: Date,
+): FloorBike {
   const daysOnLot = daysBetween(bike.firstSeenAt, now);
   const severity = bikeSeverity(daysOnLot);
+  const condition = bike.condition ?? null;
+  const vin = bike.vin ?? null;
+  const hasQrIdentity = Boolean(vin?.trim() || bike.stockNumber?.trim());
   return {
     ...bike,
     mileage: bike.mileage ?? null,
@@ -159,6 +195,11 @@ export function toFloorBike(bike: BriefingBike, now: Date): FloorBike {
       hasRecentPriceDrop: bike.hasRecentPriceDrop,
       status: bike.status,
     }),
+    condition,
+    vin,
+    scanVisibility: bike.scanVisibility ?? null,
+    hasQrIdentity,
+    inventoryClass: floorInventoryClass({ make: bike.make, condition }),
   };
 }
 

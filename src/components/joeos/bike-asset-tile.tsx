@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { FloorScorePills } from "@/lib/assets/load-scorecard";
 import type { FloorBike } from "@/lib/joeos/briefing";
-import { severityLabel } from "@/lib/joeos/briefing";
+import { floorInventoryClassLabel, severityLabel } from "@/lib/joeos/briefing";
 import { formatMiles, formatPrice } from "@/lib/format";
 import { ScorePill } from "@/components/assets/asset-scorecard";
 import { Gauge, JosData, JosItem, JosKpi, SeverityPill } from "@/components/joeos/ui";
@@ -30,14 +30,27 @@ export function BikeAssetTile({
           <SeverityPill severity={bike.severity}>{severityLabel(bike.severity)}</SeverityPill>
           <JosData>OPP {opportunity}</JosData>
         </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="jos-chip" data-active="true">
+            {floorInventoryClassLabel(bike.inventoryClass)}
+          </span>
+          <span className="jos-chip" data-active={bike.hasQrIdentity ? "true" : "false"}>
+            {bike.hasQrIdentity ? "QR ready" : "No QR"}
+          </span>
+        </div>
         {pills ? (
           <div className="flex flex-wrap gap-x-3 gap-y-1">
             <ScorePill label="DEM" value={pills.demand} />
             <ScorePill label="AGE" value={pills.aging} />
           </div>
         ) : null}
-        <JosData>{bike.year}</JosData>
-        <JosItem className="text-base leading-tight">{bike.model}</JosItem>
+        <JosData>
+          {bike.year}
+          {bike.condition ? ` · ${bike.condition}` : ""}
+        </JosData>
+        <JosItem className="text-base leading-tight">
+          {bike.make} {bike.model}
+        </JosItem>
         {bike.stockNumber ? <JosData>Stock {bike.stockNumber}</JosData> : null}
         <JosData>{formatMiles(bike.mileage)}</JosData>
         <div className="mt-auto flex items-end justify-between gap-2 pt-1">

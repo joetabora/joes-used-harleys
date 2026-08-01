@@ -38,7 +38,8 @@ export default async function AdminBikesPage() {
         }
       />
       <JosBody className="max-w-xl text-sm -mt-2">
-        Photo-first showroom of live stock. Synced from the dealership feed — never invented.
+        Full dealership lot for ScanBike QR — Used HD, New HD, and Non-Harley. Public site stays
+        used Harley only. Open a bike → ScanBike QR to download or print.
       </JosBody>
 
       {!ready ? (
