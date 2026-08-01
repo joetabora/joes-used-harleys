@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "tsx scripts/assert-site-url.ts --production && prisma generate && next build",
+    "build": "tsx scripts/assert-site-url.ts --production && prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "tsx scripts/validators.test.ts && tsx scripts/briefing.test.ts && tsx scripts/inventory-filters.test.ts && tsx scripts/seo-scoring.test.ts && tsx scripts/asset-scores.test.ts && tsx scripts/knowledge-packs.test.ts && tsx scripts/location-packs.test.ts && tsx scripts/knowledge-graph.test.ts && tsx scripts/site-url.test.ts && tsx scripts/scanbike.test.ts",
