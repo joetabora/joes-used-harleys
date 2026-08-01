@@ -21,29 +21,42 @@ export function VehiclePage({ view, videoUrl }: Props) {
     <article>
       <VehicleAnalytics bikeId={view.bikeId} path={view.canonicalPath ?? "/v"} />
       {view.soldBanner ? <div className="sb-sold-banner">Sold — archive listing</div> : null}
-      <VehicleGallery images={view.gallery} title={view.title} initial={view.heroImage} />
+
+      <VehicleGallery images={view.gallery} title={view.title} initial={view.heroImage}>
+        <div className="sb-body sb-body-top">
+          <h1 className="sb-title">{view.title}</h1>
+          {price ? <p className="sb-price">{price}</p> : null}
+          <p className="sb-meta">
+            {[
+              view.mileage != null ? `${view.mileage.toLocaleString("en-US")} mi` : null,
+              view.color,
+              view.stockNumber ? `Stock ${view.stockNumber}` : null,
+              view.locationLine,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+
+          {view.description ? (
+            <section className="sb-section sb-description" aria-label="Vehicle description">
+              <h2>Description</h2>
+              <p className="sb-desc">{view.description}</p>
+            </section>
+          ) : (
+            <section
+              className="sb-section sb-description sb-description-empty"
+              aria-label="Vehicle description"
+            >
+              <h2>Description</h2>
+              <p className="sb-desc sb-desc-muted">
+                No dealer description is listed for this vehicle yet.
+              </p>
+            </section>
+          )}
+        </div>
+      </VehicleGallery>
 
       <div className="sb-body">
-        <h1 className="sb-title">{view.title}</h1>
-        {price ? <p className="sb-price">{price}</p> : null}
-        <p className="sb-meta">
-          {[
-            view.mileage != null ? `${view.mileage.toLocaleString("en-US")} mi` : null,
-            view.color,
-            view.stockNumber ? `Stock ${view.stockNumber}` : null,
-            view.locationLine,
-          ]
-            .filter(Boolean)
-            .join(" · ")}
-        </p>
-
-        {view.description ? (
-          <section className="sb-section">
-            <h2>Description</h2>
-            <p className="sb-desc">{view.description}</p>
-          </section>
-        ) : null}
-
         <section className="sb-section">
           <h2>Specs</h2>
           <dl className="sb-specs">

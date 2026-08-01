@@ -370,7 +370,13 @@ export async function syncInventory(
       if (row.hashSkip) {
         await tx.bike.update({
           where: { id: row.id },
-          data: { lastSeenAt: now, ...scan },
+          data: {
+            lastSeenAt: now,
+            // Keep customer-facing dealer copy fresh even when dealerHash matches
+            description: row.payload.description,
+            title: row.payload.title,
+            ...scan,
+          },
         });
         continue;
       }
