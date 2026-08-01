@@ -7,6 +7,7 @@ import {
 import { normalizeStockSlug, normalizeVinSlug } from "../src/lib/vehicle/slugs";
 import { buildScanBikeFields } from "../src/lib/vehicle/scan-fields";
 import { composeVehiclePage } from "../src/lib/vehicle/compose-vehicle-page";
+import { normalizeDealerDescription } from "../src/lib/vehicle/normalize-description";
 import { filterMotorcycles, filterUsedHarley } from "../src/lib/services/inventory-sync/filter-items";
 import type { ParsedFeedItem } from "../src/lib/services/inventory-sync/types";
 
@@ -128,7 +129,14 @@ const view = composeVehiclePage({
 assert.ok(view);
 assert.equal(view!.indexable, true);
 assert.match(view!.title, /Street Glide/);
+assert.equal(view!.description, "Clean");
 assert.ok(!JSON.stringify(view).includes("perfectFor"));
+
+assert.equal(
+  normalizeDealerDescription("<p>Nice bike<br/>Low miles</p>"),
+  "Nice bike\nLow miles",
+);
+assert.equal(normalizeDealerDescription("   "), null);
 
 const feed = [
   item({ feedId: "1", year: 2020, make: "Harley-Davidson", model: "Road King", condition: "Used" }),

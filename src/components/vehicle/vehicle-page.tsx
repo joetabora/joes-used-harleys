@@ -37,10 +37,11 @@ export function VehiclePage({ view, videoUrl }: Props) {
             .join(" · ")}
         </p>
 
-        {view.canonicalUrl && !view.soldBanner ? (
-          <div className="sb-cta-row">
-            <VehicleShareButton url={view.canonicalUrl} title={view.title} />
-          </div>
+        {view.description ? (
+          <section className="sb-section">
+            <h2>Description</h2>
+            <p className="sb-desc">{view.description}</p>
+          </section>
         ) : null}
 
         <section className="sb-section">
@@ -55,11 +56,10 @@ export function VehiclePage({ view, videoUrl }: Props) {
           </dl>
         </section>
 
-        {view.description ? (
-          <section className="sb-section">
-            <h2>Description</h2>
-            <p className="sb-desc">{view.description}</p>
-          </section>
+        {view.canonicalUrl && !view.soldBanner ? (
+          <div className="sb-cta-row">
+            <VehicleShareButton url={view.canonicalUrl} title={view.title} />
+          </div>
         ) : null}
 
         {videoUrl ? (

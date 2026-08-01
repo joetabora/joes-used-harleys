@@ -2,6 +2,7 @@ import type { ScanVisibilityValue } from "./visibility";
 import { isScanBikeIndexable, isScanBikeRenderable } from "./visibility";
 import { scanBikeCanonicalUrl, scanBikeVinPath, scanBikeStockPath } from "./urls";
 import { normalizeStockSlug, normalizeVinSlug } from "./slugs";
+import { normalizeDealerDescription } from "./normalize-description";
 
 /** Feed-owned fields only — never Joe enrichment. */
 export type ScanBikeRecord = {
@@ -122,7 +123,7 @@ export function composeVehiclePage(bike: ScanBikeRecord): VehiclePageViewModel |
     stockNumber: bike.stockNumber,
     vin: bike.vin,
     vinDisplay: bike.vin,
-    description: bike.description,
+    description: normalizeDealerDescription(bike.description),
     heroImage: gallery[0] ?? null,
     gallery,
     specs,

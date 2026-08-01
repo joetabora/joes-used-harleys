@@ -6,3 +6,4 @@ export * from "./compose-vehicle-page";
 export * from "./scan-fields";
 export * from "./dealer-theme";
 export * from "./load-bike";
+export * from "./normalize-description";
