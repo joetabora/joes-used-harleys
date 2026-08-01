@@ -185,6 +185,27 @@ export default async function BikeDetailPage({ params }: Props) {
           {formatMiles(bike.mileage)}
           {bike.color ? ` · ${bike.color}` : ""}
         </p>
+        <p className="font-label text-base text-lamp">
+          Stock # {bike.stockNumber?.trim() ? bike.stockNumber : "Not on feed"}
+        </p>
+      </div>
+
+      <div className="joe-panel grid gap-3 p-5 sm:grid-cols-2 md:grid-cols-3">
+        <div>
+          <p className="font-label text-steel">Stock number</p>
+          <p className="mt-1 font-display text-lg tracking-[0.04em] text-ink">
+            {bike.stockNumber?.trim() ? bike.stockNumber : "—"}
+          </p>
+          <p className="mt-1 text-xs text-steel">Use this to find the bike at the dealership.</p>
+        </div>
+        <div>
+          <p className="font-label text-steel">VIN</p>
+          <p className="mt-1 break-all text-sm text-ink/80">{bike.vin?.trim() ? bike.vin : "—"}</p>
+        </div>
+        <div>
+          <p className="font-label text-steel">Status</p>
+          <p className="mt-1 text-sm text-ink/80">{bike.status}</p>
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">

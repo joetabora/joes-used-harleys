@@ -10,6 +10,7 @@ export type RelatedBikeCard = {
   mileage: number | null;
   status: string;
   photoUrl: string | null;
+  stockNumber: string | null;
 };
 
 export async function fetchRelatedInventory(hint?: {
@@ -52,5 +53,6 @@ export async function fetchRelatedInventory(hint?: {
     mileage: b.mileage,
     status: b.status,
     photoUrl: b.personalHeroImageUrl || b.photos[0] || null,
+    stockNumber: b.stockNumber,
   }));
 }

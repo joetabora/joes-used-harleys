@@ -10,6 +10,7 @@ export type BikeCardData = {
   price: number | null;
   status: string;
   photoUrl?: string | null;
+  stockNumber?: string | null;
 };
 
 export function BikeCard({ bike }: { bike: BikeCardData }) {
@@ -41,6 +42,9 @@ export function BikeCard({ bike }: { bike: BikeCardData }) {
         <h2 className="font-display text-lg leading-tight tracking-[0.04em] text-ink group-hover:text-lamp">
           {label}
         </h2>
+        {bike.stockNumber?.trim() ? (
+          <p className="font-label text-lamp">Stock # {bike.stockNumber}</p>
+        ) : null}
         <p className="text-sm text-steel">{formatMiles(bike.mileage)}</p>
         <p className="mt-auto font-display text-xl tracking-wide text-lamp">
           {formatPrice(bike.price)}

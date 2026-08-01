@@ -331,6 +331,7 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
                   price: bike.price,
                   status: bike.status,
                   photoUrl: bike.photoUrl,
+                  stockNumber: bike.stockNumber,
                 }}
               />
             </ImpressionTracker>
