@@ -14,6 +14,25 @@ function asString(value: unknown): string | null {
   return null;
 }
 
+/**
+ * Stock numbers must keep feed formatting (case, leading zeros).
+ * Do not uppercase/normalize beyond trimming outer whitespace.
+ */
+function asStockNumber(value: unknown): string | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "object" && value !== null && "#text" in value) {
+    return asStockNumber((value as { "#text": unknown })["#text"]);
+  }
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+  if (typeof value === "string") {
+    const t = value.trim();
+    return t.length ? t : null;
+  }
+  return null;
+}
+
 function asInt(value: unknown): number | null {
   const s = asString(value);
   if (!s) return null;
@@ -83,7 +102,7 @@ function parseOneItem(raw: unknown): ParsedFeedItem | null {
     zipcode: asString(item.zipcode),
     dealerPhone: asString(item.telephone),
     dealerEmail: asString(item.email),
-    stockNumber: asString(item.stocknumber),
+    stockNumber: asStockNumber(item.stocknumber),
     vin: asString(item.vin),
     photos: collectPhotos(item),
   };
@@ -102,6 +121,8 @@ export function parseFeed(xml: string): ParseFeedResult {
       ignoreAttributes: false,
       attributeNamePrefix: "@_",
       textNodeName: "#text",
+      // Keep stocknumber/vin as strings (no numeric coercion / lost leading zeros).
+      parseTagValue: false,
       trimValues: true,
       isArray: (name) => name === "item",
     });

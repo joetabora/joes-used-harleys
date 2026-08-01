@@ -21,6 +21,7 @@ function mapBikeRow(bike: {
   status: string;
   photos: string[];
   personalHeroImageUrl: string | null;
+  stockNumber: string | null;
   priceHistory: { previousPrice: number | null; newPrice: number | null; changedAt: Date }[];
 }): BriefingBike {
   const last = bike.priceHistory[0] ?? null;
@@ -43,6 +44,7 @@ function mapBikeRow(bike: {
     mileage: bike.mileage,
     status: bike.status,
     photoUrl: bike.personalHeroImageUrl || bike.photos[0] || null,
+    stockNumber: bike.stockNumber,
     hasRecentPriceDrop,
     previousPrice: hasRecentPriceDrop ? last?.previousPrice ?? null : null,
     priceChangedAt: hasRecentPriceDrop ? last?.changedAt ?? null : null,
@@ -69,6 +71,7 @@ async function loadLiveBikes(): Promise<BriefingBike[]> {
       status: true,
       photos: true,
       personalHeroImageUrl: true,
+      stockNumber: true,
       priceHistory: {
         where: { changedAt: { gte: since } },
         orderBy: { changedAt: "desc" },

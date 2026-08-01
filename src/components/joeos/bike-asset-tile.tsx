@@ -38,6 +38,7 @@ export function BikeAssetTile({
         ) : null}
         <JosData>{bike.year}</JosData>
         <JosItem className="text-base leading-tight">{bike.model}</JosItem>
+        {bike.stockNumber ? <JosData>Stock {bike.stockNumber}</JosData> : null}
         <JosData>{formatMiles(bike.mileage)}</JosData>
         <div className="mt-auto flex items-end justify-between gap-2 pt-1">
           <JosKpi className="text-xl text-[var(--jos-orange)]">{formatPrice(bike.price)}</JosKpi>

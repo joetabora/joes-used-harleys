@@ -172,7 +172,7 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
               type="search"
               value={filters.q}
               onChange={(e) => update({ q: e.target.value })}
-              placeholder="Year, make, model…"
+              placeholder="Year, make, model, stock…"
               className={fieldClass}
             />
           </div>

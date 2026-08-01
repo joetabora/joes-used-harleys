@@ -50,6 +50,7 @@ export default async function InventoryPage() {
     photoUrl: bike.personalHeroImageUrl || bike.photos[0] || null,
     featuredRank: bike.featuredRank,
     firstSeenAt: bike.firstSeenAt.toISOString(),
+    stockNumber: bike.stockNumber,
   }));
 
   return (

@@ -85,4 +85,32 @@
     <certified>no</certified>
     <image1>https://cdn.room58.com/test/d.jpg</image1>
   </item>
+  <item>
+    <id>1004</id>
+    <year>2019</year>
+    <make>Harley-Davidson</make>
+    <category>Motorcycles</category>
+    <model>Road King</model>
+    <title>2019 Road King stock-only</title>
+    <price>14500.00</price>
+    <location_id>1595</location_id>
+    <location>Milwaukee Harley-Davidson</location>
+    <city>Milwaukee</city>
+    <state>WI</state>
+    <zipcode>53225</zipcode>
+    <telephone></telephone>
+    <email></email>
+    <condition>used</condition>
+    <url>https://milwaukeeharley.com/inventory/1004/test</url>
+    <vrm></vrm>
+    <color>Black</color>
+    <stocknumber>00RK19MKE</stocknumber>
+    <vin></vin>
+    <miles>18000</miles>
+    <list></list>
+    <transmission>manual</transmission>
+    <description>Used Harley with empty VIN — match by stock</description>
+    <certified>no</certified>
+    <image1>https://cdn.room58.com/test/e.jpg</image1>
+  </item>
 </inventory>

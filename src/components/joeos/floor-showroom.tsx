@@ -29,7 +29,9 @@ export function FloorShowroom({
       .filter((b) => (filter === "all" ? true : b.severity === filter))
       .filter((b) => {
         if (!query) return true;
-        return `${b.year} ${b.make} ${b.model}`.toLowerCase().includes(query);
+        return `${b.year} ${b.make} ${b.model} ${b.stockNumber ?? ""}`
+          .toLowerCase()
+          .includes(query);
       })
       .sort((a, b) => {
         const oa = scorePills[a.id]?.opportunity ?? a.urgency;
@@ -45,7 +47,7 @@ export function FloorShowroom({
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search year, model…"
+          placeholder="Search year, model, stock…"
           className="jos-field"
           aria-label="Search floor inventory"
         />

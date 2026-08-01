@@ -31,6 +31,7 @@ export type FilterableBike = {
   photoUrl?: string | null;
   featuredRank?: number;
   firstSeenAt?: Date | string;
+  stockNumber?: string | null;
 };
 
 export const defaultFilters: InventoryFilters = {
@@ -133,7 +134,8 @@ export function filterBikes<T extends FilterableBike>(
 
   return bikes.filter((bike) => {
     if (q) {
-      const hay = `${bike.year} ${bike.make} ${bike.model} ${bike.title ?? ""}`.toLowerCase();
+      const hay =
+        `${bike.year} ${bike.make} ${bike.model} ${bike.title ?? ""} ${bike.stockNumber ?? ""}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
 

@@ -21,6 +21,7 @@ const bikes: FilterableBike[] = [
     status: "AVAILABLE",
     featuredRank: 0,
     firstSeenAt: new Date("2026-01-01"),
+    stockNumber: "UG2018SG",
   },
   {
     id: "2",
@@ -33,6 +34,7 @@ const bikes: FilterableBike[] = [
     status: "AVAILABLE",
     featuredRank: 2,
     firstSeenAt: new Date("2026-06-01"),
+    stockNumber: "00IRON21",
   },
   {
     id: "3",
@@ -49,6 +51,8 @@ const bikes: FilterableBike[] = [
 ];
 
 assert.equal(filterBikes(bikes, { ...defaultFilters, q: "iron" }).length, 1);
+assert.equal(filterBikes(bikes, { ...defaultFilters, q: "ug2018" }).length, 1);
+assert.equal(filterBikes(bikes, { ...defaultFilters, q: "00iron" }).length, 1);
 assert.equal(filterBikes(bikes, { ...defaultFilters, family: "Touring" }).length, 1);
 assert.equal(filterBikes(bikes, { ...defaultFilters, yearMin: 2020 }).length, 1);
 assert.equal(filterBikes(bikes, { ...defaultFilters, priceMax: 10000 }).length, 1);

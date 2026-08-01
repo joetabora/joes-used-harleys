@@ -65,17 +65,26 @@ assert.equal(parsed.ok, true);
 assert.ok(parsed.ok);
 const feedItems = parsed.ok ? parsed.items : [];
 const feedParsedCount = parsed.ok ? parsed.parsedCount : 0;
-assert.equal(feedParsedCount, 3);
-assert.equal(feedItems.length, 3);
+assert.equal(feedParsedCount, 4);
+assert.equal(feedItems.length, 4);
 
 const usedHarley = filterUsedHarley(feedItems);
-assert.equal(usedHarley.length, 1);
+assert.equal(usedHarley.length, 2);
 assert.equal(usedHarley[0]?.model, "Street Glide");
 assert.equal(usedHarley[0]?.photos.length, 2);
+assert.equal(usedHarley[0]?.stockNumber, "UG1001MKE");
 
 const key = getMatchKey(usedHarley[0]!);
 assert.equal(key?.kind, "vin");
 assert.equal(key?.value, "1HD1KBC11MB600001");
+
+const stockOnly = usedHarley.find((i) => i.feedId === "1004");
+assert.ok(stockOnly);
+assert.equal(stockOnly!.stockNumber, "00RK19MKE");
+assert.equal(stockOnly!.vin, null);
+const stockKey = getMatchKey(stockOnly!);
+assert.equal(stockKey?.kind, "stock");
+assert.equal(stockKey?.value, "00RK19MKE");
 
 const payload = mapItemToDealerPayload(usedHarley[0]!);
 assert.equal(payload.source, "FEED");

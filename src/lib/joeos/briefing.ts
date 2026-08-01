@@ -23,6 +23,7 @@ export type BriefingBike = {
   mileage?: number | null;
   status?: string;
   photoUrl?: string | null;
+  stockNumber?: string | null;
   hasRecentPriceDrop?: boolean;
   previousPrice?: number | null;
   priceChangedAt?: Date | null;
