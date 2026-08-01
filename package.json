@@ -7,7 +7,7 @@
     "build": "tsx scripts/assert-site-url.ts --production && prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx scripts/validators.test.ts && tsx scripts/briefing.test.ts && tsx scripts/inventory-filters.test.ts && tsx scripts/seo-scoring.test.ts && tsx scripts/asset-scores.test.ts && tsx scripts/knowledge-packs.test.ts && tsx scripts/location-packs.test.ts && tsx scripts/knowledge-graph.test.ts && tsx scripts/site-url.test.ts && tsx scripts/scanbike.test.ts",
+    "test": "tsx scripts/validators.test.ts && tsx scripts/briefing.test.ts && tsx scripts/inventory-filters.test.ts && tsx scripts/seo-scoring.test.ts && tsx scripts/asset-scores.test.ts && tsx scripts/knowledge-packs.test.ts && tsx scripts/location-packs.test.ts && tsx scripts/knowledge-graph.test.ts && tsx scripts/site-url.test.ts && tsx scripts/scanbike.test.ts && tsx scripts/qr-sheet.test.ts",
     "content:render": "tsx scripts/render-knowledge-packs.ts",
     "knowledge:seed": "tsx scripts/knowledge-seed.ts",
     "seo:sync": "tsx scripts/seo-sync-urls.ts",

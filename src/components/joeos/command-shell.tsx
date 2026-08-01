@@ -39,6 +39,7 @@ export function CommandShell({
 }) {
   const pathname = usePathname() ?? "";
   const isLogin = pathname === "/admin/login";
+  const isQrSheet = pathname.startsWith("/admin/bikes/qr-sheet");
   const [moreOpen, setMoreOpen] = useState(false);
   const [pathForMore, setPathForMore] = useState(pathname);
 
@@ -47,7 +48,7 @@ export function CommandShell({
     setMoreOpen(false);
   }
 
-  if (isLogin) {
+  if (isLogin || isQrSheet) {
     return (
       <div className="jos">
         <div className="jos-stage">
