@@ -12,6 +12,16 @@ export const analyticsEventTypes = [
   "FAVORITE",
   "SHARE_CLICK",
   "APPOINTMENT_REQUEST",
+  "SCAN_QR_OPEN",
+  "SCAN_TIME_ON_PAGE",
+  "SCAN_GALLERY_INTERACTION",
+  "SCAN_VIDEO_PLAY",
+  "SCAN_SHARE",
+  "SCAN_TEST_RIDE_REQUEST",
+  "SCAN_ASK_ASSOCIATE",
+  "SCAN_FAVORITE",
+  "SCAN_COMPARE",
+  "SCAN_ESTIMATOR_OPEN",
 ] as const;
 
 export type AnalyticsEventTypeName = (typeof analyticsEventTypes)[number];
@@ -24,6 +34,7 @@ export const collectAnalyticsSchema = z.object({
   query: z.string().max(200).optional().nullable(),
   filters: z.record(z.string(), z.unknown()).optional().nullable(),
   meta: z.record(z.string(), z.unknown()).optional().nullable(),
+  product: z.enum(["JOE_SITE", "SCANBIKE"]).optional().nullable(),
   noTrack: z.boolean().optional(),
 });
 

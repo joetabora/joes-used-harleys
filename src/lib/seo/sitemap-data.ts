@@ -1,4 +1,5 @@
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
+import { publicBikeWhere } from "@/lib/inventory-public";
 import { siteConfig } from "@/lib/site";
 import { getPublishedGuides, listEventGuides, listRouteGuides } from "@/lib/content/guides";
 import {
@@ -10,6 +11,7 @@ import {
   listModels,
   listTopics,
 } from "@/lib/content/taxonomy";
+import { scanBikeVinPath } from "@/lib/vehicle/urls";
 
 export type SitemapEntry = {
   url: string;
@@ -99,7 +101,7 @@ export function buildTaxonomySitemapEntries(): SitemapEntry[] {
 export async function buildInventorySitemapEntries(): Promise<SitemapEntry[]> {
   if (!isDatabaseConfigured() || !prisma) return [];
   const bikes = await prisma.bike.findMany({
-    where: { status: { in: ["AVAILABLE", "PENDING"] }, hidden: false },
+    where: publicBikeWhere,
     select: { id: true, updatedAt: true, createdAt: true },
   });
   return bikes.map((b) =>
@@ -107,9 +109,39 @@ export async function buildInventorySitemapEntries(): Promise<SitemapEntry[]> {
   );
 }
 
+/** ScanBike PUBLIC_INDEX VIN pages only — never QR_ONLY / archived / non-Harley. */
+export async function buildScanBikeSitemapEntries(): Promise<SitemapEntry[]> {
+  if (!isDatabaseConfigured() || !prisma) return [];
+  try {
+    const bikes = await prisma.bike.findMany({
+      where: {
+        scanVisibility: "PUBLIC_INDEX",
+        status: { in: ["AVAILABLE", "PENDING"] },
+        OR: [{ scanSlugVin: { not: null } }, { vin: { not: null } }],
+      },
+      select: {
+        vin: true,
+        scanSlugVin: true,
+        updatedAt: true,
+        createdAt: true,
+      },
+    });
+    return bikes
+      .map((b) => {
+        const slug = b.scanSlugVin ?? b.vin;
+        if (!slug) return null;
+        return u(scanBikeVinPath(slug), "scanbike", b.updatedAt ?? b.createdAt);
+      })
+      .filter((e): e is SitemapEntry => Boolean(e));
+  } catch {
+    return [];
+  }
+}
+
 export async function buildAllSitemapEntries(): Promise<SitemapEntry[]> {
   const tax = buildTaxonomySitemapEntries();
   const inv = await buildInventorySitemapEntries();
+  const scan = await buildScanBikeSitemapEntries();
 
   if (isDatabaseConfigured() && prisma) {
     try {
@@ -135,16 +167,24 @@ export async function buildAllSitemapEntries(): Promise<SitemapEntry[]> {
                       : "harleys";
           return u(row.path, shard, row.lastModified);
         });
-        // Prefer DB INDEX set when present; still include inventory live
-        return [...fromDb, ...inv];
+        // Prefer DB INDEX set when present; still include inventory + ScanBike live
+        return [...fromDb, ...inv, ...scan];
       }
     } catch {
       /* table may not exist yet */
     }
   }
 
-  return [...tax, ...inv];
+  return [...tax, ...inv, ...scan];
 }
 
-export const SITEMAP_SHARDS = ["static", "guides", "harleys", "local", "compare", "inventory"] as const;
+export const SITEMAP_SHARDS = [
+  "static",
+  "guides",
+  "harleys",
+  "local",
+  "compare",
+  "inventory",
+  "scanbike",
+] as const;
 export type SitemapShard = (typeof SITEMAP_SHARDS)[number];

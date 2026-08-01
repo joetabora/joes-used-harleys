@@ -1,0 +1,304 @@
+/* ScanBike design tokens — independent of Joe marketing / JoeOS */
+.sb-root {
+  --sb-ink: #12141a;
+  --sb-muted: #5c6570;
+  --sb-paper: #f7f5f1;
+  --sb-panel: #ffffff;
+  --sb-line: #d8dde3;
+  --sb-accent: #1a5f4a;
+  --sb-accent-ink: #ffffff;
+  --sb-danger: #8b2942;
+  --sb-font-display: "Segoe UI", "Helvetica Neue", sans-serif;
+  --sb-font-body: "Segoe UI", "Helvetica Neue", sans-serif;
+
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(120% 80% at 10% -10%, color-mix(in srgb, var(--sb-accent) 18%, transparent), transparent 55%),
+    linear-gradient(180deg, #ebe7e0 0%, var(--sb-paper) 40%, #e4e9ee 100%);
+  color: var(--sb-ink);
+  font-family: var(--sb-font-body);
+}
+
+.sb-shell-header {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--sb-line) 80%, transparent);
+  background: color-mix(in srgb, var(--sb-panel) 82%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.sb-shell-brand {
+  font-family: var(--sb-font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.sb-shell-main {
+  flex: 1;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 0 0 3rem;
+}
+
+.sb-shell-footer {
+  padding: 1.25rem 1.1rem 2rem;
+  text-align: center;
+  color: var(--sb-muted);
+  font-size: 0.8rem;
+}
+
+.sb-shell-footer-line {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sb-shell-footer-meta {
+  margin: 0.35rem 0 0;
+}
+
+.sb-hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #1c2228;
+  overflow: hidden;
+}
+
+.sb-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sb-sold-banner {
+  background: var(--sb-danger);
+  color: #fff;
+  text-align: center;
+  padding: 0.55rem 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.sb-body {
+  padding: 1.25rem 1.1rem 0;
+}
+
+.sb-title {
+  font-family: var(--sb-font-display);
+  font-size: clamp(1.55rem, 5vw, 2rem);
+  line-height: 1.15;
+  margin: 0;
+  font-weight: 750;
+}
+
+.sb-price {
+  margin: 0.65rem 0 0;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--sb-accent);
+}
+
+.sb-meta {
+  margin: 0.4rem 0 0;
+  color: var(--sb-muted);
+  font-size: 0.95rem;
+}
+
+.sb-section {
+  margin-top: 1.75rem;
+}
+
+.sb-section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sb-muted);
+}
+
+.sb-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+}
+
+.sb-gallery button {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: #1c2228;
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sb-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sb-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem 1rem;
+}
+
+.sb-spec dt {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sb-muted);
+  margin: 0;
+}
+
+.sb-spec dd {
+  margin: 0.15rem 0 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.sb-desc {
+  margin: 0;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  color: color-mix(in srgb, var(--sb-ink) 92%, transparent);
+}
+
+.sb-cta-row {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+  position: sticky;
+  bottom: 0;
+  padding: 0.85rem 0 0.25rem;
+  background: linear-gradient(180deg, transparent, var(--sb-paper) 28%);
+}
+
+.sb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.35rem;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.sb-btn-primary {
+  background: var(--sb-accent);
+  color: var(--sb-accent-ink);
+}
+
+.sb-btn-secondary {
+  background: var(--sb-panel);
+  color: var(--sb-ink);
+  border-color: var(--sb-line);
+}
+
+.sb-form {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.sb-form label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sb-form input,
+.sb-form textarea {
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--sb-line);
+  border-radius: 0.35rem;
+  font: inherit;
+  background: var(--sb-panel);
+}
+
+.sb-form textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.sb-msg {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+.sb-msg-ok {
+  color: var(--sb-accent);
+}
+
+.sb-msg-err {
+  color: var(--sb-danger);
+}
+
+.sb-video {
+  width: 100%;
+  border-radius: 0.35rem;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+
+.sb-tools {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.sb-tool-card {
+  border: 1px solid var(--sb-line);
+  background: var(--sb-panel);
+  padding: 0.9rem 1rem;
+  border-radius: 0.35rem;
+}
+
+.sb-tool-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sb-tool-card p {
+  margin: 0.35rem 0 0;
+  color: var(--sb-muted);
+  font-size: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .sb-cta-row {
+    grid-template-columns: 1fr 1fr 1fr;
+    position: static;
+    background: none;
+  }
+}
+
+@media print {
+  .sb-shell-header,
+  .sb-shell-footer,
+  .sb-cta-row,
+  .sb-form,
+  .sb-tools {
+    display: none !important;
+  }
+
+  .sb-root {
+    background: #fff;
+  }
+}

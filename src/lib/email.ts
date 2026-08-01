@@ -46,3 +46,36 @@ export async function notifyJoeOfLead(
 
   return { sent: true };
 }
+
+/** Neutral ScanBike inquiry notify — rebrandable for other dealers. */
+export async function notifyScanBikeLead(
+  payload: LeadNotifyPayload,
+): Promise<{ sent: boolean; reason?: string }> {
+  if (!isEmailConfigured()) {
+    return {
+      sent: false,
+      reason: "Email not configured (RESEND_API_KEY / LEAD_NOTIFY_EMAIL).",
+    };
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const from = process.env.EMAIL_FROM ?? "onboarding@resend.dev";
+  const to = process.env.LEAD_NOTIFY_EMAIL!;
+
+  await resend.emails.send({
+    from,
+    to,
+    subject: `ScanBike inquiry — ${payload.name}`,
+    text: [
+      `ScanBike inquiry`,
+      `Name: ${payload.name}`,
+      `Email: ${payload.email || "—"}`,
+      `Phone: ${payload.phone || "—"}`,
+      `Source: ${payload.source || "—"}`,
+      "",
+      payload.notes || "(no notes)",
+    ].join("\n"),
+  });
+
+  return { sent: true };
+}

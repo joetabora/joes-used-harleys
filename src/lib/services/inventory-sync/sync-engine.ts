@@ -1,6 +1,7 @@
 import type { Bike, PrismaClient } from "@/generated/prisma/client";
+import { buildScanBikeFields } from "@/lib/vehicle/scan-fields";
 import { fetchFeed } from "./fetch-feed";
-import { filterUsedHarley } from "./filter-items";
+import { filterMotorcycles, filterUsedHarley } from "./filter-items";
 import { getMatchKey } from "./match-key";
 import { mapItemToDealerPayload } from "./map-item";
 import { parseFeed } from "./parse-feed";
@@ -8,8 +9,25 @@ import type { DealerBikePayload, SyncErrorEntry, SyncOptions, SyncResult } from 
 
 type ExistingFeedBike = Pick<
   Bike,
-  "id" | "vin" | "stockNumber" | "price" | "dealerHash" | "status" | "hidden" | "soldAt"
+  | "id"
+  | "vin"
+  | "stockNumber"
+  | "price"
+  | "dealerHash"
+  | "status"
+  | "hidden"
+  | "soldAt"
+  | "scanVisibility"
+  | "archivedAt"
+  | "make"
+  | "condition"
 >;
+
+function archiveSoldEnabled(): boolean {
+  const v = process.env.SCANBIKE_ARCHIVE_SOLD?.trim().toLowerCase();
+  if (v === "0" || v === "false" || v === "no") return false;
+  return true;
+}
 
 function buildResult(
   partial: Omit<SyncResult, "message"> & { message?: string },
@@ -129,9 +147,11 @@ export async function syncInventory(
     });
   }
 
-  const usedHarley = filterUsedHarley(parsed.items);
+  const ingestItems = filterMotorcycles(parsed.items);
+  const usedHarley = filterUsedHarley(ingestItems);
   const errors: SyncErrorEntry[] = [];
   const now = new Date();
+  const archiveSold = archiveSoldEnabled();
 
   const existing = await prisma.bike.findMany({
     where: { source: "FEED" },
@@ -144,6 +164,10 @@ export async function syncInventory(
       status: true,
       hidden: true,
       soldAt: true,
+      scanVisibility: true,
+      archivedAt: true,
+      make: true,
+      condition: true,
     },
   });
 
@@ -161,6 +185,7 @@ export async function syncInventory(
     previousPrice: number | null;
     priceChanged: boolean;
     hashSkip: boolean;
+    match: ExistingFeedBike;
     statusUpdate: {
       status?: "AVAILABLE" | "PENDING" | "SOLD";
       hidden?: boolean;
@@ -172,7 +197,7 @@ export async function syncInventory(
   const toUpdate: PlannedUpdate[] = [];
   const seenIds = new Set<string>();
 
-  for (const item of usedHarley) {
+  for (const item of ingestItems) {
     const key = getMatchKey(item);
     if (!key) {
       errors.push({
@@ -199,6 +224,7 @@ export async function syncInventory(
         previousPrice: match.price,
         priceChanged: false,
         hashSkip: true,
+        match,
         statusUpdate: {},
       });
       continue;
@@ -221,6 +247,7 @@ export async function syncInventory(
       previousPrice: match.price,
       priceChanged,
       hashSkip: false,
+      match,
       statusUpdate,
     });
   }
@@ -302,6 +329,14 @@ export async function syncInventory(
     });
 
     for (const row of toCreate) {
+      const scan = buildScanBikeFields({
+        vin: row.payload.vin,
+        stockNumber: row.payload.stockNumber,
+        make: row.payload.make,
+        condition: row.payload.condition,
+        status: "AVAILABLE",
+        archiveSold,
+      });
       await tx.bike.create({
         data: {
           ...row.payload,
@@ -311,15 +346,31 @@ export async function syncInventory(
           lastSeenAt: now,
           syncedAt: now,
           featuredRank: 0,
+          ...scan,
         },
       });
     }
 
     for (const row of toUpdate) {
+      const effectiveStatus: "AVAILABLE" | "PENDING" | "SOLD" =
+        row.statusUpdate.status ??
+        (row.match.status === "SOLD" ? "AVAILABLE" : row.match.status);
+
+      const scan = buildScanBikeFields({
+        vin: row.payload.vin,
+        stockNumber: row.payload.stockNumber,
+        make: row.payload.make,
+        condition: row.payload.condition,
+        status: effectiveStatus,
+        archiveSold,
+        previousVisibility: row.match.scanVisibility,
+        previousArchivedAt: row.match.archivedAt,
+      });
+
       if (row.hashSkip) {
         await tx.bike.update({
           where: { id: row.id },
-          data: { lastSeenAt: now },
+          data: { lastSeenAt: now, ...scan },
         });
         continue;
       }
@@ -344,18 +395,49 @@ export async function syncInventory(
           lastSeenAt: now,
           syncedAt: now,
           ...row.statusUpdate,
+          ...scan,
         },
       });
     }
 
     for (const bike of missing) {
+      const scan = buildScanBikeFields({
+        vin: bike.vin,
+        stockNumber: bike.stockNumber,
+        make: bike.make,
+        condition: bike.condition,
+        status: "SOLD",
+        archiveSold,
+        previousVisibility: bike.scanVisibility,
+        previousArchivedAt: bike.archivedAt,
+      });
       await tx.bike.update({
         where: { id: bike.id },
         data: {
           status: "SOLD",
           hidden: true,
           soldAt: bike.soldAt ?? now,
+          ...scan,
         },
+      });
+    }
+
+    // Backfill ScanBike fields on already-sold FEED bikes (not in missing set)
+    const alreadySold = existing.filter((b) => b.status === "SOLD" && !seenIds.has(b.id));
+    for (const bike of alreadySold) {
+      const scan = buildScanBikeFields({
+        vin: bike.vin,
+        stockNumber: bike.stockNumber,
+        make: bike.make,
+        condition: bike.condition,
+        status: "SOLD",
+        archiveSold,
+        previousVisibility: bike.scanVisibility,
+        previousArchivedAt: bike.archivedAt,
+      });
+      await tx.bike.update({
+        where: { id: bike.id },
+        data: scan,
       });
     }
 

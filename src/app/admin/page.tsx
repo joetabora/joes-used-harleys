@@ -1,4 +1,5 @@
 import { CommandCenter } from "@/components/joeos/command-center";
+import { ScanBikeAnalyticsPanel } from "@/components/joeos/scanbike-analytics-panel";
 import { EmptyState } from "@/components/joeos/ui";
 import { isAdminEnvConfigured, getAdminSession, requireAdminOrRedirect } from "@/lib/auth";
 import { loadMorningBriefing } from "@/lib/joeos/load-briefing";
@@ -26,6 +27,7 @@ export default async function AdminHomePage() {
         </EmptyState>
       ) : null}
       <CommandCenter briefing={briefing} dbReady={ready} />
+      <ScanBikeAnalyticsPanel />
     </div>
   );
 }

@@ -78,6 +78,7 @@ export async function recordAnalyticsEvent(
       query: input.query ?? null,
       filters: asJson(input.filters),
       meta: asJson(input.meta),
+      product: input.product ?? null,
     },
   });
 

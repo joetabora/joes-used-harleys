@@ -37,7 +37,8 @@ export default async function AdminSyncPage() {
     );
   }
 
-  const [lastLog, lastSuccessCron, usedCount, newest] = await Promise.all([
+  const [lastLog, lastSuccessCron, usedCount, newest, missingIdentity, scanCounts] =
+    await Promise.all([
     prisma.syncLog.findFirst({ orderBy: { startedAt: "desc" } }),
     prisma.syncLog.findFirst({
       where: { trigger: "CRON", status: { in: ["SUCCESS", "PARTIAL"] }, dryRun: false },
@@ -48,12 +49,39 @@ export default async function AdminSyncPage() {
         source: "FEED",
         hidden: false,
         status: { in: ["AVAILABLE", "PENDING"] },
+        make: { equals: "Harley-Davidson", mode: "insensitive" },
+        condition: { equals: "used", mode: "insensitive" },
       },
     }),
     prisma.bike.findFirst({
-      where: { source: "FEED", hidden: false, status: { in: ["AVAILABLE", "PENDING"] } },
+      where: {
+        source: "FEED",
+        hidden: false,
+        status: { in: ["AVAILABLE", "PENDING"] },
+        make: { equals: "Harley-Davidson", mode: "insensitive" },
+        condition: { equals: "used", mode: "insensitive" },
+      },
       orderBy: { firstSeenAt: "desc" },
     }),
+    prisma.bike
+      .count({
+        where: {
+          source: "FEED",
+          status: { in: ["AVAILABLE", "PENDING"] },
+          AND: [
+            { OR: [{ vin: null }, { vin: "" }] },
+            { OR: [{ stockNumber: null }, { stockNumber: "" }] },
+          ],
+        },
+      })
+      .catch(() => 0),
+    prisma.bike
+      .groupBy({
+        by: ["scanVisibility"],
+        where: { source: "FEED", status: { in: ["AVAILABLE", "PENDING"] } },
+        _count: { _all: true },
+      })
+      .catch(() => [] as { scanVisibility: string; _count: { _all: number } }[]),
   ]);
 
   const nextScheduled = lastSuccessCron
@@ -107,7 +135,8 @@ export default async function AdminSyncPage() {
       <header className="jos-stack-dense">
         <JosSectionHeader section="Feed bay" title="Inventory feed" />
         <JosBody className="max-w-xl text-sm">
-          Mirrors Milwaukee Harley-Davidson used Harley inventory. Never invents bikes.
+          Syncs dealership feed motorcycles. Joe marketing stays used-Harley only; ScanBike
+          visibility is derived per bike.
         </JosBody>
       </header>
 
@@ -118,6 +147,20 @@ export default async function AdminSyncPage() {
           <SyncControls />
         </JosPanel>
       </div>
+
+      <JosPanel>
+        <p className="jos-section mb-3">ScanBike</p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {scanCounts.map((row) => (
+            <JosData key={row.scanVisibility}>
+              {row.scanVisibility}: {row._count._all}
+            </JosData>
+          ))}
+          <JosData className={missingIdentity > 0 ? "text-[var(--jos-warn)]" : undefined}>
+            Missing VIN+stock (no QR): {missingIdentity}
+          </JosData>
+        </div>
+      </JosPanel>
 
       {lastLog ? (
         <JosPanel>

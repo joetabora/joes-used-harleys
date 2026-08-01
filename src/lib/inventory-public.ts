@@ -1,9 +1,14 @@
 import type { Prisma } from "@/generated/prisma/client";
 
-/** Public inventory visibility — never show hidden bikes. */
+/**
+ * Joe marketing inventory — used Harley only.
+ * Sync may ingest New/Non-Harley for ScanBike; those must not appear here.
+ */
 export const publicBikeWhere: Prisma.BikeWhereInput = {
   hidden: false,
   status: { in: ["AVAILABLE", "PENDING"] },
+  make: { equals: "Harley-Davidson", mode: "insensitive" },
+  condition: { equals: "used", mode: "insensitive" },
 };
 
 export const publicBikeOrderBy: Prisma.BikeOrderByWithRelationInput[] = [

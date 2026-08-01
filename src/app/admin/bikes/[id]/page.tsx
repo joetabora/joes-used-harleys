@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { AssetScorecardView } from "@/components/assets/asset-scorecard";
 import { BikeEditorForm } from "@/components/bike-editor-form";
 import { ContextBar } from "@/components/joeos/context-bar";
+import { ScanBikeQrControls } from "@/components/joeos/scanbike-qr-controls";
 import {
   Gauge,
   JosData,
@@ -20,6 +21,7 @@ import {
 } from "@/lib/joeos/briefing";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { createMetadata } from "@/lib/seo";
+import { scanBikeCanonicalUrl } from "@/lib/vehicle/urls";
 
 export const metadata = createMetadata({
   title: "Asset detail",
@@ -97,6 +99,9 @@ export default async function EditBikePage({ params }: Props) {
               <JosData className="mt-2">
                 {formatMiles(bike.mileage)} · {bike.status} · {bike.source}
               </JosData>
+              <JosData className="mt-1 text-[var(--jos-orange)]">
+                Stock # {bike.stockNumber?.trim() ? bike.stockNumber : "—"}
+              </JosData>
             </div>
             <JosKpi className="text-3xl text-[var(--jos-orange)]">
               {formatPrice(bike.price)}
@@ -147,6 +152,18 @@ export default async function EditBikePage({ params }: Props) {
           <AssetScorecardView scorecard={scorecard} variant="jos" honestyBlurb />
         </JosPanel>
       ) : null}
+
+      <JosPanel>
+        <ScanBikeQrControls
+          bikeId={bike.id}
+          hasIdentity={Boolean(bike.vin?.trim() || bike.stockNumber?.trim())}
+          scanVisibility={bike.scanVisibility}
+          canonicalHint={scanBikeCanonicalUrl({
+            vin: bike.vin,
+            stockNumber: bike.stockNumber,
+          })}
+        />
+      </JosPanel>
 
       {/* FocusZone: enrichment editor */}
       <JosPanel hero>

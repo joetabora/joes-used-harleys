@@ -53,6 +53,7 @@ model Lead {
   email        String?
   phone        String?
   source       String?
+  product      LeadProduct   @default(JOE_SITE)
   status       LeadStatus    @default(NEW)
   notes        String?
   createdAt    DateTime      @default(now())
@@ -60,6 +61,12 @@ model Lead {
 
   @@index([status])
   @@index([createdAt])
+  @@index([product])
+}
+
+enum LeadProduct {
+  JOE_SITE
+  SCANBIKE
 }
 
 model Bike {
@@ -123,9 +130,17 @@ model Bike {
   personalHeroImageUrl String?
   internalNotes        String?
 
+  // --- ScanBike (sync-owned visibility; never Joe branding) ---
+  scanVisibility ScanVisibility @default(QR_ONLY)
+  scanSlugVin    String?
+  scanSlugStock  String?
+  archivedAt     DateTime?
+
   priceHistory BikePriceHistory[]
   analytics    BikeAnalytics?
 
+  @@unique([scanSlugVin])
+  @@unique([scanSlugStock])
   @@index([stockNumber])
   @@index([status, hidden])
   @@index([make, model])
@@ -134,6 +149,14 @@ model Bike {
   @@index([firstSeenAt])
   @@index([soldAt])
   @@index([source])
+  @@index([scanVisibility, status])
+}
+
+enum ScanVisibility {
+  PUBLIC_INDEX
+  QR_ONLY
+  ARCHIVED
+  HIDDEN
 }
 
 model BikePriceHistory {
@@ -216,6 +239,16 @@ enum AnalyticsEventType {
   FAVORITE
   SHARE_CLICK
   APPOINTMENT_REQUEST
+  SCAN_QR_OPEN
+  SCAN_TIME_ON_PAGE
+  SCAN_GALLERY_INTERACTION
+  SCAN_VIDEO_PLAY
+  SCAN_SHARE
+  SCAN_TEST_RIDE_REQUEST
+  SCAN_ASK_ASSOCIATE
+  SCAN_FAVORITE
+  SCAN_COMPARE
+  SCAN_ESTIMATOR_OPEN
 }
 
 model AnalyticsEvent {
@@ -227,11 +260,13 @@ model AnalyticsEvent {
   query     String?
   filters   Json?
   meta      Json?
+  product   String?
   createdAt DateTime           @default(now())
 
   @@index([type, createdAt])
   @@index([bikeId, type, createdAt])
   @@index([sessionId, createdAt])
+  @@index([product, type, createdAt])
 }
 
 model Interaction {
