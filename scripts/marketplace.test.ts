@@ -10,6 +10,7 @@ const VIN = "1HD1XXXXXXXXXXXXX";
 const TRADE =
   "🔄 TRADES WELCOME — we take anything with a title in trade!";
 const DEALER = "📍 Milwaukee Harley-Davidson";
+const FINANCING = "Financing available for any type of credit";
 const CONTACT = "📩 Message me for more information about this bike.";
 
 function bike(overrides: Partial<MarketplaceBikeInput> = {}): MarketplaceBikeInput {
@@ -40,7 +41,6 @@ function assertNoVin(listing: ReturnType<typeof composeMarketplaceListing>) {
 function assertNoInventedClaims(text: string) {
   const lower = text.toLowerCase();
   for (const banned of [
-    "financ",
     "warranty",
     "apr",
     "monthly payment",
@@ -55,12 +55,16 @@ function assertNoInventedClaims(text: string) {
   ]) {
     assert.equal(lower.includes(banned), false, `invented claim: ${banned}`);
   }
+  assert.equal(text.includes("Transmission:"), false);
+  assert.equal(text.includes("Category:"), false);
+  assert.equal(text.includes("Stock #:"), false);
 }
 
 function assertRequiredFooter(description: string) {
   assert.ok(description.includes("PRE-OWNED") || description.includes("pre-owned"));
   assert.ok(description.includes(TRADE));
   assert.ok(description.includes(DEALER));
+  assert.ok(description.includes(FINANCING));
   assert.ok(description.includes(CONTACT));
 }
 

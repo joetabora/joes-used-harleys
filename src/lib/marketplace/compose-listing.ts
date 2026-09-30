@@ -46,6 +46,7 @@ const NEGATIVE_CERTIFIED = new Set(["no", "false", "0", "n", "none"]);
 const TRADE_LINE =
   "🔄 TRADES WELCOME — we take anything with a title in trade!";
 const DEALER_LINE = "📍 Milwaukee Harley-Davidson";
+const FINANCING_LINE = "Financing available for any type of credit";
 const CONTACT_LINE = "📩 Message me for more information about this bike.";
 
 function nonEmpty(value: string | null | undefined): string | null {
@@ -149,21 +150,9 @@ export function composeMarketplaceDescription(
     blocks.push(`💰 ${priceLine}`);
   }
 
-  const detailLines: string[] = [];
-  const transmission = nonEmpty(bike.transmission);
-  if (transmission) detailLines.push(`Transmission: ${transmission}`);
-
-  const category = nonEmpty(bike.category);
-  if (category) detailLines.push(`Category: ${category}`);
-
-  const stock = nonEmpty(bike.stockNumber);
-  if (stock) detailLines.push(`Stock #: ${stock}`);
-
   const certified = usefulCertified(bike.certified);
-  if (certified) detailLines.push(`Certified: ${certified}`);
-
-  if (detailLines.length > 0) {
-    blocks.push(detailLines.join("\n"));
+  if (certified) {
+    blocks.push(`Certified: ${certified}`);
   }
 
   const dealerBody = normalizeDealerDescription(bike.description);
@@ -173,6 +162,7 @@ export function composeMarketplaceDescription(
 
   blocks.push(TRADE_LINE);
   blocks.push(DEALER_LINE);
+  blocks.push(FINANCING_LINE);
   blocks.push(CONTACT_LINE);
 
   return blocks.join("\n\n");
