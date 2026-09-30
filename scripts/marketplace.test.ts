@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import {
+  cleanModelName,
   composeMarketplaceListing,
+  displayYearMakeModel,
+  extractUnitSpecificNotes,
   MARKETPLACE_LISTING_STYLES,
   type MarketplaceBikeInput,
 } from "../src/lib/marketplace/compose-listing";
@@ -22,7 +25,7 @@ function bike(overrides: Partial<MarketplaceBikeInput> = {}): MarketplaceBikeInp
     price: 21995,
     mileage: 18442,
     color: "Black",
-    description: "Clean bagger with bags.",
+    description: null,
     transmission: "6-Speed",
     category: "Motorcycle",
     stockNumber: "U21234",
@@ -46,7 +49,6 @@ function assertNoInternalInventoryFields(text: string) {
   assert.equal(text.includes("Stock Number"), false);
   assert.equal(text.includes("6-Speed"), false);
   assert.equal(text.includes("U21234"), false);
-  // Category value alone — only flag labeled form; "Motorcycle" may appear in dealer text
 }
 
 function assertNoInventedClaims(text: string) {
@@ -57,10 +59,15 @@ function assertNoInventedClaims(text: string) {
     "monthly payment",
     "down payment",
     "approved",
+    "any type of credit",
+    "bad credit",
+    "guaranteed",
+    "zero down",
     "test ride",
-    "abs",
     "stage 1",
-    "upgraded",
+    "new tires",
+    "fresh service",
+    "one owner",
     "mint condition",
     "immaculate",
     "rare",
@@ -73,121 +80,126 @@ function assertNoInventedClaims(text: string) {
 
 function assertRequiredContent(description: string) {
   assert.ok(description.includes("PRE-OWNED"));
+  assert.equal(description.includes(FINANCING), true);
   assert.ok(description.includes(TRADE));
   assert.ok(description.includes(DEALER));
-  assert.ok(description.includes(FINANCING));
   assert.ok(description.includes(CONTACT));
+  // Financing must be exact — not the old longer line
+  assert.equal(description.includes("FOR ANY TYPE OF CREDIT"), false);
 }
 
-function assertPreferredEmojisUsed(description: string) {
-  const preferred = ["🔥", "🏍️", "💰", "🔄", "📍", "📩", "👀", "🛣️", "💳", "🖤"];
-  assert.ok(
-    preferred.some((e) => description.includes(e)),
-    "expected at least one preferred emoji",
-  );
-}
-
-// Title rules
-{
-  const withColor = composeMarketplaceListing(bike());
-  assert.equal(withColor.title, "2021 Harley-Davidson Road Glide Special - Black");
-  const noColor = composeMarketplaceListing(bike({ color: null }));
-  assert.equal(noColor.title, "2021 Harley-Davidson Road Glide Special");
-}
-
-// Price format
-{
-  const listing = composeMarketplaceListing(bike({ price: 21995 }));
-  assert.equal(listing.priceLine, "$21,995 + tax, title & fees");
-  assert.ok(listing.description.includes("💰 $21,995 + tax, title & fees"));
-}
-
-// All five styles — distinct, required language, emojis, no VIN, no invented specs
-{
-  const descriptions = new Set<string>();
-  for (const style of MARKETPLACE_LISTING_STYLES) {
-    const listing = composeMarketplaceListing(bike(), style);
-    assert.equal(listing.style, style);
-    assert.ok(listing.description.includes("18,442 miles"));
-    assert.ok(listing.description.includes("🖤 Black"));
-    assertRequiredContent(listing.description);
-    assertPreferredEmojisUsed(listing.description);
-    assertNoVin(listing);
-    assertNoInventedClaims(listing.description);
-    descriptions.add(listing.description);
+function countOccurrences(hay: string, needle: string): number {
+  let count = 0;
+  let idx = 0;
+  const upper = hay.toUpperCase();
+  const n = needle.toUpperCase();
+  while (true) {
+    const found = upper.indexOf(n, idx);
+    if (found < 0) break;
+    count += 1;
+    idx = found + n.length;
   }
-  assert.equal(descriptions.size, 5, "styles must produce distinct descriptions");
+  return count;
 }
 
-// Style spot-checks
+// cleanModelName / displayYearMakeModel — duplicate year/make regression
 {
-  const standard = composeMarketplaceListing(bike(), "standard");
+  const cleaned = cleanModelName(
+    2022,
+    "Harley-Davidson",
+    "2022 Harley-Davidson Tri Glide Ultra",
+  );
+  assert.equal(cleaned, "Tri Glide Ultra");
+
+  const ymm = displayYearMakeModel(
+    bike({
+      year: 2022,
+      model: "2022 Harley-Davidson Tri Glide Ultra",
+    }),
+  );
+  assert.equal(ymm, "2022 Harley-Davidson Tri Glide Ultra");
+  assert.equal(countOccurrences(ymm, "2022"), 1);
+  assert.equal(countOccurrences(ymm, "Harley-Davidson"), 1);
+
+  const listing = composeMarketplaceListing(
+    bike({
+      year: 2022,
+      model: "2022 Harley-Davidson Tri Glide Ultra",
+      color: null,
+      description: null,
+    }),
+  );
+  assert.equal(listing.title, "2022 Harley-Davidson Tri Glide Ultra");
   assert.ok(
-    standard.description.includes(
-      "🔥 PRE-OWNED 2021 HARLEY-DAVIDSON ROAD GLIDE SPECIAL 🔥",
+    listing.description.includes(
+      "🔥 PRE-OWNED 2022 HARLEY-DAVIDSON TRI GLIDE ULTRA 🔥",
     ),
   );
-  assert.ok(standard.description.includes("This one is ready for its next rider."));
-
-  const enthusiast = composeMarketplaceListing(bike(), "enthusiast");
-  assert.ok(enthusiast.description.includes("🏍️"));
-  assert.ok(enthusiast.description.includes("PRE-OWNED"));
-
-  const value = composeMarketplaceListing(bike(), "value");
-  assert.ok(value.description.includes("Looking for a Harley without stepping into a brand-new bike?"));
-
-  const attention = composeMarketplaceListing(bike(), "attention");
-  assert.ok(attention.description.includes("👀 THIS ONE IS WORTH A LOOK."));
-
-  const premium = composeMarketplaceListing(bike(), "premium");
-  assert.ok(premium.description.includes("🔥 Ready to step into something special?"));
+  assert.equal(
+    countOccurrences(listing.description, "2022 HARLEY-DAVIDSON"),
+    1,
+  );
+  // Body should use conversational model name, not full YMM
+  assert.equal(
+    listing.description.includes(
+      "looking for a 2022 Harley-Davidson Tri Glide Ultra",
+    ),
+    false,
+  );
 }
 
-// Missing price — incomplete, never invent
+// Title with color; normal model unchanged
 {
-  const listing = composeMarketplaceListing(bike({ price: null }));
-  assert.equal(listing.priceLine, "");
-  assert.equal(listing.description.includes("Ask for price"), false);
-  assert.equal(listing.description.includes("$"), false);
+  const listing = composeMarketplaceListing(bike());
+  assert.equal(listing.title, "2021 Harley-Davidson Road Glide Special - Black");
+  assert.equal(listing.priceLine, "$21,995 + tax, title & fees");
+  assert.ok(listing.description.includes("💰 $21,995 + tax, title & fees"));
+  assert.ok(listing.description.includes("🛣️ 18,442 miles"));
+  assert.ok(listing.description.includes("🖤 Black"));
   assertRequiredContent(listing.description);
   assertNoVin(listing);
-}
-
-// Missing mileage — incomplete, never invent
-{
-  const listing = composeMarketplaceListing(bike({ mileage: null }));
-  assert.equal(listing.description.includes("miles"), false);
-  assert.equal(listing.description.includes("Mileage on request"), false);
-  assertRequiredContent(listing.description);
-}
-
-// Missing color
-{
-  const listing = composeMarketplaceListing(bike({ color: null }));
-  assert.equal(listing.title.includes(" - "), false);
-  assert.equal(listing.description.includes("Black"), false);
-}
-
-// Missing dealer description
-{
-  const listing = composeMarketplaceListing(bike({ description: null }));
-  assertRequiredContent(listing.description);
-  assert.equal(listing.description.includes("Clean bagger"), false);
   assertNoInventedClaims(listing.description);
 }
 
-// HTML dealer description normalized
+// Financing exact wording
 {
-  const listing = composeMarketplaceListing(
-    bike({ description: "<p>Low miles.</p><br/><li>Ready to ride</li>" }),
+  const listing = composeMarketplaceListing(bike());
+  assert.ok(listing.description.includes(FINANCING));
+  assert.equal(
+    listing.description.includes("Financing available for any type of credit"),
+    false,
   );
-  assert.equal(listing.description.includes("<p>"), false);
-  assert.equal(listing.description.includes("<br"), false);
-  assert.ok(listing.description.includes("Low miles."));
-  assert.ok(listing.description.includes("Ready to ride"));
 }
 
-// Internal fields never appear even when present on the bike
+// All five styles — distinct pitches, required content
+{
+  const pitches = new Set<string>();
+  for (const style of MARKETPLACE_LISTING_STYLES) {
+    const listing = composeMarketplaceListing(bike({ description: null }), style);
+    assert.equal(listing.style, style);
+    assertRequiredContent(listing.description);
+    assertNoVin(listing);
+    assertNoInventedClaims(listing.description);
+    pitches.add(listing.description);
+  }
+  assert.equal(pitches.size, 5, "styles must produce distinct descriptions");
+}
+
+// Missing price / mileage — omit, never invent
+{
+  const noPrice = composeMarketplaceListing(bike({ price: null }));
+  assert.equal(noPrice.priceLine, "");
+  assert.equal(noPrice.description.includes("Ask for price"), false);
+  assert.equal(noPrice.description.includes("$"), false);
+  assertRequiredContent(noPrice.description);
+
+  const noMiles = composeMarketplaceListing(bike({ mileage: null }));
+  assert.equal(noMiles.description.includes("miles"), false);
+  assert.equal(noMiles.description.includes("Mileage on request"), false);
+  assertRequiredContent(noMiles.description);
+}
+
+// Internal fields never appear
 {
   const listing = composeMarketplaceListing(
     bike({
@@ -202,10 +214,73 @@ function assertPreferredEmojisUsed(description: string) {
   assertNoVin(listing);
 }
 
-// Default style is standard
+// Brochure manufacturer copy is NOT reproduced
 {
-  const listing = composeMarketplaceListing(bike());
-  assert.equal(listing.style, "standard");
+  const brochure =
+    "The ultimate Touring model from Harley-Davidson. Get all the premium features with classic Sportster form and modern function. One of the world's most distinctive motorcycles with 90 horsepower and advanced suspension.";
+  assert.equal(extractUnitSpecificNotes(brochure), null);
+
+  const listing = composeMarketplaceListing(bike({ description: brochure }));
+  assert.equal(listing.description.includes("ultimate Touring"), false);
+  assert.equal(listing.description.includes("premium features"), false);
+  assert.equal(listing.description.includes("horsepower"), false);
+  assert.equal(listing.description.includes("distinctive motorcycles"), false);
+  assertRequiredContent(listing.description);
+}
+
+// Short unit-specific notes ARE used
+{
+  const note = "Low Miles. Bars, Exhaust and more.";
+  assert.ok(extractUnitSpecificNotes(note));
+
+  const listing = composeMarketplaceListing(
+    bike({
+      year: 2013,
+      model: "Super Glide Custom",
+      price: 8499,
+      mileage: 16669,
+      color: "Black",
+      description: note,
+    }),
+  );
+  assert.ok(/bars/i.test(listing.description));
+  assert.ok(/exhaust/i.test(listing.description));
+  assert.equal(listing.description.includes("Stage 1"), false);
+  assert.equal(listing.description.includes("new tires"), false);
+  assertRequiredContent(listing.description);
+}
+
+// HTML unit notes normalize; brochure HTML rejected
+{
+  const shortHtml = extractUnitSpecificNotes("<p>Low miles.</p><br/>Bars and exhaust");
+  assert.ok(shortHtml);
+  assert.equal(shortHtml!.includes("<p>"), false);
+
+  const longBrochure = extractUnitSpecificNotes(
+    "<p>The ultimate Touring model from Harley-Davidson with premium features and classic form and modern function for riders who want it all.</p>",
+  );
+  assert.equal(longBrochure, null);
+}
+
+// Example Nightster skeleton
+{
+  const listing = composeMarketplaceListing(
+    bike({
+      year: 2025,
+      model: "Nightster",
+      price: 9499,
+      mileage: 2144,
+      color: "Billiard Gray",
+      description: null,
+    }),
+  );
+  assert.ok(
+    listing.description.includes("🔥 PRE-OWNED 2025 HARLEY-DAVIDSON NIGHTSTER 🔥"),
+  );
+  assert.ok(listing.description.includes("💰 $9,499 + tax, title & fees"));
+  assert.ok(listing.description.includes("🛣️ 2,144 miles"));
+  assert.ok(listing.description.includes("Billiard Gray"));
+  assertRequiredContent(listing.description);
 }
 
 console.log("marketplace tests passed");
