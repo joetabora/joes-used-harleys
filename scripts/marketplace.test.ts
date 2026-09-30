@@ -10,7 +10,7 @@ const VIN = "1HD1XXXXXXXXXXXXX";
 const TRADE =
   "🔄 TRADES WELCOME — WE TAKE ANYTHING WITH A TITLE IN TRADE!";
 const DEALER = "📍 Milwaukee Harley-Davidson";
-const FINANCING = "💳 FINANCING AVAILABLE FOR ANY TYPE OF CREDIT";
+const FINANCING = "💳 FINANCING AVAILABLE";
 const CONTACT =
   "📩 Message me for more information or to set up a time to check it out.";
 

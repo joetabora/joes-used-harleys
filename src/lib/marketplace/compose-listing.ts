@@ -44,7 +44,7 @@ export type MarketplaceListing = {
 const TRADE_LINE =
   "🔄 TRADES WELCOME — WE TAKE ANYTHING WITH A TITLE IN TRADE!";
 const DEALER_LINE = "📍 Milwaukee Harley-Davidson";
-const FINANCING_LINE = "💳 FINANCING AVAILABLE FOR ANY TYPE OF CREDIT";
+const FINANCING_LINE = "💳 FINANCING AVAILABLE";
 const CONTACT_LINE =
   "📩 Message me for more information or to set up a time to check it out.";
 
