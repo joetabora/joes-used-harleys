@@ -13,6 +13,7 @@ import {
   LogIn,
   MoreHorizontal,
   Network,
+  Store,
 } from "lucide-react";
 import { navItems } from "@/design-system/components";
 import { JosIcon } from "@/components/joeos/ui/jos-icon";
@@ -20,6 +21,7 @@ import { JosIcon } from "@/components/joeos/ui/jos-icon";
 const icons = {
   command: Crosshair,
   floor: Bike,
+  marketplace: Store,
   pipeline: Radio,
   knowledge: Network,
   feed: RefreshCw,
