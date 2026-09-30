@@ -74,10 +74,86 @@ const BROCHURE_CUES = [
 
 const UNIT_NOTE_MAX = 180;
 
+/** Feature tokens we may echo only when present in feed text (never invent). */
+const UNIT_FEATURE_PATTERNS: Array<{ re: RegExp; label: string }> = [
+  { re: /\blow\s*miles?\b/i, label: "Low miles" },
+  { re: /\bbars?\b/i, label: "bars" },
+  { re: /\bexhaust\b/i, label: "exhaust" },
+  { re: /\bpipes?\b/i, label: "pipes" },
+  { re: /\baudio\b/i, label: "audio" },
+  { re: /\bstereo\b/i, label: "stereo" },
+  { re: /\bluggage\b/i, label: "luggage" },
+  { re: /\bsaddlebags?\b/i, label: "saddlebags" },
+  { re: /\bwheels?\b/i, label: "wheels" },
+  { re: /\bcustom\b/i, label: "custom work" },
+  { re: /\bupgrad(?:e|es|ed)\b/i, label: "upgrades" },
+  { re: /\bstage\s*\d+\b/i, label: "stage work" },
+  { re: /\bwindshield\b/i, label: "windshield" },
+  { re: /\bfairing\b/i, label: "fairing" },
+  { re: /\btrunk\b/i, label: "trunk" },
+  { re: /\btour\s*pack\b/i, label: "tour pack" },
+  { re: /\band more\b/i, label: "and more" },
+];
+
+type ModelCharacter =
+  | "nightster"
+  | "fat_bob"
+  | "fat_boy"
+  | "dyna"
+  | "electra_ultra"
+  | "road_glide"
+  | "street_glide"
+  | "sportster"
+  | "trike"
+  | "generic";
+
 function nonEmpty(value: string | null | undefined): string | null {
   if (value == null) return null;
   const t = value.trim();
   return t.length > 0 ? t : null;
+}
+
+function stableHash(input: string): number {
+  let h = 0;
+  for (let i = 0; i < input.length; i++) {
+    h = (h * 31 + input.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
+}
+
+function pickVariant(key: string, options: string[]): string {
+  if (options.length === 0) return "";
+  return options[stableHash(key) % options.length]!;
+}
+
+function formatMilesPlain(mileage: number): string {
+  return new Intl.NumberFormat("en-US").format(mileage);
+}
+
+function bikeAgeYears(year: number, now = new Date()): number {
+  return Math.max(0, now.getFullYear() - year);
+}
+
+function isStronglyLowMiles(mileage: number): boolean {
+  return mileage < 5000;
+}
+
+function isRelativelyLowMiles(year: number, mileage: number): boolean {
+  const age = bikeAgeYears(year);
+  if (age < 8) return false;
+  return mileage <= Math.max(12_000, age * 2000);
+}
+
+function isApproachablePrice(price: number, character: ModelCharacter): boolean {
+  if (
+    character === "electra_ultra" ||
+    character === "trike" ||
+    character === "road_glide" ||
+    character === "street_glide"
+  ) {
+    return price <= 10_000;
+  }
+  return price <= 9000;
 }
 
 /**
@@ -103,13 +179,11 @@ export function cleanModelName(
     rest = rest.replace(makeRe, "").trim();
   }
 
-  // Common Harley feed variants even if make field differs slightly
   rest = rest
     .replace(/^harley[- ]?davidson\b\s*[-–—]?\s*/i, "")
     .replace(/^harley\b\s*[-–—]?\s*/i, "")
     .trim();
 
-  // If year appeared again after make strip
   rest = rest.replace(yearRe, "").trim();
 
   return rest.replace(/\s+/g, " ") || model.trim().replace(/\s+/g, " ");
@@ -144,35 +218,12 @@ function formatColorLine(color: string): string {
   return color;
 }
 
-function stableHash(input: string): number {
-  let h = 0;
-  for (let i = 0; i < input.length; i++) {
-    h = (h * 31 + input.charCodeAt(i)) | 0;
-  }
-  return Math.abs(h);
-}
-
-type ModelCharacter =
-  | "nightster"
-  | "fat_bob"
-  | "fat_boy"
-  | "dyna"
-  | "electra_ultra"
-  | "road_glide"
-  | "street_glide"
-  | "sportster"
-  | "trike"
-  | "generic";
-
 function classifyModelCharacter(cleanModel: string): ModelCharacter {
   const m = cleanModel.toLowerCase();
   if (/tri\s?glide|trike|freewheeler/.test(m)) return "trike";
   if (/nightster/.test(m)) return "nightster";
   if (/fat\s?bob/.test(m)) return "fat_bob";
   if (/fat\s?boy/.test(m)) return "fat_boy";
-  if (/dyna|super\s?glide|low\s?rider\s?s\b|street\s?bob/.test(m) && /dyna|super\s?glide/.test(m)) {
-    return "dyna";
-  }
   if (/super\s?glide|dyna/.test(m)) return "dyna";
   if (/electra|ultra/.test(m) && !/road\s?glide|street\s?glide/.test(m)) {
     return "electra_ultra";
@@ -185,8 +236,30 @@ function classifyModelCharacter(cleanModel: string): ModelCharacter {
   return "generic";
 }
 
+function assembleFeatureHits(compact: string): string | null {
+  const hits: string[] = [];
+  for (const { re, label } of UNIT_FEATURE_PATTERNS) {
+    if (re.test(compact) && !hits.includes(label)) hits.push(label);
+  }
+  if (hits.length === 0) return null;
+
+  const low = hits.includes("Low miles");
+  const andMore = hits.includes("and more");
+  const features = hits.filter((h) => h !== "Low miles" && h !== "and more");
+  const parts: string[] = [];
+  if (low) parts.push("Low miles");
+  if (features.length) parts.push(features.join(", "));
+  if (andMore) parts.push("and more");
+  return parts
+    .join(", ")
+    .replace(/, and more$/, " and more")
+    .replace(/^, /, "");
+}
+
 /**
  * Keep short unit-specific notes; reject manufacturer brochure copy.
+ * If brochure cues appear in a long feed blurb, still harvest feature tokens
+ * that literally appear in the text — never invent.
  */
 export function extractUnitSpecificNotes(
   rawDescription: string | null | undefined,
@@ -197,116 +270,244 @@ export function extractUnitSpecificNotes(
   const compact = text.replace(/\s+/g, " ").trim();
   if (!compact) return null;
 
-  if (BROCHURE_CUES.some((re) => re.test(compact))) return null;
-  if (compact.length > UNIT_NOTE_MAX) return null;
+  const hasBrochure = BROCHURE_CUES.some((re) => re.test(compact));
+  const sentenceCount = compact
+    .split(/[.!?]+/)
+    .filter((s) => s.trim().length > 20).length;
+  const tooLong = compact.length > UNIT_NOTE_MAX || sentenceCount >= 4;
 
-  // Still reject if it looks like a multi-sentence brochure even under the limit
-  const sentenceCount = compact.split(/[.!?]+/).filter((s) => s.trim().length > 20).length;
-  if (sentenceCount >= 4) return null;
+  if (!hasBrochure && !tooLong) {
+    return compact;
+  }
 
-  return compact;
+  return assembleFeatureHits(compact);
 }
 
 function characterHooks(character: ModelCharacter, model: string): string[] {
   switch (character) {
     case "nightster":
       return [
-        `If you've been looking for a Harley that's easy to get out and ride, this ${model} is worth a look.`,
-        `Looking for something approachable with modern Harley character? Check out this ${model}.`,
-        `This ${model} is built for riders who want to hop on and go.`,
+        `🔥 A great option if you want a smaller, modern Harley with plenty of personality.`,
+        `🔥 This ${model} brings modern Harley character in a compact package.`,
+        `🔥 Compact Harley energy — this ${model} is ready for someone who wants to ride.`,
       ];
     case "fat_bob":
       return [
-        `This ${model} has the attitude to match the name.`,
-        `If aggressive Softail style is your thing, don't overlook this ${model}.`,
-        `Looking for a Softail with presence? This ${model} deserves a look.`,
+        `🔥 Aggressive styling and plenty of attitude — this Fat Bob deserves a look.`,
+        `🔥 This ${model} has the attitude to match the name.`,
+        `🔥 Softail muscle with presence — don't overlook this ${model}.`,
       ];
     case "fat_boy":
       return [
-        `Classic Harley presence — this ${model} has serious road presence.`,
-        `If you've been waiting on a Fat Boy, this one is worth a look.`,
-        `This ${model} brings that iconic cruiser look Harley is known for.`,
+        `🔥 Classic Harley presence — this ${model} has serious road presence.`,
+        `🔥 Iconic cruiser character — this Fat Boy is hard to ignore.`,
+        `🔥 This ${model} brings that classic Fat Boy look riders know.`,
       ];
     case "dyna":
       return [
-        `If a Dyna is on your list, don't overlook this ${model}.`,
-        `Looking for a Dyna with some personality? This ${model} deserves a look.`,
-        `Old-school Harley character — this ${model} is worth checking out.`,
+        `🔥 Old-school Harley character — this ${model} is worth checking out.`,
+        `🔥 Dyna appeal with personality — this ${model} deserves a look.`,
+        `🔥 If a Dyna is on your list, this ${model} should be on it too.`,
       ];
     case "electra_ultra":
       return [
-        `Looking for a classic Harley touring bike? This ${model} is ready for someone who wants to put some miles on it.`,
-        `If long-distance Harley touring is the plan, take a look at this ${model}.`,
-        `This ${model} is built for the road-trip crowd.`,
+        `🔥 Built for riders who want to put some serious miles behind them.`,
+        `🔥 Classic Harley touring character — this ${model} is ready for the road.`,
+        `🔥 A touring Harley for someone who wants to stack miles.`,
       ];
     case "road_glide":
       return [
-        `If you've been looking for a Road Glide, this one is worth a look.`,
-        `Looking to rack up some miles? This ${model} is ready for the highway.`,
-        `Distinctive fairing, touring chops — this ${model} deserves a look.`,
+        `🔥 Distinctive Road Glide style for riders who live on the highway.`,
+        `🔥 This ${model} is for riders who want touring miles with sharknose style.`,
+        `🔥 Highway-ready Road Glide character — this one deserves a look.`,
       ];
     case "street_glide":
       return [
-        `If you've been looking for a Street Glide, this one is worth a look.`,
-        `Touring-ready and easy to spot — take a look at this ${model}.`,
-        `Looking for a bagger for the open road? This ${model} is worth a look.`,
+        `🔥 Street Glide touring character for riders who want bagger miles.`,
+        `🔥 This ${model} is ready for someone who wants a classic bagger.`,
+        `🔥 Touring bagger vibe — this ${model} deserves a look.`,
       ];
     case "sportster":
       return [
-        `Classic Sportster character — this ${model} is ready for its next rider.`,
-        `If you've been looking for a Sportster, this one is worth a look.`,
-        `Fun, approachable Harley energy — check out this ${model}.`,
+        `🔥 Classic Sportster character with approachable Harley energy.`,
+        `🔥 This ${model} is a fun, approachable Harley for the next rider.`,
+        `🔥 Sportster personality — this one is ready to ride.`,
       ];
     case "trike":
       return [
-        `Three-wheel touring comfort — this ${model} is worth a look.`,
-        `If a Trike is on your list, don't overlook this ${model}.`,
-        `Looking for three-wheel Harley miles? Take a look at this ${model}.`,
+        `🔥 Looking for a three-wheel Harley? Take a look at this ${model}.`,
+        `🔥 Three-wheel Harley miles — this ${model} deserves a look.`,
+        `🔥 A Trike for riders who want comfort and road-trip space.`,
       ];
     default:
       return [
-        `This one is ready for its next rider.`,
-        `If you've been looking for a ${model}, this one is worth a look.`,
-        `This ${model} would make a killer next bike.`,
-        `If you've been waiting for the right one to pop up, here it is.`,
+        `🔥 This ${model} would make a killer next bike.`,
+        `🔥 Ready for its next rider — this ${model} deserves a look.`,
+        `🔥 If this ${model} is on your radar, stop scrolling.`,
       ];
   }
 }
 
-function styleOpeners(
+function styleFallbackBias(
   style: MarketplaceListingStyle,
   model: string,
   character: ModelCharacter,
 ): string[] {
+  const personality = characterHooks(character, model);
   switch (style) {
-    case "enthusiast":
-      return [
-        `Looking for your next Harley? This ${model} deserves a look.`,
-        `🏍️ Riders shopping Harleys should put eyes on this ${model}.`,
-        ...characterHooks(character, model).slice(0, 2),
-      ];
     case "value":
       return [
-        `Looking for a Harley without stepping into a brand-new bike? Take a look at this ${model}.`,
-        `Solid used Harley opportunity — this ${model} is worth a look.`,
-        `If you want Harley miles without new-bike money, check out this ${model}.`,
+        `🔥 Looking for Harley miles without new-bike money? This ${model} deserves a look.`,
+        `🔥 Solid used Harley opportunity on this ${model}.`,
+        `🔥 This ${model} is an approachable way into a used Harley.`,
       ];
     case "attention":
       return [
-        `👀 This ${model} is worth a look.`,
-        `Don't scroll past this ${model}.`,
-        `If a ${model} is on your radar, stop here.`,
+        `🔥 Don't scroll past this ${model}.`,
+        `🔥 Eyes up — this ${model} should stop the scroll.`,
+        `🔥 This ${model} is the one to tap into.`,
       ];
     case "premium":
       return [
-        `🔥 Ready to step into something special? This ${model} is ready for its next rider.`,
-        `If you've been waiting for the right ${model}, here it is.`,
-        `This ${model} is ready for someone who wants the next chapter.`,
+        `🔥 Ready for the next chapter? This ${model} is waiting.`,
+        `🔥 This ${model} is ready for someone who wants the next ride up.`,
+        `🔥 Step into this ${model} when you're ready for something special.`,
+      ];
+    case "enthusiast":
+      return [
+        `🏍️ This ${model} deserves a closer look from anyone shopping Harleys.`,
+        `🏍️ Riders will know why this ${model} stands out.`,
+        `🏍️ This ${model} is for someone who already gets Harley culture.`,
       ];
     case "standard":
     default:
-      return characterHooks(character, model);
+      return personality;
   }
+}
+
+function unitNoteLeads(notes: string, model: string, key: string): string {
+  const flowed = notes
+    .replace(/\.$/, "")
+    .replace(/\s+/g, " ")
+    .replace(/\.\s+/g, ", ")
+    .replace(/,\s*,/g, ",")
+    .replace(/^low miles/i, "Low miles")
+    .trim();
+
+  return pickVariant(key, [
+    `🔥 ${flowed} — this ${model} has some personality.`,
+    `🔥 ${flowed}. This ${model} deserves a look.`,
+    `🔥 ${flowed} on this ${model}.`,
+  ]);
+}
+
+function mileageLead(
+  bike: MarketplaceBikeInput,
+  cleanModel: string,
+  character: ModelCharacter,
+  unitNotes: string | null,
+  key: string,
+): string | null {
+  if (bike.mileage == null) return null;
+  const miles = bike.mileage;
+  const formatted = formatMilesPlain(miles);
+
+  if (isStronglyLowMiles(miles)) {
+    const lead = `🔥 Only ${formatted} miles on this ${cleanModel}.`;
+    const closers = [
+      `If you've been looking for a newer Harley without paying new-bike money, this one deserves a look.`,
+      `Hard to ignore those miles on a ${cleanModel}.`,
+      `Low odometer, ready for the next rider.`,
+    ];
+    return `${lead} ${pickVariant(`${key}|strong`, closers)}`;
+  }
+
+  if (isRelativelyLowMiles(bike.year, miles)) {
+    let extra = "";
+    if (unitNotes) {
+      const rest = unitNotes
+        .replace(/\.$/, "")
+        .replace(/^low miles\.?\s*/i, "")
+        .replace(/\.\s+/g, ", ")
+        .trim();
+      if (rest) extra = `, plus ${rest}`;
+    }
+    const lead = `🔥 Low miles for a ${bike.year}${extra}.`;
+    const closers = [
+      `This ${cleanModel} deserves a look.`,
+      `This ${cleanModel} has some personality.`,
+      character === "dyna"
+        ? `This ${cleanModel} deserves a look.`
+        : `Ready for plenty more road.`,
+    ];
+    return `${lead} ${pickVariant(`${key}|rel`, closers)}`.replace(/\s+/g, " ").trim();
+  }
+
+  return null;
+}
+
+function priceLead(
+  bike: MarketplaceBikeInput,
+  cleanModel: string,
+  character: ModelCharacter,
+  key: string,
+): string | null {
+  if (bike.price == null) return null;
+  if (!isApproachablePrice(bike.price, character)) return null;
+
+  const priced = formatPrice(bike.price);
+  const leads = [
+    `🔥 A lot of motorcycle for ${priced}.`,
+    `🔥 Hard to overlook a bike like this at ${priced}.`,
+    `🔥 ${priced} for this ${cleanModel} — worth a closer look.`,
+  ];
+  const lead = pickVariant(`${key}|price`, leads);
+
+  const closers =
+    character === "electra_ultra" || character === "trike"
+      ? [
+          `If you're looking for a classic Harley touring bike without breaking the bank, this ${cleanModel} deserves a look.`,
+          `Touring Harley character at an approachable used price.`,
+        ]
+      : [
+          `This ${cleanModel} deserves a look.`,
+          `Ready for someone who wants Harley miles without new-bike money.`,
+        ];
+
+  return `${lead} ${pickVariant(`${key}|priceClose`, closers)}`;
+}
+
+function milesRoadContext(
+  bike: MarketplaceBikeInput,
+  cleanModel: string,
+  character: ModelCharacter,
+  key: string,
+): string | null {
+  if (bike.mileage == null) return null;
+  if (isStronglyLowMiles(bike.mileage) || isRelativelyLowMiles(bike.year, bike.mileage)) {
+    return null;
+  }
+  if (bike.mileage < 15_000 || bike.mileage > 45_000) return null;
+  if (
+    character !== "trike" &&
+    character !== "electra_ultra" &&
+    character !== "road_glide"
+  ) {
+    return null;
+  }
+
+  const formatted = formatMilesPlain(bike.mileage);
+  if (character === "trike") {
+    return pickVariant(key, [
+      `🔥 ${formatted} miles and ready for plenty more road. If you've been looking for a three-wheel Harley, this ${cleanModel} deserves a look.`,
+      `🔥 ${formatted} miles on this ${cleanModel} — ready for plenty more road.`,
+    ]);
+  }
+
+  return pickVariant(key, [
+    `🔥 ${formatted} miles and ready for plenty more road. If you've been looking for a touring Harley, this ${cleanModel} deserves a look.`,
+    `🔥 ${formatted} miles on this ${cleanModel} — ready for plenty more road.`,
+  ]);
 }
 
 function composeSalesPitch(
@@ -316,16 +517,36 @@ function composeSalesPitch(
   unitNotes: string | null,
 ): string {
   const character = classifyModelCharacter(cleanModel);
-  const openers = styleOpeners(style, cleanModel, character);
-  const key = `${style}|${bike.year}|${cleanModel}|${bike.mileage ?? "x"}|${unitNotes ? "n" : "0"}`;
-  const opener = openers[stableHash(key) % openers.length] ?? openers[0]!;
+  const key = `${style}|${bike.year}|${cleanModel}|${bike.mileage ?? "x"}|${bike.price ?? "p"}|${unitNotes ?? ""}`;
 
+  // 1) Unit-specific notes first
   if (unitNotes) {
-    const noteLead = unitNotes.replace(/\.$/, "");
-    return `🔥 ${noteLead}. ${opener}`.replace(/\s+/g, " ").trim();
+    if (
+      bike.mileage != null &&
+      isRelativelyLowMiles(bike.year, bike.mileage) &&
+      !/^low miles/i.test(unitNotes)
+    ) {
+      const milesPitch = mileageLead(bike, cleanModel, character, unitNotes, key);
+      if (milesPitch) return milesPitch;
+    }
+    return unitNoteLeads(unitNotes, cleanModel, key);
   }
 
-  return opener;
+  // 2) Mileage-based selling point
+  const milesPitch = mileageLead(bike, cleanModel, character, null, key);
+  if (milesPitch) return milesPitch;
+
+  // 3) Price/value context
+  const priced = priceLead(bike, cleanModel, character, key);
+  if (priced) return priced;
+
+  // Mid-mileage road context for touring/trike
+  const road = milesRoadContext(bike, cleanModel, character, key);
+  if (road) return road.trim();
+
+  // 4) Model personality fallback
+  const fallbacks = styleFallbackBias(style, cleanModel, character);
+  return pickVariant(`${key}|fb`, fallbacks);
 }
 
 export function composeMarketplaceDescription(

@@ -171,11 +171,21 @@ function countOccurrences(hay: string, needle: string): number {
   );
 }
 
-// All five styles — distinct pitches, required content
+// All five styles — distinct pitches when falling back to personality
 {
   const pitches = new Set<string>();
   for (const style of MARKETPLACE_LISTING_STYLES) {
-    const listing = composeMarketplaceListing(bike({ description: null }), style);
+    const listing = composeMarketplaceListing(
+      bike({
+        year: 2018,
+        model: "Fat Boy",
+        price: 14_500,
+        mileage: 52_000,
+        description: null,
+        color: null,
+      }),
+      style,
+    );
     assert.equal(listing.style, style);
     assertRequiredContent(listing.description);
     assertNoVin(listing);
@@ -228,7 +238,7 @@ function countOccurrences(hay: string, needle: string): number {
   assertRequiredContent(listing.description);
 }
 
-// Short unit-specific notes ARE used
+// Short unit-specific notes ARE used and lead the pitch
 {
   const note = "Low Miles. Bars, Exhaust and more.";
   assert.ok(extractUnitSpecificNotes(note));
@@ -245,24 +255,15 @@ function countOccurrences(hay: string, needle: string): number {
   );
   assert.ok(/bars/i.test(listing.description));
   assert.ok(/exhaust/i.test(listing.description));
+  // Unit facts should appear before generic model-only fallback language
+  const pitchStart = listing.description.indexOf("🔥 Low");
+  assert.ok(pitchStart > 0, "pitch should lead with low miles / unit notes");
   assert.equal(listing.description.includes("Stage 1"), false);
   assert.equal(listing.description.includes("new tires"), false);
   assertRequiredContent(listing.description);
 }
 
-// HTML unit notes normalize; brochure HTML rejected
-{
-  const shortHtml = extractUnitSpecificNotes("<p>Low miles.</p><br/>Bars and exhaust");
-  assert.ok(shortHtml);
-  assert.equal(shortHtml!.includes("<p>"), false);
-
-  const longBrochure = extractUnitSpecificNotes(
-    "<p>The ultimate Touring model from Harley-Davidson with premium features and classic form and modern function for riders who want it all.</p>",
-  );
-  assert.equal(longBrochure, null);
-}
-
-// Example Nightster skeleton
+// Strongly low mileage drives the pitch
 {
   const listing = composeMarketplaceListing(
     bike({
@@ -274,6 +275,7 @@ function countOccurrences(hay: string, needle: string): number {
       description: null,
     }),
   );
+  assert.ok(listing.description.includes("Only 2,144 miles"));
   assert.ok(
     listing.description.includes("🔥 PRE-OWNED 2025 HARLEY-DAVIDSON NIGHTSTER 🔥"),
   );
@@ -281,6 +283,61 @@ function countOccurrences(hay: string, needle: string): number {
   assert.ok(listing.description.includes("🛣️ 2,144 miles"));
   assert.ok(listing.description.includes("Billiard Gray"));
   assertRequiredContent(listing.description);
+  assertNoInventedClaims(listing.description);
+}
+
+// Approachable price can frame older touring bikes (no invented accessories)
+{
+  const listing = composeMarketplaceListing(
+    bike({
+      year: 2009,
+      model: "Electra Glide Ultra Classic",
+      price: 8999,
+      mileage: 47_424,
+      color: "WHT GOLD/PEWTER",
+      description: null,
+    }),
+  );
+  assert.ok(
+    /\$8,999|lot of motorcycle|Hard to overlook|worth a closer look/i.test(
+      listing.description,
+    ),
+  );
+  assert.equal(listing.description.toLowerCase().includes("saddlebags"), false);
+  assert.equal(listing.description.toLowerCase().includes("new tires"), false);
+  assertRequiredContent(listing.description);
+}
+
+// Tri Glide mid miles — road context, not blanket "low miles"
+{
+  const listing = composeMarketplaceListing(
+    bike({
+      year: 2021,
+      model: "Tri Glide Ultra",
+      price: 22_995,
+      mileage: 26_403,
+      color: null,
+      description: null,
+    }),
+  );
+  assert.ok(listing.description.includes("26,403"));
+  assert.equal(listing.description.includes("Low miles for a"), false);
+  assert.equal(listing.description.includes("Only 26,403"), false);
+  assertRequiredContent(listing.description);
+}
+
+// HTML unit notes normalize; brochure HTML rejected
+{
+  const shortHtml = extractUnitSpecificNotes(
+    "<p>Low miles.</p><br/>Bars and exhaust",
+  );
+  assert.ok(shortHtml);
+  assert.equal(shortHtml!.includes("<p>"), false);
+
+  const longBrochure = extractUnitSpecificNotes(
+    "<p>The ultimate Touring model from Harley-Davidson with premium features and classic form and modern function for riders who want it all.</p>",
+  );
+  assert.equal(longBrochure, null);
 }
 
 console.log("marketplace tests passed");
