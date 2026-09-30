@@ -8,10 +8,11 @@ import {
 const VIN = "1HD1XXXXXXXXXXXXX";
 
 const TRADE =
-  "🔄 TRADES WELCOME — we take anything with a title in trade!";
+  "🔄 TRADES WELCOME — WE TAKE ANYTHING WITH A TITLE IN TRADE!";
 const DEALER = "📍 Milwaukee Harley-Davidson";
-const FINANCING = "Financing available for any type of credit";
-const CONTACT = "📩 Message me for more information about this bike.";
+const FINANCING = "💳 FINANCING AVAILABLE FOR ANY TYPE OF CREDIT";
+const CONTACT =
+  "📩 Message me for more information or to set up a time to check it out.";
 
 function bike(overrides: Partial<MarketplaceBikeInput> = {}): MarketplaceBikeInput {
   return {
@@ -38,12 +39,24 @@ function assertNoVin(listing: ReturnType<typeof composeMarketplaceListing>) {
   assert.equal(listing.combined.includes(VIN), false);
 }
 
+function assertNoInternalInventoryFields(text: string) {
+  assert.equal(text.includes("Transmission:"), false);
+  assert.equal(text.includes("Category:"), false);
+  assert.equal(text.includes("Stock #:"), false);
+  assert.equal(text.includes("Stock Number"), false);
+  assert.equal(text.includes("6-Speed"), false);
+  assert.equal(text.includes("U21234"), false);
+  // Category value alone — only flag labeled form; "Motorcycle" may appear in dealer text
+}
+
 function assertNoInventedClaims(text: string) {
   const lower = text.toLowerCase();
   for (const banned of [
     "warranty",
     "apr",
     "monthly payment",
+    "down payment",
+    "approved",
     "test ride",
     "abs",
     "stage 1",
@@ -55,13 +68,11 @@ function assertNoInventedClaims(text: string) {
   ]) {
     assert.equal(lower.includes(banned), false, `invented claim: ${banned}`);
   }
-  assert.equal(text.includes("Transmission:"), false);
-  assert.equal(text.includes("Category:"), false);
-  assert.equal(text.includes("Stock #:"), false);
+  assertNoInternalInventoryFields(text);
 }
 
-function assertRequiredFooter(description: string) {
-  assert.ok(description.includes("PRE-OWNED") || description.includes("pre-owned"));
+function assertRequiredContent(description: string) {
+  assert.ok(description.includes("PRE-OWNED"));
   assert.ok(description.includes(TRADE));
   assert.ok(description.includes(DEALER));
   assert.ok(description.includes(FINANCING));
@@ -69,7 +80,7 @@ function assertRequiredFooter(description: string) {
 }
 
 function assertPreferredEmojisUsed(description: string) {
-  const preferred = ["🔥", "🏍️", "💰", "🔄", "📍", "📩", "👀", "🛣️"];
+  const preferred = ["🔥", "🏍️", "💰", "🔄", "📍", "📩", "👀", "🛣️", "💳", "🖤"];
   assert.ok(
     preferred.some((e) => description.includes(e)),
     "expected at least one preferred emoji",
@@ -98,7 +109,8 @@ function assertPreferredEmojisUsed(description: string) {
     const listing = composeMarketplaceListing(bike(), style);
     assert.equal(listing.style, style);
     assert.ok(listing.description.includes("18,442 miles"));
-    assertRequiredFooter(listing.description);
+    assert.ok(listing.description.includes("🖤 Black"));
+    assertRequiredContent(listing.description);
     assertPreferredEmojisUsed(listing.description);
     assertNoVin(listing);
     assertNoInventedClaims(listing.description);
@@ -110,15 +122,19 @@ function assertPreferredEmojisUsed(description: string) {
 // Style spot-checks
 {
   const standard = composeMarketplaceListing(bike(), "standard");
-  assert.ok(standard.description.includes("🔥 PRE-OWNED 2021 HARLEY-DAVIDSON ROAD GLIDE SPECIAL 🔥"));
+  assert.ok(
+    standard.description.includes(
+      "🔥 PRE-OWNED 2021 HARLEY-DAVIDSON ROAD GLIDE SPECIAL 🔥",
+    ),
+  );
   assert.ok(standard.description.includes("This one is ready for its next rider."));
 
   const enthusiast = composeMarketplaceListing(bike(), "enthusiast");
   assert.ok(enthusiast.description.includes("🏍️"));
-  assert.ok(enthusiast.description.toLowerCase().includes("pre-owned"));
+  assert.ok(enthusiast.description.includes("PRE-OWNED"));
 
   const value = composeMarketplaceListing(bike(), "value");
-  assert.ok(value.description.includes("💰 Looking for a Harley"));
+  assert.ok(value.description.includes("Looking for a Harley without stepping into a brand-new bike?"));
 
   const attention = composeMarketplaceListing(bike(), "attention");
   assert.ok(attention.description.includes("👀 THIS ONE IS WORTH A LOOK."));
@@ -127,22 +143,22 @@ function assertPreferredEmojisUsed(description: string) {
   assert.ok(premium.description.includes("🔥 Ready to step into something special?"));
 }
 
-// Missing price
+// Missing price — incomplete, never invent
 {
   const listing = composeMarketplaceListing(bike({ price: null }));
   assert.equal(listing.priceLine, "");
   assert.equal(listing.description.includes("Ask for price"), false);
   assert.equal(listing.description.includes("$"), false);
-  assertRequiredFooter(listing.description);
+  assertRequiredContent(listing.description);
   assertNoVin(listing);
 }
 
-// Missing mileage
+// Missing mileage — incomplete, never invent
 {
   const listing = composeMarketplaceListing(bike({ mileage: null }));
   assert.equal(listing.description.includes("miles"), false);
   assert.equal(listing.description.includes("Mileage on request"), false);
-  assertRequiredFooter(listing.description);
+  assertRequiredContent(listing.description);
 }
 
 // Missing color
@@ -152,11 +168,12 @@ function assertPreferredEmojisUsed(description: string) {
   assert.equal(listing.description.includes("Black"), false);
 }
 
-// Missing description
+// Missing dealer description
 {
   const listing = composeMarketplaceListing(bike({ description: null }));
-  assertRequiredFooter(listing.description);
+  assertRequiredContent(listing.description);
   assert.equal(listing.description.includes("Clean bagger"), false);
+  assertNoInventedClaims(listing.description);
 }
 
 // HTML dealer description normalized
@@ -170,23 +187,19 @@ function assertPreferredEmojisUsed(description: string) {
   assert.ok(listing.description.includes("Ready to ride"));
 }
 
-// Certified negative omitted; positive echoed without warranty claim
+// Internal fields never appear even when present on the bike
 {
-  assert.equal(
-    composeMarketplaceListing(bike({ certified: "no" })).description.includes(
-      "Certified:",
-    ),
-    false,
+  const listing = composeMarketplaceListing(
+    bike({
+      description: null,
+      transmission: "6-Speed",
+      category: "Motorcycle",
+      stockNumber: "U21234",
+      vin: VIN,
+    }),
   );
-  const yes = composeMarketplaceListing(bike({ certified: "Yes" }));
-  assert.ok(yes.description.includes("Certified: Yes"));
-  assert.equal(yes.description.toLowerCase().includes("warranty"), false);
-}
-
-// Missing photos is a UI concern — composer still produces copy without photos field
-{
-  const listing = composeMarketplaceListing(bike());
-  assert.ok(listing.description.length > 0);
+  assertNoInternalInventoryFields(listing.description);
+  assertNoVin(listing);
 }
 
 // Default style is standard

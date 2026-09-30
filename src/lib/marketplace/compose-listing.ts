@@ -41,13 +41,12 @@ export type MarketplaceListing = {
   style: MarketplaceListingStyle;
 };
 
-const NEGATIVE_CERTIFIED = new Set(["no", "false", "0", "n", "none"]);
-
 const TRADE_LINE =
-  "🔄 TRADES WELCOME — we take anything with a title in trade!";
+  "🔄 TRADES WELCOME — WE TAKE ANYTHING WITH A TITLE IN TRADE!";
 const DEALER_LINE = "📍 Milwaukee Harley-Davidson";
-const FINANCING_LINE = "Financing available for any type of credit";
-const CONTACT_LINE = "📩 Message me for more information about this bike.";
+const FINANCING_LINE = "💳 FINANCING AVAILABLE FOR ANY TYPE OF CREDIT";
+const CONTACT_LINE =
+  "📩 Message me for more information or to set up a time to check it out.";
 
 function nonEmpty(value: string | null | undefined): string | null {
   if (value == null) return null;
@@ -81,11 +80,10 @@ function formatMileageLine(mileage: number): string {
   return `${new Intl.NumberFormat("en-US").format(mileage)} miles`;
 }
 
-function usefulCertified(raw: string | null | undefined): string | null {
-  const v = nonEmpty(raw);
-  if (!v) return null;
-  if (NEGATIVE_CERTIFIED.has(v.toLowerCase())) return null;
-  return v;
+function formatColorLine(color: string): string {
+  const lower = color.toLowerCase();
+  if (lower.includes("black")) return `🖤 ${color}`;
+  return color;
 }
 
 type StyleBlocks = {
@@ -93,38 +91,43 @@ type StyleBlocks = {
   intro: string;
 };
 
+/**
+ * Style headers/intros — personality only. Never claim accessories, condition,
+ * warranty, finance terms, or other unsupported vehicle facts.
+ */
 function styleBlocks(
   bike: MarketplaceBikeInput,
   style: MarketplaceListingStyle,
 ): StyleBlocks {
   const ymm = yearMakeModel(bike);
   const ymmUpper = yearMakeModelUpper(bike);
+  const model = bike.model;
 
   switch (style) {
     case "standard":
       return {
         header: `🔥 PRE-OWNED ${ymmUpper} 🔥`,
-        intro: "This one is ready for its next rider.",
+        intro: `This one is ready for its next rider. If you've been looking for a ${model}, this one is worth a look.`,
       };
     case "enthusiast":
       return {
-        header: `🏍️ Looking for your next Harley? This pre-owned ${bike.model} deserves a look.`,
-        intro: `PRE-OWNED ${ymm}`,
+        header: `🏍️ PRE-OWNED ${ymm}`,
+        intro: `Looking for your next Harley? This ${model} deserves a look.`,
       };
     case "value":
       return {
-        header: `💰 Looking for a Harley without stepping into a brand-new bike? Take a look at this pre-owned ${ymm}.`,
-        intro: `PRE-OWNED ${ymm}`,
+        header: `💰 PRE-OWNED ${ymm}`,
+        intro: `Looking for a Harley without stepping into a brand-new bike? Take a look at this ${model}.`,
       };
     case "attention":
       return {
-        header: "👀 THIS ONE IS WORTH A LOOK.",
-        intro: `PRE-OWNED ${ymm}`,
+        header: `👀 THIS ONE IS WORTH A LOOK.\n\nPRE-OWNED ${ymm}`,
+        intro: `If you've been shopping Harleys, put eyes on this ${model}.`,
       };
     case "premium":
       return {
-        header: "🔥 Ready to step into something special?",
-        intro: `PRE-OWNED ${ymm}`,
+        header: `🔥 Ready to step into something special?\n\nPRE-OWNED ${ymm}`,
+        intro: `This ${model} is ready for its next rider.`,
       };
   }
 }
@@ -135,34 +138,30 @@ export function composeMarketplaceDescription(
 ): string {
   const priceLine = composeMarketplacePriceLine(bike);
   const { header, intro } = styleBlocks(bike, style);
-  const blocks: string[] = [header, intro];
 
-  if (bike.mileage != null) {
-    blocks.push(formatMileageLine(bike.mileage));
-  }
+  const blocks: string[] = [header];
 
+  // Compact shopper facts — never transmission / category / stock / VIN
+  const facts: string[] = [];
+  if (priceLine) facts.push(`💰 ${priceLine}`);
+  if (bike.mileage != null) facts.push(formatMileageLine(bike.mileage));
   const color = nonEmpty(bike.color);
-  if (color) {
-    blocks.push(color);
+  if (color) facts.push(formatColorLine(color));
+  if (facts.length > 0) {
+    blocks.push(facts.join("\n"));
   }
 
-  if (priceLine) {
-    blocks.push(`💰 ${priceLine}`);
-  }
+  blocks.push(intro);
 
-  const certified = usefulCertified(bike.certified);
-  if (certified) {
-    blocks.push(`Certified: ${certified}`);
-  }
-
+  // Dealer feed description only when present (normalized). No invented features.
   const dealerBody = normalizeDealerDescription(bike.description);
   if (dealerBody) {
     blocks.push(dealerBody);
   }
 
+  blocks.push(FINANCING_LINE);
   blocks.push(TRADE_LINE);
   blocks.push(DEALER_LINE);
-  blocks.push(FINANCING_LINE);
   blocks.push(CONTACT_LINE);
 
   return blocks.join("\n\n");
