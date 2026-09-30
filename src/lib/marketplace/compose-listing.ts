@@ -126,10 +126,6 @@ function pickVariant(key: string, options: string[]): string {
   return options[stableHash(key) % options.length]!;
 }
 
-function formatMilesPlain(mileage: number): string {
-  return new Intl.NumberFormat("en-US").format(mileage);
-}
-
 function bikeAgeYears(year: number, now = new Date()): number {
   return Math.max(0, now.getFullYear() - year);
 }
@@ -142,18 +138,6 @@ function isRelativelyLowMiles(year: number, mileage: number): boolean {
   const age = bikeAgeYears(year);
   if (age < 8) return false;
   return mileage <= Math.max(12_000, age * 2000);
-}
-
-function isApproachablePrice(price: number, character: ModelCharacter): boolean {
-  if (
-    character === "electra_ultra" ||
-    character === "trike" ||
-    character === "road_glide" ||
-    character === "street_glide"
-  ) {
-    return price <= 10_000;
-  }
-  return price <= 9000;
 }
 
 /**
@@ -385,20 +369,161 @@ function styleFallbackBias(
   }
 }
 
-function unitNoteLeads(notes: string, model: string, key: string): string {
-  const flowed = notes
-    .replace(/\.$/, "")
-    .replace(/\s+/g, " ")
-    .replace(/\.\s+/g, ", ")
-    .replace(/,\s*,/g, ",")
-    .replace(/^low miles/i, "Low miles")
-    .trim();
+/** Prefer these when capping to 4 selling points (order = priority). */
+const FEATURE_PRIORITY = [
+  "bars",
+  "exhaust",
+  "wheels",
+  "audio",
+  "luggage",
+  "saddlebags",
+  "custom work",
+  "windshield",
+  "fairing",
+  "trunk",
+  "tour pack",
+  "pipes",
+  "upgrades",
+  "stereo",
+  "stage work",
+];
 
-  return pickVariant(key, [
-    `🔥 ${flowed} — this ${model} has some personality.`,
-    `🔥 ${flowed}. This ${model} deserves a look.`,
-    `🔥 ${flowed} on this ${model}.`,
-  ]);
+function joinEnglish(items: string[]): string {
+  if (items.length === 0) return "";
+  if (items.length === 1) return items[0]!;
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+}
+
+function capitalizeFirst(s: string): string {
+  if (!s) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function shortDisplayModel(cleanModel: string, character: ModelCharacter): string {
+  if (character === "electra_ultra") {
+    const trimmed = cleanModel.replace(/^electra\s+glide\s+/i, "").trim();
+    return trimmed || cleanModel;
+  }
+  return cleanModel;
+}
+
+function prioritizeFeatures(features: string[]): string[] {
+  const ranked = [...features].sort((a, b) => {
+    const ai = FEATURE_PRIORITY.indexOf(a.toLowerCase());
+    const bi = FEATURE_PRIORITY.indexOf(b.toLowerCase());
+    const av = ai === -1 ? 99 : ai;
+    const bv = bi === -1 ? 99 : bi;
+    return av - bv;
+  });
+  return ranked.slice(0, 4);
+}
+
+type ParsedUnitNotes = {
+  lowMiles: boolean;
+  features: string[];
+  andMore: boolean;
+  /** Already a readable sentence — use carefully, not as a raw dump. */
+  freeform: string | null;
+};
+
+function parseUnitNotes(notes: string): ParsedUnitNotes {
+  const compact = notes.replace(/\s+/g, " ").trim();
+  const lowMiles = /\blow\s*miles?\b/i.test(compact);
+  const andMore = /\band more\b/i.test(compact);
+
+  const found: string[] = [];
+  for (const { re, label } of UNIT_FEATURE_PATTERNS) {
+    if (label === "Low miles" || label === "and more") continue;
+    if (re.test(compact) && !found.includes(label)) found.push(label);
+  }
+
+  const features = prioritizeFeatures(found);
+  const looksLikeDump =
+    features.length > 0 ||
+    /^[\w\s,.]+$/i.test(compact) && compact.split(/[,.]/).length >= 2;
+
+  // Freeform only when it reads like a sentence and isn't just a feature list
+  let freeform: string | null = null;
+  if (
+    !looksLikeDump &&
+    features.length === 0 &&
+    compact.length >= 25 &&
+    /\b(is|are|has|have|with|makes?|gives?|ready|built)\b/i.test(compact)
+  ) {
+    freeform = compact.replace(/\.$/, "");
+  }
+
+  return { lowMiles, features, andMore, freeform };
+}
+
+function featurePhrase(features: string[]): string {
+  return joinEnglish(features.map((f) => f.toLowerCase()));
+}
+
+/**
+ * Turn unit facts into a short salesperson thought — never a raw comma dump.
+ */
+function unitNoteLeads(
+  notes: string,
+  model: string,
+  character: ModelCharacter,
+  key: string,
+): string {
+  const parsed = parseUnitNotes(notes);
+  const short = shortDisplayModel(model, character);
+  const feats = featurePhrase(parsed.features);
+
+  if (parsed.freeform && parsed.features.length === 0 && !parsed.lowMiles) {
+    return `🔥 ${capitalizeFirst(parsed.freeform)}.`;
+  }
+
+  if (parsed.features.length > 0) {
+    const list = capitalizeFirst(feats);
+    if (character === "electra_ultra" || character === "road_glide" || character === "street_glide") {
+      return pickVariant(key, [
+        `🔥 ${list} make this ${short} a solid option for someone looking to put some miles on a classic touring Harley.`,
+        `🔥 This ${short} has the ${feats} you want for getting out and putting some miles on a touring Harley.`,
+        `🔥 ${list} make this ${short} ready for someone who wants to put some miles behind them.`,
+      ]);
+    }
+    if (character === "dyna") {
+      return pickVariant(key, [
+        `🔥 ${list} give this ${short} some serious personality.`,
+        `🔥 ${list} give this ${short} some personality.`,
+        parsed.lowMiles
+          ? `🔥 Low miles with ${feats} — this ${short} has some personality.`
+          : `🔥 ${list} on this ${short} add up to a bike with personality.`,
+      ]);
+    }
+    if (character === "trike") {
+      return pickVariant(key, [
+        `🔥 ${list} make this ${short} a solid three-wheel option for putting on miles.`,
+        `🔥 This ${short} brings ${feats} for riders who want a Trike ready for the road.`,
+      ]);
+    }
+    if (parsed.lowMiles) {
+      return pickVariant(key, [
+        `🔥 Low miles with ${feats} — this ${short} has some personality.`,
+        `🔥 Low miles, plus ${feats}, give this ${short} some serious personality.`,
+      ]);
+    }
+    return pickVariant(key, [
+      `🔥 ${list} give this ${short} some personality.`,
+      `🔥 ${list} make this ${short} worth a closer look.`,
+      `🔥 This ${short} has ${feats} that give it some personality.`,
+    ]);
+  }
+
+  if (parsed.lowMiles) {
+    return pickVariant(key, [
+      `🔥 Low miles on this ${short} — definitely one to put on your list.`,
+      `🔥 Low miles and ready for its next rider — this ${short} deserves a look.`,
+    ]);
+  }
+
+  // Fallback if notes existed but parsed empty
+  return pickVariant(key, characterHooks(character, model));
 }
 
 function mileageLead(
@@ -409,72 +534,47 @@ function mileageLead(
   key: string,
 ): string | null {
   if (bike.mileage == null) return null;
-  const miles = bike.mileage;
-  const formatted = formatMilesPlain(miles);
+  const short = shortDisplayModel(cleanModel, character);
 
-  if (isStronglyLowMiles(miles)) {
-    const lead = `🔥 Only ${formatted} miles on this ${cleanModel}.`;
-    const closers = [
-      `If you've been looking for a newer Harley without paying new-bike money, this one deserves a look.`,
-      `Hard to ignore those miles on a ${cleanModel}.`,
-      `Low odometer, ready for the next rider.`,
-    ];
-    return `${lead} ${pickVariant(`${key}|strong`, closers)}`;
+  if (isStronglyLowMiles(bike.mileage)) {
+    // Do not echo the exact odometer — already shown in the facts block
+    return pickVariant(`${key}|strong`, [
+      `🔥 Extremely low miles on this ${short} — definitely one to put on your list.`,
+      `🔥 Barely ridden compared with most used bikes you'll find — this ${short} deserves a look.`,
+      `🔥 Low miles and a great opportunity to get into a ${short} without buying new.`,
+    ]);
   }
 
-  if (isRelativelyLowMiles(bike.year, miles)) {
-    let extra = "";
-    if (unitNotes) {
-      const rest = unitNotes
-        .replace(/\.$/, "")
-        .replace(/^low miles\.?\s*/i, "")
-        .replace(/\.\s+/g, ", ")
-        .trim();
-      if (rest) extra = `, plus ${rest}`;
+  if (isRelativelyLowMiles(bike.year, bike.mileage)) {
+    const parsed = unitNotes ? parseUnitNotes(unitNotes) : null;
+    const feats =
+      parsed && parsed.features.length > 0 ? featurePhrase(parsed.features) : null;
+    if (feats) {
+      return pickVariant(`${key}|rel`, [
+        `🔥 Low miles for a ${bike.year}, plus ${feats} — this ${short} deserves a look.`,
+        `🔥 Low miles for a ${bike.year} with ${feats} give this ${short} some personality.`,
+      ]);
     }
-    const lead = `🔥 Low miles for a ${bike.year}${extra}.`;
-    const closers = [
-      `This ${cleanModel} deserves a look.`,
-      `This ${cleanModel} has some personality.`,
-      character === "dyna"
-        ? `This ${cleanModel} deserves a look.`
-        : `Ready for plenty more road.`,
-    ];
-    return `${lead} ${pickVariant(`${key}|rel`, closers)}`.replace(/\s+/g, " ").trim();
+    return pickVariant(`${key}|rel`, [
+      `🔥 Low miles for a ${bike.year} — this ${short} deserves a look.`,
+      `🔥 Low miles for a ${bike.year} on this ${short}. Ready for plenty more road.`,
+    ]);
   }
 
   return null;
 }
 
+/**
+ * Price is already in the facts block — do not echo dollar amounts in the pitch.
+ * Fall through to personality instead.
+ */
 function priceLead(
-  bike: MarketplaceBikeInput,
-  cleanModel: string,
-  character: ModelCharacter,
-  key: string,
+  _bike: MarketplaceBikeInput,
+  _cleanModel: string,
+  _character: ModelCharacter,
+  _key: string,
 ): string | null {
-  if (bike.price == null) return null;
-  if (!isApproachablePrice(bike.price, character)) return null;
-
-  const priced = formatPrice(bike.price);
-  const leads = [
-    `🔥 A lot of motorcycle for ${priced}.`,
-    `🔥 Hard to overlook a bike like this at ${priced}.`,
-    `🔥 ${priced} for this ${cleanModel} — worth a closer look.`,
-  ];
-  const lead = pickVariant(`${key}|price`, leads);
-
-  const closers =
-    character === "electra_ultra" || character === "trike"
-      ? [
-          `If you're looking for a classic Harley touring bike without breaking the bank, this ${cleanModel} deserves a look.`,
-          `Touring Harley character at an approachable used price.`,
-        ]
-      : [
-          `This ${cleanModel} deserves a look.`,
-          `Ready for someone who wants Harley miles without new-bike money.`,
-        ];
-
-  return `${lead} ${pickVariant(`${key}|priceClose`, closers)}`;
+  return null;
 }
 
 function milesRoadContext(
@@ -496,17 +596,18 @@ function milesRoadContext(
     return null;
   }
 
-  const formatted = formatMilesPlain(bike.mileage);
+  const short = shortDisplayModel(cleanModel, character);
+  // Personality-first — do not repeat the exact mileage from the facts line
   if (character === "trike") {
     return pickVariant(key, [
-      `🔥 ${formatted} miles and ready for plenty more road. If you've been looking for a three-wheel Harley, this ${cleanModel} deserves a look.`,
-      `🔥 ${formatted} miles on this ${cleanModel} — ready for plenty more road.`,
+      `🔥 Looking for a three-wheel Harley? This ${short} is ready for its next adventure.`,
+      `🔥 Three-wheel Harley miles ahead — this ${short} deserves a look.`,
     ]);
   }
 
   return pickVariant(key, [
-    `🔥 ${formatted} miles and ready for plenty more road. If you've been looking for a touring Harley, this ${cleanModel} deserves a look.`,
-    `🔥 ${formatted} miles on this ${cleanModel} — ready for plenty more road.`,
+    `🔥 Looking for a touring Harley ready for more road? This ${short} deserves a look.`,
+    `🔥 A classic touring Harley that's ready for its next rider.`,
   ]);
 }
 
@@ -524,21 +625,21 @@ function composeSalesPitch(
     if (
       bike.mileage != null &&
       isRelativelyLowMiles(bike.year, bike.mileage) &&
-      !/^low miles/i.test(unitNotes)
+      !/^low miles/i.test(unitNotes) &&
+      parseUnitNotes(unitNotes).features.length > 0
     ) {
       const milesPitch = mileageLead(bike, cleanModel, character, unitNotes, key);
       if (milesPitch) return milesPitch;
     }
-    return unitNoteLeads(unitNotes, cleanModel, key);
+    return unitNoteLeads(unitNotes, cleanModel, character, key);
   }
 
-  // 2) Mileage-based selling point
+  // 2) Mileage-based selling point (no exact number echo)
   const milesPitch = mileageLead(bike, cleanModel, character, null, key);
   if (milesPitch) return milesPitch;
 
-  // 3) Price/value context
-  const priced = priceLead(bike, cleanModel, character, key);
-  if (priced) return priced;
+  // 3) Price intentionally skipped in pitch (already shown above)
+  void priceLead;
 
   // Mid-mileage road context for touring/trike
   const road = milesRoadContext(bike, cleanModel, character, key);

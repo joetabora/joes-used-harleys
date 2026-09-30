@@ -238,7 +238,7 @@ function countOccurrences(hay: string, needle: string): number {
   assertRequiredContent(listing.description);
 }
 
-// Short unit-specific notes ARE used and lead the pitch
+// Short unit-specific notes become natural sales language (not raw dumps)
 {
   const note = "Low Miles. Bars, Exhaust and more.";
   assert.ok(extractUnitSpecificNotes(note));
@@ -255,15 +255,37 @@ function countOccurrences(hay: string, needle: string): number {
   );
   assert.ok(/bars/i.test(listing.description));
   assert.ok(/exhaust/i.test(listing.description));
-  // Unit facts should appear before generic model-only fallback language
-  const pitchStart = listing.description.indexOf("🔥 Low");
-  assert.ok(pitchStart > 0, "pitch should lead with low miles / unit notes");
+  assert.ok(/personality/i.test(listing.description));
   assert.equal(listing.description.includes("Stage 1"), false);
   assert.equal(listing.description.includes("new tires"), false);
   assertRequiredContent(listing.description);
 }
 
-// Strongly low mileage drives the pitch
+// Electra with harvested touring features → natural sentence, not comma dump
+{
+  const listing = composeMarketplaceListing(
+    bike({
+      year: 2009,
+      model: "Electra Glide Ultra Classic",
+      price: 8999,
+      mileage: 47_424,
+      color: "WHT GOLD/PEWTER",
+      description: "Audio, luggage, fairing.",
+    }),
+  );
+  assert.ok(/audio/i.test(listing.description));
+  assert.ok(/luggage/i.test(listing.description));
+  assert.ok(/fairing/i.test(listing.description));
+  assert.ok(/make this|has the/i.test(listing.description));
+  assert.equal(
+    listing.description.includes("🔥 audio, luggage, fairing."),
+    false,
+  );
+  assert.equal(listing.description.toLowerCase().includes("new tires"), false);
+  assertRequiredContent(listing.description);
+}
+
+// Strongly low mileage — natural language, no exact number echo in pitch
 {
   const listing = composeMarketplaceListing(
     bike({
@@ -275,18 +297,19 @@ function countOccurrences(hay: string, needle: string): number {
       description: null,
     }),
   );
-  assert.ok(listing.description.includes("Only 2,144 miles"));
+  assert.ok(/low miles|barely ridden/i.test(listing.description));
+  assert.equal(listing.description.includes("Only 2,144 miles"), false);
+  const afterFacts = listing.description.split("Billiard Gray")[1] ?? "";
+  assert.equal(afterFacts.includes("2,144"), false);
   assert.ok(
     listing.description.includes("🔥 PRE-OWNED 2025 HARLEY-DAVIDSON NIGHTSTER 🔥"),
   );
-  assert.ok(listing.description.includes("💰 $9,499 + tax, title & fees"));
   assert.ok(listing.description.includes("🛣️ 2,144 miles"));
-  assert.ok(listing.description.includes("Billiard Gray"));
   assertRequiredContent(listing.description);
   assertNoInventedClaims(listing.description);
 }
 
-// Approachable price can frame older touring bikes (no invented accessories)
+// Older touring with no unit notes → personality (no dollar echo in pitch)
 {
   const listing = composeMarketplaceListing(
     bike({
@@ -298,17 +321,13 @@ function countOccurrences(hay: string, needle: string): number {
       description: null,
     }),
   );
-  assert.ok(
-    /\$8,999|lot of motorcycle|Hard to overlook|worth a closer look/i.test(
-      listing.description,
-    ),
-  );
+  const afterColor = listing.description.split("WHT GOLD/PEWTER")[1] ?? "";
+  assert.equal(afterColor.includes("$8,999"), false);
   assert.equal(listing.description.toLowerCase().includes("saddlebags"), false);
-  assert.equal(listing.description.toLowerCase().includes("new tires"), false);
   assertRequiredContent(listing.description);
 }
 
-// Tri Glide mid miles — road context, not blanket "low miles"
+// Tri Glide mid miles — personality, not exact mileage echo in pitch
 {
   const listing = composeMarketplaceListing(
     bike({
@@ -320,9 +339,10 @@ function countOccurrences(hay: string, needle: string): number {
       description: null,
     }),
   );
-  assert.ok(listing.description.includes("26,403"));
+  assert.ok(listing.description.includes("🛣️ 26,403 miles"));
+  const afterMiles = listing.description.split("🛣️ 26,403 miles")[1] ?? "";
+  assert.equal(afterMiles.includes("26,403"), false);
   assert.equal(listing.description.includes("Low miles for a"), false);
-  assert.equal(listing.description.includes("Only 26,403"), false);
   assertRequiredContent(listing.description);
 }
 
