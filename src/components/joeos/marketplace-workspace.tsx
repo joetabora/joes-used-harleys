@@ -150,7 +150,7 @@ export function MarketplaceWorkspace({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-h-[92vh] w-full overflow-y-auto bg-[var(--jos-void)] p-4 text-[var(--jos-ink)] sm:max-w-5xl lg:max-w-6xl"
+        className="jos max-h-[92vh] w-full overflow-y-auto !bg-[#151515] p-4 text-[#f5f5f3] sm:max-w-5xl lg:max-w-6xl"
         showCloseButton
       >
         <DialogHeader>
