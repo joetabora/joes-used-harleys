@@ -30,6 +30,7 @@ export type MarketplaceBikeCard = MarketplaceBikeInput & {
   photos: string[];
   firstSeenAt: string;
   status: string;
+  marketplacePosted: boolean;
 };
 
 const DEFAULT_PHOTO_COUNT = 5;

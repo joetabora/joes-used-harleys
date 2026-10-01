@@ -51,6 +51,7 @@ export default async function AdminMarketplacePage() {
       photos: true,
       firstSeenAt: true,
       status: true,
+      marketplacePostedAt: true,
     },
   });
 
@@ -70,6 +71,7 @@ export default async function AdminMarketplacePage() {
     photos: b.photos,
     firstSeenAt: b.firstSeenAt.toISOString(),
     status: b.status,
+    marketplacePosted: b.marketplacePostedAt != null,
   }));
 
   if (bikes.length === 0) {

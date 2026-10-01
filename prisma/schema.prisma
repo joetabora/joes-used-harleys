@@ -126,9 +126,10 @@ model Bike {
   buyingTips           String?
   seoHeadline          String?
   seoDescription       String?
-  personalPhotos       String[] @default([])
-  personalHeroImageUrl String?
-  internalNotes        String?
+  personalPhotos         String[]  @default([])
+  personalHeroImageUrl   String?
+  internalNotes          String?
+  marketplacePostedAt    DateTime?
 
   // --- ScanBike (sync-owned visibility; never Joe branding) ---
   scanVisibility ScanVisibility @default(QR_ONLY)

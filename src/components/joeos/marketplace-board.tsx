@@ -1,7 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
+import { setMarketplacePosted } from "@/actions/admin";
 import { formatMiles, formatPrice } from "@/lib/format";
+import {
+  initialPostedIds,
+  resolveNextBikeId,
+  type MarketplacePostStatus,
+} from "@/lib/marketplace/posted-status";
 import {
   JosBody,
   JosData,
@@ -18,8 +24,9 @@ import {
 } from "@/components/joeos/marketplace-workspace";
 
 export type { MarketplaceBikeCard };
+export { initialPostedIds, resolveNextBikeId };
 
-type PostStatus = "NOT_POSTED" | "POSTED";
+type PostStatus = MarketplacePostStatus;
 type StatusFilter = "all" | "not_posted" | "posted";
 type SortMode = "newest" | "price_asc" | "price_desc" | "miles_asc";
 
@@ -82,35 +89,16 @@ function GridCard({
   );
 }
 
-/** Next bike: prefer next NOT_POSTED after current; wrap; else next in list. */
-export function resolveNextBikeId(
-  list: { id: string }[],
-  currentId: string,
-  postedIds: Record<string, PostStatus>,
-): string | null {
-  if (list.length === 0) return null;
-  const idx = list.findIndex((b) => b.id === currentId);
-  if (idx < 0) return list[0]?.id ?? null;
-
-  for (let step = 1; step <= list.length; step++) {
-    const candidate = list[(idx + step) % list.length];
-    if (!candidate) continue;
-    if (candidate.id === currentId) continue;
-    const status = postedIds[candidate.id] ?? "NOT_POSTED";
-    if (status === "NOT_POSTED") return candidate.id;
-  }
-
-  // All others posted (or single bike) — advance to next in order
-  const next = list[(idx + 1) % list.length];
-  return next && next.id !== currentId ? next.id : null;
-}
-
 export function MarketplaceBoard({ bikes }: { bikes: MarketplaceBikeCard[] }) {
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [sort, setSort] = useState<SortMode>("newest");
-  const [postedIds, setPostedIds] = useState<Record<string, PostStatus>>({});
+  const [postedIds, setPostedIds] = useState<Record<string, PostStatus>>(() =>
+    initialPostedIds(bikes),
+  );
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [, startTransition] = useTransition();
 
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -164,6 +152,20 @@ export function MarketplaceBoard({ bikes }: { bikes: MarketplaceBikeCard[] }) {
     if (nextId) setActiveId(nextId);
   }
 
+  function persistPosted(id: string, posted: boolean) {
+    const nextStatus: PostStatus = posted ? "POSTED" : "NOT_POSTED";
+    const previous = postedIds[id] ?? "NOT_POSTED";
+    setPostedIds((prev) => ({ ...prev, [id]: nextStatus }));
+    setSaveError(null);
+    startTransition(async () => {
+      const result = await setMarketplacePosted(id, posted);
+      if (!result.ok) {
+        setPostedIds((prev) => ({ ...prev, [id]: previous }));
+        setSaveError(result.message);
+      }
+    });
+  }
+
   return (
     <div className="jos-stack-section">
       <JosSectionHeader
@@ -179,6 +181,9 @@ export function MarketplaceBoard({ bikes }: { bikes: MarketplaceBikeCard[] }) {
         Used Harley-Davidson inventory ready for manual Marketplace posting.
         Click a bike to open the posting workspace.
       </JosBody>
+      {saveError ? (
+        <JosBody className="text-sm text-[var(--jos-warn)]">{saveError}</JosBody>
+      ) : null}
 
       <div className="jos-panel jos-pad flex flex-wrap gap-3">
         <JosField label="Search" htmlFor="mkt-q" className="min-w-[12rem] flex-1">
@@ -242,11 +247,11 @@ export function MarketplaceBoard({ bikes }: { bikes: MarketplaceBikeCard[] }) {
         }}
         onMarkPosted={() => {
           if (!activeId) return;
-          setPostedIds((prev) => ({ ...prev, [activeId]: "POSTED" }));
+          persistPosted(activeId, true);
         }}
         onMarkNotPosted={() => {
           if (!activeId) return;
-          setPostedIds((prev) => ({ ...prev, [activeId]: "NOT_POSTED" }));
+          persistPosted(activeId, false);
         }}
         onNextBike={goNext}
       />

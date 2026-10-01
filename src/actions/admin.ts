@@ -122,6 +122,39 @@ export async function updateJoeBikeFields(
   return { ok: true, message: "Joe content saved." };
 }
 
+/**
+ * Joe-owned Marketplace posting flag. Sync never writes this field.
+ */
+export async function setMarketplacePosted(
+  id: string,
+  posted: boolean,
+): Promise<AdminActionResult> {
+  await requireAdmin();
+
+  if (!isDatabaseConfigured() || !prisma) {
+    return { ok: false, message: "Database not configured." };
+  }
+
+  const existing = await prisma.bike.findUnique({
+    where: { id },
+    select: { id: true },
+  });
+  if (!existing) {
+    return { ok: false, message: "Bike not found." };
+  }
+
+  await prisma.bike.update({
+    where: { id },
+    data: { marketplacePostedAt: posted ? new Date() : null },
+  });
+
+  revalidatePath("/admin/marketplace");
+  return {
+    ok: true,
+    message: posted ? "Marked as posted." : "Marked as not posted.",
+  };
+}
+
 export async function deleteBike(id: string): Promise<AdminActionResult> {
   await requireAdmin();
   if (!isDatabaseConfigured() || !prisma) {

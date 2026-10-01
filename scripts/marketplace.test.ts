@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
 import {
+  initialPostedIds,
+  resolveNextBikeId,
+} from "../src/lib/marketplace/posted-status";
+import {
   cleanModelName,
   composeMarketplaceListing,
   displayYearMakeModel,
@@ -358,6 +362,28 @@ function countOccurrences(hay: string, needle: string): number {
     "<p>The ultimate Touring model from Harley-Davidson with premium features and classic form and modern function for riders who want it all.</p>",
   );
   assert.equal(longBrochure, null);
+}
+
+{
+  assert.deepEqual(
+    initialPostedIds([
+      { id: "a", marketplacePosted: true },
+      { id: "b", marketplacePosted: false },
+      { id: "c", marketplacePosted: true },
+    ]),
+    { a: "POSTED", c: "POSTED" },
+  );
+
+  const list = [{ id: "a" }, { id: "b" }, { id: "c" }];
+  assert.equal(resolveNextBikeId(list, "a", { a: "POSTED" }), "b");
+  assert.equal(
+    resolveNextBikeId(list, "a", { a: "POSTED", b: "POSTED" }),
+    "c",
+  );
+  assert.equal(
+    resolveNextBikeId(list, "c", { a: "POSTED", b: "POSTED", c: "POSTED" }),
+    "a",
+  );
 }
 
 console.log("marketplace tests passed");
