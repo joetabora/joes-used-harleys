@@ -18,7 +18,6 @@ import {
   listModels,
 } from "@/lib/content/taxonomy";
 import { getEventGuide, getGuide, getRouteGuide } from "@/lib/content/guides";
-import { cityTopicLinks } from "@/lib/seo/linking";
 
 export async function buildModelPage(slug: string) {
   return (
@@ -228,6 +227,8 @@ export function buildCityModelPage(citySlug: string, modelSlug: string) {
     description: `${city.name}, ${city.state} riders shopping a used ${m.displayName}. Education first — live inventory when available.`,
     h1: `${m.displayName} in ${city.name}`,
     type: "local",
+    // Thin programmatic local matrix — keep crawlable for bookmarks, do not index.
+    indexable: false,
     sections: [
       section("Local framing", city.intro),
       section("Model notes", m.summary),
@@ -242,8 +243,9 @@ export function buildCityModelPage(citySlug: string, modelSlug: string) {
     ],
     relatedLinks: [
       { href: `/used-harleys/${city.slug}`, title: `${city.name} Harley hub` },
-      ...cityTopicLinks(city.slug).slice(0, 4),
       { href: `/harleys/${m.slug}`, title: `Used ${m.displayName} guide` },
+      { href: "/inventory", title: "Browse current used Harley inventory" },
+      { href: "/used-harleys/milwaukee", title: "Used Harley motorcycles near Milwaukee" },
     ],
     relatedInventoryHint: { model: m.displayName, family: m.family, modelSlug: m.slug },
     modelSlug: m.slug,
@@ -264,6 +266,8 @@ export function buildCityModelYearPage(
     description: `Shopping a ${year} ${m.displayName} from ${city.name}, ${city.state} — educational landing with live inventory when available.`,
     h1: `${year} ${m.displayName} · ${city.name}`,
     type: "local",
+    // Thin city × model × year templates — noindex; prefer /harleys/{model}/{year}.
+    indexable: false,
     sections: [
       section(
         "Intent",
@@ -276,11 +280,17 @@ export function buildCityModelYearPage(
     breadcrumbs: [
       { name: "Home", path: "/" },
       { name: city.name, path: `/used-harleys/${city.slug}` },
-      { name: m.displayName, path: `/used-harleys/${city.slug}/${m.slug}` },
-      { name: String(year), path: `/used-harleys/${city.slug}/${m.slug}/${year}` },
+      { name: m.displayName, path: `/harleys/${m.slug}` },
+      { name: String(year), path: `/harleys/${m.slug}/${year}` },
     ],
-    relatedLinks: [],
-    relatedInventoryHint: { model: m.displayName, year },
+    relatedLinks: [
+      { href: `/harleys/${m.slug}`, title: `Used ${m.displayName} buying guide` },
+      { href: `/harleys/${m.slug}/${year}`, title: `${year} ${m.displayName} notes` },
+      { href: "/inventory", title: "Browse current used Harley inventory" },
+      { href: "/used-harleys/milwaukee", title: "Used Harley motorcycles near Milwaukee" },
+    ],
+    relatedInventoryHint: { model: m.displayName, year, modelSlug: m.slug },
+    modelSlug: m.slug,
   });
 }
 

@@ -63,7 +63,6 @@ export function buildTaxonomySitemapEntries(): SitemapEntry[] {
   for (const e of listEngines()) entries.push(u(`/harleys/engines/${e.slug}`, "harleys"));
   for (const c of listComparisons()) entries.push(u(`/compare/${c.slug}`, "compare"));
 
-  const allModels = listModels();
   const topics = [
     "inventory",
     "buying",
@@ -75,20 +74,13 @@ export function buildTaxonomySitemapEntries(): SitemapEntry[] {
     "faq",
   ] as const;
 
+  // Local sitemap: SE WI primary city hubs + topics only.
+  // Exclude secondary markets and thin city×model / city×model×year matrices.
   for (const city of listGeo()) {
+    if (city.region !== "southeast-wi" || city.tier !== "primary") continue;
     entries.push(u(`/used-harleys/${city.slug}`, "local"));
-    if (city.region === "southeast-wi" && city.tier === "primary") {
-      for (const topic of topics) {
-        entries.push(u(`/used-harleys/${city.slug}/${topic}`, "local"));
-      }
-    }
-    for (const m of allModels) {
-      entries.push(u(`/used-harleys/${city.slug}/${m.slug}`, "local"));
-      if (city.tier === "primary") {
-        for (const y of m.yearsInProduction) {
-          entries.push(u(`/used-harleys/${city.slug}/${m.slug}/${y}`, "local"));
-        }
-      }
+    for (const topic of topics) {
+      entries.push(u(`/used-harleys/${city.slug}/${topic}`, "local"));
     }
   }
 
@@ -150,7 +142,40 @@ export async function buildAllSitemapEntries(): Promise<SitemapEntry[]> {
         select: { path: true, lastModified: true, type: true },
       });
       if (indexed.length > 0) {
-        const fromDb = indexed.map((row) => {
+        const primaryLocalSlugs = new Set(
+          listGeo()
+            .filter((c) => c.region === "southeast-wi" && c.tier === "primary")
+            .map((c) => c.slug),
+        );
+        const fromDb = indexed
+          .filter((row) => {
+            // Phase 1: never reintroduce thin city×model matrices from stale INDEX rows.
+            if (row.type === "CITY_MODEL" || row.type === "CITY_MODEL_YEAR") {
+              return false;
+            }
+            const cityHub = row.path.match(/^\/used-harleys\/([^/]+)$/);
+            if (cityHub && !primaryLocalSlugs.has(cityHub[1])) return false;
+            const cityModel = row.path.match(
+              /^\/used-harleys\/[^/]+\/[^/]+(?:\/\d+)?$/,
+            );
+            if (cityModel) {
+              const seg = row.path.split("/")[3];
+              const topics = new Set([
+                "inventory",
+                "buying",
+                "trade-in",
+                "financing",
+                "events",
+                "service",
+                "routes",
+                "faq",
+              ]);
+              // Allow city topic pages; block city/model and city/model/year.
+              if (!topics.has(seg ?? "")) return false;
+            }
+            return true;
+          })
+          .map((row) => {
           const shard =
             row.type === "INVENTORY"
               ? "inventory"

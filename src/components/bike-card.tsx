@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
 
 export type BikeCardData = {
@@ -20,13 +21,14 @@ export function BikeCard({ bike }: { bike: BikeCardData }) {
       href={`/inventory/${bike.id}`}
       className="joe-panel group flex flex-col overflow-hidden transition-colors hover:border-lamp/40"
     >
-      <div className="aspect-[4/3] bg-asphalt">
+      <div className="relative aspect-[4/3] bg-asphalt">
         {bike.photoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={bike.photoUrl}
             alt={label}
-            className="h-full w-full object-cover transition-opacity group-hover:opacity-95"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-opacity group-hover:opacity-95"
           />
         ) : (
           <div className="flex h-full items-center justify-center font-label text-steel">

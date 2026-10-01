@@ -7,11 +7,11 @@ import { HomeMeetJoe } from "@/components/home/home-meet-joe";
 import { HomeOnTheFloor } from "@/components/home/home-on-the-floor";
 import { HomeOpeningLetter } from "@/components/home/home-opening-letter";
 import { createMetadata } from "@/lib/seo";
-import { siteConfig } from "@/lib/site";
 
 export const metadata = createMetadata({
-  title: siteConfig.name,
-  description: siteConfig.description,
+  title: "Used Harley-Davidson Motorcycles Near Milwaukee",
+  description:
+    "Joe helps Milwaukee and Southeastern Wisconsin riders find and buy used Harley-Davidson motorcycles — honest guidance, live inventory, and a salesperson you can actually talk to.",
   path: "/",
 });
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { BikeDetailAnalytics } from "@/components/analytics/bike-detail-analytics";
 import { AssetScorecardView } from "@/components/assets/asset-scorecard";
@@ -15,6 +16,10 @@ import { hasRecentPriceDrop, isNewArrival } from "@/lib/inventory-public";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { fetchRelatedInventory } from "@/lib/seo/inventory-related";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import {
+  inventoryMetaDescription,
+  stripHtmlForMeta,
+} from "@/lib/seo/plain-text";
 import {
   breadcrumbJsonLd,
   buildJsonLdGraph,
@@ -69,7 +74,11 @@ export async function generateMetadata({ params }: Props) {
   }
 
   const bike = await prisma.bike.findUnique({ where: { id } });
-  if (!bike || bike.hidden) {
+  if (
+    !bike ||
+    bike.hidden ||
+    !["AVAILABLE", "PENDING"].includes(bike.status)
+  ) {
     return buildPageMetadata({
       title: "Bike not found",
       description: "This listing is unavailable.",
@@ -81,7 +90,7 @@ export async function generateMetadata({ params }: Props) {
   const label = bike.seoHeadline || bikeLabel(bike);
   return buildPageMetadata({
     title: label,
-    description: bike.seoDescription || bike.description?.slice(0, 155) || label,
+    description: inventoryMetaDescription(bike),
     path: `/inventory/${bike.id}`,
   });
 }
@@ -106,6 +115,10 @@ export default async function BikeDetailPage({ params }: Props) {
 
   const label = bikeLabel(bike);
   const displayTitle = bike.seoHeadline || label;
+  const plainDescription = stripHtmlForMeta(
+    bike.seoDescription || bike.description || label,
+    500,
+  );
   const photos =
     bike.personalPhotos.length > 0
       ? bike.personalPhotos
@@ -149,7 +162,7 @@ export default async function BikeDetailPage({ params }: Props) {
   const graph = buildJsonLdGraph([
     productJsonLd({
       name: label,
-      description: bike.seoDescription || bike.description || label,
+      description: plainDescription,
       path: `/inventory/${bike.id}`,
       image: hero,
       price: bike.price,
@@ -188,6 +201,15 @@ export default async function BikeDetailPage({ params }: Props) {
         <p className="font-label text-base text-lamp">
           Stock # {bike.stockNumber?.trim() ? bike.stockNumber : "Not on feed"}
         </p>
+        <p className="max-w-2xl text-sm text-steel">
+          Milwaukee-area used Harley help from Joe — confirm availability before you travel.{" "}
+          <Link
+            href="/used-harleys/milwaukee"
+            className="text-lamp underline-offset-4 hover:underline"
+          >
+            Used Harley motorcycles near Milwaukee
+          </Link>
+        </p>
       </div>
 
       <div className="joe-panel grid gap-3 p-5 sm:grid-cols-2 md:grid-cols-3">
@@ -215,19 +237,26 @@ export default async function BikeDetailPage({ params }: Props) {
           </div>
         ) : (
           photos.map((url) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <div
               key={url}
-              src={url}
-              alt={label}
-              className="aspect-[4/3] w-full border border-chrome/20 object-cover"
-            />
+              className="relative aspect-[4/3] w-full overflow-hidden border border-chrome/20"
+            >
+              <Image
+                src={url}
+                alt={label}
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
           ))
         )}
       </div>
 
       {bike.description ? (
-        <p className="whitespace-pre-wrap text-ink/75">{bike.description}</p>
+        <p className="whitespace-pre-wrap text-ink/75">
+          {stripHtmlForMeta(bike.description, 4000)}
+        </p>
       ) : null}
 
       {insights.length > 0 ? (

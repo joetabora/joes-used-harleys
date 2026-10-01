@@ -173,6 +173,23 @@ export function productJsonLd(input: {
   return data;
 }
 
+/** ItemList for the live inventory collection page — only include bikes rendered on the page. */
+export function itemListJsonLd(
+  items: Array<{ name: string; path: string }>,
+): Record<string, unknown> | null {
+  if (items.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      url: absoluteUrl(item.path),
+    })),
+  };
+}
+
 export function buildJsonLdGraph(
   nodes: Array<Record<string, unknown> | null | undefined>,
 ): Record<string, unknown>[] {

@@ -40,12 +40,6 @@ export function HomeComeTalk() {
           ) : null}
         </div>
 
-        {!phoneReady ? (
-          <p className="mt-6 font-label text-steel">
-            [PLACEHOLDER — set NEXT_PUBLIC_JOE_PHONE to enable Text / Call]
-          </p>
-        ) : null}
-
         <p className="mt-16 font-label text-steel">— Joe</p>
       </div>
     </SectionShell>

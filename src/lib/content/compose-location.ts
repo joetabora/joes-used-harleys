@@ -20,7 +20,7 @@ import {
   relatedModelsFor,
 } from "@/lib/seo/linking";
 import { localBusinessJsonLd } from "@/lib/seo/schema";
-import type { SeoPageDocument, SeoSection } from "@/lib/seo/types";
+import type { SeoSection } from "@/lib/seo/types";
 import { hasBusinessGeo, hasBusinessNap, siteConfig } from "@/lib/site";
 
 function joinBullets(items: string[]): string {
@@ -85,6 +85,14 @@ function buildHubSections(pack: LocationKnowledgePack): SeoSection[] {
   sections.push(
     section("Local context", joinBullets(pack.localContext)),
   );
+  if (pack.slug === "milwaukee") {
+    sections.push(
+      section(
+        "Milwaukee / Southeastern Wisconsin service area",
+        "Joe primarily works with buyers within roughly 30–50 miles of Milwaukee Harley-Davidson, including communities such as Milwaukee, Wauwatosa, West Allis, Greenfield, Brookfield, Waukesha, New Berlin, Menomonee Falls, Butler, Glendale, Shorewood, Whitefish Bay, Oak Creek, South Milwaukee, Cudahy, Franklin, Muskego, Pewaukee, Sussex, Mequon, Thiensville, Germantown, Racine, Kenosha, West Bend, and Oconomowoc. Listing a community here does not mean Joe operates a storefront there — it means local riders in those areas regularly shop used Harleys with his help.",
+      ),
+    );
+  }
   const travel = travelSection(pack);
   if (travel) sections.push(travel);
   sections.push(section("Riding around here", joinBullets(pack.ridingCulture)));
@@ -240,8 +248,8 @@ export function composeLocationHub(citySlug: string) {
       ],
       relatedLinks: [],
       relatedInventoryHint: {},
-      // SE WI primary hubs require packs to index; secondary markets keep thin pages.
-      indexable: !(city.region === "southeast-wi" && city.tier === "primary"),
+      // Thin fallback hubs (secondary markets / unpackaged) — never index.
+      indexable: false,
       schemaExtra: [localBusinessJsonLd()].filter(Boolean) as Record<
         string,
         unknown
@@ -264,9 +272,18 @@ export function composeLocationHub(citySlug: string) {
 
   return composeSeoDocument({
     path: `/used-harleys/${city.slug}`,
-    title: city.headline,
-    description: pack.localContext[0]?.slice(0, 160) ?? city.intro,
-    h1: `Used Harleys for ${city.name} buyers`,
+    title:
+      city.slug === "milwaukee"
+        ? "Used Harley-Davidson Motorcycles for Sale Near Milwaukee, WI"
+        : city.headline,
+    description:
+      city.slug === "milwaukee"
+        ? "Joe helps Milwaukee and Southeastern Wisconsin riders find and buy used Harley-Davidson motorcycles — live inventory, honest buying guidance, and a salesperson you can talk to."
+        : (pack.localContext[0]?.slice(0, 160) ?? city.intro),
+    h1:
+      city.slug === "milwaukee"
+        ? "Used Harley-Davidson motorcycles for sale near Milwaukee, WI"
+        : `Used Harleys for ${city.name} buyers`,
     type: "article",
     ogType: "article",
     sections,
@@ -276,7 +293,32 @@ export function composeLocationHub(citySlug: string) {
       { name: "Local", path: "/used-harleys" },
       { name: city.name, path: `/used-harleys/${city.slug}` },
     ],
-    relatedLinks,
+    relatedLinks:
+      city.slug === "milwaukee"
+        ? [
+            {
+              href: "/inventory",
+              title: "Browse current used Harley inventory",
+              excerpt: "Live mirrored floor stock",
+            },
+            {
+              href: "/about",
+              title: "About Joe",
+              excerpt: "How Joe helps used Harley buyers",
+            },
+            {
+              href: "/contact",
+              title: "Contact Joe",
+              excerpt: "Ask about a bike or start a conversation",
+            },
+            {
+              href: "/guides",
+              title: "Used Harley buying guides",
+              excerpt: "Education before you buy",
+            },
+            ...relatedLinks,
+          ]
+        : relatedLinks,
     relatedInventoryHint: {},
     schemaExtra: [localBusinessJsonLd()].filter(Boolean) as Record<string, unknown>[],
   });

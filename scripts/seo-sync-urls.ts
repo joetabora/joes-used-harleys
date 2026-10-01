@@ -291,6 +291,10 @@ function buildRows(): Row[] {
   const allModels = listModels();
 
   for (const city of listGeo()) {
+    const isPrimaryLocal =
+      city.region === "southeast-wi" && city.tier === "primary";
+
+    // City hubs: only SE WI primary markets stay INDEX in the registry.
     rows.push(
       scoreDoc({
         path: `/used-harleys/${city.slug}`,
@@ -298,6 +302,7 @@ function buildRows(): Row[] {
         description: city.intro,
         h1: city.headline,
         type: "local",
+        indexable: isPrimaryLocal,
         sections: [
           section("Buying with Joe", city.intro),
           section(
@@ -316,6 +321,7 @@ function buildRows(): Row[] {
       }),
     );
 
+    // Thin city × model / city × model × year — always NOINDEX (Phase 1 consolidation).
     for (const m of allModels) {
       rows.push(
         scoreDoc({
@@ -324,6 +330,7 @@ function buildRows(): Row[] {
           description: `${city.name}, ${city.state} riders shopping a used ${m.displayName}. Education first — live inventory when available.`,
           h1: `${m.displayName} in ${city.name}`,
           type: "local",
+          indexable: false,
           sections: [
             section("Local framing", city.intro),
             section("Model notes", m.summary),
@@ -350,19 +357,26 @@ function buildRows(): Row[] {
               description: `Shopping a ${year} ${m.displayName} from ${city.name}, ${city.state} — educational landing with live inventory when available.`,
               h1: `${year} ${m.displayName} · ${city.name}`,
               type: "local",
+              indexable: false,
               sections: [
-                section("Intent", `Riders near ${city.name} often compare ${year} ${m.displayName} examples. Confirm options on the actual bike.`),
+                section(
+                  "Intent",
+                  `Riders near ${city.name} often compare ${year} ${m.displayName} examples. Confirm options on the actual bike.`,
+                ),
                 section("Model context", m.summary),
-                section("Next step", "Review live inventory or contact Joe — we do not invent stock."),
+                section(
+                  "Next step",
+                  "Review live inventory or contact Joe — we do not invent stock.",
+                ),
               ],
               faqs: defaultFaqs("local-year", `${year} ${m.displayName}`),
               breadcrumbs: [
                 { name: "Home", path: "/" },
                 { name: city.name, path: `/used-harleys/${city.slug}` },
-                { name: m.displayName, path: `/used-harleys/${city.slug}/${m.slug}` },
+                { name: m.displayName, path: `/harleys/${m.slug}` },
                 {
                   name: String(year),
-                  path: `/used-harleys/${city.slug}/${m.slug}/${year}`,
+                  path: `/harleys/${m.slug}/${year}`,
                 },
               ],
               relatedLinks: [],

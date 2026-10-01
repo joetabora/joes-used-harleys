@@ -47,9 +47,18 @@ for (const pack of listLocationPacks()) {
 const hub = composeLocationHub("milwaukee");
 assert.ok(hub);
 assert.equal(hub.type, "article");
+assert.match(
+  hub.h1,
+  /Used Harley-Davidson motorcycles for sale near Milwaukee/i,
+);
+assert.ok(
+  hub.sections.some((s) => /service area|30–50|Wauwatosa|Glendale/i.test(s.body)),
+  "milwaukee hub should include service-area section",
+);
 assert.ok(hub.sections.length >= 6, `rich hub sections: ${hub.sections.length}`);
 assert.ok(hub.faqs.length >= 3);
 assert.ok(hub.relatedLinks.length >= 3);
+assert.ok(hub.relatedLinks.some((l) => l.href === "/inventory"));
 assert.ok(hub.score >= 70, `milwaukee hub score ${hub.score}`);
 assert.equal(hub.status, "INDEX");
 assert.ok(!/only the city name/i.test(hub.sections.map((s) => s.body).join(" ")));

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { MediaFrame } from "@/components/home/media-frame";
 import { SectionShell } from "@/components/home/section-shell";
-import { PlaceholderNotice } from "@/components/placeholder-notice";
 
 export function HomeMeetJoe() {
   return (
@@ -21,13 +20,10 @@ export function HomeMeetJoe() {
             A salesperson you can text—not a ticket number.
           </h2>
           <p className="text-[1.0625rem] leading-[1.7] text-ink/80">
-            Joe helps people buy used Harley-Davidson motorcycles with clear explanations and
-            follow-through. This site is personal on purpose: trust first, inventory second.
+            Joe helps Milwaukee-area riders find and purchase used Harley-Davidson motorcycles
+            with clear explanations and follow-through. This site is personal on purpose: trust
+            first, inventory second.
           </p>
-          <PlaceholderNotice title="[PLACEHOLDER — Joe to provide]">
-            Bio, background, and how Joe introduces himself—fill docs/joe-profile.md, then move
-            copy here. No awards, sales counts, or dealership claims unless Joe confirms them.
-          </PlaceholderNotice>
           <Link href="/about" className="joe-btn-secondary">
             Full story
           </Link>

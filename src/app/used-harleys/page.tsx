@@ -3,9 +3,9 @@ import { listGeo } from "@/lib/content/taxonomy";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Used Harleys near you",
+  title: "Used Harleys near Milwaukee",
   description:
-    "Southeast Wisconsin and nearby city guides for used Harley buyers — honest inventory, education first.",
+    "Milwaukee and Southeastern Wisconsin guides for used Harley-Davidson buyers — start with the Milwaukee hub, then browse live inventory.",
   path: "/used-harleys",
 });
 
@@ -17,12 +17,20 @@ export default function UsedHarleysIndexPage() {
       <header className="space-y-3">
         <p className="font-label text-lamp">Local</p>
         <h1 className="font-display text-3xl tracking-[0.06em] md:text-4xl">
-          Used Harleys — Southeast Wisconsin & nearby
+          Used Harleys — Milwaukee & Southeastern Wisconsin
         </h1>
         <p className="max-w-2xl text-steel">
-          Each Southeast Wisconsin city hub is written for local buyers — travel corridors,
-          riding context, buying and trade-in guidance, and mirrored inventory. City pages are
-          service-area guides, not fake branch storefronts.
+          Start with the Milwaukee hub for used Harley-Davidson motorcycles near Milwaukee Harley-Davidson,
+          then browse live inventory. Other city pages are service-area guides for SE Wisconsin buyers —
+          not fake branch storefronts.
+        </p>
+        <p>
+          <Link
+            href="/used-harleys/milwaukee"
+            className="joe-btn-primary inline-flex"
+          >
+            Milwaukee used Harley guide
+          </Link>
         </p>
       </header>
 

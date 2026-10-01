@@ -1,7 +1,6 @@
 import { EditorialMeasure } from "@/components/home/editorial-measure";
 import { PullQuote } from "@/components/home/pull-quote";
 import { SectionShell } from "@/components/home/section-shell";
-import { PlaceholderNotice } from "@/components/placeholder-notice";
 
 /**
  * Editorial invitation. PullQuote stays hidden until joe-profile supplies a real quote.
@@ -22,21 +21,14 @@ export function HomeOpeningLetter() {
             questions, and help you choose what actually fits.
           </p>
           <p>
-            Joe built this place so you can meet him before you meet the paperwork. Pull up a stool.
-            Tell him what you ride for, what you can spend, and what you&apos;re hoping the next bike
-            feels like.
+            Joe built this place so Milwaukee and Southeastern Wisconsin buyers can meet him before
+            they meet the paperwork. Pull up a stool. Tell him what you ride for, what you can
+            spend, and what you&apos;re hoping the next bike feels like.
           </p>
         </div>
 
         {/* Renders null until a real quote is passed — no invented voice */}
         <PullQuote />
-
-        <div className="mt-10">
-          <PlaceholderNotice title="[PLACEHOLDER — Joe to provide]">
-            Opening letter in Joe&apos;s own words (from docs/joe-profile.md — Why I sell / Who I
-            am). Replace the paragraphs above when ready.
-          </PlaceholderNotice>
-        </div>
       </EditorialMeasure>
     </SectionShell>
   );

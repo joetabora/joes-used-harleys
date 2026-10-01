@@ -113,7 +113,7 @@ export const siteConfig = {
   url: resolveSiteUrl(),
   tagline: "A personal Harley sales engine — trust first, bikes second.",
   description:
-    "Buy a used Harley-Davidson with a salesperson who treats you like a person, not a ticket number. Education, alerts, and real help from Joe.",
+    "Joe helps Milwaukee and Southeastern Wisconsin riders buy used Harley-Davidson motorcycles — education, alerts, and real help from a salesperson you can talk to.",
   phone: env("NEXT_PUBLIC_JOE_PHONE", "PLACEHOLDER_PHONE_E164"),
   email: env("NEXT_PUBLIC_JOE_EMAIL", "PLACEHOLDER_JOE_EMAIL@example.com"),
   smsLink: env("NEXT_PUBLIC_JOE_SMS_LINK", "sms:PLACEHOLDER_PHONE_E164"),

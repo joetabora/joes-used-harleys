@@ -1,4 +1,4 @@
-import { PlaceholderNotice } from "@/components/placeholder-notice";
+import Link from "next/link";
 import { LeadForm } from "@/components/lead-form";
 import { createMetadata } from "@/lib/seo";
 import { hasContactEmail, hasContactPhone, siteConfig } from "@/lib/site";
@@ -6,7 +6,7 @@ import { hasContactEmail, hasContactPhone, siteConfig } from "@/lib/site";
 export const metadata = createMetadata({
   title: "About Joe",
   description:
-    "Meet Joe — a Harley salesperson building trust through relationship selling, education, and technology.",
+    "Meet Joe — a Harley-Davidson salesperson helping Milwaukee and Southeastern Wisconsin riders buy used motorcycles with trust, education, and real inventory.",
   path: "/about",
 });
 
@@ -22,18 +22,45 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <PlaceholderNotice title="Bio details are placeholders">
-        Specific dealership affiliation, years of experience claims, awards, and personal photos
-        will be added only with Joe&apos;s real content. Do not invent them.
-      </PlaceholderNotice>
+      <div className="space-y-4 text-[1.0625rem] leading-[1.7] text-ink/80">
+        <p>
+          Joe helps Milwaukee and Southeastern Wisconsin riders find and purchase used
+          Harley-Davidson motorcycles. He slows the process down on purpose: fit, budget comfort,
+          service history, and what you will actually ride — before chrome takes over the
+          conversation.
+        </p>
+        <p>
+          Inventory on this site is mirrored from real dealership stock. Joe will not invent bikes,
+          reviews, financing approvals, or a fake storefront. When you are ready, he helps you
+          compare units, ask the awkward questions, and take the next step at a human pace.
+        </p>
+        <p>
+          Learn more about{" "}
+          <Link
+            href="/used-harleys/milwaukee"
+            className="text-lamp underline-offset-4 hover:underline"
+          >
+            used Harley motorcycles near Milwaukee
+          </Link>
+          ,{" "}
+          <Link href="/inventory" className="text-lamp underline-offset-4 hover:underline">
+            browse current inventory
+          </Link>
+          , or{" "}
+          <Link href="/guides" className="text-lamp underline-offset-4 hover:underline">
+            read the buying guides
+          </Link>
+          .
+        </p>
+      </div>
 
       <div className="joe-panel p-5">
         <p className="font-label mb-4 text-lamp">What Joe brings</p>
         <ul className="space-y-2 text-sm text-ink/75">
-          <li>Marketing and events experience</li>
-          <li>Social media and web development skills</li>
-          <li>Dealership operations knowledge</li>
-          <li>Comfort with AI tools — used carefully, never to invent inventory or reviews</li>
+          <li>Relationship selling for used Harley buyers — not a ticket number</li>
+          <li>Clear explanations of models, fit, and what to inspect</li>
+          <li>Help talking through payments and trade-ins without inventing rates or values</li>
+          <li>Live mirrored inventory with honest empty states when nothing matches</li>
         </ul>
       </div>
 
@@ -46,9 +73,7 @@ export default function AboutPage() {
               {siteConfig.phone}
             </a>
           </p>
-        ) : (
-          <p className="text-sm text-steel">Phone: PLACEHOLDER — set NEXT_PUBLIC_JOE_PHONE</p>
-        )}
+        ) : null}
         {hasContactEmail() ? (
           <p className="text-sm">
             Email:{" "}
@@ -59,8 +84,14 @@ export default function AboutPage() {
               {siteConfig.email}
             </a>
           </p>
+        ) : null}
+        {!hasContactPhone() && !hasContactEmail() ? (
+          <p className="text-sm text-steel">
+            Reach Joe through the form below — it lands in his lead inbox when the site is
+            connected.
+          </p>
         ) : (
-          <p className="text-sm text-steel">Email: PLACEHOLDER — set NEXT_PUBLIC_JOE_EMAIL</p>
+          <p className="text-sm text-steel">Or send a message here.</p>
         )}
         <LeadForm source="/about" />
       </div>

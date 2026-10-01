@@ -11,14 +11,14 @@ export const southeastWiLocationPacks = [
     lat: 43.0389,
     lng: -87.9065,
     localContext: [
-      "Milwaukee sits in Southeast Wisconsin's Harley buying orbit — riders here compare live units with Joe instead of trusting invented near-you stock counts.",
-      "Urban lakefront loops, Third Ward stops, and easy access to Lake Michigan day rides.",
-      "Joe's guidance is education-first: mirrored dealership inventory, honest next steps, and no fake Milwaukee storefront claims.",
+      "Joe helps Milwaukee-area riders find and purchase used Harley-Davidson motorcycles — education first, mirrored dealership inventory, and no fake storefront claims.",
+      "Most units Joe discusses are available through Milwaukee Harley-Davidson stock (11310 W Silver Spring Rd, Milwaukee, WI 53225). Joe's Used Harleys is a salesperson-led buying experience, not a separate physical dealership.",
+      "Urban lakefront loops, Third Ward stops, and easy access to Lake Michigan day rides shape how local riders choose Touring vs Softail vs Sportster.",
     ],
     travelNotes: [
       "From Milwaukee proper you are already in the core SE WI market — plan parking and timing around weekday traffic on I-94 and the Lake Freeway.",
-      "Primary travel corridor context: I-94 and the Lake Freeway.",
-      "Confirm the single published business address before you navigate — city pages are service-area guides, not branch locations.",
+      "Primary travel corridor context: I-94 and the Lake Freeway toward the Silver Spring / northwest Milwaukee dealership area.",
+      "City pages are service-area guides for buyers within roughly 30–50 miles of Milwaukee Harley-Davidson — not fake branch locations.",
     ],
     ridingCulture: [
       "Urban lakefront loops, Third Ward stops, and easy access to Lake Michigan day rides.",
@@ -31,35 +31,58 @@ export const southeastWiLocationPacks = [
       "Use /events guides for how to evaluate motorcycle events — we do not publish fake calendars.",
     ],
     buyingAngles: [
-      "Compare Touring vs Softail for how you actually commute or weekend-ride in the city.",
+      "Start with how you ride: commuting, two-up touring, or weekend Softail miles — then look at live inventory with Joe.",
+      "Compare Touring vs Softail for how you actually ride in the city and on I-94 corridors.",
       "Take a safety course seriously if you are newer — Milwaukee traffic and road patterns still demand skills.",
       "Ask for service records, title status, and a calm walkaround before you fall in love with chrome.",
-      "Compare at least two families (Touring, Softail, Sportster, or Trike) before you lock a direction.",
+      "Expect a human conversation: budget comfort zone, fit, and next steps — not a pressure pitch.",
     ],
     tradeInNotes: tradeInNotesFor("Milwaukee"),
     financingNotes: financingNotesFor("Milwaukee"),
     serviceEducation: serviceEducationFor("Milwaukee"),
     inventoryFraming: [
-      "Use live inventory filters for year and family — Milwaukee buyers often start with Touring and Softail, then expand.",
+      "Browse live inventory for currently available used Harley-Davidson motorcycles — links go to real unit pages when stock is connected.",
       "Empty related inventory means the feed has nothing matching right now — ask Joe what is coming; do not invent bikes.",
-      "Price history and condition matter more than whether the listing mentions Milwaukee.",
+      "Price, miles, and condition on each listing matter more than whether the listing text mentions Milwaukee.",
     ],
     faqs: [
       {
-        question: "Do you have a dealership in Milwaukee?",
-        answer: "No. City pages help Milwaukee buyers work with Joe across Southeast Wisconsin. We publish one real business address when configured — never fake branches.",
+        question: "Do you have a Joe's Used Harleys dealership in Milwaukee?",
+        answer:
+          "No. Joe helps Milwaukee-area riders find and purchase used Harley-Davidson motorcycles. Inventory is mirrored from real dealership stock — typically available through Milwaukee Harley-Davidson — and city pages are not fake branch storefronts.",
+      },
+      {
+        question: "Where are the motorcycles located?",
+        answer:
+          "Units Joe works with are mirrored from live dealership inventory. Milwaukee Harley-Davidson is at 11310 W Silver Spring Rd, Milwaukee, WI 53225. Confirm availability with Joe before you travel.",
       },
       {
         question: "Can I see live inventory relevant to Milwaukee?",
-        answer: "Yes — related inventory is mirrored from the live dealership feed when connected. If the list is empty, nothing matching is available right now.",
+        answer:
+          "Yes — related inventory on this page is mirrored from the live dealership feed when connected. You can also browse the full floor at /inventory. If the list is empty, nothing matching is available right now.",
       },
       {
-        question: "How should Milwaukee buyers think about a first visit?",
-        answer: "Know your budget comfort zone, bring questions, and sit on multiple bikes. Joe slows the process down on purpose.",
+        question: "How should Milwaukee buyers think about a first conversation?",
+        answer:
+          "Know your budget comfort zone, bring questions, and sit on multiple bikes when you visit. Joe slows the process down on purpose.",
+      },
+      {
+        question: "Does Joe help with financing or trade-ins?",
+        answer:
+          "Yes — Joe can talk through monthly comfort, trade-in questions, and next steps. He will not invent rates, approvals, or values.",
       },
     ],
     relatedGuideTopics: ["buying", "financing", "trade-in", "maintenance", "routes"],
-    relatedModelSlugs: ["street-glide","road-glide","iron-883"],
+    relatedModelSlugs: [
+      "road-glide",
+      "street-glide",
+      "road-king",
+      "heritage-classic",
+      "fat-boy",
+      "low-rider",
+      "freewheeler",
+      "iron-883",
+    ],
     neighborCitySlugs: ["west-allis","greenfield","oak-creek","waukesha"],
   }),
 

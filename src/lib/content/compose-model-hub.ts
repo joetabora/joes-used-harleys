@@ -128,9 +128,14 @@ export function composeModelHub(slug: string): (SeoPageDocument & {
     }),
     ...hubTopicalLinks(pack.relatedGuideTopics),
     {
-      href: "/used-harleys",
-      title: "Used Harleys in Southeast Wisconsin",
-      excerpt: "Local inventory and city guides near Milwaukee.",
+      href: "/used-harleys/milwaukee",
+      title: "Used Harley motorcycles near Milwaukee",
+      excerpt: "Milwaukee-area buying help and live inventory.",
+    },
+    {
+      href: "/inventory",
+      title: "Browse current used Harley inventory",
+      excerpt: "Live mirrored floor stock.",
     },
   ];
 

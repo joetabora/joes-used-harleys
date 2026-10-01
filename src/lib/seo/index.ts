@@ -12,6 +12,7 @@ export {
   articleJsonLd,
   webPageJsonLd,
   productJsonLd,
+  itemListJsonLd,
   buildJsonLdGraph,
   localBusinessJsonLd,
 } from "@/lib/seo/schema";

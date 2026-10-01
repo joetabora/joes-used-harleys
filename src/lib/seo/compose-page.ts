@@ -26,8 +26,10 @@ export function composeSeoDocument(
   ]);
 
   const { score } = scoreSeoPage(doc);
-  const status = statusFromScore(score);
-  const indexable = partial.indexable === false ? false : status === "INDEX";
+  const scoredStatus = statusFromScore(score);
+  const indexable = partial.indexable === false ? false : scoredStatus === "INDEX";
+  const status: "DRAFT" | "NOINDEX" | "INDEX" =
+    partial.indexable === false ? "NOINDEX" : scoredStatus;
 
   return {
     ...doc,

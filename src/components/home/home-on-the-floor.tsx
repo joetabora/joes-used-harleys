@@ -20,6 +20,14 @@ export function HomeOnTheFloor() {
           <Link href="/inventory" className="joe-btn-secondary mt-10 inline-flex">
             See the garage
           </Link>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink/65">
+            <Link
+              href="/used-harleys/milwaukee"
+              className="text-lamp underline-offset-4 hover:underline"
+            >
+              Used Harley motorcycles near Milwaukee
+            </Link>
+          </p>
         </div>
 
         <div className="relative md:col-span-7 md:-ml-8 md:mt-8 lg:-ml-16">
