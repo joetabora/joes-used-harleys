@@ -122,7 +122,7 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
 
   return (
     <div className="space-y-5">
-      <div className="joe-panel sticky top-0 z-20 space-y-4 border-chrome/30 bg-void/95 p-4 backdrop-blur-md md:p-5">
+      <div className="joe-panel sticky top-16 z-20 space-y-4 border-chrome/30 bg-void/95 p-4 backdrop-blur-md md:p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="font-label text-lamp">Filter floor</p>
@@ -141,19 +141,21 @@ export function InventoryBrowser({ bikes }: { bikes: InventoryBrowserBike[] }) {
                 Clear
               </button>
             ) : null}
-            <button
-              type="button"
-              className="joe-btn-secondary inline-flex items-center gap-2 md:hidden"
-              aria-expanded={filtersOpen}
-              aria-controls="inventory-filter-fields"
-              onClick={() => setFiltersOpen((o) => !o)}
-            >
-              {filtersOpen ? "Hide filters" : "Filters"}
-              <ChevronDown
-                className={`size-4 transition-transform ${filtersOpen ? "rotate-180" : ""}`}
-                aria-hidden
-              />
-            </button>
+            <div className="md:hidden">
+              <button
+                type="button"
+                className="joe-btn-secondary gap-2"
+                aria-expanded={filtersOpen}
+                aria-controls="inventory-filter-fields"
+                onClick={() => setFiltersOpen((o) => !o)}
+              >
+                {filtersOpen ? "Hide filters" : "Filters"}
+                <ChevronDown
+                  className={`size-4 transition-transform ${filtersOpen ? "rotate-180" : ""}`}
+                  aria-hidden
+                />
+              </button>
+            </div>
           </div>
         </div>
 

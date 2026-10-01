@@ -2,6 +2,13 @@ const nextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  outputFileTracingIncludes: {
+    "/inventory/*/opengraph-image": [
+      "./assets/fonts/**/*",
+      "./public/logo.png",
+      "./public/top.png",
+    ],
+  },
   images: {
     remotePatterns: [
       {

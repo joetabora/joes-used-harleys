@@ -92,6 +92,8 @@ export async function generateMetadata({ params }: Props) {
     title: label,
     description: inventoryMetaDescription(bike),
     path: `/inventory/${bike.id}`,
+    imagePath: `/inventory/${bike.id}/opengraph-image`,
+    imageAlt: label,
   });
 }
 
