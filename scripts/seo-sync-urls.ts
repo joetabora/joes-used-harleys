@@ -35,11 +35,48 @@ type Row = {
   payload: Record<string, unknown>;
 };
 
+/** Map path → Prisma SeoUrlType (compose-page "type" is not the same enum). */
+function seoUrlTypeForPath(path: string): string {
+  if (path.startsWith("/guides/")) return "GUIDE";
+  if (path.startsWith("/compare/")) return "COMPARE";
+  if (path.startsWith("/routes/")) return "ROUTE";
+  if (path.startsWith("/events/")) return "EVENT";
+  if (path.startsWith("/harleys/colors/")) return "COLOR";
+  if (path.startsWith("/harleys/engines/")) return "ENGINE";
+  if (path.startsWith("/harleys/family/")) return "FAMILY";
+
+  const modelYear = path.match(/^\/harleys\/[^/]+\/\d+$/);
+  if (modelYear) return "MODEL_YEAR";
+  if (path.match(/^\/harleys\/[^/]+$/)) return "MODEL";
+
+  const cityModelYear = path.match(/^\/used-harleys\/[^/]+\/[^/]+\/\d+$/);
+  if (cityModelYear) return "CITY_MODEL_YEAR";
+
+  const cityChild = path.match(/^\/used-harleys\/[^/]+\/([^/]+)$/);
+  if (cityChild) {
+    const seg = cityChild[1];
+    const topics = new Set([
+      "inventory",
+      "buying",
+      "trade-in",
+      "financing",
+      "events",
+      "service",
+      "routes",
+      "faq",
+    ]);
+    return topics.has(seg) ? "CITY" : "CITY_MODEL";
+  }
+  if (path.match(/^\/used-harleys\/[^/]+$/)) return "CITY";
+
+  return "HUB";
+}
+
 function scoreDoc(partial: Parameters<typeof composeSeoDocument>[0]): Row {
   const doc = composeSeoDocument(partial);
   return {
     path: doc.path,
-    type: String(partial.type ?? "HUB").toUpperCase(),
+    type: seoUrlTypeForPath(doc.path),
     score: doc.score,
     status: doc.status,
     payload: { title: doc.title, h1: doc.h1 },
@@ -468,27 +505,52 @@ async function main() {
   const adapter = new PrismaPg(pool);
   const prisma = new PrismaClient({ adapter });
 
+  // Thin local matrices: flip existing rows to NOINDEX; do not create thousands of new rows.
+  const thinTypes = ["CITY_MODEL", "CITY_MODEL_YEAR"] as const;
+  const thinUpdate = await prisma.seoUrl.updateMany({
+    where: { type: { in: [...thinTypes] } },
+    data: { status: "NOINDEX" },
+  });
+  console.log(
+    `Marked existing thin local rows NOINDEX: ${thinUpdate.count} (CITY_MODEL / CITY_MODEL_YEAR)`,
+  );
+
+  // Upsert indexable + non-thin rows only (hubs, guides, models, city hubs/topics, etc.).
+  const toUpsert = rows.filter(
+    (r) => r.type !== "CITY_MODEL" && r.type !== "CITY_MODEL_YEAR",
+  );
+  console.log(`Upserting ${toUpsert.length} non-thin SeoUrl rows…`);
+
+  const CHUNK = 75;
   let upserted = 0;
-  for (const row of rows) {
-    await prisma.seoUrl.upsert({
-      where: { path: row.path },
-      create: {
-        path: row.path,
-        type: row.type as never,
-        status: row.status,
-        score: row.score,
-        scoreDetail: row.payload as object,
-        payload: row.payload as object,
-      },
-      update: {
-        type: row.type as never,
-        status: row.status,
-        score: row.score,
-        scoreDetail: row.payload as object,
-        payload: row.payload as object,
-      },
-    });
-    upserted += 1;
+  for (let i = 0; i < toUpsert.length; i += CHUNK) {
+    const chunk = toUpsert.slice(i, i + CHUNK);
+    await prisma.$transaction(
+      chunk.map((row) =>
+        prisma.seoUrl.upsert({
+          where: { path: row.path },
+          create: {
+            path: row.path,
+            type: row.type as never,
+            status: row.status,
+            score: row.score,
+            scoreDetail: row.payload as object,
+            payload: row.payload as object,
+          },
+          update: {
+            type: row.type as never,
+            status: row.status,
+            score: row.score,
+            scoreDetail: row.payload as object,
+            payload: row.payload as object,
+          },
+        }),
+      ),
+    );
+    upserted += chunk.length;
+    if (upserted % 300 === 0 || upserted === toUpsert.length) {
+      console.log(`  …${upserted}/${toUpsert.length}`);
+    }
   }
 
   console.log(`Upserted ${upserted} SeoUrl rows.`);
