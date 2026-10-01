@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { AnalyticsContactLink } from "@/components/analytics/analytics-contact-link";
@@ -15,29 +16,35 @@ const links = [
   { href: "/inventory", label: "Inventory" },
   { href: "/harleys", label: "Models" },
   { href: "/guides", label: "Guides" },
-  { href: "/used-harleys", label: "Local" },
-  { href: "/how-it-works", label: "How it works" },
+  { href: "/used-harleys/milwaukee", label: "Milwaukee" },
   { href: "/about", label: "About Joe" },
   { href: "/contact", label: "Contact" },
 ];
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-chrome/20 bg-asphalt/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link
-          href="/"
-          className="font-display text-lg leading-none tracking-[0.08em] text-lamp transition-colors hover:text-ink"
-        >
-          {siteConfig.name}
+    <header className="sticky top-0 z-40 border-b border-chrome/10 bg-asphalt/70 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-8">
+        <Link href="/" className="group flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt=""
+            width={44}
+            height={44}
+            className="size-11 object-contain drop-shadow-[0_2px_8px_rgba(244,81,30,0.25)]"
+            priority
+          />
+          <span className="font-display whitespace-nowrap text-base leading-none tracking-[0.12em] text-ink transition-colors group-hover:text-lamp md:text-lg">
+            {siteConfig.name}
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-label text-steel transition-colors hover:text-ink"
+              className="font-label text-[0.72rem] text-chrome/80 transition-colors hover:text-lamp"
             >
               {link.label}
             </Link>
@@ -45,22 +52,24 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          {hasContactPhone() ? (
-            <a
-              href={siteConfig.smsLink}
-              data-analytics="contact"
-              className="joe-btn-primary hidden h-9 px-3 sm:inline-flex"
-            >
-              Text Joe
-            </a>
-          ) : (
-            <AnalyticsContactLink
-              href="/contact"
-              className="joe-btn-secondary hidden h-9 px-3 sm:inline-flex"
-            >
-              Contact
-            </AnalyticsContactLink>
-          )}
+          <div className="hidden sm:block">
+            {hasContactPhone() ? (
+              <a
+                href={siteConfig.smsLink}
+                data-analytics="contact"
+                className="joe-btn-primary h-10 whitespace-nowrap px-4"
+              >
+                Text Joe
+              </a>
+            ) : (
+              <AnalyticsContactLink
+                href="/contact"
+                className="joe-btn-primary h-10 whitespace-nowrap px-4"
+              >
+                Talk to Joe
+              </AnalyticsContactLink>
+            )}
+          </div>
 
           <Sheet>
             <SheetTrigger
@@ -68,7 +77,7 @@ export function SiteHeader() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="rounded-none border-chrome/25 bg-transparent md:hidden"
+                  className="rounded-none border-chrome/25 bg-transparent lg:hidden"
                   aria-label="Open menu"
                 />
               }
@@ -77,19 +86,22 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="rounded-none border-l border-chrome/20 bg-concrete px-4"
+              className="rounded-none border-l border-chrome/20 bg-asphalt px-6"
             >
-              <SheetHeader>
-                <SheetTitle className="font-display text-left tracking-[0.08em] text-lamp">
-                  {siteConfig.name}
+              <SheetHeader className="px-0">
+                <SheetTitle className="flex items-center gap-3 text-left">
+                  <Image src="/logo.png" alt="" width={40} height={40} className="size-10" />
+                  <span className="font-display tracking-[0.1em] text-ink">
+                    {siteConfig.name}
+                  </span>
                 </SheetTitle>
               </SheetHeader>
-              <div className="mt-6 flex flex-col gap-1">
+              <div className="mt-8 flex flex-col">
                 {links.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="border-l-2 border-transparent px-3 py-3 font-label text-steel transition-colors hover:border-lamp hover:bg-bay hover:text-ink"
+                    className="font-display border-b border-chrome/10 py-4 text-2xl tracking-[0.04em] text-ink transition-colors hover:text-lamp"
                   >
                     {link.label}
                   </Link>
@@ -98,13 +110,13 @@ export function SiteHeader() {
                   <a
                     href={siteConfig.smsLink}
                     data-analytics="contact"
-                    className="joe-btn-primary mt-4 w-full"
+                    className="joe-btn-primary mt-8 w-full"
                   >
                     Text Joe
                   </a>
                 ) : (
-                  <AnalyticsContactLink href="/contact" className="joe-btn-primary mt-4 w-full">
-                    Contact
+                  <AnalyticsContactLink href="/contact" className="joe-btn-primary mt-8 w-full">
+                    Talk to Joe
                   </AnalyticsContactLink>
                 )}
               </div>

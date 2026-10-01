@@ -1,11 +1,15 @@
-import { HomeCinematicOpen } from "@/components/home/home-cinematic-open";
+import type { BikeCardData } from "@/components/bike-card";
 import { HomeComeTalk } from "@/components/home/home-come-talk";
-import { HomeFindYourFit } from "@/components/home/home-find-your-fit";
+import { HomeFreshFloor } from "@/components/home/home-fresh-floor";
 import { HomeFromTheBench } from "@/components/home/home-from-the-bench";
-import { HomeHowWeTalkBikes } from "@/components/home/home-how-we-talk";
+import { HomeHero } from "@/components/home/home-hero";
+import { HomeHowItWorks } from "@/components/home/home-how-it-works";
 import { HomeMeetJoe } from "@/components/home/home-meet-joe";
-import { HomeOnTheFloor } from "@/components/home/home-on-the-floor";
-import { HomeOpeningLetter } from "@/components/home/home-opening-letter";
+import { HomeModelTicker } from "@/components/home/home-model-ticker";
+import { HomeRideStyles } from "@/components/home/home-ride-styles";
+import { HomeTheFloor } from "@/components/home/home-the-floor";
+import { publicBikeOrderBy, publicBikeWhere } from "@/lib/inventory-public";
+import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
@@ -15,16 +19,62 @@ export const metadata = createMetadata({
   path: "/",
 });
 
-export default function HomePage() {
+export const revalidate = 300;
+
+async function loadFloor(): Promise<{ bikes: BikeCardData[]; total: number }> {
+  if (!isDatabaseConfigured() || !prisma) return { bikes: [], total: 0 };
+  try {
+    const [rows, total] = await Promise.all([
+      prisma.bike.findMany({
+        where: publicBikeWhere,
+        orderBy: publicBikeOrderBy,
+        take: 6,
+        select: {
+          id: true,
+          year: true,
+          make: true,
+          model: true,
+          mileage: true,
+          price: true,
+          status: true,
+          stockNumber: true,
+          photos: true,
+          personalHeroImageUrl: true,
+        },
+      }),
+      prisma.bike.count({ where: publicBikeWhere }),
+    ]);
+    return {
+      total,
+      bikes: rows.map((b) => ({
+        id: b.id,
+        year: b.year,
+        make: b.make,
+        model: b.model,
+        mileage: b.mileage,
+        price: b.price,
+        status: b.status,
+        stockNumber: b.stockNumber,
+        photoUrl: b.personalHeroImageUrl || b.photos[0] || null,
+      })),
+    };
+  } catch {
+    return { bikes: [], total: 0 };
+  }
+}
+
+export default async function HomePage() {
+  const { bikes, total } = await loadFloor();
   return (
     <>
-      <HomeCinematicOpen />
-      <HomeOpeningLetter />
+      <HomeHero liveCount={total} />
+      <HomeModelTicker />
+      <HomeFreshFloor bikes={bikes} total={total} />
       <HomeMeetJoe />
-      <HomeHowWeTalkBikes />
-      <HomeOnTheFloor />
+      <HomeRideStyles />
+      <HomeHowItWorks />
+      <HomeTheFloor />
       <HomeFromTheBench />
-      <HomeFindYourFit />
       <HomeComeTalk />
     </>
   );

@@ -66,62 +66,68 @@ export default async function InventoryPage() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 px-4 py-12">
+    <>
       {itemList ? <JsonLd data={itemList} /> : null}
-      <div className="space-y-3">
-        <p className="font-label text-lamp">Floor stock</p>
-        <h1 className="font-display text-3xl tracking-[0.06em] md:text-4xl">
-          Used Harley-Davidson motorcycles for sale
-        </h1>
-        <p className="max-w-2xl text-steel">
-          These are real, currently available used Harley-Davidson motorcycles mirrored from
-          Milwaukee Harley-Davidson stock. Joe helps Milwaukee and Southeastern Wisconsin buyers
-          compare units and ask questions about a specific bike — without inventing inventory or
-          pretending this site is a separate dealership storefront.
-        </p>
-        <p className="text-sm text-steel">
-          Shopping locally?{" "}
-          <Link
-            className="text-lamp underline-offset-4 hover:underline"
-            href="/used-harleys/milwaukee"
+      <section className="joe-asphalt-bay relative overflow-hidden border-b border-chrome/10">
+        <div className="joe-hero-grain absolute inset-0" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-16 md:px-8 md:pb-20 md:pt-24">
+          <p className="joe-kicker">
+            On the floor{bikes.length > 0 ? ` · ${bikes.length} bikes` : ""}
+          </p>
+          <h1 className="joe-display mt-5 max-w-4xl text-ink">
+            Used Harley-Davidson motorcycles <span className="text-lamp">for sale</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-[1.7] text-ink/75">
+            These are real, currently available used Harley-Davidson motorcycles mirrored from
+            Milwaukee Harley-Davidson stock. Joe helps Milwaukee and Southeastern Wisconsin buyers
+            compare units and ask questions about a specific bike — without inventing inventory or
+            pretending this site is a separate dealership storefront.
+          </p>
+          <p className="mt-6 text-sm text-steel">
+            Shopping locally?{" "}
+            <Link
+              className="text-lamp underline-offset-4 hover:underline"
+              href="/used-harleys/milwaukee"
+            >
+              Used Harley motorcycles near Milwaukee
+            </Link>
+            {" · "}
+            <Link className="text-lamp underline-offset-4 hover:underline" href="/contact">
+              Contact Joe
+            </Link>
+          </p>
+        </div>
+      </section>
+      <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 md:px-8">
+        {bikes.length === 0 ? (
+          <PlaceholderNotice title="Nothing on the floor right now">
+            Ask Joe what&apos;s available or what he&apos;s watching for. We never invent inventory.
+          </PlaceholderNotice>
+        ) : (
+          <Suspense
+            fallback={
+              <p className="font-label text-steel">Loading filters…</p>
+            }
           >
-            Used Harley motorcycles near Milwaukee
-          </Link>
-          {" · "}
+            <InventoryBrowser bikes={browserBikes} />
+          </Suspense>
+        )}
+
+        <div className="joe-panel p-5">
+          <p className="font-label mb-1 text-lamp">Request</p>
+          <h2 className="font-display mb-4 text-xl tracking-[0.04em]">
+            Tell Joe what you&apos;re looking for
+          </h2>
+          <LeadForm source="/inventory" />
+        </div>
+        <p className="text-sm text-steel">
+          Or{" "}
           <Link className="text-lamp underline-offset-4 hover:underline" href="/contact">
-            Contact Joe
-          </Link>
+            contact Joe
+          </Link>{" "}
+          directly.
         </p>
       </div>
-
-      {bikes.length === 0 ? (
-        <PlaceholderNotice title="Nothing on the floor right now">
-          Ask Joe what&apos;s available or what he&apos;s watching for. We never invent inventory.
-        </PlaceholderNotice>
-      ) : (
-        <Suspense
-          fallback={
-            <p className="font-label text-steel">Loading filters…</p>
-          }
-        >
-          <InventoryBrowser bikes={browserBikes} />
-        </Suspense>
-      )}
-
-      <div className="joe-panel p-5">
-        <p className="font-label mb-1 text-lamp">Request</p>
-        <h2 className="font-display mb-4 text-xl tracking-[0.04em]">
-          Tell Joe what you&apos;re looking for
-        </h2>
-        <LeadForm source="/inventory" />
-      </div>
-      <p className="text-sm text-steel">
-        Or{" "}
-        <Link className="text-lamp underline-offset-4 hover:underline" href="/contact">
-          contact Joe
-        </Link>{" "}
-        directly.
-      </p>
-    </div>
+    </>
   );
 }
