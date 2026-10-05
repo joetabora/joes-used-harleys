@@ -1,4 +1,4 @@
-import { formatPrice } from "@/lib/format";
+import { formatAdvertisedPrice } from "@/lib/format";
 import { normalizeDealerDescription } from "@/lib/vehicle/normalize-description";
 
 /** Bike fields used for Marketplace copy. Pure input — no DB access. */
@@ -189,7 +189,7 @@ export function composeMarketplaceTitle(bike: MarketplaceBikeInput): string {
  */
 export function composeMarketplacePriceLine(bike: MarketplaceBikeInput): string {
   if (bike.price == null) return "";
-  return `${formatPrice(bike.price)} + tax & title`;
+  return `${formatAdvertisedPrice(bike.price)} + tax & title`;
 }
 
 function formatMileageLine(mileage: number): string {

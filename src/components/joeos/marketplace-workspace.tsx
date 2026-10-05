@@ -6,7 +6,7 @@ import {
   MARKETPLACE_LISTING_STYLES,
   type MarketplaceListingStyle,
 } from "@/lib/marketplace/compose-listing";
-import { formatMiles, formatPrice } from "@/lib/format";
+import { formatAdvertisedPrice, formatMiles } from "@/lib/format";
 import {
   JosBody,
   JosButton,
@@ -254,7 +254,7 @@ export function MarketplaceWorkspace({
             <div>
               <JosItem className="text-lg leading-tight">{label}</JosItem>
               <JosData className="mt-1">
-                {formatPrice(bike.price)} · {formatMiles(bike.mileage)}
+                {formatAdvertisedPrice(bike.price)} · {formatMiles(bike.mileage)}
                 {bike.stockNumber ? ` · Stock ${bike.stockNumber}` : ""}
               </JosData>
               <span

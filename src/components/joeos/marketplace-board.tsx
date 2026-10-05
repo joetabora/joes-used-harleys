@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { setMarketplacePosted } from "@/actions/admin";
-import { formatMiles, formatPrice } from "@/lib/format";
+import { formatAdvertisedPrice, formatMiles } from "@/lib/format";
 import {
   initialPostedIds,
   resolveNextBikeId,
@@ -82,7 +82,7 @@ function GridCard({
         {bike.stockNumber ? <JosData>Stock {bike.stockNumber}</JosData> : null}
         <JosData>{formatMiles(bike.mileage)}</JosData>
         <JosData className="mt-auto pt-1 text-[var(--jos-orange)]">
-          {formatPrice(bike.price)}
+          {formatAdvertisedPrice(bike.price)}
         </JosData>
       </div>
     </button>

@@ -156,8 +156,8 @@ function countOccurrences(hay: string, needle: string): number {
 {
   const listing = composeMarketplaceListing(bike());
   assert.equal(listing.title, "2021 Harley-Davidson Road Glide Special - Black");
-  assert.equal(listing.priceLine, "$21,995 + tax & title");
-  assert.ok(listing.description.includes("💰 $21,995 + tax & title"));
+  assert.equal(listing.priceLine, "$23,193 + tax & title");
+  assert.ok(listing.description.includes("💰 $23,193 + tax & title"));
   assert.ok(listing.description.includes("🛣️ 18,442 miles"));
   assert.ok(listing.description.includes("🖤 Black"));
   assertRequiredContent(listing.description);
