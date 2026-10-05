@@ -189,7 +189,7 @@ export function composeMarketplaceTitle(bike: MarketplaceBikeInput): string {
  */
 export function composeMarketplacePriceLine(bike: MarketplaceBikeInput): string {
   if (bike.price == null) return "";
-  return `${formatPrice(bike.price)} + tax, title & fees`;
+  return `${formatPrice(bike.price)} + tax & title`;
 }
 
 function formatMileageLine(mileage: number): string {
