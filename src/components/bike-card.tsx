@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
+import { bikeLabel, formatAdvertisedPrice, formatMiles } from "@/lib/format";
 
 export type BikeCardData = {
   id: string;
@@ -44,7 +44,7 @@ export function BikeCard({ bike }: { bike: BikeCardData }) {
           {pending ? "Sale pending" : bike.year}
         </span>
         <span className="absolute bottom-3 right-3 font-display text-2xl tracking-wide text-ink drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-          {formatPrice(bike.price)}
+          {formatAdvertisedPrice(bike.price)}
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">

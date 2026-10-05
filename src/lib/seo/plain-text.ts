@@ -1,3 +1,5 @@
+import { advertisedTotalPrice } from "@/lib/format";
+
 /** Strip HTML / decode common entities for meta descriptions and schema text. */
 export function stripHtmlForMeta(input: string, maxLen = 155): string {
   const withoutTags = input
@@ -40,7 +42,8 @@ export function inventoryMetaDescription(input: {
     bits.push(`${input.mileage.toLocaleString("en-US")} miles`);
   }
   if (input.price != null && Number.isFinite(input.price)) {
-    bits.push(`$${Math.round(input.price).toLocaleString("en-US")}`);
+    const shown = advertisedTotalPrice(input.price) ?? input.price;
+    bits.push(`$${Math.round(shown).toLocaleString("en-US")}`);
   }
   bits.push("Milwaukee-area used Harley help from Joe");
   return stripHtmlForMeta(bits.join(" — "));

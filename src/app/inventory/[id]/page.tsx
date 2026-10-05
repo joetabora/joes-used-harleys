@@ -11,7 +11,7 @@ import { SeoBreadcrumbs } from "@/components/seo/seo-breadcrumbs";
 import { SeoFaq } from "@/components/seo/seo-faq";
 import { loadScorecardForBike } from "@/lib/assets/load-scorecard";
 import { matchBikeToPackSlug } from "@/lib/content/match-bike-to-pack";
-import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
+import { bikeLabel, advertisedTotalPrice, formatAdvertisedPrice, formatMiles } from "@/lib/format";
 import { hasRecentPriceDrop, isNewArrival } from "@/lib/inventory-public";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 import { fetchRelatedInventory } from "@/lib/seo/inventory-related";
@@ -167,7 +167,7 @@ export default async function BikeDetailPage({ params }: Props) {
       description: plainDescription,
       path: `/inventory/${bike.id}`,
       image: hero,
-      price: bike.price,
+      price: advertisedTotalPrice(bike.price),
       status: bike.status,
     }),
     breadcrumbJsonLd(breadcrumbs),
@@ -194,7 +194,7 @@ export default async function BikeDetailPage({ params }: Props) {
           {priceDrop ? <span className="joe-badge">Price reduced</span> : null}
         </div>
         <p className="font-display text-xl tracking-wide text-lamp">
-          {formatPrice(bike.price)}
+          {formatAdvertisedPrice(bike.price)}
         </p>
         <p className="text-steel">
           {formatMiles(bike.mileage)}

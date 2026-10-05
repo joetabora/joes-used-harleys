@@ -1,5 +1,5 @@
 import SiteOpenGraphImage from "@/app/opengraph-image";
-import { bikeLabel, formatMiles, formatPrice } from "@/lib/format";
+import { bikeLabel, formatAdvertisedPrice, formatMiles } from "@/lib/format";
 import { publicAssetDataUrl, remoteImageDataUrl } from "@/lib/og-assets";
 import { renderBikeShareImage } from "@/lib/og-bike";
 import { pickShareImage } from "@/lib/og-image";
@@ -44,7 +44,7 @@ export default async function BikeOpenGraphImage({
 
   return renderBikeShareImage({
     label: bikeLabel(bike).toUpperCase(),
-    price: formatPrice(bike.price),
+    price: formatAdvertisedPrice(bike.price),
     miles: formatMiles(bike.mileage),
     pending: bike.status === "PENDING",
     photo,

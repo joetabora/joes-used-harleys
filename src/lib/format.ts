@@ -6,6 +6,23 @@ export function bikeLabel(bike: {
   return `${bike.year} ${bike.make} ${bike.model}`;
 }
 
+/**
+ * Milwaukee Harley-Davidson adds these to the vehicle price in their public
+ * "Total price" (dealer prep $699 + document fee $499). The XML feed only
+ * carries the vehicle price; we add these at display time so Joe's site
+ * matches what shoppers see on the dealership site.
+ */
+export const DEALERSHIP_ADVERTISED_FEES_USD = 699 + 499;
+
+/** Vehicle feed price → dealership advertised total. Leaves null/≤0 unchanged. */
+export function advertisedTotalPrice(
+  vehiclePrice: number | null | undefined,
+): number | null {
+  if (vehiclePrice == null) return null;
+  if (!Number.isFinite(vehiclePrice) || vehiclePrice <= 0) return vehiclePrice;
+  return vehiclePrice + DEALERSHIP_ADVERTISED_FEES_USD;
+}
+
 export function formatPrice(dollars: number | null | undefined): string {
   if (dollars == null) return "Ask for price";
   return new Intl.NumberFormat("en-US", {
@@ -13,6 +30,13 @@ export function formatPrice(dollars: number | null | undefined): string {
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(dollars);
+}
+
+/** Public customer-facing price (matches Milwaukee Harley "Total price"). */
+export function formatAdvertisedPrice(
+  vehiclePrice: number | null | undefined,
+): string {
+  return formatPrice(advertisedTotalPrice(vehiclePrice));
 }
 
 export function formatMiles(miles: number | null | undefined): string {
