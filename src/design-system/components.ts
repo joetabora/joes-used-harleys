@@ -15,6 +15,7 @@ export const navItems = [
   { href: "/admin/leads", label: "Pipeline", short: "PIPE", icon: "pipeline" },
   { href: "/admin/knowledge", label: "Knowledge", short: "KG", icon: "knowledge" },
   { href: "/admin/sync", label: "Feed", short: "FEED", icon: "feed" },
+  { href: "/admin/analytics", label: "Analytics", short: "STATS", icon: "analytics" },
 ] as const;
 
 export type NavItem = (typeof navItems)[number];

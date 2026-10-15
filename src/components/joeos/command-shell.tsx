@@ -14,6 +14,7 @@ import {
   MoreHorizontal,
   Network,
   Store,
+  BarChart3,
 } from "lucide-react";
 import { navItems } from "@/design-system/components";
 import { JosIcon } from "@/components/joeos/ui/jos-icon";
@@ -25,6 +26,7 @@ const icons = {
   pipeline: Radio,
   knowledge: Network,
   feed: RefreshCw,
+  analytics: BarChart3,
 } as const;
 
 function isActive(pathname: string, href: string) {
@@ -108,7 +110,9 @@ export function CommandShell({
         </div>
 
         <nav className="jos-bottom-nav" aria-label="JoeOS">
-          {navItems.map((item) => {
+          {navItems
+            .filter((item) => item.href !== "/admin/analytics")
+            .map((item) => {
             const Icon = icons[item.icon];
             return (
               <Link
@@ -145,6 +149,14 @@ export function CommandShell({
               onClick={(e) => e.stopPropagation()}
             >
               <p className="jos-section mb-1">Utilities</p>
+              <Link
+                href="/admin/analytics"
+                className="jos-btn jos-btn-ghost w-full"
+                onClick={() => setMoreOpen(false)}
+              >
+                <JosIcon icon={BarChart3} size={16} />
+                Analytics
+              </Link>
               <Link
                 href="/"
                 target="_blank"
