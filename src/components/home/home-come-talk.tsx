@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GaContactLink } from "@/components/analytics/ga-contact-link";
 import { hasContactPhone, siteConfig } from "@/lib/site";
 
 export function HomeComeTalk() {
@@ -24,12 +25,12 @@ export function HomeComeTalk() {
           </Link>
           {phoneReady ? (
             <>
-              <a href={siteConfig.smsLink} className="joe-btn-secondary h-14 px-10 text-[0.95rem]">
+              <GaContactLink href={siteConfig.smsLink} event="click_to_text" linkLocation="home" className="joe-btn-secondary h-14 px-10 text-[0.95rem]">
                 Text Joe
-              </a>
-              <a href={`tel:${siteConfig.phone}`} className="joe-btn-secondary h-14 px-10 text-[0.95rem]">
+              </GaContactLink>
+              <GaContactLink href={`tel:${siteConfig.phone}`} event="click_to_call" linkLocation="home" className="joe-btn-secondary h-14 px-10 text-[0.95rem]">
                 Call Joe
-              </a>
+              </GaContactLink>
             </>
           ) : (
             <Link href="/inventory" className="joe-btn-secondary h-14 px-10 text-[0.95rem]">

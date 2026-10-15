@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { GaContactLink } from "@/components/analytics/ga-contact-link";
 import { hasContactEmail, hasContactPhone, siteConfig } from "@/lib/site";
 
 const shop = [
@@ -64,9 +65,9 @@ export function SiteFooter() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               {hasContactPhone() ? (
-                <a href={siteConfig.smsLink} className="joe-btn-primary">
+                <GaContactLink href={siteConfig.smsLink} event="click_to_text" linkLocation="footer" className="joe-btn-primary">
                   Text Joe
-                </a>
+                </GaContactLink>
               ) : (
                 <Link href="/contact" className="joe-btn-primary">
                   Talk to Joe
@@ -78,9 +79,9 @@ export function SiteFooter() {
             </div>
             {hasContactEmail() ? (
               <p className="mt-6 text-sm text-ink/65">
-                <a href={`mailto:${siteConfig.email}`} className="hover:text-lamp">
+                <GaContactLink href={`mailto:${siteConfig.email}`} event="click_to_email" linkLocation="footer" className="hover:text-lamp">
                   {siteConfig.email}
-                </a>
+                </GaContactLink>
               </p>
             ) : null}
           </div>

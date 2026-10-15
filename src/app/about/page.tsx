@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GaContactLink } from "@/components/analytics/ga-contact-link";
 import { LeadForm } from "@/components/lead-form";
 import { createMetadata } from "@/lib/seo";
 import { hasContactEmail, hasContactPhone, siteConfig } from "@/lib/site";
@@ -69,20 +70,22 @@ export default function AboutPage() {
         {hasContactPhone() ? (
           <p className="text-sm">
             Phone / text:{" "}
-            <a className="text-lamp underline-offset-4 hover:underline" href={siteConfig.smsLink}>
+            <GaContactLink className="text-lamp underline-offset-4 hover:underline" href={siteConfig.smsLink} event="click_to_text" linkLocation="about">
               {siteConfig.phone}
-            </a>
+            </GaContactLink>
           </p>
         ) : null}
         {hasContactEmail() ? (
           <p className="text-sm">
             Email:{" "}
-            <a
+            <GaContactLink
               className="text-lamp underline-offset-4 hover:underline"
               href={`mailto:${siteConfig.email}`}
+              event="click_to_email"
+              linkLocation="about"
             >
               {siteConfig.email}
-            </a>
+            </GaContactLink>
           </p>
         ) : null}
         {!hasContactPhone() && !hasContactEmail() ? (

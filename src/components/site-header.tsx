@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { AnalyticsContactLink } from "@/components/analytics/analytics-contact-link";
+import { GaContactLink } from "@/components/analytics/ga-contact-link";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -54,13 +55,15 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <div className="hidden sm:block">
             {hasContactPhone() ? (
-              <a
+              <GaContactLink
                 href={siteConfig.smsLink}
+                event="click_to_text"
+                linkLocation="header"
                 data-analytics="contact"
                 className="joe-btn-primary h-10 whitespace-nowrap px-4"
               >
                 Text Joe
-              </a>
+              </GaContactLink>
             ) : (
               <AnalyticsContactLink
                 href="/contact"
@@ -107,13 +110,15 @@ export function SiteHeader() {
                   </Link>
                 ))}
                 {hasContactPhone() ? (
-                  <a
+                  <GaContactLink
                     href={siteConfig.smsLink}
+                    event="click_to_text"
+                    linkLocation="header"
                     data-analytics="contact"
                     className="joe-btn-primary mt-8 w-full"
                   >
                     Text Joe
-                  </a>
+                  </GaContactLink>
                 ) : (
                   <AnalyticsContactLink href="/contact" className="joe-btn-primary mt-8 w-full">
                     Talk to Joe

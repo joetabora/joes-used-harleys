@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { createContactLead } from "@/actions/leads";
+import { trackGaConversion } from "@/components/analytics/ga-track";
 import { trackContactClick } from "@/lib/analytics/client";
 
 function bikeIdFromSource(source?: string): string | undefined {
@@ -16,17 +17,20 @@ export function LeadForm({ source }: { source?: string }) {
   const [error, setError] = useState<string | null>(null);
   const bikeId = bikeIdFromSource(source);
   const trackedFocus = useRef(false);
+  const reportedLead = useRef(false);
 
   function onFocusCapture() {
     if (trackedFocus.current) return;
     trackedFocus.current = true;
     trackContactClick(bikeId);
+    trackGaConversion({ event: "form_start" });
   }
 
   function onSubmit(formData: FormData) {
     setMessage(null);
     setError(null);
     trackContactClick(bikeId);
+    reportedLead.current = false;
 
     const payload = {
       name: String(formData.get("name") ?? ""),
@@ -38,8 +42,13 @@ export function LeadForm({ source }: { source?: string }) {
 
     startTransition(async () => {
       const result = await createContactLead(payload);
-      if (result.ok) setMessage(result.message);
-      else setError(result.message);
+      if (result.ok) {
+        if (!reportedLead.current) {
+          reportedLead.current = true;
+          trackGaConversion({ event: "generate_lead" });
+        }
+        setMessage(result.message);
+      } else setError(result.message);
     });
   }
 

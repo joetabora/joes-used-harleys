@@ -28,13 +28,15 @@ assert.equal(pageViewPath("/admin", ""), null);
 assert.equal(pageViewPath("/admin/bikes", "tab=1"), null);
 assert.equal(pageViewPath("/v/1HD1KEF15PB123456", "assoc=abc"), null);
 assert.equal(pageViewPath("/inventory", ""), "/inventory");
-assert.equal(pageViewPath("/inventory", "?family=Touring"), "/inventory?family=Touring");
-assert.equal(pageViewPath("/", "q=road+glide"), "/?q=road+glide");
+assert.equal(pageViewPath("/inventory", "?family=Touring"), "/inventory");
+assert.equal(pageViewPath("/", "q=road+glide"), "/");
+assert.equal(pageViewPath("/inventory", "email=buyer@example.com"), "/inventory");
+assert.equal(pageViewPath("/inventory/1HD1KEF15PB123456", ""), null);
 
 assert.equal(claimPageView(null, "/admin", ""), null);
 assert.equal(claimPageView(null, "/inventory", ""), "/inventory");
 assert.equal(claimPageView("/inventory", "/inventory", ""), null);
-assert.equal(claimPageView("/inventory", "/inventory", "q=street"), "/inventory?q=street");
+assert.equal(claimPageView("/inventory", "/inventory", "q=street"), null);
 assert.equal(claimPageView("/about", "/", ""), "/");
 
 const guard = gaDataLayerGuardScript();

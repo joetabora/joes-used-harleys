@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GaContactLink } from "@/components/analytics/ga-contact-link";
 import { LeadForm } from "@/components/lead-form";
 import { createMetadata } from "@/lib/seo";
 import { hasContactEmail, hasContactPhone, siteConfig } from "@/lib/site";
@@ -40,9 +41,9 @@ export default function ContactPage() {
         {hasContactPhone() ? (
           <p className="font-label text-ink">
             Text / call:{" "}
-            <a className="text-lamp underline-offset-4 hover:underline" href={siteConfig.smsLink}>
+            <GaContactLink className="text-lamp underline-offset-4 hover:underline" href={siteConfig.smsLink} event="click_to_text" linkLocation="contact">
               {siteConfig.phone}
-            </a>
+            </GaContactLink>
           </p>
         ) : (
           <p className="text-sm text-steel">
@@ -52,12 +53,14 @@ export default function ContactPage() {
         {hasContactEmail() ? (
           <p className="text-sm">
             Email:{" "}
-            <a
+            <GaContactLink
               className="text-lamp underline-offset-4 hover:underline"
               href={`mailto:${siteConfig.email}`}
+              event="click_to_email"
+              linkLocation="contact"
             >
               {siteConfig.email}
-            </a>
+            </GaContactLink>
           </p>
         ) : null}
       </div>
