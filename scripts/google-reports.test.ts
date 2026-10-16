@@ -123,7 +123,7 @@ if (success.ga4.status === "ready") {
   assert.equal(success.ga4.last7.users, 3);
   assert.equal(success.ga4.last28.sessions, 0);
   assert.equal(success.ga4.trend[0]?.date, "2026-10-12");
-  assert.match(success.ga4.period7, /yesterday/);
+  assert.match(success.ga4.period7, /today/);
 }
 assert.equal(success.searchConsole.status, "ready");
 if (success.searchConsole.status === "ready") {
@@ -139,6 +139,34 @@ if (success.searchConsole.status === "ready") {
   );
   assert.match(success.searchConsole.detail, /lags 2–3 days/);
   assert.match(success.searchConsole.period28, / to /);
+}
+
+const emptyGa = await loadGoogleReporting({
+  env: env(),
+  now,
+  getAccessToken: async () => "token",
+  fetchImpl: async (input) => {
+    const url = String(input);
+    if (url.includes("batchRunReports")) {
+      return jsonResponse({
+        reports: [
+          { metadata: { currencyCode: "USD" }, kind: "analyticsData#runReport" },
+          { metadata: { currencyCode: "USD" }, kind: "analyticsData#runReport" },
+          {
+            metricHeaders: [{ name: "sessions" }, { name: "screenPageViews" }],
+            kind: "analyticsData#runReport",
+          },
+        ],
+      });
+    }
+    return jsonResponse(gscTotals);
+  },
+});
+assert.equal(emptyGa.ga4.status, "ready");
+if (emptyGa.ga4.status === "ready") {
+  assert.equal(emptyGa.ga4.last7.sessions, 0);
+  assert.equal(emptyGa.ga4.last28.users, 0);
+  assert.equal(emptyGa.ga4.trend.length, 0);
 }
 
 const denied = await loadGoogleReporting({

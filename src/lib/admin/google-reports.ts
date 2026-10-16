@@ -143,9 +143,9 @@ async function loadGa4(propertyId: string, token: string, fetchImpl: FetchLike):
     token,
     {
       requests: [
-        gaRequest("7daysAgo", "yesterday", false),
-        gaRequest("28daysAgo", "yesterday", false),
-        gaRequest("28daysAgo", "yesterday", true),
+        gaRequest("7daysAgo", "today", false),
+        gaRequest("28daysAgo", "today", false),
+        gaRequest("28daysAgo", "today", true),
       ],
     },
     fetchImpl,
@@ -159,9 +159,9 @@ async function loadGa4(propertyId: string, token: string, fetchImpl: FetchLike):
   if (!last7 || !last28 || !trend) return { status: "failed", detail: "Google Analytics returned an unexpected report." };
   return {
     status: "ready",
-    detail: "Sessions, users, and page views for complete days, ending yesterday in the GA4 property timezone.",
-    period7: "7daysAgo through yesterday",
-    period28: "28daysAgo through yesterday",
+    detail: "Sessions, users, and page views for the last 7 and 28 days, including today. Today can still be incomplete.",
+    period7: "7daysAgo through today",
+    period28: "28daysAgo through today",
     last7,
     last28,
     trend,
@@ -186,7 +186,10 @@ function gaRequest(startDate: string, endDate: string, byDate: boolean) {
 
 function totalsFrom(report: GaReport | undefined): Ga4Totals | null {
   if (!report || report.error) return null;
-  const headers = headerNames(report);
+  const headers = headerNames(report).filter(Boolean);
+  if (headers.length === 0) {
+    return (report.rows ?? []).length === 0 ? { sessions: 0, users: 0, pageViews: 0 } : null;
+  }
   if (!headers.includes("sessions") || !headers.includes("totalUsers") || !headers.includes("screenPageViews")) {
     return null;
   }
@@ -200,7 +203,8 @@ function totalsFrom(report: GaReport | undefined): Ga4Totals | null {
 
 function trendFrom(report: GaReport | undefined): Ga4TrendPoint[] | null {
   if (!report || report.error) return null;
-  const headers = headerNames(report);
+  const headers = headerNames(report).filter(Boolean);
+  if (headers.length === 0) return (report.rows ?? []).length === 0 ? [] : null;
   if (!headers.includes("sessions") || !headers.includes("screenPageViews")) return null;
   return (report.rows ?? []).map((row) => ({
     date: formatGaDate(row.dimensionValues?.[0]?.value ?? ""),
