@@ -146,11 +146,16 @@ export function composeModelHub(slug: string): (SeoPageDocument & {
     });
   }
 
-  const description = (pack.overview[0] ?? model.summary).slice(0, 160);
+  const panAmerica = slug === "pan-america";
+  const description = panAmerica
+    ? "Research a used Harley-Davidson Pan America, then look through live inventory, including motorcycles near Milwaukee when one is available."
+    : (pack.overview[0] ?? model.summary).slice(0, 160);
 
   return composeSeoDocument({
     path: `/harleys/${model.slug}`,
-    title: `Used ${model.displayName} Harley buying guide`,
+    title: panAmerica
+      ? "Used Harley-Davidson Pan America motorcycles"
+      : `Used ${model.displayName} Harley buying guide`,
     description,
     h1: `Used ${model.displayName}`,
     type: "article",

@@ -20,9 +20,36 @@ import {
 import { getEventGuide, getGuide, getRouteGuide } from "@/lib/content/guides";
 
 export async function buildModelPage(slug: string) {
-  return (
-    (await resolvePublishedDocument("MODEL", slug)) ?? composeModelHub(slug)
-  );
+  const doc =
+    (await resolvePublishedDocument("MODEL", slug)) ?? composeModelHub(slug);
+  if (!doc || slug !== "pan-america") return doc;
+  const hub = composeModelHub(slug);
+  if (!hub) return doc;
+  return { ...doc, title: hub.title, description: hub.description };
+}
+
+const FIRST_TIME_HARLEY_LINKS = [
+  {
+    href: "/inventory",
+    title: "Browse used Harley-Davidson motorcycles",
+    excerpt: "See which used Harleys are on the floor right now.",
+  },
+  {
+    href: "/used-harleys/milwaukee",
+    title: "Find used Harleys near Milwaukee",
+    excerpt: "Local buying help for riders shopping near Milwaukee.",
+  },
+];
+
+function withFirstTimeHarleyLinks<T extends { relatedLinks: { href: string }[] }>(doc: T): T {
+  const preferred = new Set(FIRST_TIME_HARLEY_LINKS.map((link) => link.href));
+  return {
+    ...doc,
+    relatedLinks: [
+      ...FIRST_TIME_HARLEY_LINKS,
+      ...doc.relatedLinks.filter((link) => !preferred.has(link.href)),
+    ],
+  };
 }
 
 export function buildModelYearPage(slug: string, year: number) {
@@ -296,10 +323,14 @@ export function buildCityModelYearPage(
 
 export async function buildGuidePage(topic: string, slug: string) {
   const fromGraph = await resolvePublishedGuide(topic, slug);
-  if (fromGraph) return fromGraph;
+  if (fromGraph) {
+    return topic === "buying" && slug === "first-time-harley-buyer-guide"
+      ? withFirstTimeHarleyLinks(fromGraph)
+      : fromGraph;
+  }
   const g = getGuide(topic, slug);
   if (!g) return null;
-  return composeSeoDocument({
+  const doc = composeSeoDocument({
     path: `/guides/${g.topic}/${g.slug}`,
     title: g.title,
     description: g.excerpt,
@@ -314,11 +345,17 @@ export async function buildGuidePage(topic: string, slug: string) {
       { name: g.topic, path: `/guides/${g.topic}` },
       { name: g.title, path: `/guides/${g.topic}/${g.slug}` },
     ],
-    relatedLinks: [],
+    relatedLinks:
+      g.topic === "buying" && g.slug === "first-time-harley-buyer-guide"
+        ? FIRST_TIME_HARLEY_LINKS
+        : [],
     relatedInventoryHint: g.models?.[0]
       ? { model: getModel(g.models[0])?.displayName ?? g.models[0] }
       : {},
   });
+  return g.topic === "buying" && g.slug === "first-time-harley-buyer-guide"
+    ? withFirstTimeHarleyLinks(doc)
+    : doc;
 }
 
 export async function buildRoutePage(slug: string) {
