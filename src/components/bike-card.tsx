@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { bikeLabel, formatAdvertisedPrice, formatMiles } from "@/lib/format";
+import { advertisedTotalPrice, bikeLabel, formatAdvertisedPrice, formatMiles } from "@/lib/format";
 
 export type BikeCardData = {
   id: string;
@@ -43,8 +43,13 @@ export function BikeCard({ bike }: { bike: BikeCardData }) {
         <span className="absolute left-3 top-3 bg-asphalt/80 px-2.5 py-1 font-label text-[0.62rem] text-chrome backdrop-blur-sm">
           {pending ? "Sale pending" : bike.year}
         </span>
-        <span className="absolute bottom-3 right-3 font-display text-2xl tracking-wide text-ink drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-          {formatAdvertisedPrice(bike.price)}
+        <span className="absolute bottom-3 right-3 text-right drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+          <span className="block font-display text-2xl tracking-wide text-ink">
+            {formatAdvertisedPrice(bike.price)}
+          </span>
+          {advertisedTotalPrice(bike.price) != null ? (
+            <span className="mt-0.5 block font-label text-[0.58rem] text-ink">Plus tax & title</span>
+          ) : null}
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">

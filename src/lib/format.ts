@@ -14,12 +14,11 @@ export function bikeLabel(bike: {
  */
 export const DEALERSHIP_ADVERTISED_FEES_USD = 699 + 499;
 
-/** Vehicle feed price → dealership advertised total. Leaves null/≤0 unchanged. */
+/** Vehicle feed price → dealership advertised total. Missing, zero, or negative prices stay missing. */
 export function advertisedTotalPrice(
   vehiclePrice: number | null | undefined,
 ): number | null {
-  if (vehiclePrice == null) return null;
-  if (!Number.isFinite(vehiclePrice) || vehiclePrice <= 0) return vehiclePrice;
+  if (vehiclePrice == null || !Number.isFinite(vehiclePrice) || vehiclePrice <= 0) return null;
   return vehiclePrice + DEALERSHIP_ADVERTISED_FEES_USD;
 }
 

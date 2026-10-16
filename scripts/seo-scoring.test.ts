@@ -110,17 +110,44 @@ assert.equal(
   stripHtmlForMeta("<p>Clean <b>bike</b> &amp; ready</p>"),
   "Clean bike & ready",
 );
-assert.match(
-  inventoryMetaDescription({
-    year: 2019,
-    make: "Harley-Davidson",
-    model: "Road Glide",
-    mileage: 12000,
-    price: 18999,
-    description: "<div>Dealer <script>x</script> HTML</div>",
-  }),
-  /Road Glide|Dealer HTML|Milwaukee/i,
-);
+const described = inventoryMetaDescription({
+  year: 2019,
+  make: "Harley-Davidson",
+  model: "Road Glide",
+  mileage: 12000,
+  price: 18999,
+  description: "<div>Dealer <script>x</script> HTML</div>",
+});
+assert.match(described, /2019 Harley-Davidson Road Glide/);
+assert.match(described, /12,000 miles/);
+assert.match(described, /\$20,197/);
+assert.match(described, /Milwaukee-area/);
+assert.equal(described.includes("Dealer"), false);
+assert.ok(described.length <= 155);
+
+const missingFacts = inventoryMetaDescription({
+  year: 2020,
+  make: "Harley-Davidson",
+  model: "Iron 883",
+  mileage: null,
+  price: 0,
+  seoDescription: "Dealer slogan that should stay off the meta description",
+});
+assert.match(missingFacts, /2020 Harley-Davidson Iron 883/);
+assert.match(missingFacts, /Milwaukee-area/);
+assert.equal(missingFacts.includes("$"), false);
+assert.equal(missingFacts.includes("miles"), false);
+assert.equal(missingFacts.includes("Dealer"), false);
+
+const negativeFacts = inventoryMetaDescription({
+  year: 2018,
+  make: "Harley-Davidson",
+  model: "Fat Boy",
+  mileage: -10,
+  price: -1,
+});
+assert.equal(negativeFacts.includes("$"), false);
+assert.equal(negativeFacts.includes("miles"), false);
 
 console.log("seo-scoring tests passed", {
   thin: thin.score,

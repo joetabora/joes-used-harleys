@@ -30,21 +30,14 @@ export function inventoryMetaDescription(input: {
   mileage?: number | null;
   price?: number | null;
 }): string {
-  if (input.seoDescription?.trim()) {
-    return stripHtmlForMeta(input.seoDescription);
+  const name = `${input.year} ${input.make} ${input.model}`.replace(/\s+/g, " ").trim();
+  const facts = [name || "Used Harley-Davidson"];
+  if (input.mileage != null && Number.isFinite(input.mileage) && input.mileage >= 0) {
+    facts.push(`${input.mileage.toLocaleString("en-US")} miles`);
   }
-  if (input.description?.trim()) {
-    const cleaned = stripHtmlForMeta(input.description);
-    if (cleaned.length >= 40) return cleaned;
+  const shown = advertisedTotalPrice(input.price);
+  if (shown != null) {
+    facts.push(`advertised at $${Math.round(shown).toLocaleString("en-US")}`);
   }
-  const bits = [`${input.year} ${input.make} ${input.model}`.trim()];
-  if (input.mileage != null && Number.isFinite(input.mileage)) {
-    bits.push(`${input.mileage.toLocaleString("en-US")} miles`);
-  }
-  if (input.price != null && Number.isFinite(input.price)) {
-    const shown = advertisedTotalPrice(input.price) ?? input.price;
-    bits.push(`$${Math.round(shown).toLocaleString("en-US")}`);
-  }
-  bits.push("Milwaukee-area used Harley help from Joe");
-  return stripHtmlForMeta(bits.join(" — "));
+  return stripHtmlForMeta(`${facts.join(", ")}. Milwaukee-area used Harley help from Joe.`);
 }

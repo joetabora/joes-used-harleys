@@ -197,6 +197,9 @@ export default async function BikeDetailPage({ params }: Props) {
         <p className="font-display text-xl tracking-wide text-lamp">
           {formatAdvertisedPrice(bike.price)}
         </p>
+        {advertisedTotalPrice(bike.price) != null ? (
+          <p className="text-sm text-steel">Plus tax & title</p>
+        ) : null}
         <p className="text-steel">
           {formatMiles(bike.mileage)}
           {bike.color ? ` · ${bike.color}` : ""}

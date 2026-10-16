@@ -204,6 +204,9 @@ function countOccurrences(hay: string, needle: string): number {
   const noPrice = composeMarketplaceListing(bike({ price: null }));
   assert.equal(noPrice.priceLine, "");
   assert.equal(noPrice.description.includes("Ask for price"), false);
+  const zeroPrice = composeMarketplaceListing(bike({ price: 0 }));
+  assert.equal(zeroPrice.priceLine, "");
+  assert.equal(zeroPrice.description.includes("Ask for price"), false);
   assert.equal(noPrice.description.includes("$"), false);
   assertRequiredContent(noPrice.description);
 

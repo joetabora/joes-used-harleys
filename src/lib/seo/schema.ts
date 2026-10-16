@@ -156,7 +156,7 @@ export function productJsonLd(input: {
     url: absoluteUrl(input.path),
   };
   if (input.image) data.image = input.image;
-  if (input.price != null) {
+  if (input.price != null && Number.isFinite(input.price) && input.price > 0) {
     data.offers = {
       "@type": "Offer",
       price: input.price,
@@ -165,7 +165,7 @@ export function productJsonLd(input: {
         input.status === "AVAILABLE"
           ? "https://schema.org/InStock"
           : input.status === "PENDING"
-            ? "https://schema.org/PreOrder"
+            ? "https://schema.org/LimitedAvailability"
             : "https://schema.org/SoldOut",
       url: absoluteUrl(input.path),
     };

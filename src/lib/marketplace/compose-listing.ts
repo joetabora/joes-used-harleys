@@ -188,7 +188,7 @@ export function composeMarketplaceTitle(bike: MarketplaceBikeInput): string {
  * Marketplace price line. Missing price → empty string (never invent; never "Ask for price").
  */
 export function composeMarketplacePriceLine(bike: MarketplaceBikeInput): string {
-  if (bike.price == null) return "";
+  if (bike.price == null || !Number.isFinite(bike.price) || bike.price <= 0) return "";
   return `${formatAdvertisedPrice(bike.price)} + tax & title`;
 }
 
