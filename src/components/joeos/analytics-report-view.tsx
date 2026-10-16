@@ -2,7 +2,6 @@ import type {
   AnalyticsReport,
   DataStatus,
   Ga4Section,
-  Ga4Totals,
   SearchConsoleSection,
   SearchConsoleTotals,
 } from "@/lib/admin/analytics-report";
@@ -132,18 +131,34 @@ function Ga4Panel({ section }: { section: Ga4Section }) {
     <JosPanel>
       <JosLabel>Google Analytics</JosLabel>
       <JosData className="mt-1">{section.detail}</JosData>
-      <MetricBlock label={`Last 7 days · ${section.period7}`} totals={section.last7} />
-      <MetricBlock label={`Last 28 days · ${section.period28}`} totals={section.last28} />
+      <PeriodHeading title="Last 7 days" period={section.period7} />
+      <StatGrid
+        stats={[
+          { label: "Sessions", value: String(section.last7.sessions) },
+          { label: "Users", value: String(section.last7.users) },
+          { label: "Page views", value: String(section.last7.pageViews) },
+        ]}
+      />
+      <PeriodHeading title="Last 28 days" period={section.period28} />
+      <StatGrid
+        stats={[
+          { label: "Sessions", value: String(section.last28.sessions) },
+          { label: "Users", value: String(section.last28.users) },
+          { label: "Page views", value: String(section.last28.pageViews) },
+        ]}
+      />
       {section.trend.length > 0 ? (
-        <ul className="mt-3 space-y-1">
-          {section.trend.map((point) => (
-            <li key={point.date}>
-              <JosData>
-                {point.date} · {point.sessions} sessions · {point.pageViews} page views
-              </JosData>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-4">
+          <p className="jos-section mb-2">Daily</p>
+          <div className="grid grid-cols-[1fr_auto_auto] gap-x-4">
+            <JosLabel>Day</JosLabel>
+            <JosLabel className="text-right">Sessions</JosLabel>
+            <JosLabel className="text-right">Page views</JosLabel>
+            {section.trend.map((point) => (
+              <TrendRow key={point.date} date={point.date} sessions={point.sessions} pageViews={point.pageViews} />
+            ))}
+          </div>
+        </div>
       ) : (
         <JosData className="mt-3">No daily rows in this period.</JosData>
       )}
@@ -151,14 +166,13 @@ function Ga4Panel({ section }: { section: Ga4Section }) {
   );
 }
 
-function MetricBlock({ label, totals }: { label: string; totals: Ga4Totals }) {
+function TrendRow({ date, sessions, pageViews }: { date: string; sessions: number; pageViews: number }) {
   return (
-    <div className="mt-3">
-      <JosData>{label}</JosData>
-      <JosData className="mt-1">
-        {totals.sessions} sessions · {totals.users} users · {totals.pageViews} page views
-      </JosData>
-    </div>
+    <>
+      <JosData className="mt-1">{date}</JosData>
+      <JosData className="mt-1 text-right">{sessions}</JosData>
+      <JosData className="mt-1 text-right">{pageViews}</JosData>
+    </>
   );
 }
 
@@ -174,34 +188,34 @@ function SearchConsolePanel({ section }: { section: SearchConsoleSection }) {
     <JosPanel>
       <JosLabel>Search Console</JosLabel>
       <JosData className="mt-1">{section.detail}</JosData>
-      <SearchBlock label={`Last 7 days · ${section.period7}`} totals={section.last7} />
-      <SearchBlock label={`Last 28 days · ${section.period28}`} totals={section.last28} />
-      <JosData className="mt-3">Top queries · {section.period28}</JosData>
+      <PeriodHeading title="Last 7 days" period={section.period7} />
+      <SearchStats totals={section.last7} />
+      <PeriodHeading title="Last 28 days" period={section.period28} />
+      <SearchStats totals={section.last28} />
+      <p className="jos-section mb-2 mt-4">Top queries</p>
+      <JosData className="mb-2">{section.period28}</JosData>
       {section.queries.length === 0 ? (
         <JosData>No queries in this period.</JosData>
       ) : (
-        <ul className="mt-1 space-y-1">
+        <ul className="space-y-3">
           {section.queries.map((row) => (
             <li key={row.term}>
-              <JosData>
-                {row.term} · {row.clicks} clicks · {row.impressions} impressions · {formatCtr(row.ctr)} · pos{" "}
-                {formatPosition(row.position)}
-              </JosData>
+              <p className="jos-item">{row.term}</p>
+              <SearchStats totals={row} compact />
             </li>
           ))}
         </ul>
       )}
-      <JosData className="mt-3">Landing pages · {section.period28}</JosData>
+      <p className="jos-section mb-2 mt-4">Landing pages</p>
+      <JosData className="mb-2">{section.period28}</JosData>
       {section.pages.length === 0 ? (
         <JosData>No landing pages in this period.</JosData>
       ) : (
-        <ul className="mt-1 space-y-1">
+        <ul className="space-y-3">
           {section.pages.map((row) => (
             <li key={row.page}>
-              <JosData>
-                {row.page} · {row.clicks} clicks · {row.impressions} impressions · {formatCtr(row.ctr)} · pos{" "}
-                {formatPosition(row.position)}
-              </JosData>
+              <p className="jos-item">{row.page}</p>
+              <SearchStats totals={row} compact />
             </li>
           ))}
         </ul>
@@ -210,20 +224,52 @@ function SearchConsolePanel({ section }: { section: SearchConsoleSection }) {
   );
 }
 
-function SearchBlock({ label, totals }: { label: string; totals: SearchConsoleTotals }) {
+function PeriodHeading({ title, period }: { title: string; period: string }) {
   return (
-    <div className="mt-3">
-      <JosData>{label}</JosData>
-      <JosData className="mt-1">
-        {totals.clicks} clicks · {totals.impressions} impressions · {formatCtr(totals.ctr)} · position{" "}
-        {formatPosition(totals.position)}
-      </JosData>
+    <div className="mt-4">
+      <p className="jos-section">{title}</p>
+      <JosData className="mt-1">{period}</JosData>
     </div>
   );
 }
 
+function StatGrid({ stats }: { stats: { label: string; value: string }[] }) {
+  return (
+    <div className={`mt-2 grid gap-3 ${stats.length > 3 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3"}`}>
+      {stats.map((stat) => (
+        <div key={stat.label}>
+          <JosLabel>{stat.label}</JosLabel>
+          <JosKpi className="mt-1 text-2xl">{stat.value}</JosKpi>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SearchStats({ totals, compact = false }: { totals: SearchConsoleTotals; compact?: boolean }) {
+  const stats = [
+    { label: "Clicks", value: String(totals.clicks) },
+    { label: "Impressions", value: String(totals.impressions) },
+    { label: "CTR", value: formatCtr(totals.ctr) },
+    { label: "Position", value: formatPosition(totals.position) },
+  ];
+  if (compact) {
+    return (
+      <div className="mt-1 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {stats.map((stat) => (
+          <div key={stat.label}>
+            <JosLabel>{stat.label}</JosLabel>
+            <JosData className="mt-0.5 text-[var(--jos-bone)]">{stat.value}</JosData>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return <StatGrid stats={stats} />;
+}
+
 function formatCtr(ctr: number): string {
-  return `${(ctr * 100).toFixed(1)}% CTR`;
+  return `${(ctr * 100).toFixed(1)}%`;
 }
 
 function formatPosition(position: number): string {
