@@ -317,7 +317,10 @@ export default async function BikeDetailPage({ params }: Props) {
         </div>
       ) : null}
 
-      <div id="ask-about-this-bike" className="joe-panel scroll-mt-24 p-5">
+      <div
+        id="ask-about-this-bike"
+        className="joe-panel scroll-mt-24 p-5 max-sm:scroll-mb-[calc(5.5rem+env(safe-area-inset-bottom))]"
+      >
         <p className="font-label mb-1 text-lamp">Inquire</p>
         <h2 className="font-display mb-4 text-xl tracking-[0.04em]">Ask about this bike</h2>
         <LeadForm source={`/inventory/${bike.id}`} />

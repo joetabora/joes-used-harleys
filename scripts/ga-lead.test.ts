@@ -16,6 +16,13 @@ assert.equal(JSON.stringify(call).includes("tel:"), false);
 const text = gaConversionParams(bike, { event: "click_to_text", linkLocation: "header" });
 assert.deepEqual(text, { page_path: bike, bike_id: "ck_bike123", link_location: "header" });
 
+const listingCall = gaConversionParams(bike, { event: "click_to_call", linkLocation: "listing" });
+assert.deepEqual(listingCall, { page_path: bike, bike_id: "ck_bike123", link_location: "listing" });
+
+const inventoryText = gaConversionParams("/inventory", { event: "click_to_text", linkLocation: "inventory" });
+assert.deepEqual(inventoryText, { page_path: "/inventory", link_location: "inventory" });
+assert.equal(inventoryText && "bike_id" in inventoryText, false);
+
 const email = gaConversionParams("/contact?email=buyer@example.com", {
   event: "click_to_email",
   linkLocation: "contact",

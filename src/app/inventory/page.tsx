@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { InventoryQuickContact } from "@/components/inventory/listing-contact-actions";
 import { InventoryBrowser } from "@/components/inventory-browser";
 import { LeadForm } from "@/components/lead-form";
 import { PlaceholderNotice } from "@/components/placeholder-notice";
@@ -26,6 +27,7 @@ export default async function InventoryPage() {
         <h1 className="font-display text-3xl tracking-[0.06em]">
           Used Harley-Davidson motorcycles for sale
         </h1>
+        <InventoryQuickContact />
         <PlaceholderNotice title="Database not connected">
           Connect Supabase (DATABASE_URL) to show live bikes. We will not invent inventory.
         </PlaceholderNotice>
@@ -96,6 +98,7 @@ export default async function InventoryPage() {
               Contact Joe
             </Link>
           </p>
+          <InventoryQuickContact />
         </div>
       </section>
       <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 md:px-8">

@@ -7,7 +7,7 @@ const MEASUREMENT_ID = /^G-[A-Za-z0-9]+$/;
 const VIN_LIKE = /^[A-HJ-NPR-Z0-9]{17}$/i;
 const SAFE_INVENTORY_ID = /^[a-zA-Z0-9_-]{1,64}$/;
 
-export const gaLinkLocations = ["home", "header", "footer", "contact", "about", "listing"] as const;
+export const gaLinkLocations = ["home", "header", "footer", "contact", "about", "listing", "inventory"] as const;
 export type GaLinkLocation = (typeof gaLinkLocations)[number];
 
 export const gaClickEvents = ["click_to_call", "click_to_text", "click_to_email"] as const;

@@ -354,6 +354,14 @@
     transform: translateY(0);
   }
 
+  @media (max-width: 639px) {
+    #ask-about-this-bike input,
+    #ask-about-this-bike textarea,
+    #ask-about-this-bike button {
+      scroll-margin-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    }
+  }
+
   .joe-btn-secondary-dark {
     display: inline-flex;
     align-items: center;

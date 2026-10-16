@@ -14,11 +14,17 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
+  const listingBar = /^\/inventory\/[^/]+$/.test(pathname ?? "");
+
   return (
-    <>
+    <div
+      className={`flex min-h-full flex-1 flex-col ${
+        listingBar ? "max-sm:pb-[calc(6.25rem+env(safe-area-inset-bottom))]" : ""
+      }`}
+    >
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
-    </>
+    </div>
   );
 }
