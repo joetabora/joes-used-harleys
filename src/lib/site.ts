@@ -138,6 +138,23 @@ export function hasContactPhone(): boolean {
   return !isPlaceholder(siteConfig.phone);
 }
 
+/** `tel:` href from the configured phone, or null when it is missing. */
+export function contactTelHref(): string | null {
+  if (!hasContactPhone()) return null;
+  const digits = siteConfig.phone.replace(/[^\d+]/g, "");
+  if (!/^\+?\d{7,15}$/.test(digits)) return null;
+  return `tel:${digits}`;
+}
+
+/** `sms:` href from the configured text link, or the configured phone. */
+export function contactSmsHref(): string | null {
+  const configured = siteConfig.smsLink.trim();
+  if (configured.startsWith("sms:") && !isPlaceholder(configured)) return configured;
+  const tel = contactTelHref();
+  if (!tel) return null;
+  return `sms:${tel.slice("tel:".length)}`;
+}
+
 export function hasContactEmail(): boolean {
   return !isPlaceholder(siteConfig.email);
 }

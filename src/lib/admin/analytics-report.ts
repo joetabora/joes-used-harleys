@@ -96,6 +96,29 @@ export type Ga4TrendPoint = {
   pageViews: number;
 };
 
+export type Ga4ChannelRow = {
+  channel: string;
+  sessions: number;
+  users: number;
+  pageViews: number;
+};
+
+export type Ga4SourceRow = {
+  sourceMedium: string;
+  sessions: number;
+  users: number;
+  pageViews: number;
+};
+
+export type Ga4ChannelReport =
+  | { status: "failed"; detail: string }
+  | {
+      status: "ready";
+      last7: Ga4ChannelRow[];
+      last28: Ga4ChannelRow[];
+      sources28: Ga4SourceRow[];
+    };
+
 export type Ga4Section =
   | { status: "not_configured" | "failed"; detail: string }
   | {
@@ -106,6 +129,7 @@ export type Ga4Section =
       last7: Ga4Totals;
       last28: Ga4Totals;
       trend: Ga4TrendPoint[];
+      channels: Ga4ChannelReport;
     };
 
 export type SearchConsoleTotals = {
@@ -118,6 +142,10 @@ export type SearchConsoleTotals = {
 export type SearchConsoleQuery = SearchConsoleTotals & { term: string };
 export type SearchConsolePage = SearchConsoleTotals & { page: string };
 
+export type SearchConsoleImpressionQueries =
+  | { status: "failed"; detail: string }
+  | { status: "ready"; limit: number; rows: SearchConsoleQuery[] };
+
 export type SearchConsoleSection =
   | { status: "not_configured" | "failed"; detail: string }
   | {
@@ -129,6 +157,7 @@ export type SearchConsoleSection =
       last28: SearchConsoleTotals;
       queries: SearchConsoleQuery[];
       pages: SearchConsolePage[];
+      queriesByImpressions: SearchConsoleImpressionQueries;
     };
 
 const CONTACT_DESCRIPTION =

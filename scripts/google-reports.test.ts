@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { loadGoogleReporting, safeLandingPage, safeSearchQuery, searchConsoleRanges } from "../src/lib/admin/google-reports";
+import {
+  SEARCH_CONSOLE_IMPRESSION_ROW_LIMIT,
+  loadGoogleReporting,
+  safeLandingPage,
+  safeSearchQuery,
+  searchConsoleRanges,
+} from "../src/lib/admin/google-reports";
 
 const VIN = "1HD1BWV1XRB123456";
 const credentials = JSON.stringify({
@@ -103,10 +109,51 @@ assert.equal(badJson.searchConsole.status, "failed");
 assert.equal(badJson.ga4.detail.includes("PRIVATE"), false);
 assert.equal("last7" in badJson.ga4, false);
 
+function channelReport(dimension: string, rows: string[][]) {
+  return {
+    dimensionHeaders: [{ name: dimension }],
+    metricHeaders: [{ name: "sessions" }, { name: "totalUsers" }, { name: "screenPageViews" }],
+    rows: rows.map((row) => ({
+      dimensionValues: [{ value: row[0] }],
+      metricValues: [{ value: row[1] }, { value: row[2] }, { value: row[3] }],
+    })),
+  };
+}
+
 const successFetchSplit: typeof fetch = async (input, init) => {
   const url = String(input);
-  const body = JSON.parse(String(init?.body ?? "{}")) as { dimensions?: string[] };
-  if (url.includes("batchRunReports")) return jsonResponse(gaReport);
+  const body = JSON.parse(String(init?.body ?? "{}")) as {
+    dimensions?: string[];
+    rowLimit?: number;
+    requests?: { dimensions?: { name?: string }[] }[];
+  };
+  if (url.includes("batchRunReports")) {
+    if (body.requests?.[0]?.dimensions?.[0]?.name === "sessionDefaultChannelGroup") {
+      return jsonResponse({
+        reports: [
+          channelReport("sessionDefaultChannelGroup", [
+            ["Organic Search", "5", "4", "8"],
+            ["buyer@example.com", "1", "1", "1"],
+          ]),
+          channelReport("sessionDefaultChannelGroup", [["Direct", "2", "2", "3"]]),
+          channelReport("sessionSourceMedium", [
+            ["google / organic", "5", "4", "8"],
+            [VIN, "1", "1", "1"],
+          ]),
+        ],
+      });
+    }
+    return jsonResponse(gaReport);
+  }
+  if (body.dimensions?.[0] === "query" && body.rowLimit === SEARCH_CONSOLE_IMPRESSION_ROW_LIMIT) {
+    return jsonResponse({
+      rows: [
+        { keys: ["harley for sale"], clicks: 1, impressions: 80, ctr: 0.0125, position: 11 },
+        { keys: ["used harley milwaukee"], clicks: 2, impressions: 20, ctr: 0.1, position: 3 },
+        { keys: ["buyer@example.com"], clicks: 0, impressions: 5, ctr: 0, position: 9 },
+      ],
+    });
+  }
   if (body.dimensions?.[0] === "query") return jsonResponse(gscQueries);
   if (body.dimensions?.[0] === "page") return jsonResponse(gscPages);
   return jsonResponse(gscTotals);
@@ -124,6 +171,24 @@ if (success.ga4.status === "ready") {
   assert.equal(success.ga4.last28.sessions, 0);
   assert.equal(success.ga4.trend[0]?.date, "2026-10-12");
   assert.match(success.ga4.period7, /today/);
+  assert.equal(success.ga4.channels.status, "ready");
+  if (success.ga4.channels.status === "ready") {
+    assert.deepEqual(
+      success.ga4.channels.last7.map((row) => row.channel),
+      ["Organic Search"],
+    );
+    assert.equal(success.ga4.channels.last7[0]?.sessions, 5);
+    assert.equal(success.ga4.channels.last7[0]?.users, 4);
+    assert.equal(success.ga4.channels.last7[0]?.pageViews, 8);
+    assert.deepEqual(
+      success.ga4.channels.last28.map((row) => row.channel),
+      ["Direct"],
+    );
+    assert.deepEqual(
+      success.ga4.channels.sources28.map((row) => row.sourceMedium),
+      ["google / organic"],
+    );
+  }
 }
 assert.equal(success.searchConsole.status, "ready");
 if (success.searchConsole.status === "ready") {
@@ -139,6 +204,60 @@ if (success.searchConsole.status === "ready") {
   );
   assert.match(success.searchConsole.detail, /lags 2–3 days/);
   assert.match(success.searchConsole.period28, / to /);
+  assert.equal(success.searchConsole.queriesByImpressions.status, "ready");
+  if (success.searchConsole.queriesByImpressions.status === "ready") {
+    assert.equal(success.searchConsole.queriesByImpressions.limit, 25);
+    assert.deepEqual(
+      success.searchConsole.queriesByImpressions.rows.map((row) => row.term),
+      ["harley for sale", "used harley milwaukee"],
+    );
+    assert.equal(success.searchConsole.queriesByImpressions.rows[0]?.impressions, 80);
+    assert.equal(success.searchConsole.queriesByImpressions.rows[0]?.position, 11);
+  }
+}
+
+const channelDenied = await loadGoogleReporting({
+  env: env(),
+  now,
+  getAccessToken: async () => "token",
+  fetchImpl: async (input, init) => {
+    const url = String(input);
+    const body = JSON.parse(String(init?.body ?? "{}")) as { requests?: { dimensions?: unknown[] }[] };
+    if (url.includes("batchRunReports") && body.requests?.[0]?.dimensions) {
+      return new Response("BEGIN PRIVATE KEY", { status: 403 });
+    }
+    if (url.includes("batchRunReports")) return jsonResponse(gaReport);
+    return jsonResponse(gscTotals);
+  },
+});
+assert.equal(channelDenied.ga4.status, "ready");
+if (channelDenied.ga4.status === "ready") {
+  assert.equal(channelDenied.ga4.last7.sessions, 4);
+  assert.equal(channelDenied.ga4.channels.status, "failed");
+  assert.equal("last7" in channelDenied.ga4.channels, false);
+  assert.equal(channelDenied.ga4.channels.detail.includes("PRIVATE"), false);
+}
+
+const impressionDenied = await loadGoogleReporting({
+  env: env(),
+  now,
+  getAccessToken: async () => "token",
+  fetchImpl: async (input, init) => {
+    const url = String(input);
+    const body = JSON.parse(String(init?.body ?? "{}")) as { dimensions?: string[]; rowLimit?: number };
+    if (url.includes("batchRunReports")) return jsonResponse(gaReport);
+    if (body.rowLimit === SEARCH_CONSOLE_IMPRESSION_ROW_LIMIT) return new Response("secret-body", { status: 500 });
+    if (body.dimensions?.[0] === "query") return jsonResponse(gscQueries);
+    if (body.dimensions?.[0] === "page") return jsonResponse(gscPages);
+    return jsonResponse(gscTotals);
+  },
+});
+assert.equal(impressionDenied.searchConsole.status, "ready");
+if (impressionDenied.searchConsole.status === "ready") {
+  assert.equal(impressionDenied.searchConsole.queries.length, 1);
+  assert.equal(impressionDenied.searchConsole.queriesByImpressions.status, "failed");
+  assert.equal("rows" in impressionDenied.searchConsole.queriesByImpressions, false);
+  assert.equal(impressionDenied.searchConsole.queriesByImpressions.detail.includes("secret-body"), false);
 }
 
 const emptyGa = await loadGoogleReporting({

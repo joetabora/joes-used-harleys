@@ -5,9 +5,11 @@
 
 import { JWT } from "google-auth-library";
 import {
+  type Ga4ChannelReport,
   type Ga4Section,
   type Ga4Totals,
   type Ga4TrendPoint,
+  type SearchConsoleImpressionQueries,
   type SearchConsolePage,
   type SearchConsoleQuery,
   type SearchConsoleSection,
@@ -21,6 +23,12 @@ import {
 const VIN_LIKE = /^[A-HJ-NPR-Z0-9]{17}$/i;
 const GA_SCOPE = "https://www.googleapis.com/auth/analytics.readonly";
 const GSC_SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
+/** Click-ranked lists stay at the API default size. */
+const SEARCH_CONSOLE_TOP_ROW_LIMIT = 10;
+/** Impression-ranked queries. Rows outside this limit are omitted, not treated as zero. */
+export const SEARCH_CONSOLE_IMPRESSION_ROW_LIMIT = 25;
+const GA_CHANNEL_ROW_LIMIT = 15;
+const GA_SOURCE_ROW_LIMIT = 8;
 
 type FetchLike = typeof fetch;
 
@@ -112,6 +120,13 @@ export function searchConsoleRanges(now: Date): { start7: string; start28: strin
   };
 }
 
+export function safeDimensionLabel(raw: string): string | null {
+  const label = raw.trim();
+  if (!label || label.includes("@") || label.length > 80) return null;
+  if (VIN_LIKE.test(label.replace(/\s/g, ""))) return null;
+  return label;
+}
+
 export function safeSearchQuery(raw: string): string | null {
   const query = raw.trim();
   if (!query || query.includes("@") || query.length > 120) return null;
@@ -132,26 +147,31 @@ export function safeLandingPage(raw: string): string | null {
 
 type GaMetricRow = { dimensionValues?: { value?: string }[]; metricValues?: { value?: string }[] };
 type GaReport = {
+  dimensionHeaders?: { name?: string }[];
   metricHeaders?: { name?: string }[];
   rows?: GaMetricRow[];
   error?: unknown;
 };
 
 async function loadGa4(propertyId: string, token: string, fetchImpl: FetchLike): Promise<Ga4Section> {
-  const response = await postJson(
-    `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:batchRunReports`,
-    token,
-    {
-      requests: [
-        gaRequest("7daysAgo", "today", false),
-        gaRequest("28daysAgo", "today", false),
-        gaRequest("28daysAgo", "today", true),
-      ],
-    },
-    fetchImpl,
-  );
-  if (!response.ok) return { status: "failed", detail: httpFailure(response.status) };
-  const reports = Array.isArray(response.json.reports) ? response.json.reports : null;
+  const endpoint = `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:batchRunReports`;
+  const [totalsResponse, channelResponse] = await Promise.all([
+    postJson(
+      endpoint,
+      token,
+      {
+        requests: [
+          gaRequest("7daysAgo", "today", false),
+          gaRequest("28daysAgo", "today", false),
+          gaRequest("28daysAgo", "today", true),
+        ],
+      },
+      fetchImpl,
+    ),
+    postJson(endpoint, token, { requests: channelRequests() }, fetchImpl),
+  ]);
+  if (!totalsResponse.ok) return { status: "failed", detail: httpFailure(totalsResponse.status) };
+  const reports = Array.isArray(totalsResponse.json.reports) ? totalsResponse.json.reports : null;
   if (!reports || reports.length < 3) return { status: "failed", detail: "Google Analytics returned an unexpected report." };
   const last7 = totalsFrom(reports[0]);
   const last28 = totalsFrom(reports[1]);
@@ -165,6 +185,60 @@ async function loadGa4(propertyId: string, token: string, fetchImpl: FetchLike):
     last7,
     last28,
     trend,
+    channels: channelsFrom(channelResponse),
+  };
+}
+
+function channelRequests() {
+  const metrics = [{ name: "sessions" }, { name: "totalUsers" }, { name: "screenPageViews" }];
+  const bySessions = [{ metric: { metricName: "sessions" }, desc: true }];
+  return [
+    {
+      dateRanges: [{ startDate: "7daysAgo", endDate: "today" }],
+      dimensions: [{ name: "sessionDefaultChannelGroup" }],
+      metrics,
+      orderBys: bySessions,
+      limit: GA_CHANNEL_ROW_LIMIT,
+    },
+    {
+      dateRanges: [{ startDate: "28daysAgo", endDate: "today" }],
+      dimensions: [{ name: "sessionDefaultChannelGroup" }],
+      metrics,
+      orderBys: bySessions,
+      limit: GA_CHANNEL_ROW_LIMIT,
+    },
+    {
+      dateRanges: [{ startDate: "28daysAgo", endDate: "today" }],
+      dimensions: [{ name: "sessionSourceMedium" }],
+      metrics,
+      orderBys: bySessions,
+      limit: GA_SOURCE_ROW_LIMIT,
+    },
+  ];
+}
+
+function channelsFrom(response: PostResult): Ga4ChannelReport {
+  if (!response.ok) return { status: "failed", detail: httpFailure(response.status) };
+  const reports = Array.isArray(response.json.reports) ? response.json.reports : null;
+  if (!reports || reports.length < 3) {
+    return { status: "failed", detail: "Google Analytics returned an unexpected channel report." };
+  }
+  const last7 = groupedRows(reports[0], "sessionDefaultChannelGroup");
+  const last28 = groupedRows(reports[1], "sessionDefaultChannelGroup");
+  const sources = groupedRows(reports[2], "sessionSourceMedium");
+  if (!last7 || !last28 || !sources) {
+    return { status: "failed", detail: "Google Analytics returned an unexpected channel report." };
+  }
+  return {
+    status: "ready",
+    last7: last7.map((row) => ({ channel: row.label, sessions: row.sessions, users: row.users, pageViews: row.pageViews })),
+    last28: last28.map((row) => ({ channel: row.label, sessions: row.sessions, users: row.users, pageViews: row.pageViews })),
+    sources28: sources.map((row) => ({
+      sourceMedium: row.label,
+      sessions: row.sessions,
+      users: row.users,
+      pageViews: row.pageViews,
+    })),
   };
 }
 
@@ -199,6 +273,31 @@ function totalsFrom(report: GaReport | undefined): Ga4Totals | null {
     users: metricValue(row, headers, "totalUsers"),
     pageViews: metricValue(row, headers, "screenPageViews"),
   };
+}
+
+function groupedRows(
+  report: GaReport | undefined,
+  dimension: string,
+): { label: string; sessions: number; users: number; pageViews: number }[] | null {
+  if (!report || report.error) return null;
+  const headers = headerNames(report).filter(Boolean);
+  if (headers.length === 0) return (report.rows ?? []).length === 0 ? [] : null;
+  if (!headers.includes("sessions") || !headers.includes("totalUsers") || !headers.includes("screenPageViews")) {
+    return null;
+  }
+  if ((report.rows ?? []).length > 0 && report.dimensionHeaders?.[0]?.name !== dimension) return null;
+  const rows: { label: string; sessions: number; users: number; pageViews: number }[] = [];
+  for (const row of report.rows ?? []) {
+    const label = safeDimensionLabel(row.dimensionValues?.[0]?.value ?? "");
+    if (!label) continue;
+    rows.push({
+      label,
+      sessions: metricValue(row, headers, "sessions"),
+      users: metricValue(row, headers, "totalUsers"),
+      pageViews: metricValue(row, headers, "screenPageViews"),
+    });
+  }
+  return rows;
 }
 
 function trendFrom(report: GaReport | undefined): Ga4TrendPoint[] | null {
@@ -239,11 +338,33 @@ async function loadSearchConsole(
   ranges: GscRanges,
 ): Promise<SearchConsoleSection> {
   const endpoint = `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`;
-  const [week, month, queries, pages] = await Promise.all([
+  const [week, month, queries, pages, byImpressions] = await Promise.all([
     postJson(endpoint, token, { startDate: ranges.start7, endDate: ranges.end }, fetchImpl),
     postJson(endpoint, token, { startDate: ranges.start28, endDate: ranges.end }, fetchImpl),
-    postJson(endpoint, token, { startDate: ranges.start28, endDate: ranges.end, dimensions: ["query"], rowLimit: 10 }, fetchImpl),
-    postJson(endpoint, token, { startDate: ranges.start28, endDate: ranges.end, dimensions: ["page"], rowLimit: 10 }, fetchImpl),
+    postJson(
+      endpoint,
+      token,
+      { startDate: ranges.start28, endDate: ranges.end, dimensions: ["query"], rowLimit: SEARCH_CONSOLE_TOP_ROW_LIMIT },
+      fetchImpl,
+    ),
+    postJson(
+      endpoint,
+      token,
+      { startDate: ranges.start28, endDate: ranges.end, dimensions: ["page"], rowLimit: SEARCH_CONSOLE_TOP_ROW_LIMIT },
+      fetchImpl,
+    ),
+    postJson(
+      endpoint,
+      token,
+      {
+        startDate: ranges.start28,
+        endDate: ranges.end,
+        dimensions: ["query"],
+        rowLimit: SEARCH_CONSOLE_IMPRESSION_ROW_LIMIT,
+        orderBy: [{ fieldName: "impressions", sortOrder: "descending" }],
+      },
+      fetchImpl,
+    ),
   ]);
   const firstFailure = [week, month, queries, pages].find((item) => !item.ok);
   if (firstFailure && !firstFailure.ok) return { status: "failed", detail: httpFailure(firstFailure.status) };
@@ -262,6 +383,16 @@ async function loadSearchConsole(
     last28,
     queries: gscQueries(queries.json.rows),
     pages: gscPages(pages.json.rows),
+    queriesByImpressions: impressionQueries(byImpressions),
+  };
+}
+
+function impressionQueries(response: PostResult): SearchConsoleImpressionQueries {
+  if (!response.ok) return { status: "failed", detail: httpFailure(response.status) };
+  return {
+    status: "ready",
+    limit: SEARCH_CONSOLE_IMPRESSION_ROW_LIMIT,
+    rows: gscQueries(response.json.rows).sort((a, b) => b.impressions - a.impressions),
   };
 }
 

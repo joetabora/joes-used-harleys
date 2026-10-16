@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { hasContactPhone, siteConfig } from "@/lib/site";
+import { contactSmsHref, siteConfig } from "@/lib/site";
 
 const links = [
   { href: "/inventory", label: "Inventory" },
@@ -23,6 +23,7 @@ const links = [
 ];
 
 export function SiteHeader() {
+  const smsHref = contactSmsHref();
   return (
     <header className="sticky top-0 z-40 border-b border-chrome/10 bg-asphalt/70 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-8">
@@ -35,7 +36,7 @@ export function SiteHeader() {
             className="size-11 object-contain drop-shadow-[0_2px_8px_rgba(244,81,30,0.25)]"
             priority
           />
-          <span className="font-display whitespace-nowrap text-base leading-none tracking-[0.12em] text-ink transition-colors group-hover:text-lamp md:text-lg">
+          <span className="font-display max-w-[6.5rem] truncate whitespace-nowrap text-base leading-none tracking-[0.12em] text-ink transition-colors group-hover:text-lamp sm:max-w-none md:text-lg">
             {siteConfig.name}
           </span>
         </Link>
@@ -53,26 +54,25 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
-            {hasContactPhone() ? (
-              <GaContactLink
-                href={siteConfig.smsLink}
-                event="click_to_text"
-                linkLocation="header"
-                data-analytics="contact"
-                className="joe-btn-primary h-10 whitespace-nowrap px-4"
-              >
-                Text Joe
-              </GaContactLink>
-            ) : (
-              <AnalyticsContactLink
-                href="/contact"
-                className="joe-btn-primary h-10 whitespace-nowrap px-4"
-              >
-                Talk to Joe
-              </AnalyticsContactLink>
-            )}
-          </div>
+          {smsHref ? (
+            <GaContactLink
+              href={smsHref}
+              event="click_to_text"
+              linkLocation="header"
+              data-analytics="contact"
+              className="joe-btn-primary h-10 whitespace-nowrap px-3 sm:px-4"
+            >
+              <span className="sm:hidden">Text</span>
+              <span className="hidden sm:inline">Text Joe</span>
+            </GaContactLink>
+          ) : (
+            <AnalyticsContactLink
+              href="/contact"
+              className="joe-btn-primary hidden h-10 whitespace-nowrap px-4 sm:inline-flex"
+            >
+              Talk to Joe
+            </AnalyticsContactLink>
+          )}
 
           <Sheet>
             <SheetTrigger
@@ -109,9 +109,9 @@ export function SiteHeader() {
                     {link.label}
                   </Link>
                 ))}
-                {hasContactPhone() ? (
+                {smsHref ? (
                   <GaContactLink
-                    href={siteConfig.smsLink}
+                    href={smsHref}
                     event="click_to_text"
                     linkLocation="header"
                     data-analytics="contact"

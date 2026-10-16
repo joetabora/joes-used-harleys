@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { BikeDetailAnalytics } from "@/components/analytics/bike-detail-analytics";
 import { AssetScorecardView } from "@/components/assets/asset-scorecard";
 import { ModelHubBridge } from "@/components/content/model-hub-bridge";
+import { ListingContactActions } from "@/components/inventory/listing-contact-actions";
 import { LeadForm } from "@/components/lead-form";
 import { JsonLd } from "@/components/seo/json-ld";
 import { RelatedInventory } from "@/components/seo/related-inventory";
@@ -212,6 +213,7 @@ export default async function BikeDetailPage({ params }: Props) {
             Used Harley motorcycles near Milwaukee
           </Link>
         </p>
+        <ListingContactActions />
       </div>
 
       <div className="joe-panel grid gap-3 p-5 sm:grid-cols-2 md:grid-cols-3">
@@ -312,7 +314,7 @@ export default async function BikeDetailPage({ params }: Props) {
         </div>
       ) : null}
 
-      <div className="joe-panel p-5">
+      <div id="ask-about-this-bike" className="joe-panel scroll-mt-24 p-5">
         <p className="font-label mb-1 text-lamp">Inquire</p>
         <h2 className="font-display mb-4 text-xl tracking-[0.04em]">Ask about this bike</h2>
         <LeadForm source={`/inventory/${bike.id}`} />

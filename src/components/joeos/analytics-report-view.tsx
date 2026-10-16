@@ -1,7 +1,10 @@
 import type {
   AnalyticsReport,
   DataStatus,
+  Ga4ChannelRow,
   Ga4Section,
+  Ga4SourceRow,
+  SearchConsoleQuery,
   SearchConsoleSection,
   SearchConsoleTotals,
 } from "@/lib/admin/analytics-report";
@@ -162,7 +165,85 @@ function Ga4Panel({ section }: { section: Ga4Section }) {
       ) : (
         <JosData className="mt-3">No daily rows in this period.</JosData>
       )}
+      <ChannelBlock section={section} />
     </JosPanel>
+  );
+}
+
+function ChannelBlock({ section }: { section: Extract<Ga4Section, { status: "ready" }> }) {
+  if (section.channels.status !== "ready") {
+    return (
+      <div className="mt-4">
+        <p className="jos-section">Traffic channels</p>
+        <JosData className="mt-2">{section.channels.detail}</JosData>
+      </div>
+    );
+  }
+  return (
+    <div className="mt-4">
+      <p className="jos-section">Traffic channels</p>
+      <JosData className="mt-1">Session default channel group. {section.period7} and {section.period28}.</JosData>
+      <ChannelTable title="Last 7 days" rows={section.channels.last7} />
+      <ChannelTable title="Last 28 days" rows={section.channels.last28} />
+      <p className="jos-section mb-1 mt-4">Source / medium</p>
+      <JosData className="mb-2">Last 28 days. Up to 8 values by sessions. This is not every visit.</JosData>
+      {section.channels.sources28.length === 0 ? (
+        <JosData>No source / medium rows in this period.</JosData>
+      ) : (
+        <div className="grid grid-cols-[1.4fr_auto_auto_auto] gap-x-3">
+          <JosLabel>Source</JosLabel>
+          <JosLabel className="text-right">Sessions</JosLabel>
+          <JosLabel className="text-right">Users</JosLabel>
+          <JosLabel className="text-right">Page views</JosLabel>
+          {section.channels.sources28.map((row) => (
+            <SourceRow key={row.sourceMedium} row={row} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChannelTable({ title, rows }: { title: string; rows: Ga4ChannelRow[] }) {
+  return (
+    <div className="mt-3">
+      <JosData>{title}</JosData>
+      {rows.length === 0 ? (
+        <JosData className="mt-1">No channel rows in this period.</JosData>
+      ) : (
+        <div className="mt-1 grid grid-cols-[1.4fr_auto_auto_auto] gap-x-3">
+          <JosLabel>Channel</JosLabel>
+          <JosLabel className="text-right">Sessions</JosLabel>
+          <JosLabel className="text-right">Users</JosLabel>
+          <JosLabel className="text-right">Page views</JosLabel>
+          {rows.map((row) => (
+            <ChannelRow key={row.channel} row={row} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ChannelRow({ row }: { row: Ga4ChannelRow }) {
+  return (
+    <>
+      <JosData className="mt-1">{row.channel}</JosData>
+      <JosData className="mt-1 text-right">{row.sessions}</JosData>
+      <JosData className="mt-1 text-right">{row.users}</JosData>
+      <JosData className="mt-1 text-right">{row.pageViews}</JosData>
+    </>
+  );
+}
+
+function SourceRow({ row }: { row: Ga4SourceRow }) {
+  return (
+    <>
+      <JosData className="mt-1">{row.sourceMedium}</JosData>
+      <JosData className="mt-1 text-right">{row.sessions}</JosData>
+      <JosData className="mt-1 text-right">{row.users}</JosData>
+      <JosData className="mt-1 text-right">{row.pageViews}</JosData>
+    </>
   );
 }
 
@@ -192,6 +273,7 @@ function SearchConsolePanel({ section }: { section: SearchConsoleSection }) {
       <SearchStats totals={section.last7} />
       <PeriodHeading title="Last 28 days" period={section.period28} />
       <SearchStats totals={section.last28} />
+      <ImpressionQueries section={section} />
       <p className="jos-section mb-2 mt-4">Top queries</p>
       <JosData className="mb-2">{section.period28}</JosData>
       {section.queries.length === 0 ? (
@@ -221,6 +303,43 @@ function SearchConsolePanel({ section }: { section: SearchConsoleSection }) {
         </ul>
       )}
     </JosPanel>
+  );
+}
+
+function ImpressionQueries({ section }: { section: Extract<SearchConsoleSection, { status: "ready" }> }) {
+  const report = section.queriesByImpressions;
+  return (
+    <div className="mt-4">
+      <p className="jos-section mb-2">Queries by impressions</p>
+      {report.status !== "ready" ? (
+        <JosData>{report.detail}</JosData>
+      ) : (
+        <>
+          <JosData className="mb-2">
+            Up to {report.limit} queries, ranked by impressions for {section.period28}. Impressions alone do not
+            show that a query needs a change. Queries outside this list are omitted, not counted as zero.
+          </JosData>
+          {report.rows.length === 0 ? (
+            <JosData>No queries in this period.</JosData>
+          ) : (
+            <ul className="space-y-3">
+              {report.rows.map((row) => (
+                <QueryMetrics key={row.term} row={row} />
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+function QueryMetrics({ row }: { row: SearchConsoleQuery }) {
+  return (
+    <li>
+      <p className="jos-item">{row.term}</p>
+      <SearchStats totals={row} compact />
+    </li>
   );
 }
 
