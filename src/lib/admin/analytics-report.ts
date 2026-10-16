@@ -33,7 +33,23 @@ export type AnalyticsReportInput = {
   contactClicks: QueryResult<number>;
   events: QueryResult<EventCount[]>;
   bikes: QueryResult<BikeActivityRow[]>;
+  ga4?: Ga4Section;
+  searchConsole?: SearchConsoleSection;
 };
+
+export function notConfiguredGa4(): Ga4Section {
+  return {
+    status: "not_configured",
+    detail: "Not configured. Set GA4_PROPERTY_ID and GOOGLE_SERVICE_ACCOUNT_JSON on the server.",
+  };
+}
+
+export function notConfiguredSearchConsole(): SearchConsoleSection {
+  return {
+    status: "not_configured",
+    detail: "Not configured. Set SEARCH_CONSOLE_SITE_URL and GOOGLE_SERVICE_ACCOUNT_JSON on the server.",
+  };
+}
 
 export type CountSection<T> = {
   status: DataStatus;
@@ -64,9 +80,56 @@ export type AnalyticsReport = {
       contactInteractions: number;
     }[]
   >;
-  ga4: { status: "not_integrated"; detail: string };
-  searchConsole: { status: "not_integrated"; detail: string };
+  ga4: Ga4Section;
+  searchConsole: SearchConsoleSection;
 };
+
+export type Ga4Totals = {
+  sessions: number;
+  users: number;
+  pageViews: number;
+};
+
+export type Ga4TrendPoint = {
+  date: string;
+  sessions: number;
+  pageViews: number;
+};
+
+export type Ga4Section =
+  | { status: "not_configured" | "failed"; detail: string }
+  | {
+      status: "ready";
+      detail: string;
+      period7: string;
+      period28: string;
+      last7: Ga4Totals;
+      last28: Ga4Totals;
+      trend: Ga4TrendPoint[];
+    };
+
+export type SearchConsoleTotals = {
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+};
+
+export type SearchConsoleQuery = SearchConsoleTotals & { term: string };
+export type SearchConsolePage = SearchConsoleTotals & { page: string };
+
+export type SearchConsoleSection =
+  | { status: "not_configured" | "failed"; detail: string }
+  | {
+      status: "ready";
+      detail: string;
+      period7: string;
+      period28: string;
+      last7: SearchConsoleTotals;
+      last28: SearchConsoleTotals;
+      queries: SearchConsoleQuery[];
+      pages: SearchConsolePage[];
+    };
 
 const CONTACT_DESCRIPTION =
   "JoeOS records a contact interaction when someone focuses the inquiry form or submits it. That includes failed submits. Saved inquiries are counted separately from Lead records.";
@@ -185,13 +248,7 @@ export function buildAnalyticsReport(input: AnalyticsReportInput): AnalyticsRepo
       total: bikeRows.length,
       rows: bikeRows,
     },
-    ga4: {
-      status: "not_integrated",
-      detail: "Google Analytics is not read by this dashboard. No GA4 traffic is shown here.",
-    },
-    searchConsole: {
-      status: "not_integrated",
-      detail: "Search Console is not read by this dashboard. No search performance is shown here.",
-    },
+    ga4: input.ga4 ?? notConfiguredGa4(),
+    searchConsole: input.searchConsole ?? notConfiguredSearchConsole(),
   };
 }

@@ -59,10 +59,12 @@ assert.equal(empty.contactInteractions.total, 0);
 assert.equal(empty.contactInteractions.label, "Contact interactions");
 assert.equal(empty.events.status, "empty");
 assert.equal(empty.bikes.status, "empty");
-assert.equal(empty.ga4.status, "not_integrated");
-assert.equal(empty.searchConsole.status, "not_integrated");
-assert.equal("total" in empty.ga4, false);
-assert.equal("total" in empty.searchConsole, false);
+assert.equal(empty.ga4.status, "not_configured");
+assert.equal(empty.searchConsole.status, "not_configured");
+assert.equal("last7" in empty.ga4, false);
+assert.equal("last7" in empty.searchConsole, false);
+assert.match(empty.ga4.detail, /Not configured/);
+assert.match(empty.searchConsole.detail, /Not configured/);
 
 const unavailable = buildAnalyticsReport(
   baseInput({

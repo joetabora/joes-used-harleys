@@ -6,6 +6,7 @@ import {
   type LeadRow,
   type QueryResult,
 } from "@/lib/admin/analytics-report";
+import { loadGoogleReporting } from "@/lib/admin/google-reports";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -24,14 +25,17 @@ const JOE_EVENT_TYPES = [
   "APPOINTMENT_REQUEST",
 ] as const;
 
-function unavailableReport() {
+async function unavailableReport() {
   const missing = { ok: false, reason: "unavailable" } as const;
+  const google = await loadGoogleReporting({ env: process.env, now: new Date() });
   return buildAnalyticsReport({
     now: new Date().toISOString(),
     leads: missing,
     contactClicks: missing,
     events: missing,
     bikes: missing,
+    ga4: google.ga4,
+    searchConsole: google.searchConsole,
   });
 }
 
@@ -130,11 +134,12 @@ export async function loadAnalyticsReport() {
   if (!isDatabaseConfigured() || !prisma) return unavailableReport();
 
   const since = new Date(Date.now() - ANALYTICS_WINDOW_DAYS * DAY_MS);
-  const [leads, contactClicks, events, bikes] = await Promise.all([
+  const [leads, contactClicks, events, bikes, google] = await Promise.all([
     readLeads(since),
     readContactClicks(since),
     readEvents(since),
     readBikes(),
+    loadGoogleReporting({ env: process.env, now: new Date() }),
   ]);
 
   return buildAnalyticsReport({
@@ -143,5 +148,7 @@ export async function loadAnalyticsReport() {
     contactClicks,
     events,
     bikes,
+    ga4: google.ga4,
+    searchConsole: google.searchConsole,
   });
 }

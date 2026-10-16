@@ -1,4 +1,11 @@
-import type { AnalyticsReport, DataStatus } from "@/lib/admin/analytics-report";
+import type {
+  AnalyticsReport,
+  DataStatus,
+  Ga4Section,
+  Ga4Totals,
+  SearchConsoleSection,
+  SearchConsoleTotals,
+} from "@/lib/admin/analytics-report";
 import { EmptyState, JosData, JosKpi, JosLabel, JosPanel, JosSectionHeader } from "@/components/joeos/ui";
 
 function statusCopy(status: DataStatus, empty: string, failed: string): string | null {
@@ -106,13 +113,119 @@ export function AnalyticsReportView({ report }: { report: AnalyticsReport }) {
       </JosPanel>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <EmptyState label="Google Analytics">
-          {report.ga4.detail}
-        </EmptyState>
-        <EmptyState label="Search Console">
-          {report.searchConsole.detail}
-        </EmptyState>
+        <Ga4Panel section={report.ga4} />
+        <SearchConsolePanel section={report.searchConsole} />
       </div>
     </div>
   );
+}
+
+function Ga4Panel({ section }: { section: Ga4Section }) {
+  if (section.status !== "ready") {
+    return (
+      <EmptyState label="Google Analytics" warn={section.status === "failed"}>
+        {section.detail}
+      </EmptyState>
+    );
+  }
+  return (
+    <JosPanel>
+      <JosLabel>Google Analytics</JosLabel>
+      <JosData className="mt-1">{section.detail}</JosData>
+      <MetricBlock label={`Last 7 days · ${section.period7}`} totals={section.last7} />
+      <MetricBlock label={`Last 28 days · ${section.period28}`} totals={section.last28} />
+      {section.trend.length > 0 ? (
+        <ul className="mt-3 space-y-1">
+          {section.trend.map((point) => (
+            <li key={point.date}>
+              <JosData>
+                {point.date} · {point.sessions} sessions · {point.pageViews} page views
+              </JosData>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <JosData className="mt-3">No daily rows in this period.</JosData>
+      )}
+    </JosPanel>
+  );
+}
+
+function MetricBlock({ label, totals }: { label: string; totals: Ga4Totals }) {
+  return (
+    <div className="mt-3">
+      <JosData>{label}</JosData>
+      <JosData className="mt-1">
+        {totals.sessions} sessions · {totals.users} users · {totals.pageViews} page views
+      </JosData>
+    </div>
+  );
+}
+
+function SearchConsolePanel({ section }: { section: SearchConsoleSection }) {
+  if (section.status !== "ready") {
+    return (
+      <EmptyState label="Search Console" warn={section.status === "failed"}>
+        {section.detail}
+      </EmptyState>
+    );
+  }
+  return (
+    <JosPanel>
+      <JosLabel>Search Console</JosLabel>
+      <JosData className="mt-1">{section.detail}</JosData>
+      <SearchBlock label={`Last 7 days · ${section.period7}`} totals={section.last7} />
+      <SearchBlock label={`Last 28 days · ${section.period28}`} totals={section.last28} />
+      <JosData className="mt-3">Top queries · {section.period28}</JosData>
+      {section.queries.length === 0 ? (
+        <JosData>No queries in this period.</JosData>
+      ) : (
+        <ul className="mt-1 space-y-1">
+          {section.queries.map((row) => (
+            <li key={row.term}>
+              <JosData>
+                {row.term} · {row.clicks} clicks · {row.impressions} impressions · {formatCtr(row.ctr)} · pos{" "}
+                {formatPosition(row.position)}
+              </JosData>
+            </li>
+          ))}
+        </ul>
+      )}
+      <JosData className="mt-3">Landing pages · {section.period28}</JosData>
+      {section.pages.length === 0 ? (
+        <JosData>No landing pages in this period.</JosData>
+      ) : (
+        <ul className="mt-1 space-y-1">
+          {section.pages.map((row) => (
+            <li key={row.page}>
+              <JosData>
+                {row.page} · {row.clicks} clicks · {row.impressions} impressions · {formatCtr(row.ctr)} · pos{" "}
+                {formatPosition(row.position)}
+              </JosData>
+            </li>
+          ))}
+        </ul>
+      )}
+    </JosPanel>
+  );
+}
+
+function SearchBlock({ label, totals }: { label: string; totals: SearchConsoleTotals }) {
+  return (
+    <div className="mt-3">
+      <JosData>{label}</JosData>
+      <JosData className="mt-1">
+        {totals.clicks} clicks · {totals.impressions} impressions · {formatCtr(totals.ctr)} · position{" "}
+        {formatPosition(totals.position)}
+      </JosData>
+    </div>
+  );
+}
+
+function formatCtr(ctr: number): string {
+  return `${(ctr * 100).toFixed(1)}% CTR`;
+}
+
+function formatPosition(position: number): string {
+  return position.toFixed(1);
 }
