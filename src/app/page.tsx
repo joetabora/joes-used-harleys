@@ -15,7 +15,7 @@ import { createMetadata } from "@/lib/seo";
 export const metadata = createMetadata({
   title: "Used Harley-Davidson Motorcycles Near Milwaukee",
   description:
-    "Joe helps Milwaukee and Southeastern Wisconsin riders find and buy used Harley-Davidson motorcycles — honest guidance, live inventory, and a salesperson you can actually talk to.",
+    "See the used Harley-Davidson motorcycles on Joe's floor near Milwaukee — live inventory, honest guidance, and a salesperson you can actually talk to.",
   path: "/",
 });
 

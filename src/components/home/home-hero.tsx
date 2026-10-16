@@ -17,13 +17,16 @@ export function HomeHero({ liveCount }: { liveCount: number }) {
 
       <div className="mx-auto w-full max-w-7xl px-4 pb-14 pt-32 md:px-8 md:pb-20">
         <p className="joe-kicker joe-fade-up">Joe&apos;s Used Harleys · Milwaukee, WI</p>
-        <h1 className="joe-mega joe-fade-up joe-fade-up-delay-1 mt-6 max-w-5xl text-[clamp(2.75rem,9.5vw,9.5rem)] text-ink">
-          Pull up a stool.
-          <span className="block text-lamp">Let&apos;s talk motorcycles.</span>
+        <h1 className="joe-mega joe-fade-up joe-fade-up-delay-1 mt-6 max-w-5xl text-[clamp(2.15rem,5vw,4.25rem)] text-ink">
+          Used Harley-Davidson motorcycles
+          <span className="block text-lamp">near Milwaukee, Wisconsin</span>
         </h1>
-        <p className="joe-fade-up joe-fade-up-delay-2 mt-8 max-w-xl text-lg leading-[1.65] text-ink/80 md:text-xl">
-          One salesman. Used Harley-Davidsons. No ticket numbers. Joe helps Milwaukee and
-          Southeastern Wisconsin riders find the right bike — and keeps it straight the whole way.
+        <p className="joe-fade-up joe-fade-up-delay-2 mt-6 max-w-3xl font-display text-[clamp(1.35rem,2.6vw,2.15rem)] uppercase leading-none tracking-wide text-ink">
+          Pull up a stool. Let&apos;s talk motorcycles.
+        </p>
+        <p className="joe-fade-up joe-fade-up-delay-2 mt-6 max-w-xl text-lg leading-[1.65] text-ink/80 md:text-xl">
+          One salesman. No ticket numbers. Joe helps Milwaukee and Southeastern Wisconsin riders
+          find the right bike — and keeps it straight the whole way.
         </p>
         <div className="joe-fade-up joe-fade-up-delay-3 mt-10 flex flex-col gap-3 sm:flex-row">
           <Link href="/inventory" className="joe-btn-primary h-14 px-8 text-[0.95rem]">
