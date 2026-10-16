@@ -294,9 +294,10 @@ function SearchConsolePanel({ section }: { section: SearchConsoleSection }) {
         <JosData>No landing pages in this period.</JosData>
       ) : (
         <ul className="space-y-3">
-          {section.pages.map((row) => (
-            <li key={row.page}>
+          {section.pages.map((row, index) => (
+            <li key={`${row.url}:${index}`}>
               <p className="jos-item">{row.page}</p>
+              <JosData className="mt-1 break-all">{row.url}</JosData>
               <SearchStats totals={row} compact />
             </li>
           ))}

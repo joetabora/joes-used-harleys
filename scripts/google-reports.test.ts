@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import {
   SEARCH_CONSOLE_IMPRESSION_ROW_LIMIT,
   loadGoogleReporting,
+  reportLandingPage,
   safeLandingPage,
   safeSearchQuery,
   searchConsoleRanges,
@@ -58,6 +59,8 @@ const gscQueries = {
 };
 const gscPages = {
   rows: [
+    { keys: ["https://joesusedharleys.com/"], clicks: 0, impressions: 208, ctr: 0, position: 23.3 },
+    { keys: ["https://www.joesusedharleys.com/"], clicks: 0, impressions: 20, ctr: 0, position: 4.8 },
     {
       keys: ["https://joesusedharleys.com/inventory/street-glide?email=buyer@example.com"],
       clicks: 2,
@@ -200,8 +203,20 @@ if (success.searchConsole.status === "ready") {
   );
   assert.deepEqual(
     success.searchConsole.pages.map((row) => row.page),
-    ["/inventory/street-glide"],
+    ["/", "/", "/inventory/street-glide"],
   );
+  assert.deepEqual(
+    success.searchConsole.pages.map((row) => row.url),
+    [
+      "https://joesusedharleys.com/",
+      "https://www.joesusedharleys.com/",
+      "https://joesusedharleys.com/inventory/street-glide?email=[redacted]",
+    ],
+  );
+  assert.equal(success.searchConsole.pages[0]?.impressions, 208);
+  assert.equal(success.searchConsole.pages[1]?.impressions, 20);
+  assert.equal(JSON.stringify(success.searchConsole.pages).includes(VIN), false);
+  assert.equal(JSON.stringify(success.searchConsole.pages).includes("buyer@example.com"), false);
   assert.match(success.searchConsole.detail, /lags 2–3 days/);
   assert.match(success.searchConsole.period28, / to /);
   assert.equal(success.searchConsole.queriesByImpressions.status, "ready");
@@ -334,6 +349,18 @@ assert.equal(safeSearchQuery("buyer@example.com"), null);
 assert.equal(safeSearchQuery(VIN), null);
 assert.equal(safeLandingPage(`https://joesusedharleys.com/inventory/a?q=${VIN}`), "/inventory/a");
 assert.equal(safeLandingPage(`https://joesusedharleys.com/v/${VIN}`), null);
+const apexHome = reportLandingPage("https://joesusedharleys.com/");
+const wwwHome = reportLandingPage("https://www.joesusedharleys.com/");
+assert.equal(apexHome?.page, "/");
+assert.equal(wwwHome?.page, "/");
+assert.notEqual(apexHome?.url, wwwHome?.url);
+assert.equal(reportLandingPage(`https://joesusedharleys.com/v/${VIN}`), null);
+const redacted = reportLandingPage(
+  "https://joesusedharleys.com/inventory/street-glide?email=buyer@example.com",
+);
+assert.equal(redacted?.page, "/inventory/street-glide");
+assert.equal(redacted?.url.includes("buyer@example.com"), false);
+assert.equal(redacted?.url.includes("[redacted]"), true);
 
 const ranges = searchConsoleRanges(now);
 assert.equal(ranges.end, "2026-10-12");

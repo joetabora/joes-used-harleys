@@ -140,7 +140,7 @@ export type SearchConsoleTotals = {
 };
 
 export type SearchConsoleQuery = SearchConsoleTotals & { term: string };
-export type SearchConsolePage = SearchConsoleTotals & { page: string };
+export type SearchConsolePage = SearchConsoleTotals & { page: string; url: string };
 
 export type SearchConsoleImpressionQueries =
   | { status: "failed"; detail: string }

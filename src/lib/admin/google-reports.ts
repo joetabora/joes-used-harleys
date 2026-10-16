@@ -135,14 +135,46 @@ export function safeSearchQuery(raw: string): string | null {
 }
 
 export function safeLandingPage(raw: string): string | null {
+  return reportLandingPage(raw)?.page ?? null;
+}
+
+/**
+ * Pathname for the table, plus the API page URL so host and protocol stay visible.
+ * VIN path segments are omitted. Email-like or VIN query values are redacted.
+ * Rows are not combined.
+ */
+export function reportLandingPage(raw: string): { page: string; url: string } | null {
+  const trimmed = raw.trim();
+  let parsed: URL;
   try {
-    const url = new URL(raw);
-    const path = url.pathname || "/";
-    if (path.split("/").some((part) => VIN_LIKE.test(part))) return null;
-    return path;
+    parsed = new URL(trimmed);
   } catch {
     return null;
   }
+  const page = parsed.pathname || "/";
+  if (page.split("/").some((part) => VIN_LIKE.test(part))) return null;
+  if (parsed.username || parsed.password) return null;
+  return { page, url: visibleLandingUrl(trimmed, parsed) };
+}
+
+function visibleLandingUrl(raw: string, parsed: URL): string {
+  const sensitiveSearch = [...parsed.searchParams].some(
+    ([key, value]) => isSensitiveLandingToken(key) || isSensitiveLandingToken(value),
+  );
+  if (!sensitiveSearch && !parsed.hash) return raw;
+  const origin = `${parsed.protocol}//${parsed.host}`;
+  if (!sensitiveSearch) return `${origin}${parsed.pathname}`;
+  const search = [...parsed.searchParams]
+    .map(([key, value]) => {
+      const shown = isSensitiveLandingToken(key) || isSensitiveLandingToken(value) ? "[redacted]" : value;
+      return `${key}=${shown}`;
+    })
+    .join("&");
+  return `${origin}${parsed.pathname}?${search}`;
+}
+
+function isSensitiveLandingToken(value: string): boolean {
+  return value.includes("@") || VIN_LIKE.test(value.replace(/\s/g, ""));
 }
 
 type GaMetricRow = { dimensionValues?: { value?: string }[]; metricValues?: { value?: string }[] };
@@ -420,10 +452,10 @@ function gscPages(rows: unknown): SearchConsolePage[] {
   if (!Array.isArray(rows)) return [];
   const pages: SearchConsolePage[] = [];
   for (const row of rows as GscRow[]) {
-    const page = safeLandingPage(row.keys?.[0] ?? "");
+    const landing = reportLandingPage(row.keys?.[0] ?? "");
     const totals = totalsOf(row);
-    if (!page || !totals) continue;
-    pages.push({ page, ...totals });
+    if (!landing || !totals) continue;
+    pages.push({ page: landing.page, url: landing.url, ...totals });
   }
   return pages;
 }
